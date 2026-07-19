@@ -1,0 +1,34 @@
+CLAUDE.md
+.agents/
+.gemini/
+.claude/
+
+# === Project binary/doc files (không track) ===
+leftover-recipe-matcher-architecture-v3.drawio
+leftover-recipe-matcher-cosolythuyet-edited.docx
+
+# === IDE ===
+.idea/
+.vscode/
+*.iml
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Build (Java/Maven) ===
+target/
+*.class
+*.jar
+*.war
+
+# === Node (React frontend) ===
+node_modules/
+dist/
+build/
+
+# === Environment / Secrets ===
+.env
+.env.local
+.env.*.local
+!.env.example
