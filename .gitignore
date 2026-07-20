@@ -1,7 +1,14 @@
 CLAUDE.md
+AGENTS.md
 .agents/
 .gemini/
 .claude/
+.cursor/
+.windsurf/
+.continue/
+.clinerules/
+.roo/
+.aider*
 
 # === Project binary/doc files (không track) ===
 leftover-recipe-matcher-architecture-v3.drawio
