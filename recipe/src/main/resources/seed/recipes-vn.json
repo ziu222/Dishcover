@@ -1,0 +1,235 @@
+[
+  {
+    "_id": "vn_trung_chien_ca_chua",
+    "name": "Trứng chiên cà chua",
+    "slug": "trung-chien-ca-chua",
+    "cook_time_minutes": 15,
+    "difficulty": "EASY",
+    "tags": ["nhanh", "bữa sáng", "ít nguyên liệu"],
+    "dietary_flags": ["contains_egg"],
+    "ingredients": [
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 2, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_la", "name": "Hành lá", "normalized_name": "hanh la", "amount": 2, "unit": "nhánh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_nuoc_mam", "name": "Nước mắm", "normalized_name": "nuoc mam", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cà chua rửa sạch, cắt múi cau. Hành lá cắt nhỏ. Đập trứng ra tô, đánh tan với chút nước mắm.", "duration_minutes": 5 },
+      { "order": 2, "title": "Xào cà chua", "content": "Phi thơm, cho cà chua vào xào mềm cho ra nước.", "duration_minutes": 4 },
+      { "order": 3, "title": "Chiên trứng", "content": "Đổ trứng vào, đảo nhẹ đến khi trứng chín tới, rắc hành lá.", "duration_minutes": 4 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_thit_kho_tau",
+    "name": "Thịt kho tàu",
+    "slug": "thit-kho-tau",
+    "cook_time_minutes": 60,
+    "difficulty": "MEDIUM",
+    "tags": ["món kho", "cơm nhà", "đậm đà"],
+    "dietary_flags": ["contains_egg", "contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_ba_chi", "name": "Thịt ba chỉ", "normalized_name": "ba chi", "amount": 500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 4, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nuoc_dua", "name": "Nước dừa", "normalized_name": "nuoc dua", "amount": 400, "unit": "ml", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_nuoc_mam", "name": "Nước mắm", "normalized_name": "nuoc mam", "amount": 3, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tim", "name": "Hành tím", "normalized_name": "hanh tim", "amount": 3, "unit": "củ", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Ướp thịt", "content": "Thịt ba chỉ cắt miếng vuông, ướp nước mắm, đường, hành tím băm 30 phút.", "duration_minutes": 30 },
+      { "order": 2, "title": "Thắng nước màu", "content": "Đun đường trên lửa nhỏ đến khi chuyển màu cánh gián.", "duration_minutes": 5 },
+      { "order": 3, "title": "Kho thịt", "content": "Cho thịt vào đảo săn, thêm nước dừa xâm xấp, luộc trứng bóc vỏ cho vào, kho liu riu đến khi mềm và nước sánh.", "duration_minutes": 45 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_ca_kho_to",
+    "name": "Cá kho tộ",
+    "slug": "ca-kho-to",
+    "cook_time_minutes": 45,
+    "difficulty": "MEDIUM",
+    "tags": ["món kho", "cơm nhà", "đậm đà"],
+    "dietary_flags": ["contains_seafood"],
+    "ingredients": [
+      { "ingredient_id": "ing_ca_basa", "name": "Cá basa", "normalized_name": "ca basa", "amount": 500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nuoc_mam", "name": "Nước mắm", "normalized_name": "nuoc mam", "amount": 3, "unit": "muỗng canh", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tim", "name": "Hành tím", "normalized_name": "hanh tim", "amount": 3, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_ot", "name": "Ớt", "normalized_name": "ot", "amount": 2, "unit": "trái", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_tieu", "name": "Tiêu", "normalized_name": "tieu", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế cá", "content": "Cá làm sạch, cắt khúc, ướp nước mắm, đường, hành tím 20 phút.", "duration_minutes": 20 },
+      { "order": 2, "title": "Thắng nước màu", "content": "Đun đường đến màu cánh gián, xếp cá vào nồi đất.", "duration_minutes": 5 },
+      { "order": 3, "title": "Kho cá", "content": "Rưới nước màu, thêm nước xâm xấp, kho lửa nhỏ đến khi cá thấm và nước sánh, thêm ớt tiêu.", "duration_minutes": 20 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_canh_chua_ca_loc",
+    "name": "Canh chua cá lóc",
+    "slug": "canh-chua-ca-loc",
+    "cook_time_minutes": 40,
+    "difficulty": "MEDIUM",
+    "tags": ["món canh", "miền Nam", "chua ngọt"],
+    "dietary_flags": ["contains_seafood"],
+    "ingredients": [
+      { "ingredient_id": "ing_ca_loc", "name": "Cá lóc", "normalized_name": "ca loc", "amount": 500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_me_chua", "name": "Me chua", "normalized_name": "me chua", "amount": 50, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 2, "unit": "quả", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_gia_do", "name": "Giá đỗ", "normalized_name": "gia do", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_bap", "name": "Đậu bắp", "normalized_name": "dau bap", "amount": 5, "unit": "trái", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_ngo_gai", "name": "Ngò gai", "normalized_name": "ngo gai", "amount": 3, "unit": "nhánh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cá làm sạch cắt khúc. Me dầm lấy nước chua. Rau củ rửa sạch cắt vừa ăn.", "duration_minutes": 10 },
+      { "order": 2, "title": "Nấu nước dùng", "content": "Đun sôi nước, cho nước me và cà chua vào nêm chua ngọt.", "duration_minutes": 10 },
+      { "order": 3, "title": "Nấu canh", "content": "Thả cá vào nấu chín, cho đậu bắp, giá đỗ, rắc ngò gai rồi tắt bếp.", "duration_minutes": 15 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_dau_hu_sot_ca_chua",
+    "name": "Đậu hũ sốt cà chua",
+    "slug": "dau-hu-sot-ca-chua",
+    "cook_time_minutes": 20,
+    "difficulty": "EASY",
+    "tags": ["chay", "nhanh", "cơm nhà"],
+    "dietary_flags": ["vegetarian", "vegan"],
+    "ingredients": [
+      { "ingredient_id": "ing_dau_hu", "name": "Đậu hũ", "normalized_name": "dau hu", "amount": 2, "unit": "miếng", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_la", "name": "Hành lá", "normalized_name": "hanh la", "amount": 2, "unit": "nhánh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 2, "unit": "tép", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Chiên đậu", "content": "Đậu hũ cắt miếng, chiên vàng các mặt rồi vớt ra.", "duration_minutes": 8 },
+      { "order": 2, "title": "Làm sốt", "content": "Phi tỏi, cho cà chua băm vào xào nhuyễn thành sốt, nêm vừa ăn.", "duration_minutes": 6 },
+      { "order": 3, "title": "Rim đậu", "content": "Cho đậu vào sốt, rim 3 phút cho thấm, rắc hành lá.", "duration_minutes": 4 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_rau_muong_xao_toi",
+    "name": "Rau muống xào tỏi",
+    "slug": "rau-muong-xao-toi",
+    "cook_time_minutes": 10,
+    "difficulty": "EASY",
+    "tags": ["chay", "nhanh", "món xào"],
+    "dietary_flags": ["vegetarian", "vegan"],
+    "ingredients": [
+      { "ingredient_id": "ing_rau_muong", "name": "Rau muống", "normalized_name": "rau muong", "amount": 1, "unit": "bó", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 4, "unit": "tép", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_dau_an", "name": "Dầu ăn", "normalized_name": "dau an", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hat_nem", "name": "Hạt nêm", "normalized_name": "hat nem", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Rau muống nhặt, rửa sạch, để ráo. Tỏi băm.", "duration_minutes": 4 },
+      { "order": 2, "title": "Xào", "content": "Phi thơm tỏi, cho rau vào xào lửa lớn, nêm hạt nêm, đảo nhanh đến khi rau vừa chín tới.", "duration_minutes": 5 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_ga_kho_gung",
+    "name": "Gà kho gừng",
+    "slug": "ga-kho-gung",
+    "cook_time_minutes": 35,
+    "difficulty": "MEDIUM",
+    "tags": ["món kho", "cơm nhà", "đậm đà"],
+    "dietary_flags": ["contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_thit_ga", "name": "Thịt gà", "normalized_name": "thit ga", "amount": 600, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_gung", "name": "Gừng", "normalized_name": "gung", "amount": 1, "unit": "củ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nuoc_mam", "name": "Nước mắm", "normalized_name": "nuoc mam", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 1, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_tieu", "name": "Tiêu", "normalized_name": "tieu", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Ướp gà", "content": "Gà chặt miếng, ướp nước mắm, đường, nửa phần gừng thái sợi 20 phút.", "duration_minutes": 20 },
+      { "order": 2, "title": "Kho gà", "content": "Đảo gà săn, thêm nước xâm xấp và phần gừng còn lại, kho lửa nhỏ đến khi thấm, rắc tiêu.", "duration_minutes": 15 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_com_chien_trung",
+    "name": "Cơm chiên trứng",
+    "slug": "com-chien-trung",
+    "cook_time_minutes": 15,
+    "difficulty": "EASY",
+    "tags": ["nhanh", "tận dụng cơm nguội", "bữa trưa"],
+    "dietary_flags": ["contains_egg", "vegetarian"],
+    "ingredients": [
+      { "ingredient_id": "ing_com", "name": "Cơm nguội", "normalized_name": "com", "amount": 2, "unit": "chén", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 2, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_rot", "name": "Cà rốt", "normalized_name": "ca rot", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_la", "name": "Hành lá", "normalized_name": "hanh la", "amount": 2, "unit": "nhánh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_an", "name": "Dầu ăn", "normalized_name": "dau an", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cà rốt cắt hạt lựu. Đánh tan trứng. Hành lá cắt nhỏ.", "duration_minutes": 5 },
+      { "order": 2, "title": "Chiên", "content": "Chiên trứng cho se, cho cà rốt đảo chín, thêm cơm chiên tơi, nêm vừa ăn, rắc hành lá.", "duration_minutes": 8 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_canh_cai_thao_thit_bam",
+    "name": "Canh cải thảo thịt bằm",
+    "slug": "canh-cai-thao-thit-bam",
+    "cook_time_minutes": 20,
+    "difficulty": "EASY",
+    "tags": ["món canh", "cơm nhà", "thanh mát"],
+    "dietary_flags": ["contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_cai_thao", "name": "Cải thảo", "normalized_name": "cai thao", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_bam", "name": "Thịt bằm", "normalized_name": "thit bam", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_la", "name": "Hành lá", "normalized_name": "hanh la", "amount": 2, "unit": "nhánh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hat_nem", "name": "Hạt nêm", "normalized_name": "hat nem", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cải thảo rửa sạch cắt khúc. Thịt bằm ướp chút hạt nêm.", "duration_minutes": 5 },
+      { "order": 2, "title": "Nấu canh", "content": "Xào săn thịt, thêm nước đun sôi, cho cải thảo vào nấu chín mềm, nêm vừa ăn, rắc hành lá.", "duration_minutes": 12 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  },
+  {
+    "_id": "vn_canh_bi_do_tom",
+    "name": "Canh bí đỏ nấu tôm",
+    "slug": "canh-bi-do-nau-tom",
+    "cook_time_minutes": 25,
+    "difficulty": "EASY",
+    "tags": ["món canh", "cơm nhà", "bổ dưỡng"],
+    "dietary_flags": ["contains_seafood"],
+    "ingredients": [
+      { "ingredient_id": "ing_bi_do", "name": "Bí đỏ", "normalized_name": "bi do", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_tom", "name": "Tôm", "normalized_name": "tom", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_la", "name": "Hành lá", "normalized_name": "hanh la", "amount": 2, "unit": "nhánh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hat_nem", "name": "Hạt nêm", "normalized_name": "hat nem", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Bí đỏ gọt vỏ cắt miếng. Tôm bóc vỏ, băm nhẹ, ướp chút hạt nêm.", "duration_minutes": 8 },
+      { "order": 2, "title": "Nấu canh", "content": "Xào săn tôm, thêm nước đun sôi, cho bí đỏ nấu đến khi mềm, nêm vừa ăn, rắc hành lá.", "duration_minutes": 15 }
+    ],
+    "image_url": null,
+    "video_url": null,
+    "created_at": "2026-07-21T00:00:00Z"
+  }
+]
