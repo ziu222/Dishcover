@@ -1,0 +1,7 @@
+# Config chia sẻ cho mọi client (native backend, file "application.yml" là quy ước mặc định của Spring Cloud Config).
+# Hiện chưa có client nào trỏ vào Config Server (mỗi service đang tự có application.yml cục bộ) —
+# wiring "spring.config.import: configserver:" cho từng service là việc của sau, khi cần tập trung secret/env thật.
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

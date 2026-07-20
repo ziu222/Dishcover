@@ -1,0 +1,16 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: recipe
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_ROOT_USER:larder_app}:${MONGO_ROOT_PASSWORD:changeme}@localhost:27017/${MONGO_DB:recipe_matcher_db}?authSource=admin
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
