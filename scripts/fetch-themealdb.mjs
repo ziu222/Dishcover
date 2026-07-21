@@ -39,18 +39,61 @@ const MINOR = ["salt", "pepper", "oil", "sugar", "water", "garlic", "onion", "sa
   "paprika", "cumin", "chilli", "chili", "lime", "lemon", "honey", "soy", "mirin", "sesame",
   "ginger", "scallion", "spring onion", "wine", "cornflour", "cornstarch", "flour", "baking",
   "yeast", "vanilla", "cinnamon", "nutmeg", "clove", "bay leaf", "thyme", "basil", "mint", "dill"];
-const isMinor = (name) => { const n = name.toLowerCase(); return MINOR.some((m) => n.includes(m)); };
+
+// Dạng chế biến khô/xay luôn là gia vị, kể cả khi tên chứa từ của nguyên liệu chính
+const SPICE_MARKERS = ["flakes", "powder", "ground", "dried", "paste", "extract", "essence"];
+// Tên ghép mà một từ trong đó trùng MINOR nhưng bản thân là nguyên liệu CHÍNH
+// (trước đây khớp chuỗi con nên "Butternut Squash" bị coi là "butter" → hạ nhầm weight 0.3)
+const MAIN_OVERRIDE = ["peanut butter", "butternut", "sugar snap", "water chestnut", "soya bean",
+  "rice flour", "butter bean", "red pepper", "green pepper", "yellow pepper", "bell pepper",
+  "spring greens", "onion squash"];
+
+const singular = (w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w);
+
+function isMinor(name) {
+  const n = name.toLowerCase();
+  if (SPICE_MARKERS.some((s) => n.includes(s))) return true;
+  if (MAIN_OVERRIDE.some((m) => n.includes(m))) return false;
+  const words = n.split(/[^a-z]+/).filter(Boolean).map(singular);
+  const joined = words.join(" ");
+  // khớp theo RANH GIỚI TỪ, không phải chuỗi con
+  return MINOR.some((m) => (m.includes(" ") ? joined.includes(m) : words.includes(m)));
+}
+
+// Fallback khi nguyên liệu không có trong catalog (nguyên liệu ngoại chiếm ~60%):
+// thà gắn cờ dư còn hơn bỏ sót — bỏ sót nghĩa là gợi ý món có thịt/hải sản cho người ăn chay/dị ứng.
+const NON_DAIRY = /coconut|peanut|almond|soya|soy|cocoa|butter bean|shea/i;
+const FALLBACK = [
+  ["contains_meat", /\b(beef|pork|lamb|mutton|bacon|ham|chicken|turkey|duck|steak|mince|minced|sausage|chorizo|prosciutto|salami|veal|goose|liver|gammon|pancetta)\b/i],
+  ["contains_seafood", /\b(fish|prawn|prawns|shrimp|crab|lobster|squid|octopus|clam|mussel|oyster|scallop|anchovy|anchovies|salmon|tuna|cod|haddock|mackerel|sardine|seafood|kipper)\b/i],
+  ["contains_egg", /\begg/i],
+  ["contains_dairy", /\b(milk|cheese|butter|cream|yoghurt|yogurt|ghee|mascarpone|ricotta|parmesan|mozzarella|creme)\b/i],
+  ["contains_gluten", /\b(flour|bread|breadcrumb|breadcrumbs|pasta|spaghetti|lasagne|noodle|noodles|couscous|barley|semolina|pastry|bun|tortilla)\b/i],
+  ["contains_nuts", /\b(peanut|peanuts|cashew|cashews|almond|almonds|walnut|walnuts|pistachio|hazelnut|pecan)\b/i],
+];
 
 function inferDietaryFlags(ings) {
   const flags = new Set();
   for (const ing of ings) {
     const e = byNorm.get(ing.normalized_name);
-    if (!e) continue;
-    if (e.allergenGroup === "trung") flags.add("contains_egg");
-    if (e.allergenGroup === "ca" || e.allergenGroup === "hai_san") flags.add("contains_seafood");
-    if (e.allergenGroup === "sua") flags.add("contains_dairy");
-    if (e.allergenGroup === "gluten") flags.add("contains_gluten");
-    if (e.category === "thit") flags.add("contains_meat");
+    if (e) {
+      // Ưu tiên catalog vì chính xác hơn regex
+      if (e.allergenGroup === "trung") flags.add("contains_egg");
+      if (e.allergenGroup === "ca" || e.allergenGroup === "hai_san") flags.add("contains_seafood");
+      if (e.allergenGroup === "sua") flags.add("contains_dairy");
+      if (e.allergenGroup === "gluten") flags.add("contains_gluten");
+      if (e.allergenGroup === "dau_phong" || e.allergenGroup === "hat") flags.add("contains_nuts");
+      if (e.allergenGroup === "me") flags.add("contains_sesame");
+      if (e.category === "thit") flags.add("contains_meat");
+    }
+    // Chạy regex CẢ KHI đã khớp catalog: catalog xếp "Nước dùng gà" vào do_kho nên không ra
+    // contains_meat, dù với người ăn chay thì nước dùng gà vẫn là vi phạm. Sản phẩm chế biến
+    // (nước dùng, nước mắm...) cần regex bắt theo tên.
+    for (const [flag, re] of FALLBACK) {
+      if (!re.test(ing.name)) continue;
+      if (flag === "contains_dairy" && NON_DAIRY.test(ing.name)) continue; // "coconut milk"/"peanut butter" không phải sữa
+      flags.add(flag);
+    }
   }
   return [...flags];
 }
