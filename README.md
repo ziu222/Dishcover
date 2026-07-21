@@ -175,13 +175,22 @@ cd ..
 
 PostgreSQL được mở ở `localhost:5432`, MongoDB ở `localhost:27017` để tiện phát triển. Đây là ngoại lệ dành cho database local; service ứng dụng sẽ chỉ giao tiếp qua private network khi được thêm vào Compose.
 
-### 2. Chạy kiểm thử
+### 2. Đặt biến môi trường cho service
+
+Tên database/user có giá trị mặc định cho tiện dev, nhưng **mật khẩu thì không** — thiếu biến môi trường thì service không khởi động được, thay vì âm thầm chạy bằng mật khẩu mặc định ai cũng đoán ra. Đặt 2 biến sau khớp với `docker-setup/.env` trước khi chạy service:
+
+```powershell
+$env:POSTGRES_PASSWORD = "<mật khẩu trong docker-setup/.env>"
+$env:MONGO_ROOT_PASSWORD = "<mật khẩu trong docker-setup/.env>"
+```
+
+### 3. Chạy kiểm thử
 
 ```powershell
 .\mvnw.cmd clean test
 ```
 
-### 3. Seed công thức vào MongoDB
+### 4. Seed công thức vào MongoDB
 
 ```powershell
 .\mvnw.cmd -pl recipe spring-boot:run "-Dspring-boot.run.profiles=seed"

@@ -6,7 +6,15 @@ spring:
     name: recipe
   data:
     mongodb:
-      uri: mongodb://${MONGO_ROOT_USER:larder_app}:${MONGO_ROOT_PASSWORD:changeme}@localhost:27017/${MONGO_DB:recipe_matcher_db}?authSource=admin
+      # Tách từng property thay vì nhét chung 1 URI cho dễ đọc/đổi từng phần.
+      # Mật khẩu KHÔNG có giá trị mặc định: thiếu MONGO_ROOT_PASSWORD thì service không khởi động
+      # được, thay vì âm thầm chạy bằng mật khẩu mặc định ai cũng đoán ra.
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DB:recipe_matcher_db}
+      username: ${MONGO_ROOT_USER:larder_app}
+      password: ${MONGO_ROOT_PASSWORD}
+      authentication-database: admin
 
 eureka:
   client:
