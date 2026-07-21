@@ -1,8 +1,13 @@
 package com.dishcover.common.ingredient;
 
+import com.dishcover.common.text.VietnameseTextNormalizer;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,10 +67,43 @@ class IngredientCatalogTest {
 
     @Test
     void everyNormalizedNameMatchesNormalizerOutput() {
-        // normalized_name khai báo trong JSON phải khớp đúng output của normalizer
+        // So TRỰC TIẾP với normalizer, không qua resolve() — resolve() luôn trả về normalizedName
+        // của chính entry đó (constructor đã index canonicalName) nên không kiểm được JSON viết sai.
         for (IngredientEntry e : catalog.entries()) {
-            assertEquals(e.normalizedName(), catalog.resolve(e.canonicalName()),
-                    "canonical '" + e.canonicalName() + "' không resolve về normalized_name khai báo");
+            assertEquals(e.normalizedName(), VietnameseTextNormalizer.normalize(e.canonicalName()),
+                    "normalized_name khai báo không khớp normalize(canonicalName) ở '" + e.canonicalName() + "'");
         }
+    }
+
+    @Test
+    void noAliasCollisionBetweenDifferentIngredients() {
+        // Guard cho bug đã xảy ra: "ngô" (bắp) và "ngò" (rau mùi) cùng normalize thành "ngo".
+        // Load thành công = không có tranh chấp (constructor ném lỗi nếu có), nhưng kiểm lại tường minh
+        // để thông báo lỗi rõ ràng hơn khi ai đó thêm alias mới.
+        Map<String, String> owner = new HashMap<>();
+        for (IngredientEntry e : catalog.entries()) {
+            List<String> keys = new ArrayList<>(List.of(e.canonicalName(), e.normalizedName()));
+            if (e.aliases() != null) {
+                keys.addAll(e.aliases());
+            }
+            for (String raw : keys) {
+                String key = VietnameseTextNormalizer.normalize(raw);
+                if (key.isEmpty()) {
+                    continue;
+                }
+                String prev = owner.putIfAbsent(key, e.normalizedName());
+                assertTrue(prev == null || prev.equals(e.normalizedName()),
+                        "Khóa '" + key + "' (từ '" + raw + "') bị tranh chấp giữa '"
+                                + prev + "' và '" + e.normalizedName() + "'");
+            }
+        }
+    }
+
+    @Test
+    void ngoDoesNotResolveToCorn() {
+        // Regression: trước đây resolve("ngò") trả "bap" (Bắp) do collision
+        assertEquals("bap", catalog.resolve("ngô"), "'ngô' vẫn phải ra Bắp");
+        assertEquals("ngo ri", catalog.resolve("rau mùi"), "'rau mùi' phải ra Ngò rí");
+        assertEquals("ngo ri", catalog.resolve("Ngò rí"));
     }
 }

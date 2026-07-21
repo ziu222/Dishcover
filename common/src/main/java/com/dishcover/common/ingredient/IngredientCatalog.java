@@ -38,10 +38,21 @@ public final class IngredientCatalog {
         }
     }
 
+    /**
+     * Đăng ký 1 khóa tra cứu. Nếu 2 nguyên liệu KHÁC NHAU cùng đòi 1 khóa (do bỏ dấu làm trùng,
+     * VD "ngô"/"ngò" đều thành "ngo") thì ném lỗi ngay lúc load thay vì âm thầm cho entry đầu thắng —
+     * collision im lặng từng làm "ngò" (rau mùi) tra ra "bắp".
+     */
     private void index(String rawKey, IngredientEntry e) {
         String key = VietnameseTextNormalizer.normalize(rawKey);
-        if (!key.isEmpty()) {
-            aliasIndex.putIfAbsent(key, e.normalizedName());
+        if (key.isEmpty()) {
+            return;
+        }
+        String previous = aliasIndex.putIfAbsent(key, e.normalizedName());
+        if (previous != null && !previous.equals(e.normalizedName())) {
+            throw new IllegalStateException(
+                    "Khóa tra cứu '" + key + "' bị tranh chấp giữa '" + previous
+                            + "' và '" + e.normalizedName() + "' — sửa alias trong ingredient-catalog.json");
         }
     }
 

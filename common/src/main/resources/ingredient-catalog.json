@@ -39,7 +39,7 @@
   { "canonicalName": "Cà pháo", "normalizedName": "ca phao", "aliases": [], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
 
   { "canonicalName": "Hành lá", "normalizedName": "hanh la", "aliases": ["hành hoa", "green onion", "scallion"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Ngò rí", "normalizedName": "ngo ri", "aliases": ["rau mùi", "ngò", "cilantro", "coriander"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
+  { "canonicalName": "Ngò rí", "normalizedName": "ngo ri", "aliases": ["rau mùi", "cilantro", "coriander"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
   { "canonicalName": "Ngò gai", "normalizedName": "ngo gai", "aliases": ["mùi tàu", "culantro"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
   { "canonicalName": "Rau răm", "normalizedName": "rau ram", "aliases": ["vietnamese coriander"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
   { "canonicalName": "Húng quế", "normalizedName": "hung que", "aliases": ["rau quế", "thai basil"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
