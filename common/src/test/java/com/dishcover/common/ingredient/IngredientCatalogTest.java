@@ -100,6 +100,19 @@ class IngredientCatalogTest {
     }
 
     @Test
+    void coconutIsReachableByFullName() {
+        // "dừa"/"dứa"/"dưa" đều normalize thành "dua" — giới hạn cố hữu của bỏ dấu, không tách được.
+        // Chấp nhận: khóa "dua" thuộc về Dứa (cách gõ trần phổ biến nhất);
+        // dừa phải tra bằng tên đầy đủ, và các dạng dùng thật của dừa đều có entry riêng.
+        assertEquals("cui dua", catalog.resolve("cùi dừa"));
+        assertEquals("cui dua", catalog.resolve("dừa nạo"));
+        assertEquals("cui dua", catalog.resolve("coconut"));
+        assertEquals("nuoc cot dua", catalog.resolve("nước cốt dừa"));
+        assertEquals("nuoc dua", catalog.resolve("nước dừa"));
+        assertEquals("dua", catalog.resolve("dứa"));
+    }
+
+    @Test
     void ngoDoesNotResolveToCorn() {
         // Regression: trước đây resolve("ngò") trả "bap" (Bắp) do collision
         assertEquals("bap", catalog.resolve("ngô"), "'ngô' vẫn phải ra Bắp");

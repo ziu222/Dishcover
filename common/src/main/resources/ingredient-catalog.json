@@ -137,6 +137,7 @@
   { "canonicalName": "Hồi", "normalizedName": "hoi", "aliases": ["hoa hồi", "star anise"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
   { "canonicalName": "Mật ong", "normalizedName": "mat ong", "aliases": ["honey"], "category": "gia_vi", "shelfLifeDays": 730, "allergenGroup": null },
   { "canonicalName": "Nước cốt dừa", "normalizedName": "nuoc cot dua", "aliases": ["coconut milk"], "category": "gia_vi", "shelfLifeDays": 5, "allergenGroup": null },
+  { "canonicalName": "Cùi dừa", "normalizedName": "cui dua", "aliases": ["cơm dừa", "dừa nạo", "dừa tươi", "coconut", "shredded coconut"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
   { "canonicalName": "Nước dừa", "normalizedName": "nuoc dua", "aliases": ["coconut water"], "category": "gia_vi", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Me chua", "normalizedName": "me chua", "aliases": ["me vắt", "tamarind"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": null },
   { "canonicalName": "Chanh", "normalizedName": "chanh", "aliases": ["lime", "lemon"], "category": "gia_vi", "shelfLifeDays": 14, "allergenGroup": null },
