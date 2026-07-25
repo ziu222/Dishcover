@@ -49,6 +49,17 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <!-- -parameters: để Spring đọc được tên @PathVariable/@RequestParam mà không cần khai tên tường minh.
+           spring-boot-starter-parent bật sẵn cờ này; ta không kế thừa parent đó nên phải tự bật. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <parameters>true</parameters>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <modules>

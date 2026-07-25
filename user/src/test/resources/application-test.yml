@@ -1,0 +1,18 @@
+# H2 in-memory ở chế độ PostgreSQL, tự tạo schema user_service; Hibernate dựng bảng (create-drop).
+# Tách khỏi Postgres thật để test chạy nhanh, không cần Docker.
+spring:
+  datasource:
+    # NON_KEYWORDS=VALUE,TYPE: Postgres cho phép cột tên "value"/"type", H2 lại coi là từ khóa
+    url: jdbc:h2:mem:usertest;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,TYPE;INIT=CREATE SCHEMA IF NOT EXISTS user_service
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        default_schema: user_service
+
+jwt:
+  secret: test-secret-at-least-32-chars-long-000
+  expiration-minutes: 120

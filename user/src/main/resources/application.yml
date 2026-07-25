@@ -14,3 +14,9 @@ spring:
     properties:
       hibernate:
         default_schema: user_service
+
+# JWT: secret KHÔNG có default (bí mật, phải set env). Tối thiểu 32 ký tự cho HS256.
+# Gateway sẽ dùng CÙNG secret này để verify token ở tầng gating (mục 8) — chia sẻ qua env/Config Server.
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
