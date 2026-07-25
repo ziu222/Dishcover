@@ -9,7 +9,11 @@
       "Vietnamese",
       "Seafood"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_gluten",
+      "contains_nuts",
+      "contains_seafood"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_rice_noodles",
@@ -23,11 +27,11 @@
       {
         "ingredient_id": "ing_peanut_butter",
         "name": "Peanut Butter",
-        "normalized_name": "peanut butter",
+        "normalized_name": "dau phong",
         "amount": 3,
         "unit": "tablespoons",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_coconut_milk",
@@ -77,7 +81,7 @@
       {
         "ingredient_id": "ing_prawns",
         "name": "Prawns",
-        "normalized_name": "prawns",
+        "normalized_name": "tom",
         "amount": 200,
         "unit": "g",
         "essential": true,
@@ -125,6 +129,8 @@
       "Pork"
     ],
     "dietary_flags": [
+      "contains_gluten",
+      "contains_meat",
       "contains_egg"
     ],
     "ingredients": [
@@ -158,7 +164,7 @@
       {
         "ingredient_id": "ing_bacon",
         "name": "Bacon",
-        "normalized_name": "bacon",
+        "normalized_name": "thit xong khoi",
         "amount": 12,
         "unit": null,
         "essential": true,
@@ -271,7 +277,9 @@
       "Vietnamese",
       "Beef"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_meat"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_rice",
@@ -333,8 +341,8 @@
         "normalized_name": "ground beef",
         "amount": 1,
         "unit": "lb",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_soy_sauce",
@@ -429,7 +437,9 @@
       "Beef"
     ],
     "dietary_flags": [
-      "contains_seafood"
+      "contains_meat",
+      "contains_seafood",
+      "contains_gluten"
     ],
     "ingredients": [
       {
@@ -555,8 +565,8 @@
         "normalized_name": "birds eye chillies",
         "amount": 1,
         "unit": "small",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_basil",
@@ -638,7 +648,11 @@
       "Vietnamese",
       "Seafood"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_gluten",
+      "contains_sesame",
+      "contains_seafood"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_rice_noodles",
@@ -655,13 +669,13 @@
         "normalized_name": "sugar snap peas",
         "amount": 200,
         "unit": "g",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 2,
         "unit": "tsp",
         "essential": false,
@@ -799,8 +813,9 @@
       "Seafood"
     ],
     "dietary_flags": [
+      "contains_gluten",
       "contains_seafood",
-      "contains_gluten"
+      "contains_nuts"
     ],
     "ingredients": [
       {
@@ -815,7 +830,7 @@
       {
         "ingredient_id": "ing_prawns",
         "name": "Prawns",
-        "normalized_name": "prawns",
+        "normalized_name": "tom",
         "amount": 200,
         "unit": "g",
         "essential": true,
@@ -869,7 +884,7 @@
       {
         "ingredient_id": "ing_roasted_peanut",
         "name": "Roasted Peanut",
-        "normalized_name": "roasted peanut",
+        "normalized_name": "dau phong",
         "amount": 2,
         "unit": "tablespoons",
         "essential": true,
@@ -980,6 +995,8 @@
       "Miscellaneous"
     ],
     "dietary_flags": [
+      "contains_gluten",
+      "contains_sesame",
       "contains_seafood"
     ],
     "ingredients": [
@@ -1004,7 +1021,7 @@
       {
         "ingredient_id": "ing_sesame_seed",
         "name": "Sesame Seed",
-        "normalized_name": "sesame seed",
+        "normalized_name": "me",
         "amount": 1,
         "unit": "tablespoon",
         "essential": false,
@@ -1061,8 +1078,8 @@
         "normalized_name": "birds eye chillies",
         "amount": 1,
         "unit": "chopped",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_sugar",
@@ -1126,7 +1143,10 @@
       "Vietnamese",
       "Pork"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_meat",
+      "contains_sesame"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_white_cabbage",
@@ -1161,8 +1181,8 @@
         "normalized_name": "ground pork",
         "amount": 400,
         "unit": "g",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_garlic",
@@ -1194,7 +1214,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 2,
         "unit": "tsp",
         "essential": false,
@@ -1248,7 +1268,7 @@
       {
         "ingredient_id": "ing_sesame_seed",
         "name": "Sesame Seed",
-        "normalized_name": "sesame seed",
+        "normalized_name": "me",
         "amount": 0.5,
         "unit": "tbs",
         "essential": false,
@@ -1329,6 +1349,8 @@
       "Seafood"
     ],
     "dietary_flags": [
+      "contains_meat",
+      "contains_gluten",
       "contains_seafood"
     ],
     "ingredients": [
@@ -1347,8 +1369,8 @@
         "normalized_name": "thai red curry paste",
         "amount": 2,
         "unit": "tsp",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_rice_noodles",
@@ -1464,6 +1486,7 @@
       "Seafood"
     ],
     "dietary_flags": [
+      "contains_gluten",
       "contains_seafood"
     ],
     "ingredients": [
@@ -1572,6 +1595,7 @@
       "Seafood"
     ],
     "dietary_flags": [
+      "contains_gluten",
       "contains_seafood"
     ],
     "ingredients": [
@@ -1608,8 +1632,8 @@
         "normalized_name": "szechuan peppercorns",
         "amount": 2,
         "unit": "tsp",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_sunflower_oil",
@@ -1897,6 +1921,8 @@
       "Beef"
     ],
     "dietary_flags": [
+      "contains_gluten",
+      "contains_meat",
       "contains_seafood"
     ],
     "ingredients": [
@@ -2070,7 +2096,9 @@
       "Vietnamese",
       "Vegetarian"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_nuts"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_carrots",
@@ -2120,7 +2148,7 @@
       {
         "ingredient_id": "ing_roasted_peanut",
         "name": "Roasted Peanut",
-        "normalized_name": "roasted peanut",
+        "normalized_name": "dau phong",
         "amount": null,
         "unit": "Handful",
         "essential": true,
@@ -2191,7 +2219,9 @@
       "Vietnamese",
       "Vegetarian"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_nuts"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_vegetable_oil",
@@ -2244,8 +2274,8 @@
         "normalized_name": "soya bean",
         "amount": 140,
         "unit": "g",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_pak_choi",
@@ -2286,7 +2316,7 @@
       {
         "ingredient_id": "ing_cashew_nuts",
         "name": "Cashew Nuts",
-        "normalized_name": "cashew nuts",
+        "normalized_name": "hat dieu",
         "amount": 25,
         "unit": "g",
         "essential": true,
@@ -2321,7 +2351,9 @@
       "Vietnamese",
       "Miscellaneous"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_meat"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_baguette",
@@ -2335,7 +2367,7 @@
       {
         "ingredient_id": "ing_chicken_liver",
         "name": "Chicken Liver",
-        "normalized_name": "chicken liver",
+        "normalized_name": "thit ga",
         "amount": 50,
         "unit": "g",
         "essential": true,
@@ -2353,7 +2385,7 @@
       {
         "ingredient_id": "ing_turkey",
         "name": "Turkey",
-        "normalized_name": "turkey",
+        "normalized_name": "thit ga tay",
         "amount": 140,
         "unit": "g",
         "essential": true,
@@ -2472,7 +2504,10 @@
       "Vietnamese",
       "Beef"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_gluten",
+      "contains_meat"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_strong_white_bread_flour",
@@ -2543,8 +2578,8 @@
         "normalized_name": "ground beef",
         "amount": 250,
         "unit": "g",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_chilli_flakes",
@@ -2570,8 +2605,8 @@
         "normalized_name": "allspice",
         "amount": 1,
         "unit": "tsp",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_olive_oil",
@@ -2793,8 +2828,8 @@
         "normalized_name": "hotsauce",
         "amount": null,
         "unit": "To serve",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       }
     ],
     "steps": [
@@ -2964,7 +2999,11 @@
       "Chicken"
     ],
     "dietary_flags": [
-      "contains_seafood"
+      "contains_gluten",
+      "contains_meat",
+      "contains_nuts",
+      "contains_seafood",
+      "contains_sesame"
     ],
     "ingredients": [
       {
@@ -2997,7 +3036,7 @@
       {
         "ingredient_id": "ing_chicken_breasts",
         "name": "Chicken Breasts",
-        "normalized_name": "chicken breasts",
+        "normalized_name": "thit ga",
         "amount": 2,
         "unit": null,
         "essential": true,
@@ -3033,7 +3072,7 @@
       {
         "ingredient_id": "ing_peanuts",
         "name": "Peanuts",
-        "normalized_name": "peanuts",
+        "normalized_name": "dau phong",
         "amount": 25,
         "unit": "g",
         "essential": true,
@@ -3078,7 +3117,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 1,
         "unit": "½ tbsp",
         "essential": false,
@@ -3127,7 +3166,9 @@
     ],
     "dietary_flags": [
       "contains_meat",
-      "contains_seafood"
+      "contains_egg",
+      "contains_seafood",
+      "contains_nuts"
     ],
     "ingredients": [
       {
@@ -3241,7 +3282,7 @@
       {
         "ingredient_id": "ing_peanuts",
         "name": "Peanuts",
-        "normalized_name": "peanuts",
+        "normalized_name": "dau phong",
         "amount": null,
         "unit": "Crushed",
         "essential": true,
@@ -3295,6 +3336,7 @@
       "Lamb"
     ],
     "dietary_flags": [
+      "contains_meat",
       "contains_seafood"
     ],
     "ingredients": [
@@ -3310,7 +3352,7 @@
       {
         "ingredient_id": "ing_lamb_shanks",
         "name": "Lamb Shanks",
-        "normalized_name": "lamb shanks",
+        "normalized_name": "thit cuu",
         "amount": 4,
         "unit": null,
         "essential": true,
@@ -3394,8 +3436,8 @@
         "normalized_name": "lemongrass stalks",
         "amount": 2,
         "unit": null,
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_lamb_stock",
@@ -3502,7 +3544,9 @@
       "Pork"
     ],
     "dietary_flags": [
-      "contains_seafood"
+      "contains_sesame",
+      "contains_seafood",
+      "contains_meat"
     ],
     "ingredients": [
       {
@@ -3544,7 +3588,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 1,
         "unit": "tablespoon",
         "essential": false,
@@ -3637,8 +3681,8 @@
         "normalized_name": "lemongrass stalks",
         "amount": 2,
         "unit": "chopped",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_lime",
@@ -3766,8 +3810,8 @@
         "normalized_name": "birds eye chillies",
         "amount": 1,
         "unit": "chopped",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_rice_paper_sheets",
@@ -3799,7 +3843,7 @@
       {
         "ingredient_id": "ing_king_prawns",
         "name": "King Prawns",
-        "normalized_name": "king prawns",
+        "normalized_name": "tom",
         "amount": 12,
         "unit": null,
         "essential": true,
@@ -3889,6 +3933,7 @@
       "Vegetarian"
     ],
     "dietary_flags": [
+      "contains_gluten",
       "contains_meat",
       "contains_seafood"
     ],
@@ -3899,8 +3944,8 @@
         "normalized_name": "rice flour pancakes",
         "amount": 100,
         "unit": "g",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_rice_noodles",
@@ -3944,8 +3989,8 @@
         "normalized_name": "red pepper",
         "amount": 1,
         "unit": "sliced",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_lettuce",
@@ -4064,6 +4109,7 @@
       "Pork"
     ],
     "dietary_flags": [
+      "contains_meat",
       "contains_seafood"
     ],
     "ingredients": [
@@ -4242,8 +4288,8 @@
         "normalized_name": "butternut squash",
         "amount": 0.5,
         "unit": null,
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_soy_sauce",
@@ -4337,7 +4383,10 @@
       "Chinese",
       "Side"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_meat",
+      "contains_egg"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_olive_oil",
@@ -4354,8 +4403,8 @@
         "normalized_name": "ground pork",
         "amount": 1,
         "unit": "lb",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_garlic",
@@ -4549,6 +4598,7 @@
       "Beef"
     ],
     "dietary_flags": [
+      "contains_meat",
       "contains_seafood"
     ],
     "ingredients": [
@@ -4781,7 +4831,9 @@
     ],
     "dietary_flags": [
       "contains_meat",
+      "contains_sesame",
       "contains_egg",
+      "contains_gluten",
       "contains_seafood"
     ],
     "ingredients": [
@@ -4815,7 +4867,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 2,
         "unit": "tsp",
         "essential": false,
@@ -5196,13 +5248,15 @@
       "Chicken"
     ],
     "dietary_flags": [
-      "contains_egg"
+      "contains_meat",
+      "contains_egg",
+      "contains_sesame"
     ],
     "ingredients": [
       {
         "ingredient_id": "ing_chicken_thighs",
         "name": "Chicken Thighs",
-        "normalized_name": "chicken thighs",
+        "normalized_name": "thit ga",
         "amount": 1,
         "unit": "lb",
         "essential": true,
@@ -5319,7 +5373,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 1,
         "unit": "tsp",
         "essential": false,
@@ -5445,7 +5499,10 @@
       "Chicken"
     ],
     "dietary_flags": [
-      "contains_egg"
+      "contains_sesame",
+      "contains_meat",
+      "contains_egg",
+      "contains_gluten"
     ],
     "ingredients": [
       {
@@ -5505,7 +5562,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 1,
         "unit": "tablespoon",
         "essential": false,
@@ -5523,7 +5580,7 @@
       {
         "ingredient_id": "ing_chicken_thighs",
         "name": "Chicken Thighs",
-        "normalized_name": "chicken thighs",
+        "normalized_name": "thit ga",
         "amount": 650,
         "unit": "g",
         "essential": true,
@@ -5613,7 +5670,7 @@
       {
         "ingredient_id": "ing_sesame_seed",
         "name": "Sesame Seed",
-        "normalized_name": "sesame seed",
+        "normalized_name": "me",
         "amount": null,
         "unit": "Garnish",
         "essential": false,
@@ -5729,7 +5786,11 @@
       "Chinese",
       "Vegetarian"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_egg",
+      "contains_sesame",
+      "contains_meat"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_plum_tomatoes",
@@ -5752,7 +5813,7 @@
       {
         "ingredient_id": "ing_eggs",
         "name": "Eggs",
-        "normalized_name": "eggs",
+        "normalized_name": "trung ga",
         "amount": 5,
         "unit": "Large",
         "essential": true,
@@ -5761,7 +5822,7 @@
       {
         "ingredient_id": "ing_sesame_seed_oil",
         "name": "Sesame Seed Oil",
-        "normalized_name": "sesame seed oil",
+        "normalized_name": "dau me",
         "amount": 1,
         "unit": "tsp",
         "essential": false,
@@ -5773,8 +5834,8 @@
         "normalized_name": "chicken bouillon powder",
         "amount": 2,
         "unit": "tsp",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_sugar",
@@ -5893,6 +5954,8 @@
       "Beef"
     ],
     "dietary_flags": [
+      "contains_gluten",
+      "contains_meat",
       "contains_seafood"
     ],
     "ingredients": [
@@ -5929,8 +5992,8 @@
         "normalized_name": "birds eye chillies",
         "amount": 3,
         "unit": "chopped",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_sirloin_steak",
@@ -6049,7 +6112,8 @@
       "Beef"
     ],
     "dietary_flags": [
-      "contains_meat"
+      "contains_meat",
+      "contains_gluten"
     ],
     "ingredients": [
       {
@@ -6076,8 +6140,8 @@
         "normalized_name": "lemongrass stalks",
         "amount": 3,
         "unit": null,
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_coriander_leaves",
@@ -6212,6 +6276,7 @@
       "Curry"
     ],
     "dietary_flags": [
+      "contains_nuts",
       "contains_meat",
       "contains_seafood"
     ],
@@ -6219,7 +6284,7 @@
       {
         "ingredient_id": "ing_peanuts",
         "name": "Peanuts",
-        "normalized_name": "peanuts",
+        "normalized_name": "dau phong",
         "amount": 85,
         "unit": "g",
         "essential": true,
@@ -6228,7 +6293,7 @@
       {
         "ingredient_id": "ing_coconut_cream",
         "name": "Coconut cream",
-        "normalized_name": "coconut cream",
+        "normalized_name": "nuoc cot dua",
         "amount": 400,
         "unit": "ml can",
         "essential": true,
@@ -6240,8 +6305,8 @@
         "normalized_name": "massaman curry paste",
         "amount": 4,
         "unit": "tbsp",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_beef",
@@ -6294,8 +6359,8 @@
         "normalized_name": "tamarind paste",
         "amount": 1,
         "unit": "tbsp",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_brown_sugar",
@@ -6370,7 +6435,9 @@
       "Pasta"
     ],
     "dietary_flags": [
+      "contains_gluten",
       "contains_seafood",
+      "contains_nuts",
       "contains_meat",
       "contains_egg"
     ],
@@ -6525,7 +6592,9 @@
       "Seafood"
     ],
     "dietary_flags": [
-      "contains_seafood"
+      "contains_gluten",
+      "contains_seafood",
+      "contains_nuts"
     ],
     "ingredients": [
       {
@@ -6585,7 +6654,7 @@
       {
         "ingredient_id": "ing_tiger_prawns",
         "name": "Tiger Prawns",
-        "normalized_name": "tiger prawns",
+        "normalized_name": "tom",
         "amount": 200,
         "unit": "g",
         "essential": true,
@@ -6612,7 +6681,7 @@
       {
         "ingredient_id": "ing_peanuts",
         "name": "Peanuts",
-        "normalized_name": "peanuts",
+        "normalized_name": "dau phong",
         "amount": 25,
         "unit": "g",
         "essential": true,
@@ -6712,7 +6781,8 @@
     ],
     "dietary_flags": [
       "contains_meat",
-      "contains_seafood"
+      "contains_seafood",
+      "contains_nuts"
     ],
     "ingredients": [
       {
@@ -6730,8 +6800,8 @@
         "normalized_name": "panang curry paste",
         "amount": 1,
         "unit": "-2tbsp",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_chicken_breast",
@@ -6820,8 +6890,8 @@
         "normalized_name": "mam tom",
         "amount": 1,
         "unit": "teaspoon",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_garlic",
@@ -6847,8 +6917,8 @@
         "normalized_name": "sa",
         "amount": 1,
         "unit": "tblsp",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_lime",
@@ -6889,7 +6959,7 @@
       {
         "ingredient_id": "ing_peanuts",
         "name": "Peanuts",
-        "normalized_name": "peanuts",
+        "normalized_name": "dau phong",
         "amount": 2,
         "unit": "tblsp",
         "essential": true,
@@ -6961,7 +7031,8 @@
       "Seafood"
     ],
     "dietary_flags": [
-      "contains_seafood"
+      "contains_seafood",
+      "contains_gluten"
     ],
     "ingredients": [
       {
@@ -7060,8 +7131,8 @@
         "normalized_name": "red pepper",
         "amount": 1,
         "unit": "sliced",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_water_chestnut",
@@ -7069,8 +7140,8 @@
         "normalized_name": "water chestnut",
         "amount": 85,
         "unit": "g",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_bean_sprouts",
@@ -7291,7 +7362,8 @@
       "DateNight"
     ],
     "dietary_flags": [
-      "contains_seafood"
+      "contains_seafood",
+      "contains_sesame"
     ],
     "ingredients": [
       {
@@ -7333,7 +7405,7 @@
       {
         "ingredient_id": "ing_sesame_seed",
         "name": "Sesame Seed",
-        "normalized_name": "sesame seed",
+        "normalized_name": "me",
         "amount": 4,
         "unit": "tablespoons",
         "essential": false,
@@ -7454,7 +7526,8 @@
       "Pork"
     ],
     "dietary_flags": [
-      "contains_meat"
+      "contains_meat",
+      "contains_egg"
     ],
     "ingredients": [
       {
@@ -7523,7 +7596,7 @@
       {
         "ingredient_id": "ing_eggs",
         "name": "Eggs",
-        "normalized_name": "eggs",
+        "normalized_name": "trung ga",
         "amount": 2,
         "unit": "Beaten",
         "essential": true,
@@ -7592,6 +7665,7 @@
     ],
     "dietary_flags": [
       "contains_meat",
+      "contains_gluten",
       "contains_egg"
     ],
     "ingredients": [
@@ -7691,8 +7765,8 @@
         "normalized_name": "bot ca ri",
         "amount": 4,
         "unit": "teaspoons",
-        "essential": true,
-        "weight": 1
+        "essential": false,
+        "weight": 0.3
       },
       {
         "ingredient_id": "ing_chicken_stock",
@@ -7805,6 +7879,8 @@
       "Calorific"
     ],
     "dietary_flags": [
+      "contains_dairy",
+      "contains_egg",
       "contains_gluten"
     ],
     "ingredients": [
@@ -7820,7 +7896,7 @@
       {
         "ingredient_id": "ing_eggs",
         "name": "Eggs",
-        "normalized_name": "eggs",
+        "normalized_name": "trung ga",
         "amount": 4,
         "unit": "large",
         "essential": true,
@@ -7914,7 +7990,8 @@
     ],
     "dietary_flags": [
       "contains_dairy",
-      "contains_meat"
+      "contains_meat",
+      "contains_gluten"
     ],
     "ingredients": [
       {
@@ -8046,7 +8123,7 @@
       {
         "ingredient_id": "ing_parmesan_cheese",
         "name": "Parmesan cheese",
-        "normalized_name": "parmesan cheese",
+        "normalized_name": "pho mai",
         "amount": 1,
         "unit": "cup grated",
         "essential": true,
@@ -8226,7 +8303,8 @@
       "Pasta"
     ],
     "dietary_flags": [
-      "contains_gluten"
+      "contains_gluten",
+      "contains_seafood"
     ],
     "ingredients": [
       {
@@ -8244,8 +8322,8 @@
         "normalized_name": "sugar snap peas",
         "amount": 200,
         "unit": "g",
-        "essential": false,
-        "weight": 0.3
+        "essential": true,
+        "weight": 1
       },
       {
         "ingredient_id": "ing_olive_oil",
@@ -8277,7 +8355,7 @@
       {
         "ingredient_id": "ing_king_prawns",
         "name": "King Prawns",
-        "normalized_name": "king prawns",
+        "normalized_name": "tom",
         "amount": 24,
         "unit": "Skinned",
         "essential": true,
@@ -8499,13 +8577,14 @@
       "Pasta"
     ],
     "dietary_flags": [
-      "contains_dairy"
+      "contains_dairy",
+      "contains_gluten"
     ],
     "ingredients": [
       {
         "ingredient_id": "ing_clotted_cream",
         "name": "Clotted Cream",
-        "normalized_name": "clotted cream",
+        "normalized_name": "kem tuoi",
         "amount": 227,
         "unit": "g",
         "essential": true,
@@ -8532,7 +8611,7 @@
       {
         "ingredient_id": "ing_parmesan_cheese",
         "name": "Parmesan Cheese",
-        "normalized_name": "parmesan cheese",
+        "normalized_name": "pho mai",
         "amount": 100,
         "unit": "g",
         "essential": true,
@@ -8606,7 +8685,11 @@
       "Italian",
       "Pasta"
     ],
-    "dietary_flags": [],
+    "dietary_flags": [
+      "contains_meat",
+      "contains_gluten",
+      "contains_dairy"
+    ],
     "ingredients": [
       {
         "ingredient_id": "ing_olive_oil",
@@ -8620,7 +8703,7 @@
       {
         "ingredient_id": "ing_bacon",
         "name": "Bacon",
-        "normalized_name": "bacon",
+        "normalized_name": "thit xong khoi",
         "amount": 2,
         "unit": null,
         "essential": true,
@@ -8665,7 +8748,7 @@
       {
         "ingredient_id": "ing_minced_beef",
         "name": "Minced Beef",
-        "normalized_name": "minced beef",
+        "normalized_name": "thit bo",
         "amount": 500,
         "unit": "g",
         "essential": true,
@@ -8728,7 +8811,7 @@
       {
         "ingredient_id": "ing_parmesan_cheese",
         "name": "Parmesan Cheese",
-        "normalized_name": "parmesan cheese",
+        "normalized_name": "pho mai",
         "amount": 50,
         "unit": "g",
         "essential": true,

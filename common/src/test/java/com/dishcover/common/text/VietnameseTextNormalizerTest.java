@@ -2,6 +2,8 @@ package com.dishcover.common.text;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
+
 import static com.dishcover.common.text.VietnameseTextNormalizer.normalize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,5 +36,19 @@ class VietnameseTextNormalizerTest {
     @Test
     void isIdempotent() {
         assertEquals("ca chua", normalize(normalize("Cà chua")));
+    }
+
+    @Test
+    void unaffectedByTurkishLocale() {
+        // toLowerCase() theo locale mặc định biến 'I' thành 'ı' (i không chấm) trên locale tr/az,
+        // khiến "ICING"/"Ginger" bị băm nát. Test này fail nếu ai bỏ Locale.ROOT.
+        Locale original = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.forLanguageTag("tr-TR"));
+            assertEquals("icing sugar", normalize("ICING Sugar"));
+            assertEquals("ginger", normalize("GINGER"));
+        } finally {
+            Locale.setDefault(original);
+        }
     }
 }

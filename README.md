@@ -30,16 +30,7 @@ flowchart LR
         Gateway --> Payment[Payment Service]
         Gateway -. planned .-> Search[Search Service]:::planned
 
-        Discovery[Discovery Service\nEureka]
         Config[Config Server]
-        User -. register .-> Discovery
-        Inventory -. register .-> Discovery
-        Recipe -. register .-> Discovery
-        Matching -. register .-> Discovery
-        Rag -. register .-> Discovery
-        Image -. register .-> Discovery
-        Payment -. register .-> Discovery
-        Search -. register .-> Discovery
         User -. configuration .-> Config
         Inventory -. configuration .-> Config
         Recipe -. configuration .-> Config
@@ -80,6 +71,7 @@ Nguyên tắc kiến trúc không thay đổi:
 - PostgreSQL dùng chung một instance với bốn schema (`user_service`, `inventory_service`, `matching_service`, `payment_service`); Recipe Service dùng MongoDB riêng.
 - Khi container hoá ứng dụng, chỉ API Gateway được expose ra ngoài. File Compose hiện chỉ dựng PostgreSQL và MongoDB phục vụ môi trường phát triển.
 - Mọi lời gọi API ngoài như LLM, Vision hoặc cổng thanh toán phải có Circuit Breaker, TimeLimiter và fallback hữu ích.
+- Không dùng service registry: mỗi service chạy đúng một instance nên Docker DNS đủ để phân giải địa chỉ. Gateway khai báo route tường minh, host lấy từ biến môi trường `<TÊN>_SERVICE_URL` và mặc định về `localhost` khi chạy ngoài Docker.
 
 ## Công nghệ
 
@@ -87,7 +79,7 @@ Nguyên tắc kiến trúc không thay đổi:
 | --- | --- |
 | Frontend | ReactJS (planned) |
 | Backend | Java 21, Spring Boot 3.5.3 |
-| Microservices | Spring Cloud Gateway, Eureka, Config Server |
+| Microservices | Spring Cloud Gateway, Config Server |
 | Dữ liệu quan hệ | PostgreSQL 16 + pgvector |
 | Dữ liệu công thức | MongoDB 7 |
 | AI | Spring AI; Gemini/OpenAI hoặc Ollama thay thế |
@@ -100,7 +92,6 @@ Nguyên tắc kiến trúc không thay đổi:
 | Thành phần | Cổng | Lưu trữ / trách nhiệm |
 | --- | ---: | --- |
 | API Gateway | 8080 | Entry point, định tuyến, JWT và kiểm tra gói FREE/PRO |
-| Discovery | 8761 | Eureka service registry |
 | Config Server | 8888 | Cấu hình tập trung (native backend) |
 | User Service | 8081 | Người dùng, JWT, sở thích ăn uống — `user_service` |
 | Inventory Service | 8082 | Tủ lạnh ảo, hạn dùng — `inventory_service` |
@@ -175,13 +166,22 @@ cd ..
 
 PostgreSQL được mở ở `localhost:5432`, MongoDB ở `localhost:27017` để tiện phát triển. Đây là ngoại lệ dành cho database local; service ứng dụng sẽ chỉ giao tiếp qua private network khi được thêm vào Compose.
 
-### 2. Chạy kiểm thử
+### 2. Đặt biến môi trường cho service
+
+Tên database/user có giá trị mặc định cho tiện dev, nhưng **mật khẩu thì không** — thiếu biến môi trường thì service không khởi động được, thay vì âm thầm chạy bằng mật khẩu mặc định ai cũng đoán ra. Đặt 2 biến sau khớp với `docker-setup/.env` trước khi chạy service:
+
+```powershell
+$env:POSTGRES_PASSWORD = "<mật khẩu trong docker-setup/.env>"
+$env:MONGO_ROOT_PASSWORD = "<mật khẩu trong docker-setup/.env>"
+```
+
+### 3. Chạy kiểm thử
 
 ```powershell
 .\mvnw.cmd clean test
 ```
 
-### 3. Seed công thức vào MongoDB
+### 4. Seed công thức vào MongoDB
 
 ```powershell
 .\mvnw.cmd -pl recipe spring-boot:run "-Dspring-boot.run.profiles=seed"
@@ -194,7 +194,6 @@ Lệnh seed idempotent: nếu collection `recipes` đã có dữ liệu thì kh�
 ```text
 .
 ├── common/          # Normalizer, Ingredient Catalog, shelf-life defaults
-├── discovery/       # Eureka Server
 ├── config/          # Spring Cloud Config Server
 ├── gateway/         # API Gateway
 ├── user/            # User/Auth service
@@ -210,7 +209,7 @@ Lệnh seed idempotent: nếu collection `recipes` đã có dữ liệu thì kh�
 
 ## Lộ trình hiện tại
 
-- [x] Maven multi-module, Eureka, Config Server, Gateway và service skeleton.
+- [x] Maven multi-module, Config Server, Gateway và service skeleton.
 - [x] Docker Compose cho PostgreSQL + pgvector và MongoDB; khởi tạo bốn schema PostgreSQL.
 - [x] Vietnamese normalizer, Ingredient Catalog và shelf-life table, kèm unit tests.
 - [x] Seed 62 công thức MongoDB, gồm món Việt và TheMealDB.

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,6 +46,51 @@ class TheMealDbSeedDataTest {
                 double weight = ing.get("weight").asDouble();
                 assertEquals(essential ? 1.0 : 0.3, weight, 0.001,
                         "quy ước essential/weight sai ở " + ing.get("name").asText());
+            }
+        }
+    }
+
+    /** Từ vựng dietary_flags được phép — dùng chung cho cả 2 nguồn seed để không trôi mỗi nơi một kiểu. */
+    private static final Set<String> ALLOWED_FLAGS = Set.of(
+            "contains_meat", "contains_seafood", "contains_egg", "contains_dairy",
+            "contains_gluten", "contains_nuts", "contains_sesame", "vegetarian", "vegan");
+
+    private static final Pattern MEAT = Pattern.compile(
+            "\\b(beef|pork|lamb|mutton|bacon|ham|chicken|turkey|duck|steak|mince|minced|sausage|chorizo|veal|liver)\\b",
+            Pattern.CASE_INSENSITIVE);
+    private static final Pattern SEAFOOD = Pattern.compile(
+            "\\b(fish|prawn|prawns|shrimp|crab|squid|clam|mussel|oyster|scallop|salmon|tuna|cod|mackerel|anchovy|anchovies)\\b",
+            Pattern.CASE_INSENSITIVE);
+
+    @Test
+    void flagsUseAllowedVocabularyOnly() throws Exception {
+        for (String path : new String[]{"/seed/recipes-themealdb.json", "/seed/recipes-vn.json"}) {
+            for (JsonNode r : load(path)) {
+                for (JsonNode flag : r.path("dietary_flags")) {
+                    assertTrue(ALLOWED_FLAGS.contains(flag.asText()),
+                            "cờ lạ '" + flag.asText() + "' ở món " + r.get("name").asText() + " (" + path + ")");
+                }
+            }
+        }
+    }
+
+    @Test
+    void dishesWithMeatOrSeafoodAreFlagged() throws Exception {
+        // Bỏ sót cờ ở đây nghĩa là gợi ý món thịt/hải sản cho người ăn chay hoặc dị ứng —
+        // từng xảy ra: "Vietnamese lamb shanks" thiếu contains_meat, "Bang bang prawn salad" thiếu contains_seafood.
+        for (JsonNode r : load("/seed/recipes-themealdb.json")) {
+            Set<String> flags = new HashSet<>();
+            r.path("dietary_flags").forEach(f -> flags.add(f.asText()));
+            for (JsonNode ing : r.get("ingredients")) {
+                String name = ing.get("name").asText();
+                if (MEAT.matcher(name).find()) {
+                    assertTrue(flags.contains("contains_meat"),
+                            "món '" + r.get("name").asText() + "' có '" + name + "' nhưng thiếu contains_meat");
+                }
+                if (SEAFOOD.matcher(name).find()) {
+                    assertTrue(flags.contains("contains_seafood"),
+                            "món '" + r.get("name").asText() + "' có '" + name + "' nhưng thiếu contains_seafood");
+                }
             }
         }
     }

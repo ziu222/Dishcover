@@ -1,9 +1,0 @@
-# Profile "seed": chạy RecipeSeeder rồi thoát, KHÔNG cần Eureka/Gateway.
-# Dùng: ./mvnw -pl recipe spring-boot:run -Dspring-boot.run.profiles=seed
-eureka:
-  client:
-    enabled: false
-spring:
-  cloud:
-    discovery:
-      enabled: false

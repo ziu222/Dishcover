@@ -38,6 +38,20 @@ class RecipeSeedDataTest {
     }
 
     @Test
+    void ingredientNameResolvesToItsDeclaredNormalizedName() throws Exception {
+        // Nếu tên hiển thị không tự resolve về chính normalized_name của nó thì user gõ đúng tên đó
+        // vẫn không match được công thức. Từng lệch ở "Thịt ba chỉ" và "Cơm nguội".
+        for (JsonNode recipe : loadVnRecipes()) {
+            for (JsonNode ing : recipe.get("ingredients")) {
+                String name = ing.get("name").asText();
+                assertEquals(ing.get("normalized_name").asText(), catalog.resolve(name),
+                        "tên '" + name + "' (món " + recipe.get("name").asText()
+                                + ") không resolve về normalized_name khai báo → user gõ tên này sẽ không match");
+            }
+        }
+    }
+
+    @Test
     void essentialWeightConventionHolds() throws Exception {
         for (JsonNode recipe : loadVnRecipes()) {
             boolean hasEssential = false;
