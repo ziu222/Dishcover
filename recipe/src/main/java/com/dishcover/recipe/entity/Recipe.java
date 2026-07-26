@@ -75,6 +75,14 @@ public class Recipe {
         this.name = name;
     }
 
+    public String getNormalizedName() {
+        return normalizedName;
+    }
+
+    public void setNormalizedName(String normalizedName) {
+        this.normalizedName = normalizedName;
+    }
+
     public String getSlug() {
         return slug;
     }
