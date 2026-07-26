@@ -4,7 +4,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 /**
  * Lớp gating 2 (CLAUDE.md mục 8) — kiểm tra {@link AuthenticatedUser#plan()} lấy từ
@@ -15,9 +14,12 @@ import org.springframework.stereotype.Component;
  * trong phương thức {@link #checkPlan} để gọi {@code PaymentClient.isActive()} (cache 5 phút) —
  * không đụng bất kỳ nơi nào dùng {@code @RequiresPlan}. Đánh đổi: claim {@code plan} có thể "cũ"
  * tới khi user đăng nhập lại.</p>
+ *
+ * <p>KHÔNG đánh dấu {@code @Component}: các service con không component-scan package
+ * {@code com.dishcover.common} (cùng lý do JwtService/JwtAuthFilter được đăng ký thủ công qua
+ * {@code @Bean} thay vì scan) — mỗi service tự khai báo bean này trong SecurityConfig của mình.</p>
  */
 @Aspect
-@Component
 public class RequiresPlanAspect {
 
     @Around("@annotation(requiresPlan)")
