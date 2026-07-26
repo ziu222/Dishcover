@@ -3,7 +3,7 @@ package com.dishcover.user.controller;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceRequest;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceResponse;
 import com.dishcover.user.dto.UserResponse;
-import com.dishcover.user.security.AuthenticatedUser;
+import com.dishcover.common.security.AuthenticatedUser;
 import com.dishcover.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

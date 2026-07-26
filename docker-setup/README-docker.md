@@ -14,9 +14,11 @@ docker compose up -d
 
 ```bash
 docker compose ps                                   # cả 2 container đều "healthy"
-docker exec -it larder-postgres psql -U larder_app -d larder -c "\dn"   # phải thấy 4 schema
+docker exec -it larder-postgres psql -U larder_app -d larder -c "\dn"   # phải thấy 4 schema (chưa có bảng)
 docker exec -it larder-mongo mongosh -u larder_app -p changeme --eval "db.adminCommand('ping')"
 ```
+
+Bảng chưa xuất hiện sau bước này — mỗi service tự tạo bảng của mình qua Flyway lúc khởi động lần đầu (`<service>/src/main/resources/db/migration/V1__init.sql`). Chạy `./mvnw -pl user,inventory,matching,payment spring-boot:run` (hoặc từng service riêng) rồi kiểm tra `<schema>.flyway_schema_history` để xác nhận.
 
 Kết nối từ tool ngoài máy (DBeaver, MongoDB Compass...): `localhost:5432` (Postgres) / `localhost:27017` (Mongo) — 2 port này expose ra host để tiện dev, khác với nguyên tắc Private Network áp dụng cho các service ứng dụng (Gateway/User/...).
 
@@ -32,6 +34,6 @@ docker compose down -v       # dừng + xoá luôn data (khi cần seed lại t�
 | File | Vai trò |
 |---|---|
 | `docker-compose.yml` | Định nghĩa container postgres + mongo, network `public-net`/`private-net` |
-| `init-schemas.sql` | Tự chạy khi Postgres khởi tạo lần đầu — tạo 4 schema + bảng (đồng bộ CLAUDE.md mục 3.1) |
+| `init-schemas.sql` | Tự chạy khi Postgres khởi tạo lần đầu — chỉ tạo 4 schema + extension vector. Bảng do từng service tự tạo qua Flyway (`<service>/src/main/resources/db/migration/`) lúc khởi động lần đầu — chạy `./mvnw -pl user,inventory,matching,payment spring-boot:run` (hoặc từng service riêng) sau khi container Postgres đã healthy để bảng được tạo |
 | `.env.example` | Mẫu biến môi trường — copy thành `.env`, không commit `.env` thật |
 | `Dockerfile.template` | Mẫu multi-stage build cho từng service Spring Boot, copy khi scaffold monorepo |

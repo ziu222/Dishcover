@@ -14,3 +14,8 @@ spring:
     properties:
       hibernate:
         default_schema: payment_service
+  flyway:
+    schemas: payment_service
+    default-schema: payment_service
+    baseline-on-migrate: true
+    baseline-version: "1"

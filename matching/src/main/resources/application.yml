@@ -14,3 +14,8 @@ spring:
     properties:
       hibernate:
         default_schema: matching_service
+  flyway:
+    schemas: matching_service
+    default-schema: matching_service
+    baseline-on-migrate: true
+    baseline-version: "1"

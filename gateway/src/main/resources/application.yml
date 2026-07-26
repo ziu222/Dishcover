@@ -3,7 +3,9 @@ server:
 
 # Không dùng service registry: mỗi service có đúng 1 instance, địa chỉ do Docker DNS
 # (hoặc localhost khi chạy bằng mvnw) phân giải. Route khai báo tường minh bên dưới.
-# Prefix "<tên>-service" là API công khai; StripPrefix=1 để service chỉ thấy "/api/v1/...".
+# Prefix "<tên>-service" là API công khai; StripPrefix=1 để service chỉ thấy path thật của nó
+# (VD /user-service/auth/login -> /auth/login). KHÔNG dùng /api/v1 — chưa có nhu cầu version hóa
+# (1 client, chưa có consumer ngoài) nên không thêm prefix speculative.
 spring:
   application:
     name: gateway

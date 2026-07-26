@@ -1,4 +1,4 @@
-package com.dishcover.user.security;
+package com.dishcover.common.security;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -10,14 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
 
-/** Đọc Bearer token, verify, đặt AuthenticatedUser + quyền PLAN_* vào SecurityContext. */
-@Component
+/** Đọc Bearer token, verify và đặt principal dùng chung vào SecurityContext. */
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private static final String PREFIX = "Bearer ";
@@ -41,8 +39,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JwtException | IllegalArgumentException ex) {
-                // Token sai/hết hạn → để request chạy tiếp không xác thực,
-                // security chain sẽ trả 401 ở endpoint cần auth.
                 SecurityContextHolder.clearContext();
             }
         }

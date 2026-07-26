@@ -14,6 +14,14 @@ spring:
     properties:
       hibernate:
         default_schema: user_service
+  flyway:
+    schemas: user_service
+    default-schema: user_service
+    # DB đã có bảng từ init-schemas.sql cũ (trước khi dùng Flyway) — baseline để Flyway coi
+    # V1__init.sql là đã áp dụng, không cố CREATE TABLE lại (sẽ lỗi "already exists").
+    # Môi trường hoàn toàn mới (volume rỗng): baseline không có gì để đánh dấu, Flyway chạy V1 bình thường.
+    baseline-on-migrate: true
+    baseline-version: "1"
 
 # JWT: secret KHÔNG có default (bí mật, phải set env). Tối thiểu 32 ký tự cho HS256.
 # Gateway sẽ dùng CÙNG secret này để verify token ở tầng gating (mục 8) — chia sẻ qua env/Config Server.
