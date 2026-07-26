@@ -19,11 +19,4 @@ public final class ApiExceptions {
             super("Email hoặc mật khẩu không đúng");
         }
     }
-
-    /** 404 — không tìm thấy tài nguyên. */
-    public static class ResourceNotFoundException extends RuntimeException {
-        public ResourceNotFoundException(String message) {
-            super(message);
-        }
-    }
 }

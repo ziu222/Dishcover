@@ -5,7 +5,7 @@ import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceResponse;
 import com.dishcover.user.dto.UserResponse;
 import com.dishcover.user.entity.DietaryPreference;
 import com.dishcover.user.entity.User;
-import com.dishcover.user.exception.ApiExceptions.ResourceNotFoundException;
+import com.dishcover.common.exception.ResourceNotFoundException;
 import com.dishcover.user.repository.DietaryPreferenceRepository;
 import com.dishcover.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
