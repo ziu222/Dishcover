@@ -12,6 +12,10 @@ spring:
     properties:
       hibernate:
         default_schema: user_service
+  # Flyway migration là SQL Postgres thật (BIGSERIAL, TIMESTAMPTZ...), không chạy trên H2 —
+  # test dùng Hibernate create-drop như cũ, Flyway chỉ verify ở Postgres thật (Step 5).
+  flyway:
+    enabled: false
 
 jwt:
   secret: test-secret-at-least-32-chars-long-000
