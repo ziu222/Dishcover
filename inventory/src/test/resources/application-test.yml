@@ -10,6 +10,8 @@ spring:
     properties:
       hibernate:
         default_schema: inventory_service
+  flyway:
+    enabled: false
 
 jwt:
   secret: test-secret-at-least-32-chars-long-000

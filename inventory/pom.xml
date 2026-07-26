@@ -46,6 +46,16 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!-- Flyway: version quản lý qua spring-boot-dependencies BOM (parent pom) -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <!-- OpenAPI/Swagger UI: trang tài liệu API tương tác tại /swagger-ui.html -->
     <dependency>
       <groupId>org.springdoc</groupId>
