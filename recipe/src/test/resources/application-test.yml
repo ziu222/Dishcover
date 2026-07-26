@@ -1,0 +1,15 @@
+# Mongo thật (không có in-memory tương đương H2 dễ dùng) — database test riêng, khác database seed
+# thật recipe_matcher_db (specs/recipe-service.md mục 6). Test tự dọn dữ liệu, không giả định rỗng.
+spring:
+  data:
+    mongodb:
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_TEST_DB:recipe_matcher_test_db}
+      username: ${MONGO_ROOT_USER:larder_app}
+      password: ${MONGO_ROOT_PASSWORD:changeme}
+      authentication-database: admin
+
+jwt:
+  secret: test-secret-at-least-32-chars-long-000
+  expiration-minutes: 120

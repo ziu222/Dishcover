@@ -1,5 +1,6 @@
 package com.dishcover.recipe.seed;
 
+import com.dishcover.common.text.VietnameseTextNormalizer;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,12 @@ public class RecipeSeeder implements CommandLineRunner {
                 // Bọc mảng JSON để BSON parse được: {"items": [...]}
                 Document wrapper = Document.parse("{\"items\":" + json + "}");
                 List<Document> items = wrapper.getList("items", Document.class);
+                // 62 công thức seed không có "normalized_name" ở cấp recipe (chỉ có trong ingredients[]).
+                // RecipeService dùng field này để tìm theo tên không phân biệt dấu — tự tính bù ở đây
+                // thay vì sửa tay 62 dòng JSON, để dữ liệu cũ vẫn tìm kiếm được như dữ liệu mới tạo qua API.
+                for (Document item : items) {
+                    item.put("normalized_name", VietnameseTextNormalizer.normalize(item.getString("name")));
+                }
                 all.addAll(items);
                 log.info("Nạp {} công thức từ {}", items.size(), file.getFilename());
             }

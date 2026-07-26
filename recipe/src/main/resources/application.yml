@@ -15,3 +15,9 @@ spring:
       username: ${MONGO_ROOT_USER:larder_app}
       password: ${MONGO_ROOT_PASSWORD}
       authentication-database: admin
+
+# JWT: chỉ cần cho endpoint ghi (POST/PATCH/DELETE) — đọc công thức là FREE, không cần token
+# (specs/recipe-service.md mục 1). Cùng secret với User/Inventory qua env JWT_SECRET.
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
