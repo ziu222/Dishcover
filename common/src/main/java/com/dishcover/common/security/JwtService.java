@@ -1,11 +1,8 @@
-package com.dishcover.user.security;
+package com.dishcover.common.security;
 
-import com.dishcover.user.config.JwtProperties;
-import com.dishcover.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -14,38 +11,38 @@ import java.time.Instant;
 import java.util.Date;
 
 /**
- * Ký và verify JWT bằng HMAC-SHA256. Token mang claim "plan" để Gateway gating FREE/PRO (mục 8).
- * Gateway dùng CÙNG secret này để verify — chia sẻ qua env/Config Server.
+ * Ký và verify JWT HS256 dùng chung giữa các service.
+ * Service sở hữu đăng nhập truyền các claim đã được kiểm soát thay vì entity cụ thể,
+ * để common không phụ thuộc vào module nghiệp vụ nào.
  */
-@Service
 public class JwtService {
 
     private final SecretKey key;
     private final long expirationMinutes;
 
-    public JwtService(JwtProperties props) {
-        byte[] secretBytes = props.secret().getBytes(StandardCharsets.UTF_8);
+    public JwtService(String secret, long expirationMinutes) {
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
         if (secretBytes.length < 32) {
             throw new IllegalStateException(
                     "JWT_SECRET phải >= 32 ký tự cho HS256 (hiện: " + secretBytes.length + ")");
         }
         this.key = Keys.hmacShaKeyFor(secretBytes);
-        this.expirationMinutes = props.expirationMinutes();
+        this.expirationMinutes = expirationMinutes;
     }
 
-    public String issue(User user) {
+    public String issue(Long userId, String email, String plan) {
         Instant now = Instant.now();
         return Jwts.builder()
-                .subject(String.valueOf(user.getId()))
-                .claim("email", user.getEmail())
-                .claim("plan", user.getPlan())
+                .subject(String.valueOf(userId))
+                .claim("email", email)
+                .claim("plan", plan)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(Duration.ofMinutes(expirationMinutes))))
                 .signWith(key)
                 .compact();
     }
 
-    /** Verify chữ ký + hạn dùng, trả principal. Ném JwtException nếu token sai/hết hạn. */
+    /** Verify chữ ký + hạn dùng; token không hợp lệ ném JwtException. */
     public AuthenticatedUser parse(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(key)

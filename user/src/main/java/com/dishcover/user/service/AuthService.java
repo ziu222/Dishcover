@@ -1,5 +1,6 @@
 package com.dishcover.user.service;
 
+import com.dishcover.common.security.JwtService;
 import com.dishcover.user.dto.AuthDtos.AuthResponse;
 import com.dishcover.user.dto.AuthDtos.LoginRequest;
 import com.dishcover.user.dto.AuthDtos.RegisterRequest;
@@ -8,7 +9,6 @@ import com.dishcover.user.entity.User;
 import com.dishcover.user.exception.ApiExceptions.EmailAlreadyExistsException;
 import com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException;
 import com.dishcover.user.repository.UserRepository;
-import com.dishcover.user.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +49,7 @@ public class AuthService {
 
     private AuthResponse toAuthResponse(User user) {
         return new AuthResponse(
-                jwtService.issue(user),
+                jwtService.issue(user.getId(), user.getEmail(), user.getPlan()),
                 jwtService.expirationSeconds(),
                 UserResponse.from(user));
     }
