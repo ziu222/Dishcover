@@ -1,0 +1,16 @@
+# H2 in-memory ở chế độ PostgreSQL, tự tạo schema inventory_service; Hibernate dựng bảng (create-drop).
+spring:
+  datasource:
+    url: jdbc:h2:mem:inventorytest;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,TYPE;INIT=CREATE SCHEMA IF NOT EXISTS inventory_service
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        default_schema: inventory_service
+
+jwt:
+  secret: test-secret-at-least-32-chars-long-000
+  expiration-minutes: 120
