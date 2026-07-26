@@ -2,6 +2,7 @@ package com.dishcover.matching.config;
 
 import com.dishcover.common.security.JwtAuthFilter;
 import com.dishcover.common.security.JwtService;
+import com.dishcover.common.security.RequiresPlanAspect;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,11 @@ public class SecurityConfig {
     @Bean
     JwtAuthFilter jwtAuthFilter(JwtService jwtService) {
         return new JwtAuthFilter(jwtService);
+    }
+
+    @Bean
+    RequiresPlanAspect requiresPlanAspect() {
+        return new RequiresPlanAspect();
     }
 
     @Bean
