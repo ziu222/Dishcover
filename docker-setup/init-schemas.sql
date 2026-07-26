@@ -23,6 +23,8 @@ CREATE TABLE user_service.dietary_preferences (
   type VARCHAR(20) NOT NULL,   -- ALLERGY | DIET
   value VARCHAR(50) NOT NULL   -- 'hải sản', 'chay', ...
 );
+-- FK không tự có index ở Postgres; UserService.listPreferences() đã query findByUserId() trong code thật
+CREATE INDEX idx_dietary_preferences_user ON user_service.dietary_preferences (user_id);
 
 -- ==================== inventory_service ====================
 CREATE TABLE inventory_service.user_ingredients (
@@ -51,6 +53,8 @@ CREATE TABLE matching_service.recipe_embeddings (
   embedding vector(768)
 );
 CREATE INDEX ON matching_service.recipe_embeddings USING hnsw (embedding vector_cosine_ops);
+-- Cần cho re-index/xoá theo recipe_id khi Recipe Service gọi POST /internal/index (CLAUDE.md mục 6)
+CREATE INDEX idx_recipe_embeddings_recipe_id ON matching_service.recipe_embeddings (recipe_id);
 
 -- ==================== payment_service ====================
 CREATE TABLE payment_service.plans (
