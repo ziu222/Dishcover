@@ -32,6 +32,6 @@ docker compose down -v       # dừng + xoá luôn data (khi cần seed lại t�
 | File | Vai trò |
 |---|---|
 | `docker-compose.yml` | Định nghĩa container postgres + mongo, network `public-net`/`private-net` |
-| `init-schemas.sql` | Tự chạy khi Postgres khởi tạo lần đầu — tạo 4 schema + bảng (đồng bộ CLAUDE.md mục 3.1) |
+| `init-schemas.sql` | Tự chạy khi Postgres khởi tạo lần đầu — chỉ tạo 4 schema + extension vector. Bảng do từng service tự tạo qua Flyway (`<service>/src/main/resources/db/migration/`) lúc khởi động lần đầu — chạy `./mvnw -pl user,inventory,matching,payment spring-boot:run` (hoặc từng service riêng) sau khi container Postgres đã healthy để bảng được tạo |
 | `.env.example` | Mẫu biến môi trường — copy thành `.env`, không commit `.env` thật |
 | `Dockerfile.template` | Mẫu multi-stage build cho từng service Spring Boot, copy khi scaffold monorepo |

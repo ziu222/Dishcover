@@ -1,4 +1,7 @@
--- Chạy tự động bởi container postgres khi khởi tạo lần đầu (docker-entrypoint-initdb.d)
+-- Chạy tự động bởi container postgres khi khởi tạo lần đầu (docker-entrypoint-initdb.d).
+-- CHỈ tạo schema + extension — đây là hạ tầng dùng chung, không thuộc quyền sở hữu của 1 service nào.
+-- Bảng/index của từng schema do CHÍNH service đó tự quản lý qua Flyway (db/migration/V1__init.sql
+-- trong module tương ứng — user/inventory/matching/payment), chạy lúc service khởi động lần đầu.
 -- Nguồn spec: CLAUDE.md mục 3.1 — PostgreSQL gộp 4 schema, 1 instance
 
 CREATE SCHEMA IF NOT EXISTS user_service;
@@ -6,82 +9,3 @@ CREATE SCHEMA IF NOT EXISTS inventory_service;
 CREATE SCHEMA IF NOT EXISTS matching_service;
 CREATE SCHEMA IF NOT EXISTS payment_service;
 CREATE EXTENSION IF NOT EXISTS vector;   -- dùng trong matching_service
-
--- ==================== user_service ====================
-CREATE TABLE user_service.users (
-  id BIGSERIAL PRIMARY KEY,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  full_name VARCHAR(100),
-  avatar_url TEXT,
-  plan VARCHAR(20) DEFAULT 'FREE',   -- FREE | PRO (đồng bộ với payment_service.subscriptions)
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-CREATE TABLE user_service.dietary_preferences (
-  id BIGSERIAL PRIMARY KEY,
-  user_id BIGINT NOT NULL REFERENCES user_service.users(id),
-  type VARCHAR(20) NOT NULL,   -- ALLERGY | DIET
-  value VARCHAR(50) NOT NULL   -- 'hải sản', 'chay', ...
-);
--- FK không tự có index ở Postgres; UserService.listPreferences() đã query findByUserId() trong code thật
-CREATE INDEX idx_dietary_preferences_user ON user_service.dietary_preferences (user_id);
-
--- ==================== inventory_service ====================
-CREATE TABLE inventory_service.user_ingredients (
-  id BIGSERIAL PRIMARY KEY,
-  user_id BIGINT NOT NULL,
-  ingredient_name VARCHAR(100) NOT NULL,
-  normalized_name VARCHAR(100) NOT NULL,   -- khóa so khớp thật với Matching/RAG
-  quantity DECIMAL(10,2),
-  unit VARCHAR(20),
-  expiry_date DATE,
-  source VARCHAR(20) DEFAULT 'MANUAL',     -- MANUAL | IMAGE_RECOGNITION
-  status VARCHAR(20) DEFAULT 'FRESH',      -- FRESH | EXPIRING_SOON | EXPIRED | USED
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ
-);
-CREATE INDEX idx_user_status ON inventory_service.user_ingredients (user_id, status);
-CREATE INDEX idx_user_expiry ON inventory_service.user_ingredients (user_id, expiry_date);
-
--- ==================== matching_service ====================
--- embedding cho RAG — xem CLAUDE.md mục 6
-CREATE TABLE matching_service.recipe_embeddings (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  recipe_id VARCHAR(64) NOT NULL,      -- _id bên MongoDB, soft-reference khác hệ DB
-  content TEXT NOT NULL,
-  metadata JSONB,
-  embedding vector(768)
-);
-CREATE INDEX ON matching_service.recipe_embeddings USING hnsw (embedding vector_cosine_ops);
--- Cần cho re-index/xoá theo recipe_id khi Recipe Service gọi POST /internal/index (CLAUDE.md mục 6)
-CREATE INDEX idx_recipe_embeddings_recipe_id ON matching_service.recipe_embeddings (recipe_id);
-
--- ==================== payment_service ====================
-CREATE TABLE payment_service.plans (
-  code VARCHAR(30) PRIMARY KEY,          -- PRO_MONTHLY, PRO_YEARLY
-  price_vnd INT NOT NULL,
-  duration_days INT NOT NULL,
-  active BOOLEAN DEFAULT TRUE
-);
-CREATE TABLE payment_service.payment_transactions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id BIGINT NOT NULL,
-  plan_code VARCHAR(30) NOT NULL REFERENCES payment_service.plans(code),
-  amount_vnd INT NOT NULL,
-  provider VARCHAR(20) NOT NULL,          -- MOMO | VNPAY
-  status VARCHAR(20) NOT NULL,            -- PENDING | SUCCESS | FAILED | EXPIRED
-  provider_trans_id VARCHAR(64),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE (provider, provider_trans_id)    -- chống ghi trùng IPN
-);
-CREATE TABLE payment_service.subscriptions (
-  id BIGSERIAL PRIMARY KEY,
-  user_id BIGINT NOT NULL,
-  plan_code VARCHAR(30) NOT NULL REFERENCES payment_service.plans(code),
-  start_at TIMESTAMPTZ NOT NULL,
-  end_at TIMESTAMPTZ NOT NULL,
-  status VARCHAR(20) NOT NULL,            -- ACTIVE | EXPIRED | CANCELLED
-  source_transaction_id UUID NOT NULL REFERENCES payment_service.payment_transactions(id)
-);
-CREATE INDEX idx_user_active ON payment_service.subscriptions (user_id, status, end_at);
