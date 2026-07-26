@@ -35,6 +35,8 @@ public class SecurityConfig {
                         //  vì Gateway StripPrefix có thể để lộ /internal ra ngoài, cần chặn ở Gateway trước.)
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
+                        // Swagger UI + OpenAPI docs công khai (chỉ tài liệu, không lộ dữ liệu)
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 // Chưa xác thực → 401 (mặc định của Spring Security là 403); frontend phân biệt
                 // 401 (đăng nhập lại) với 402/403 (paywall/không đủ quyền).
