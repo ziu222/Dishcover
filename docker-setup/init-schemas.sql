@@ -15,7 +15,7 @@ CREATE TABLE user_service.users (
   full_name VARCHAR(100),
   avatar_url TEXT,
   plan VARCHAR(20) DEFAULT 'FREE',   -- FREE | PRO (đồng bộ với payment_service.subscriptions)
-  created_at TIMESTAMP DEFAULT now()
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 CREATE TABLE user_service.dietary_preferences (
   id BIGSERIAL PRIMARY KEY,
@@ -37,8 +37,8 @@ CREATE TABLE inventory_service.user_ingredients (
   expiry_date DATE,
   source VARCHAR(20) DEFAULT 'MANUAL',     -- MANUAL | IMAGE_RECOGNITION
   status VARCHAR(20) DEFAULT 'FRESH',      -- FRESH | EXPIRING_SOON | EXPIRED | USED
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ
 );
 CREATE INDEX idx_user_status ON inventory_service.user_ingredients (user_id, status);
 CREATE INDEX idx_user_expiry ON inventory_service.user_ingredients (user_id, expiry_date);
@@ -71,16 +71,16 @@ CREATE TABLE payment_service.payment_transactions (
   provider VARCHAR(20) NOT NULL,          -- MOMO | VNPAY
   status VARCHAR(20) NOT NULL,            -- PENDING | SUCCESS | FAILED | EXPIRED
   provider_trans_id VARCHAR(64),
-  created_at TIMESTAMP DEFAULT now(),
-  updated_at TIMESTAMP DEFAULT now(),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
   UNIQUE (provider, provider_trans_id)    -- chống ghi trùng IPN
 );
 CREATE TABLE payment_service.subscriptions (
   id BIGSERIAL PRIMARY KEY,
   user_id BIGINT NOT NULL,
   plan_code VARCHAR(30) NOT NULL REFERENCES payment_service.plans(code),
-  start_at TIMESTAMP NOT NULL,
-  end_at TIMESTAMP NOT NULL,
+  start_at TIMESTAMPTZ NOT NULL,
+  end_at TIMESTAMPTZ NOT NULL,
   status VARCHAR(20) NOT NULL,            -- ACTIVE | EXPIRED | CANCELLED
   source_transaction_id UUID NOT NULL REFERENCES payment_service.payment_transactions(id)
 );
