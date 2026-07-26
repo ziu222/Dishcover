@@ -14,9 +14,11 @@ docker compose up -d
 
 ```bash
 docker compose ps                                   # cả 2 container đều "healthy"
-docker exec -it larder-postgres psql -U larder_app -d larder -c "\dn"   # phải thấy 4 schema
+docker exec -it larder-postgres psql -U larder_app -d larder -c "\dn"   # phải thấy 4 schema (chưa có bảng)
 docker exec -it larder-mongo mongosh -u larder_app -p changeme --eval "db.adminCommand('ping')"
 ```
+
+Bảng chưa xuất hiện sau bước này — mỗi service tự tạo bảng của mình qua Flyway lúc khởi động lần đầu (`<service>/src/main/resources/db/migration/V1__init.sql`). Chạy `./mvnw -pl user,inventory,matching,payment spring-boot:run` (hoặc từng service riêng) rồi kiểm tra `<schema>.flyway_schema_history` để xác nhận.
 
 Kết nối từ tool ngoài máy (DBeaver, MongoDB Compass...): `localhost:5432` (Postgres) / `localhost:27017` (Mongo) — 2 port này expose ra host để tiện dev, khác với nguyên tắc Private Network áp dụng cho các service ứng dụng (Gateway/User/...).
 
