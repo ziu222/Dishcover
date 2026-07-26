@@ -7,7 +7,7 @@ import com.dishcover.inventory.dto.InventoryDtos.AddItemRequest;
 import com.dishcover.inventory.dto.InventoryDtos.InventoryItemResponse;
 import com.dishcover.inventory.dto.InventoryDtos.UpdateItemRequest;
 import com.dishcover.inventory.entity.UserIngredient;
-import com.dishcover.inventory.exception.ApiExceptions.ResourceNotFoundException;
+import com.dishcover.common.exception.ResourceNotFoundException;
 import com.dishcover.inventory.repository.UserIngredientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

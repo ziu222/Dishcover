@@ -13,7 +13,7 @@ import com.dishcover.recipe.dto.RecipeDtos.UpdateRecipeRequest;
 import com.dishcover.recipe.entity.Recipe;
 import com.dishcover.recipe.entity.RecipeIngredient;
 import com.dishcover.recipe.entity.RecipeStep;
-import com.dishcover.recipe.exception.ApiExceptions.ResourceNotFoundException;
+import com.dishcover.common.exception.ResourceNotFoundException;
 import com.dishcover.recipe.repository.RecipeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

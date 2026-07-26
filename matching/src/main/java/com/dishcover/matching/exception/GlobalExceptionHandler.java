@@ -1,23 +1,9 @@
 package com.dishcover.matching.exception;
 
-import com.dishcover.common.security.PlanRequiredException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import com.dishcover.common.exception.CommonExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.UUID;
-
+/** Không có exception riêng — toàn bộ xử lý lỗi (kể cả PlanRequiredException) kế thừa từ CommonExceptionHandler (common). */
 @RestControllerAdvice
-public class GlobalExceptionHandler {
-
-    @ExceptionHandler(PlanRequiredException.class)
-    ResponseEntity<ApiError> handlePlanRequired(PlanRequiredException ex) {
-        return build(HttpStatus.PAYMENT_REQUIRED, "PAYMENT_REQUIRED", ex.getMessage());
-    }
-
-    private ResponseEntity<ApiError> build(HttpStatus status, String code, String message) {
-        String traceId = UUID.randomUUID().toString();
-        return ResponseEntity.status(status).body(new ApiError(code, message, traceId));
-    }
+public class GlobalExceptionHandler extends CommonExceptionHandler {
 }
