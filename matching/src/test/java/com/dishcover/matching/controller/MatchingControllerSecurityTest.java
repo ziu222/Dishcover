@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,6 +56,38 @@ class MatchingControllerSecurityTest {
     void proPlanReturns200() throws Exception {
         when(service.suggest(any(), any())).thenReturn(List.of());
         mvc.perform(get("/matching/suggestions").header("Authorization", token("PRO")))
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * specs/rag-service.md mục 1.2: endpoint nội bộ VẪN phải PRO-gate — Gateway route là prefix
+     * match phẳng, bỏ gate sẽ lộ tính năng PRO miễn phí cho ai gọi thẳng qua Gateway (không chỉ RAG).
+     */
+    @Test
+    void internalMatchByIngredientsFreePlanReturns402() throws Exception {
+        mvc.perform(post("/matching/internal/match-by-ingredients")
+                        .header("Authorization", token("FREE"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"ingredients\":[\"trứng gà\"]}"))
+                .andExpect(status().isPaymentRequired())
+                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
+    }
+
+    @Test
+    void internalMatchByIngredientsNoTokenReturns401() throws Exception {
+        mvc.perform(post("/matching/internal/match-by-ingredients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"ingredients\":[\"trứng gà\"]}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void internalMatchByIngredientsProPlanReturns200() throws Exception {
+        when(service.searchByIngredients(any(), any())).thenReturn(List.of());
+        mvc.perform(post("/matching/internal/match-by-ingredients")
+                        .header("Authorization", token("PRO"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"ingredients\":[\"trứng gà\"]}"))
                 .andExpect(status().isOk());
     }
 }

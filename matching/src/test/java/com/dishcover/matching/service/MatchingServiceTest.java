@@ -58,7 +58,7 @@ class MatchingServiceTest {
                 new JaccardBaseRule(), new EssentialWeightRule(), new ExpiryBonusRule(),
                 new AllergyFilterRule(catalog)));
 
-        return new MatchingService(inventoryClient, recipeClient, userClient, engine);
+        return new MatchingService(inventoryClient, recipeClient, userClient, engine, catalog);
     }
 
     @Test
@@ -125,5 +125,40 @@ class MatchingServiceTest {
 
         List<RecipeMatchResponse> result = service.suggest(BEARER, 999);
         assertEquals(0, result.size()); // không có recipe nào -> rỗng, không lỗi dù topN vượt MAX_TOP_N
+    }
+
+    @Test
+    void searchByIngredientsScoresIgnoringExpiryAndAllergyEvenIfSameNameElsewhereIsRestricted() {
+        MatchingService service = buildService();
+
+        // Không gọi Inventory/User ở đây -- searchByIngredients không cần bearerToken/user nào cả.
+        recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
+                .andRespond(withSuccess("""
+                        {"content":[{"id":"r1"},{"id":"r2"}]}
+                        """, MediaType.APPLICATION_JSON));
+
+        recipeServer.expect(requestTo("http://recipe/recipes/r1"))
+                .andRespond(withSuccess("""
+                        {"id":"r1","name":"Trứng chiên cà chua","slug":"trung-chien-ca-chua","imageUrl":null,
+                         "ingredients":[{"normalizedName":"trung ga","essential":true,"weight":1.0},
+                                        {"normalizedName":"ca chua","essential":true,"weight":1.0}]}
+                        """, MediaType.APPLICATION_JSON));
+
+        // r2 chứa "tom" -- allergenGroup "hai_san" -- nhưng searchByIngredients không nhận allergen
+        // nào cả (Set.of()) nên KHÔNG bị loại, khác hẳn suggest() ở test phía trên.
+        recipeServer.expect(requestTo("http://recipe/recipes/r2"))
+                .andRespond(withSuccess("""
+                        {"id":"r2","name":"Tôm rang me","slug":"tom-rang-me","imageUrl":null,
+                         "ingredients":[{"normalizedName":"tom","essential":true,"weight":1.0}]}
+                        """, MediaType.APPLICATION_JSON));
+
+        List<RecipeMatchResponse> result = service.searchByIngredients(List.of("Trứng gà", "Tôm"), 5);
+
+        assertEquals(2, result.size()); // cả 2 đều còn -- AllergyFilterRule no-op vì allergen set rỗng
+        // r2 (R={tom}, khớp trọn 1/1 nguyên liệu) xếp trên r1 (R={trung ga,ca chua}, chỉ khớp 1/2)
+        assertEquals("r2", result.get(0).recipeId());
+        assertEquals("r1", result.get(1).recipeId());
+
+        recipeServer.verify();
     }
 }

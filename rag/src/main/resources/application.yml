@@ -4,3 +4,48 @@ server:
 spring:
   application:
     name: rag
+  # Gemini qua endpoint tương thích OpenAI (specs/rag-service.md mục 3.5) — chỉ cần GEMINI_API_KEY,
+  # không cần GCP project/IAM. spring.ai.model.chat=openai BẮT BUỘC (Spring AI 1.1.x, artifact
+  # spring-ai-starter-model-openai — thuộc tính spring.ai.openai.chat.enabled cũ đã bị bỏ, thiếu
+  # dòng này auto-config ChatModel không kích hoạt). Spring AI 2.0.x yêu cầu Spring Boot 4.x, KHÔNG
+  # dùng được với Boot 3.5.3 của dự án (đã verify thật, gây lỗi bean conflict lúc khởi động).
+  ai:
+    model:
+      chat: openai
+    openai:
+      api-key: ${GEMINI_API_KEY}
+      base-url: https://generativelanguage.googleapis.com/v1beta/openai
+      chat:
+        options:
+          model: gemini-2.0-flash
+
+# Địa chỉ 2 service gọi ra (không Eureka — Docker DNS/localhost, cùng quy ước với Gateway).
+services:
+  matching-url: ${MATCHING_SERVICE_URL:http://localhost:8084}
+  user-url: ${USER_SERVICE_URL:http://localhost:8081}
+
+# JWT: CÙNG secret với User/Inventory/Recipe/Matching qua env JWT_SECRET.
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+# Circuit breaker cho client gọi Matching/User + LLM (specs/rag-service.md mục 5).
+resilience4j:
+  circuitbreaker:
+    instances:
+      matching-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+      user-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+      llm:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+  timelimiter:
+    instances:
+      llm:
+        timeoutDuration: 15s

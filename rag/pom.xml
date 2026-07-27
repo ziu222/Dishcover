@@ -13,7 +13,21 @@
   <artifactId>rag</artifactId>
   <packaging>jar</packaging>
   <name>rag</name>
-  <description>RAG Chatbot Service (AI #1) — stateless, gọi LLM/Embedding ngoài. Dependency Spring AI/Resilience4j thêm khi code checklist mục 7-9.</description>
+  <description>RAG Chatbot Service (AI #1) — giai đoạn A: trích xuất nguyên liệu + Matching Service + LLM. Giai đoạn B (vector/pgvector) thêm sau.</description>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Spring AI 2.0.x yêu cầu Spring Boot 4.x (đã verify thật, gây lỗi jsonComponentModule bean
+           conflict khi thử với Boot 3.5.3) — ghim 1.1.8, bản 1.x mới nhất còn support Boot 3.x. -->
+      <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-bom</artifactId>
+        <version>1.1.8</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -31,11 +45,40 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!-- OpenAPI/Swagger UI: trang tài liệu API tương tác tại /swagger-ui.html -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.8.9</version>
+    </dependency>
+    <!-- Circuit breaker cho client gọi Matching/User + LLM (specs/rag-service.md mục 5).
+         Ghim 2.2.0 — 2.3.0+ có bug NoClassDefFoundError lúc khởi động (resilience4j/resilience4j#2265),
+         đã gặp thật lúc làm Matching Service. -->
+    <dependency>
+      <groupId>io.github.resilience4j</groupId>
+      <artifactId>resilience4j-spring-boot3</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <!-- LLM: Gemini qua endpoint tương thích OpenAI (chỉ cần GEMINI_API_KEY, không cần GCP
+         project/IAM — specs/rag-service.md mục 3.5, đã chốt với người yêu cầu spec). -->
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-starter-model-openai</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
