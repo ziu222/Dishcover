@@ -1,0 +1,3 @@
+jwt:
+  secret: test-secret-at-least-32-chars-long-000
+  expiration-minutes: 120

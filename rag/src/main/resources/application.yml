@@ -4,3 +4,26 @@ server:
 spring:
   application:
     name: rag
+
+# Địa chỉ 2 service gọi ra (không Eureka — Docker DNS/localhost, cùng quy ước với Gateway).
+services:
+  matching-url: ${MATCHING_SERVICE_URL:http://localhost:8084}
+  user-url: ${USER_SERVICE_URL:http://localhost:8081}
+
+# JWT: CÙNG secret với User/Inventory/Recipe/Matching qua env JWT_SECRET.
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+# Circuit breaker cho client gọi Matching/User (specs/rag-service.md mục 5). Instance "llm" thêm ở Step 3.
+resilience4j:
+  circuitbreaker:
+    instances:
+      matching-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+      user-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
