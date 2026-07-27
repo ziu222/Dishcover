@@ -1,5 +1,6 @@
 package com.dishcover.matching.scoring;
 
+import com.dishcover.common.ingredient.IngredientWeights;
 import com.dishcover.matching.client.RecipeDetailDto;
 import com.dishcover.matching.client.RecipeIngredientDto;
 
@@ -7,13 +8,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Nhân điểm nền với hệ số coverage có trọng số (essential=1.0, phụ=0.3).
+ * Nhân điểm nền với hệ số coverage có trọng số (essential=1.0, phụ=0.3 — IngredientWeights,
+ * cùng nguồn với Recipe Service, tránh 2 nơi tự khai báo lệch nhau).
  * bao-cao-thuat-toan-matching.md mục 4, specs/matching-service.md mục 3.2 (2).
  */
 public class EssentialWeightRule implements ScoringRule {
-
-    private static final double ESSENTIAL_WEIGHT = 1.0;
-    private static final double OPTIONAL_WEIGHT = 0.3;
 
     @Override
     public double apply(RecipeDetailDto recipe, MatchingContext ctx, double currentScore) {
@@ -27,8 +26,8 @@ public class EssentialWeightRule implements ScoringRule {
         double essentialCoverage = coverage(essentialInR, ctx.userNormalizedNames());
         double optionalCoverage = coverage(optionalInR, ctx.userNormalizedNames());
 
-        double weightedCoverage = (essentialCoverage * ESSENTIAL_WEIGHT + optionalCoverage * OPTIONAL_WEIGHT)
-                / (ESSENTIAL_WEIGHT + OPTIONAL_WEIGHT);
+        double weightedCoverage = (essentialCoverage * IngredientWeights.ESSENTIAL + optionalCoverage * IngredientWeights.OPTIONAL)
+                / (IngredientWeights.ESSENTIAL + IngredientWeights.OPTIONAL);
 
         return currentScore * weightedCoverage;
     }

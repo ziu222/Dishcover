@@ -1,6 +1,7 @@
 package com.dishcover.recipe.service;
 
 import com.dishcover.common.ingredient.IngredientCatalog;
+import com.dishcover.common.ingredient.IngredientWeights;
 import com.dishcover.common.text.VietnameseTextNormalizer;
 import com.dishcover.recipe.dto.RecipeDtos.CreateRecipeRequest;
 import com.dishcover.recipe.dto.RecipeDtos.RecipeDetailResponse;
@@ -31,9 +32,6 @@ import java.util.UUID;
  */
 @Service
 public class RecipeService {
-
-    private static final double ESSENTIAL_WEIGHT = 1.0;
-    private static final double OPTIONAL_WEIGHT = 0.3;
 
     private final RecipeRepository repo;
     private final IngredientCatalog catalog;
@@ -130,7 +128,7 @@ public class RecipeService {
                 r.amount(),
                 r.unit(),
                 r.essential(),
-                r.essential() ? ESSENTIAL_WEIGHT : OPTIONAL_WEIGHT
+                r.essential() ? IngredientWeights.ESSENTIAL : IngredientWeights.OPTIONAL
         )).toList();
     }
 
