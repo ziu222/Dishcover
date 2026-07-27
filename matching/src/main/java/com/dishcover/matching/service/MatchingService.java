@@ -1,5 +1,6 @@
 package com.dishcover.matching.service;
 
+import com.dishcover.common.ingredient.IngredientCatalog;
 import com.dishcover.matching.client.InventoryClient;
 import com.dishcover.matching.client.InventoryItemDto;
 import com.dishcover.matching.client.RecipeClient;
@@ -28,13 +29,15 @@ public class MatchingService {
     private final RecipeClient recipeClient;
     private final UserClient userClient;
     private final MatchingEngine engine;
+    private final IngredientCatalog catalog;
 
     public MatchingService(InventoryClient inventoryClient, RecipeClient recipeClient,
-                            UserClient userClient, MatchingEngine engine) {
+                            UserClient userClient, MatchingEngine engine, IngredientCatalog catalog) {
         this.inventoryClient = inventoryClient;
         this.recipeClient = recipeClient;
         this.userClient = userClient;
         this.engine = engine;
+        this.catalog = catalog;
     }
 
     public List<RecipeMatchResponse> suggest(String bearerToken, Integer topN) {
@@ -45,6 +48,29 @@ public class MatchingService {
         List<RecipeDetailDto> recipes = recipeClient.getAllRecipesWithIngredients();
 
         MatchingContext ctx = buildContext(inventory, allergens);
+
+        return recipes.stream()
+                .map(r -> Map.entry(r, engine.score(r, ctx)))
+                .filter(e -> e.getValue() > Double.NEGATIVE_INFINITY)
+                .sorted(Map.Entry.<RecipeDetailDto, Double>comparingByValue().reversed())
+                .limit(limit)
+                .map(e -> toResponse(e.getKey(), e.getValue(), ctx))
+                .toList();
+    }
+
+    /**
+     * Chấm điểm theo 1 danh sách nguyên liệu tùy ý (không gắn với Inventory/User thật của ai) —
+     * dùng cho RAG Service trích xuất nguyên liệu từ câu hỏi chat (specs/rag-service.md mục 1.1).
+     * expiry rỗng + allergen rỗng khiến ExpiryBonusRule/AllergyFilterRule tự nhiên thành no-op,
+     * KHÔNG đổi 1 dòng nào trong ScoringRule/MatchingEngine.
+     */
+    public List<RecipeMatchResponse> searchByIngredients(List<String> rawIngredientNames, Integer topN) {
+        int limit = clamp(topN);
+        Set<String> normalized = rawIngredientNames.stream()
+                .map(catalog::resolve)
+                .collect(Collectors.toSet());
+        MatchingContext ctx = new MatchingContext(normalized, Map.of(), Set.of());
+        List<RecipeDetailDto> recipes = recipeClient.getAllRecipesWithIngredients();
 
         return recipes.stream()
                 .map(r -> Map.entry(r, engine.score(r, ctx)))
