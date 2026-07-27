@@ -21,7 +21,9 @@ import java.util.Set;
 @Component
 public class IngredientExtractor {
 
-    private static final int MAX_WINDOW = 4; // alias dài nhất trong catalog chỉ vài từ
+    // package-private (không private): guard test IngredientExtractorTest so trực tiếp với catalog
+    // thật để phát hiện sớm nếu sau này có alias dài hơn MAX_WINDOW từ (âm thầm không khớp được).
+    static final int MAX_WINDOW = 4; // alias dài nhất trong catalog chỉ vài từ
 
     private final IngredientCatalog catalog;
 

@@ -2,6 +2,9 @@ package com.dishcover.rag.client;
 
 import com.dishcover.rag.exception.ApiExceptions.UpstreamUnavailableException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -14,9 +17,11 @@ import java.util.List;
 @Component
 public class RagUserClient {
 
+    private static final Logger log = LoggerFactory.getLogger(RagUserClient.class);
+
     private final RestClient restClient;
 
-    public RagUserClient(RestClient.Builder builder,
+    public RagUserClient(@Qualifier("internalServiceRestClientBuilder") RestClient.Builder builder,
                           @Value("${services.user-url}") String baseUrl) {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
@@ -38,7 +43,8 @@ public class RagUserClient {
      */
     @SuppressWarnings("unused")
     private List<DietaryPreferenceDto> fallbackDietary(String bearerToken, Throwable ex) {
+        log.warn("User Service không phản hồi được, từ chối phục vụ để đảm bảo an toàn dị ứng: {}", ex.getMessage());
         throw new UpstreamUnavailableException(
-                "Không xác nhận được thông tin dị ứng, tạm ngừng chatbot để đảm bảo an toàn");
+                "Không xác nhận được thông tin dị ứng, tạm ngừng chatbot để đảm bảo an toàn", ex);
     }
 }

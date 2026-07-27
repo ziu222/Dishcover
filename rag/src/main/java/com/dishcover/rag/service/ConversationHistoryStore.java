@@ -22,6 +22,7 @@ public class ConversationHistoryStore {
 
     private static final Duration TTL = Duration.ofMinutes(30);
     private static final int MAX_TURNS = 10; // giới hạn per-conversation, chặn phình bộ nhớ
+    private static final int MAX_CONVERSATIONS = 5000; // chặn tổng số conversationId tracked cùng lúc
 
     private final ConcurrentHashMap<String, Entry> store = new ConcurrentHashMap<>();
 
@@ -31,7 +32,14 @@ public class ConversationHistoryStore {
     }
 
     public void append(String conversationId, String role, String text) {
-        Entry entry = store.computeIfAbsent(conversationId, id -> new Entry());
+        if (!store.containsKey(conversationId) && store.size() >= MAX_CONVERSATIONS) {
+            return; // đầy -- bỏ qua lưu lịch sử cho conversation MỚI thay vì phình bộ nhớ vô hạn
+        }
+        // compute (không phải computeIfAbsent): entry cũ đã hết TTL phải được THAY MỚI, không nối
+        // tiếp lịch sử cũ -- computeIfAbsent sẽ giữ nguyên entry cũ (chỉ recentTurns() lọc theo TTL,
+        // append() không hề kiểm tra) khiến hội thoại "hồi sinh" lịch sử quá hạn.
+        Entry entry = store.compute(conversationId, (id, existing) ->
+                (existing == null || isExpired(existing)) ? new Entry() : existing);
         entry.lastAccess.set(Instant.now());
         entry.turns.add(new ConversationTurn(role, text, Instant.now()));
         while (entry.turns.size() > MAX_TURNS) {

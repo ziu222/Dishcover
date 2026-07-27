@@ -1,6 +1,8 @@
 package com.dishcover.rag.pipeline;
 
 import com.dishcover.common.ingredient.IngredientCatalog;
+import com.dishcover.common.ingredient.IngredientEntry;
+import com.dishcover.common.text.VietnameseTextNormalizer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /** Ví dụ chạy tay đầy đủ ở specs/rag-service.md mục 3.1 — test này verify đúng kết quả cuối cùng. */
 class IngredientExtractorTest {
 
-    private final IngredientExtractor extractor = new IngredientExtractor(IngredientCatalog.loadDefault());
+    private final IngredientCatalog catalog = IngredientCatalog.loadDefault();
+    private final IngredientExtractor extractor = new IngredientExtractor(catalog);
 
     @Test
     void extractsMultiWordAliasAndSkipsWordsOutsideCatalog() {
@@ -48,5 +51,29 @@ class IngredientExtractorTest {
         // "Cà chua", không có alias "cà" đứng riêng (giới hạn đã biết, specs/rag-service.md mục 3.1)
         List<String> result = extractor.extract("nhà có cà, nấu gì được?");
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void noCatalogAliasExceedsMaxWindow() {
+        // Guard test (phát hiện lúc code-reviewer subagent verify): nếu sau này ai thêm 1 alias/tên
+        // dài hơn MAX_WINDOW từ vào catalog, thuật toán sẽ ÂM THẦM không khớp được (không lỗi, chỉ
+        // thiếu sót) -- test này fail ngay lúc build thay vì im lặng bỏ sót lúc chạy thật.
+        for (IngredientEntry entry : catalog.entries()) {
+            assertTrue(tokenCount(entry.canonicalName()) <= IngredientExtractor.MAX_WINDOW,
+                    "canonicalName vượt MAX_WINDOW: " + entry.canonicalName());
+            assertTrue(tokenCount(entry.normalizedName()) <= IngredientExtractor.MAX_WINDOW,
+                    "normalizedName vượt MAX_WINDOW: " + entry.normalizedName());
+            if (entry.aliases() != null) {
+                for (String alias : entry.aliases()) {
+                    assertTrue(tokenCount(alias) <= IngredientExtractor.MAX_WINDOW,
+                            "alias vượt MAX_WINDOW: " + alias + " (của " + entry.canonicalName() + ")");
+                }
+            }
+        }
+    }
+
+    private int tokenCount(String raw) {
+        String normalized = VietnameseTextNormalizer.normalize(raw);
+        return normalized.isEmpty() ? 0 : normalized.split(" ").length;
     }
 }

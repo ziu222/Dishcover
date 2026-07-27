@@ -1,6 +1,9 @@
 package com.dishcover.rag.client;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -16,9 +19,11 @@ import java.util.List;
 @Component
 public class RagMatchingClient {
 
+    private static final Logger log = LoggerFactory.getLogger(RagMatchingClient.class);
+
     private final RestClient restClient;
 
-    public RagMatchingClient(RestClient.Builder builder,
+    public RagMatchingClient(@Qualifier("internalServiceRestClientBuilder") RestClient.Builder builder,
                               @Value("${services.matching-url}") String baseUrl) {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
@@ -38,6 +43,7 @@ public class RagMatchingClient {
     /** Matching down -> "không tìm thấy công thức" là trạng thái degrade AN TOÀN cho chat (fail-open). */
     @SuppressWarnings("unused")
     private List<RecipeMatchDto> fallbackSearch(String bearerToken, List<String> ingredients, int topN, Throwable ex) {
+        log.warn("Matching Service không phản hồi được, fallback rỗng: {}", ex.getMessage());
         return List.of();
     }
 }

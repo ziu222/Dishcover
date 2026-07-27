@@ -60,7 +60,9 @@ public class ChatOrchestrator {
             fallback = false;
         }
 
-        if (request.conversationId() != null) {
+        // Không lưu câu trả lời fallback vào lịch sử -- đó là text template tĩnh, không phải nội
+        // dung LLM thật, đưa vào {history} của lượt sau chỉ gây nhiễu prompt vô ích.
+        if (request.conversationId() != null && !fallback) {
             historyStore.append(request.conversationId(), "user", request.message());
             historyStore.append(request.conversationId(), "assistant", answer);
         }

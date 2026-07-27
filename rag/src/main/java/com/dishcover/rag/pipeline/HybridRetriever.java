@@ -27,6 +27,11 @@ import java.util.stream.Collectors;
 public class HybridRetriever {
 
     private static final int TOP_N = 5;
+    // Xin dư hơn TOP_N rồi lọc dị ứng MỚI trim -- nếu chỉ xin đúng TOP_N rồi lọc, user dị ứng
+    // nguyên liệu phổ biến có thể chỉ còn 0-2 kết quả dù còn nhiều công thức an toàn xếp hạng 6+.
+    // 20 = MAX_TOP_N Matching Service tự clamp (matching/service/MatchingService.java), không xin
+    // được nhiều hơn nên không cần Math.min thêm ở đây.
+    private static final int FETCH_N = 20;
 
     private final RagMatchingClient ragMatchingClient;
     private final RagUserClient ragUserClient;
@@ -43,10 +48,11 @@ public class HybridRetriever {
         if (extractedIngredients.isEmpty()) {
             return List.of(); // không có gì để chấm điểm -> khỏi gọi Matching, đỡ tốn network
         }
-        List<RecipeMatchDto> candidates = ragMatchingClient.searchByIngredients(bearerToken, extractedIngredients, TOP_N);
+        List<RecipeMatchDto> candidates = ragMatchingClient.searchByIngredients(bearerToken, extractedIngredients, FETCH_N);
         Set<String> allergens = allergenGroupsOf(ragUserClient.getDietaryPreferences(bearerToken));
         return candidates.stream()
                 .filter(c -> !violatesAllergy(c, allergens))
+                .limit(TOP_N)
                 .map(this::toRetrieved)
                 .toList();
     }
