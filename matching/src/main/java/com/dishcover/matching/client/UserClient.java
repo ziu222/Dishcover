@@ -1,6 +1,8 @@
 package com.dishcover.matching.client;
 
 import com.dishcover.common.text.VietnameseTextNormalizer;
+import com.dishcover.matching.exception.ApiExceptions.UpstreamUnavailableException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -25,6 +27,7 @@ public class UserClient {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
 
+    @CircuitBreaker(name = "user-service", fallbackMethod = "fallbackGetAllergenGroups")
     public Set<String> getAllergenGroups(String bearerToken) {
         DietaryPreferenceDto[] prefs = restClient.get()
                 .uri("/users/me/dietary-preferences")
@@ -38,5 +41,16 @@ public class UserClient {
                 .filter(p -> "ALLERGY".equals(p.type()))
                 .map(p -> VietnameseTextNormalizer.normalize(p.value()).replace(' ', '_'))
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * User down -> KHÔNG được coi như "không dị ứng gì" (fail-open ở đây có thể gợi ý món chứa dị
+     * ứng thật của người dùng — nguy hiểm hơn hẳn việc tạm ngừng gợi ý). Fail-closed: từ chối phục
+     * vụ thay vì đoán sai (specs/matching-service.md mục 3.5 review).
+     */
+    @SuppressWarnings("unused")
+    private Set<String> fallbackGetAllergenGroups(String bearerToken, Throwable ex) {
+        throw new UpstreamUnavailableException(
+                "Không xác nhận được thông tin dị ứng, tạm ngừng gợi ý để đảm bảo an toàn");
     }
 }
