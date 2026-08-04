@@ -151,7 +151,7 @@ function transform(m) {
   };
 }
 
-const AREAS = { Vietnamese: 27, Chinese: 7, Thai: 7, Japanese: 5, Italian: 6 };
+const AREAS = { Vietnamese: 27, Chinese: 20, Thai: 20, Japanese: 9, Italian: 18 };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function main() {
