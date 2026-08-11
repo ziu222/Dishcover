@@ -13,11 +13,20 @@ spring:
     model:
       chat: openai
     openai:
-      api-key: ${GEMINI_API_KEY}
+      api-key: ${GEMINI_API_KEY:changeme}
       base-url: https://generativelanguage.googleapis.com/v1beta/openai
       chat:
         options:
           model: gemini-2.0-flash
+
+# Chọn LlmProvider (mặc định "gemini" nếu bỏ trống — GeminiProvider/GroqProvider, CLAUDE.md mục
+# 10.7 "Vướng mắc còn tồn đọng"). groq.api-key chỉ bắt buộc khi llm.provider=groq.
+llm:
+  provider: ${LLM_PROVIDER:gemini}
+groq:
+  api-key: ${GROQ_API_KEY:changeme}
+  base-url: https://api.groq.com/openai/v1
+  model: llama-3.3-70b-versatile
 
 # Địa chỉ 2 service gọi ra (không Eureka — Docker DNS/localhost, cùng quy ước với Gateway).
 services:
