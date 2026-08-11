@@ -13,6 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service layer xử lý đăng ký/đăng nhập: chuẩn hóa email, băm/verify mật khẩu (BCrypt)
+ * và phát hành JWT cho các luồng xác thực của User Service.
+ */
 @Service
 public class AuthService {
 
@@ -26,6 +30,13 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Đăng ký user mới với plan mặc định FREE.
+     *
+     * @param req thông tin đăng ký (email, password, fullName)
+     * @return token JWT và thông tin user vừa tạo
+     * @throws EmailAlreadyExistsException nếu email đã được đăng ký
+     */
     @Transactional
     public AuthResponse register(RegisterRequest req) {
         String email = req.email().trim().toLowerCase();
@@ -37,6 +48,13 @@ public class AuthService {
         return toAuthResponse(user);
     }
 
+    /**
+     * Xác thực email + mật khẩu và phát hành JWT nếu hợp lệ.
+     *
+     * @param req thông tin đăng nhập (email, password)
+     * @return token JWT và thông tin user
+     * @throws InvalidCredentialsException nếu email không tồn tại hoặc mật khẩu sai
+     */
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest req) {
         User user = users.findByEmail(req.email().trim().toLowerCase())
