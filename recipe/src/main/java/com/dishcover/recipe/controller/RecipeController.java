@@ -28,10 +28,23 @@ public class RecipeController {
 
     private final RecipeService service;
 
+    /**
+     * @param service tầng nghiệp vụ xử lý CRUD công thức
+     */
     public RecipeController(RecipeService service) {
         this.service = service;
     }
 
+    /**
+     * Liệt kê công thức có phân trang, lọc theo tag/độ khó/từ khóa tên. Endpoint công khai,
+     * không cần JWT (CLAUDE.md mục 8).
+     *
+     * @param tag         tag cần lọc, có thể null
+     * @param difficulty  độ khó cần lọc (EASY | MEDIUM | HARD), có thể null
+     * @param q           từ khóa tìm theo tên (so khớp không phân biệt dấu), có thể null
+     * @param pageable    thông tin phân trang/sắp xếp lấy từ query param
+     * @return trang danh sách công thức dạng tóm tắt
+     */
     @GetMapping
     public Page<RecipeSummaryResponse> list(@RequestParam(required = false) String tag,
                                              @RequestParam(required = false) String difficulty,
@@ -40,21 +53,48 @@ public class RecipeController {
         return service.list(tag, difficulty, q, pageable);
     }
 
+    /**
+     * Lấy chi tiết một công thức theo id. Endpoint công khai, không cần JWT.
+     *
+     * @param id id công thức
+     * @return chi tiết công thức bao gồm nguyên liệu và các bước nấu
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tìm thấy công thức
+     */
     @GetMapping("/{id}")
     public RecipeDetailResponse getOne(@PathVariable String id) {
         return service.getOne(id);
     }
 
+    /**
+     * Tạo mới một công thức. Yêu cầu JWT hợp lệ.
+     *
+     * @param req payload tạo công thức, đã qua validate {@code @Valid}
+     * @return response 201 kèm chi tiết công thức vừa tạo
+     */
     @PostMapping
     public ResponseEntity<RecipeDetailResponse> create(@Valid @RequestBody CreateRecipeRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
     }
 
+    /**
+     * Cập nhật một phần công thức — chỉ áp field nào client thực sự gửi. Yêu cầu JWT hợp lệ.
+     *
+     * @param id  id công thức cần cập nhật
+     * @param req payload chứa các field cần thay đổi, đã qua validate {@code @Valid}
+     * @return chi tiết công thức sau khi cập nhật
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tìm thấy công thức
+     */
     @PatchMapping("/{id}")
     public RecipeDetailResponse update(@PathVariable String id, @Valid @RequestBody UpdateRecipeRequest req) {
         return service.update(id, req);
     }
 
+    /**
+     * Xóa một công thức theo id. Yêu cầu JWT hợp lệ.
+     *
+     * @param id id công thức cần xóa
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tìm thấy công thức
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {

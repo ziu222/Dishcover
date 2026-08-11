@@ -16,6 +16,9 @@ public class OpenApiConfiguration {
 
     private static final String SECURITY_SCHEME = "bearer-jwt";
 
+    /**
+     * @return cấu hình OpenAPI (thông tin API + security scheme bearer-jwt) hiển thị trên Swagger UI
+     */
     @Bean
     OpenAPI recipeServiceOpenApi() {
         return new OpenAPI()

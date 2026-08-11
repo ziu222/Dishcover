@@ -30,10 +30,21 @@ public class RecipeSeeder implements CommandLineRunner {
 
     private final MongoTemplate mongo;
 
+    /**
+     * @param mongo template MongoDB dùng để đọc/ghi trực tiếp collection {@code recipes}
+     */
     public RecipeSeeder(MongoTemplate mongo) {
         this.mongo = mongo;
     }
 
+    /**
+     * Điểm vào seed dữ liệu, Spring Boot gọi tự động khi context khởi động (profile "seed").
+     * Bỏ qua nếu collection {@code recipes} đã có dữ liệu (idempotent), ngược lại nạp toàn bộ
+     * file JSON trong {@code classpath:seed/*.json} rồi insert hàng loạt.
+     *
+     * @param args tham số dòng lệnh (không dùng)
+     * @throws Exception nếu đọc file JSON trong classpath thất bại
+     */
     @Override
     public void run(String... args) throws Exception {
         long existing = mongo.getCollection(COLLECTION).countDocuments();
@@ -51,6 +62,15 @@ public class RecipeSeeder implements CommandLineRunner {
         log.info("Đã seed {} công thức vào collection '{}'.", docs.size(), COLLECTION);
     }
 
+    /**
+     * Đọc toàn bộ file JSON trong {@code classpath:seed/*.json}, mỗi file chứa một mảng công thức.
+     * Tự tính bù trường {@code normalized_name} ở cấp recipe (dữ liệu seed gốc chỉ có trường này
+     * trong {@code ingredients[]}) để tìm kiếm không phân biệt dấu hoạt động nhất quán với dữ liệu
+     * tạo mới qua API.
+     *
+     * @return danh sách document công thức đã sẵn sàng insert vào MongoDB
+     * @throws Exception nếu đọc hoặc parse file JSON trong classpath thất bại
+     */
     private List<Document> loadAll() throws Exception {
         List<Document> all = new ArrayList<>();
         Resource[] files = new PathMatchingResourcePatternResolver()
