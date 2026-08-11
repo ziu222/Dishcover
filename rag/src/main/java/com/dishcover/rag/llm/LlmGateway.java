@@ -16,6 +16,7 @@ public class LlmGateway {
 
     private final ResilientLlmCaller caller;
 
+    /** @param caller bean cross-bean thực thi Circuit Breaker/TimeLimiter thật (xem Javadoc lớp đó) */
     public LlmGateway(ResilientLlmCaller caller) {
         this.caller = caller;
     }

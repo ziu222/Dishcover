@@ -31,6 +31,16 @@ public class ConversationHistoryStore {
         final AtomicReference<Instant> lastAccess = new AtomicReference<>(Instant.now());
     }
 
+    /**
+     * Ghi thêm 1 lượt hội thoại. Nếu entry cũ của {@code conversationId} đã hết TTL, entry được
+     * THAY MỚI (không nối tiếp lịch sử quá hạn). Bỏ qua ghi nếu store đã đầy
+     * ({@link #MAX_CONVERSATIONS}) và đây là conversationId mới. Chỉ giữ tối đa
+     * {@link #MAX_TURNS} lượt gần nhất mỗi conversation.
+     *
+     * @param conversationId id hội thoại (client tự sinh)
+     * @param role           "user" hoặc "assistant"
+     * @param text           nội dung lượt chat
+     */
     public void append(String conversationId, String role, String text) {
         if (!store.containsKey(conversationId) && store.size() >= MAX_CONVERSATIONS) {
             return; // đầy -- bỏ qua lưu lịch sử cho conversation MỚI thay vì phình bộ nhớ vô hạn
@@ -47,6 +57,13 @@ public class ConversationHistoryStore {
         }
     }
 
+    /**
+     * Lấy các lượt hội thoại gần nhất còn hiệu lực của 1 conversation.
+     *
+     * @param conversationId id hội thoại, có thể {@code null}
+     * @return danh sách lượt chat theo thứ tự thời gian; rỗng nếu {@code conversationId} là
+     *         {@code null}, chưa từng có, hoặc đã hết TTL
+     */
     public List<ConversationTurn> recentTurns(String conversationId) {
         if (conversationId == null) {
             return List.of();

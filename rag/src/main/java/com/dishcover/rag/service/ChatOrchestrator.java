@@ -40,6 +40,18 @@ public class ChatOrchestrator {
         this.historyStore = historyStore;
     }
 
+    /**
+     * Chạy toàn bộ pipeline giai đoạn A cho 1 lượt chat: trích xuất nguyên liệu từ câu hỏi →
+     * lọc cứng qua Matching Service → lấy dietary-preferences thật → dựng prompt kèm lịch sử →
+     * gọi LLM (có fallback) → cập nhật lịch sử hội thoại (chỉ khi không fallback) → trả kết quả
+     * kèm {@code sourceRecipeIds}.
+     *
+     * @param bearerToken token JWT của user, chuyển tiếp cho Matching/User Service
+     * @param request     câu hỏi + conversationId (nullable)
+     * @return câu trả lời kèm nguồn công thức và cờ fallback
+     * @throws com.dishcover.rag.exception.ApiExceptions.UpstreamUnavailableException nếu User
+     *         Service không xác nhận được dietary-preferences (fail-closed)
+     */
     public ChatResponse handle(String bearerToken, ChatRequest request) {
         List<String> ingredients = ingredientExtractor.extract(request.message());
         List<RetrievedRecipe> candidates = hybridRetriever.retrieve(bearerToken, ingredients);
