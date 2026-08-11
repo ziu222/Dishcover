@@ -14,6 +14,15 @@ public class ExpiryBonusRule implements ScoringRule {
     private static final double BONUS_PER_ITEM = 0.5;
     private static final int EXPIRY_THRESHOLD_DAYS = 3;
 
+    /**
+     * Cộng {@code currentScore} với 0.5 điểm cho mỗi nguyên liệu vừa khớp với người dùng (matched)
+     * vừa có hạn dùng còn lại ≤ 3 ngày kể từ hôm nay.
+     *
+     * @param recipe công thức đang được chấm điểm
+     * @param ctx dữ liệu nguyên liệu (kèm hạn dùng) của người dùng
+     * @param currentScore điểm số tích lũy từ (các) rule trước trong chuỗi
+     * @return {@code currentScore} cộng thêm 0.5 nhân số nguyên liệu matched sắp hết hạn
+     */
     @Override
     public double apply(RecipeDetailDto recipe, MatchingContext ctx, double currentScore) {
         LocalDate threshold = LocalDate.now().plusDays(EXPIRY_THRESHOLD_DAYS);

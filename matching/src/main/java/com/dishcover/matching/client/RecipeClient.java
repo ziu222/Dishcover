@@ -21,11 +21,27 @@ public class RecipeClient {
 
     private final RestClient restClient;
 
+    /**
+     * @param builder builder RestClient dùng chung của service (timeout áp qua {@code RestClientCustomizer})
+     * @param baseUrl địa chỉ gốc của Recipe Service, nạp từ {@code services.recipe-url}
+     */
     public RecipeClient(RestClient.Builder builder,
                          @Value("${services.recipe-url}") String baseUrl) {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
 
+    /**
+     * Lấy toàn bộ công thức kèm ingredients — gọi GET /recipes (public, không cần token) lấy danh
+     * sách id rồi gọi thêm GET /recipes/{id} cho từng công thức (N+1 có chủ đích, chấp nhận ở quy
+     * mô hiện tại). Khi Recipe Service lỗi/timeout, circuit breaker gọi fallback NÉM
+     * {@link com.dishcover.matching.exception.ApiExceptions.UpstreamUnavailableException}
+     * (fail-closed) thay vì trả danh sách rỗng, vì không có gì để chấm điểm thì không thể giả vờ
+     * kết quả "0 công thức phù hợp".
+     *
+     * @return danh sách toàn bộ công thức kèm nguyên liệu
+     * @throws com.dishcover.matching.exception.ApiExceptions.UpstreamUnavailableException nếu Recipe
+     *         Service không khả dụng
+     */
     @CircuitBreaker(name = "recipe-service", fallbackMethod = "fallbackGetAllRecipes")
     public List<RecipeDetailDto> getAllRecipesWithIngredients() {
         PageDto<RecipeSummaryDto> page = restClient.get()

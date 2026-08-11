@@ -27,10 +27,22 @@ public class IngredientExtractor {
 
     private final IngredientCatalog catalog;
 
+    /** @param catalog từ điển nguyên liệu chuẩn hóa dùng để tra khớp */
     public IngredientExtractor(IngredientCatalog catalog) {
         this.catalog = catalog;
     }
 
+    /**
+     * Trích xuất tập nguyên liệu xuất hiện trong câu hỏi bằng thuật toán greedy longest n-gram
+     * match: chuẩn hóa toàn câu, tách token theo khoảng trắng, rồi tại mỗi vị trí thử cửa sổ dài
+     * nhất trước ({@link #MAX_WINDOW} token) giảm dần xuống 1 token, tra {@link IngredientCatalog#lookup}
+     * — khớp thì tiêu thụ đúng số token của cửa sổ đó và nhảy tiếp, không khớp thì lùi cửa sổ; nếu
+     * không cửa sổ nào khớp thì bỏ qua 1 token và thử vị trí kế tiếp.
+     *
+     * @param question câu hỏi gốc của người dùng (chưa chuẩn hóa)
+     * @return danh sách {@code normalizedName} nguyên liệu tìm thấy, theo thứ tự xuất hiện, không
+     *         trùng lặp; rỗng nếu câu hỏi rỗng hoặc không khớp nguyên liệu nào
+     */
     public List<String> extract(String question) {
         String normalized = VietnameseTextNormalizer.normalize(question);
         if (normalized.isEmpty()) {

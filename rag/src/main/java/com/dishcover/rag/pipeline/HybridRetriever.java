@@ -44,6 +44,14 @@ public class HybridRetriever {
         this.catalog = catalog;
     }
 
+    /**
+     * Lấy top công thức khớp nguyên liệu, đã lọc dị ứng thật của user.
+     *
+     * @param bearerToken         token JWT chuyển tiếp cho Matching/User Service
+     * @param extractedIngredients nguyên liệu đã trích xuất từ câu hỏi (IngredientExtractor)
+     * @return tối đa {@link #TOP_N} công thức an toàn (không chứa nguyên liệu dị ứng), rỗng nếu
+     *         {@code extractedIngredients} rỗng hoặc Matching Service không trả kết quả nào
+     */
     public List<RetrievedRecipe> retrieve(String bearerToken, List<String> extractedIngredients) {
         if (extractedIngredients.isEmpty()) {
             return List.of(); // không có gì để chấm điểm -> khỏi gọi Matching, đỡ tốn network

@@ -21,16 +21,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {
 
+    /**
+     * @param props cấu hình JWT nạp từ application.yml
+     * @return service dùng để tạo/xác thực JWT, dùng chung qua {@code common/security}
+     */
     @Bean
     JwtService jwtService(JwtProperties props) {
         return new JwtService(props.secret(), props.expirationMinutes());
     }
 
+    /**
+     * @param jwtService service xác thực JWT
+     * @return filter đọc JWT từ header Authorization và thiết lập authentication vào SecurityContext
+     */
     @Bean
     JwtAuthFilter jwtAuthFilter(JwtService jwtService) {
         return new JwtAuthFilter(jwtService);
     }
 
+    /**
+     * Khai báo chuỗi filter bảo mật: tắt CSRF (API stateless), cho phép công khai health check,
+     * Swagger UI và GET {@code /recipes/**}; mọi request khác bắt buộc JWT hợp lệ.
+     *
+     * @param http            builder cấu hình HTTP security của Spring Security
+     * @param jwtAuthFilter   filter xác thực JWT được chèn trước {@code UsernamePasswordAuthenticationFilter}
+     * @return chuỗi filter bảo mật đã cấu hình
+     * @throws Exception nếu cấu hình HttpSecurity thất bại
+     */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http

@@ -12,6 +12,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Cấu hình Spring Security cho Inventory Service: xác thực JWT stateless, không session.
+ * Toàn bộ endpoint {@code /inventory/**} yêu cầu JWT hợp lệ; chỉ actuator health và
+ * Swagger UI được công khai (xem {@link #filterChain}).
+ */
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {

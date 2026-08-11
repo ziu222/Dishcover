@@ -10,6 +10,13 @@ public final class AuthDtos {
     private AuthDtos() {
     }
 
+    /**
+     * Yêu cầu đăng ký tài khoản mới.
+     *
+     * @param email    email đăng nhập, phải là duy nhất trong hệ thống
+     * @param password mật khẩu dạng plaintext gửi lên, được băm (BCrypt) trước khi lưu
+     * @param fullName họ tên hiển thị, có thể để trống
+     */
     public record RegisterRequest(
             @Email @NotBlank String email,
             @NotBlank @Size(min = 6, max = 72) String password,
@@ -17,6 +24,11 @@ public final class AuthDtos {
     ) {
     }
 
+    /**
+     * Yêu cầu đăng nhập bằng email + mật khẩu.
+     *
+     * @param password mật khẩu dạng plaintext gửi lên, so khớp với password_hash đã lưu
+     */
     public record LoginRequest(
             @Email @NotBlank String email,
             @NotBlank String password

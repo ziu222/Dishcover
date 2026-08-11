@@ -21,11 +21,25 @@ public class RagUserClient {
 
     private final RestClient restClient;
 
+    /**
+     * @param builder {@code RestClient.Builder} riêng cho client nội bộ (timeout 3s/5s, xem
+     *                {@link com.dishcover.rag.config.RestClientTimeoutConfig})
+     * @param baseUrl địa chỉ User Service, cấu hình qua {@code services.user-url}
+     */
     public RagUserClient(@Qualifier("internalServiceRestClientBuilder") RestClient.Builder builder,
                           @Value("${services.user-url}") String baseUrl) {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
 
+    /**
+     * Lấy danh sách dietary-preferences (dị ứng + chế độ ăn) của user đang chat.
+     *
+     * @param bearerToken token JWT của user hiện tại, chuyển tiếp sang User Service
+     * @return danh sách dietary-preferences thật
+     * @throws com.dishcover.rag.exception.ApiExceptions.UpstreamUnavailableException nếu User
+     *         Service lỗi/timeout — fail-closed cố ý (xem {@code fallbackDietary}), KHÔNG được
+     *         coi im lặng là "không dị ứng gì"
+     */
     @CircuitBreaker(name = "user-service", fallbackMethod = "fallbackDietary")
     public List<DietaryPreferenceDto> getDietaryPreferences(String bearerToken) {
         DietaryPreferenceDto[] prefs = restClient.get()

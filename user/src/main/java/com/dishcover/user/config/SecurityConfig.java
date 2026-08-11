@@ -15,6 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Cấu hình Spring Security cho User Service: xác thực JWT stateless (không session),
+ * công khai /auth/register + /auth/login + tài liệu Swagger, còn lại yêu cầu JWT hợp lệ.
+ */
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {

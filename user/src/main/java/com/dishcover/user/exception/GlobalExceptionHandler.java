@@ -9,6 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Exception handler tập trung của User Service — bắt các exception nghiệp vụ riêng của module
+ * này ({@link com.dishcover.user.exception.ApiExceptions}) và chuyển sang mã HTTP + body chuẩn
+ * (kế thừa hành vi chung từ {@code CommonExceptionHandler}).
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends CommonExceptionHandler {
 

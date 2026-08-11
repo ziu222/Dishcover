@@ -36,11 +36,25 @@ public class RecipeService {
     private final RecipeRepository repo;
     private final IngredientCatalog catalog;
 
+    /**
+     * @param repo    repository truy cập collection {@code recipes} trên MongoDB
+     * @param catalog catalog nguyên liệu chuẩn dùng để chuẩn hóa tên nguyên liệu client gửi lên
+     */
     public RecipeService(RecipeRepository repo, IngredientCatalog catalog) {
         this.repo = repo;
         this.catalog = catalog;
     }
 
+    /**
+     * Liệt kê công thức có phân trang, ưu tiên lọc theo từ khóa tên nếu có, kế đến tổ hợp
+     * tag+độ khó, rồi từng điều kiện riêng lẻ, cuối cùng là liệt kê tất cả.
+     *
+     * @param tag         tag cần lọc, có thể null/rỗng
+     * @param difficulty  độ khó cần lọc, có thể null/rỗng
+     * @param query       từ khóa tên (sẽ được chuẩn hóa bỏ dấu trước khi so khớp), có thể null/rỗng
+     * @param pageable    thông tin phân trang/sắp xếp
+     * @return trang danh sách công thức dạng tóm tắt
+     */
     public Page<RecipeSummaryResponse> list(String tag, String difficulty, String query, Pageable pageable) {
         Page<Recipe> page;
         if (StringUtils.hasText(query)) {
@@ -57,10 +71,23 @@ public class RecipeService {
         return page.map(this::toSummary);
     }
 
+    /**
+     * @param id id công thức
+     * @return chi tiết công thức
+     * @throws ResourceNotFoundException nếu không tìm thấy công thức với id chỉ định
+     */
     public RecipeDetailResponse getOne(String id) {
         return toDetail(requireById(id));
     }
 
+    /**
+     * Tạo mới một công thức. Sinh id ngẫu nhiên (UUID), tự sinh slug từ tên nếu client không gửi,
+     * chuẩn hóa từng nguyên liệu qua {@link IngredientCatalog#resolve} (không tin normalizedName
+     * client gửi) và tự tính weight từ cờ essential (KHÔNG nhận weight tùy ý từ client).
+     *
+     * @param req payload tạo công thức
+     * @return chi tiết công thức vừa tạo
+     */
     public RecipeDetailResponse create(CreateRecipeRequest req) {
         String id = UUID.randomUUID().toString();
         String slug = StringUtils.hasText(req.slug()) ? req.slug() : generateSlug(req.name());
@@ -73,6 +100,15 @@ public class RecipeService {
         return toDetail(repo.save(recipe));
     }
 
+    /**
+     * Cập nhật một phần công thức — chỉ áp field nào client thực sự gửi (khác null). Nguyên liệu
+     * gửi lên (nếu có) được chuẩn hóa lại toàn bộ giống như lúc tạo mới.
+     *
+     * @param id  id công thức cần cập nhật
+     * @param req payload chứa các field cần thay đổi
+     * @return chi tiết công thức sau khi cập nhật
+     * @throws ResourceNotFoundException nếu không tìm thấy công thức với id chỉ định
+     */
     public RecipeDetailResponse update(String id, UpdateRecipeRequest req) {
         Recipe recipe = requireById(id);
         if (req.name() != null) {
@@ -106,6 +142,12 @@ public class RecipeService {
         return toDetail(repo.save(recipe));
     }
 
+    /**
+     * Xóa một công thức theo id.
+     *
+     * @param id id công thức cần xóa
+     * @throws ResourceNotFoundException nếu không tìm thấy công thức với id chỉ định
+     */
     public void delete(String id) {
         if (!repo.existsById(id)) {
             throw new ResourceNotFoundException("Không tìm thấy công thức id=" + id);

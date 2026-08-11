@@ -20,6 +20,15 @@ public class ChatController {
         this.orchestrator = orchestrator;
     }
 
+    /**
+     * Nhận câu hỏi chat và trả lời dựa trên công thức thật trong hệ thống (giai đoạn A).
+     * Yêu cầu claim {@code plan=PRO} trong JWT ({@link RequiresPlan}).
+     *
+     * @param bearerToken token JWT dạng {@code Bearer <token>}, chuyển tiếp nguyên văn cho các
+     *                     service nội bộ (Matching/User)
+     * @param request      nội dung câu hỏi + conversationId (nullable)
+     * @return câu trả lời kèm {@code sourceRecipeIds} và cờ {@code fallback}
+     */
     @RequiresPlan("PRO")
     @PostMapping("/chat")
     public ChatResponse chat(@RequestHeader("Authorization") String bearerToken,

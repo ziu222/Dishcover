@@ -4,6 +4,7 @@ import com.dishcover.common.ingredient.IngredientCatalog;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/** Cấu hình bean {@link IngredientCatalog} — từ điển nguyên liệu chuẩn hóa dùng chung toàn service. */
 @Configuration
 public class CatalogConfig {
 

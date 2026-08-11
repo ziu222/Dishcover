@@ -28,6 +28,15 @@ public class PromptBuilder {
             CÂU HỎI: %s
             """;
 
+    /**
+     * Điền {@link #TEMPLATE} với dữ liệu thật của lượt chat hiện tại.
+     *
+     * @param dietaryText mô tả dị ứng/chế độ ăn của người dùng (dạng text đã format sẵn)
+     * @param candidates  danh sách công thức ứng viên từ {@code HybridRetriever}
+     * @param history     các lượt hội thoại gần nhất (rỗng nếu chưa có/không theo dõi)
+     * @param question    câu hỏi gốc của người dùng
+     * @return prompt hoàn chỉnh gửi cho LLM
+     */
     public String build(String dietaryText, List<RetrievedRecipe> candidates,
                          List<ConversationTurn> history, String question) {
         return TEMPLATE.formatted(dietaryText, formatContext(candidates), formatHistory(history), question);

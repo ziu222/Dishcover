@@ -31,16 +31,37 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Lấy hồ sơ của user đang đăng nhập.
+     *
+     * @param me user đã xác thực, suy ra từ JWT
+     * @return thông tin hồ sơ user
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu user không còn tồn tại
+     */
     @GetMapping
     public UserResponse me(@AuthenticationPrincipal AuthenticatedUser me) {
         return userService.getProfile(me.userId());
     }
 
+    /**
+     * Liệt kê toàn bộ hồ sơ ăn uống (dị ứng/chế độ ăn) của user đang đăng nhập.
+     *
+     * @param me user đã xác thực, suy ra từ JWT
+     * @return danh sách mục hồ sơ ăn uống, rỗng nếu chưa có
+     */
     @GetMapping("/dietary-preferences")
     public List<DietaryPreferenceResponse> listPreferences(@AuthenticationPrincipal AuthenticatedUser me) {
         return userService.listPreferences(me.userId());
     }
 
+    /**
+     * Thêm một mục hồ sơ ăn uống mới cho user đang đăng nhập.
+     *
+     * @param me  user đã xác thực, suy ra từ JWT
+     * @param req thông tin mục cần thêm (type, value)
+     * @return 201 Created kèm mục vừa tạo
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu user không còn tồn tại
+     */
     @PostMapping("/dietary-preferences")
     public ResponseEntity<DietaryPreferenceResponse> addPreference(
             @AuthenticationPrincipal AuthenticatedUser me,
@@ -49,6 +70,12 @@ public class UserController {
                 .body(userService.addPreference(me.userId(), req));
     }
 
+    /**
+     * Xóa một mục hồ sơ ăn uống của user đang đăng nhập.
+     *
+     * @param me user đã xác thực, suy ra từ JWT
+     * @param id id mục cần xóa
+     */
     @DeleteMapping("/dietary-preferences/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePreference(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {

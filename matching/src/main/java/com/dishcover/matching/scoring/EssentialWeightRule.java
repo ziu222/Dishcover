@@ -14,6 +14,17 @@ import java.util.Set;
  */
 public class EssentialWeightRule implements ScoringRule {
 
+    /**
+     * Nhân {@code currentScore} với hệ số coverage có trọng số: tách nguyên liệu công thức thành 2
+     * nhóm essential (trọng số {@link IngredientWeights#ESSENTIAL}) và optional (trọng số
+     * {@link IngredientWeights#OPTIONAL}), tính coverage riêng từng nhóm rồi gộp theo bình quân gia
+     * quyền của 2 trọng số đó.
+     *
+     * @param recipe công thức đang được chấm điểm
+     * @param ctx dữ liệu nguyên liệu của người dùng
+     * @param currentScore điểm số tích lũy từ (các) rule trước trong chuỗi (điểm Jaccard nền)
+     * @return {@code currentScore} nhân với hệ số coverage có trọng số essential/optional
+     */
     @Override
     public double apply(RecipeDetailDto recipe, MatchingContext ctx, double currentScore) {
         List<RecipeIngredientDto> essentialInR = recipe.ingredients().stream()

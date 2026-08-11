@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+/** Namespace các DTO request/response của {@code POST /chat}. */
 public final class ChatDtos {
 
     private ChatDtos() {
@@ -21,6 +22,13 @@ public final class ChatDtos {
     ) {
     }
 
+    /**
+     * Kết quả trả về cho client sau 1 lượt chat.
+     *
+     * @param answer          câu trả lời (LLM thật hoặc danh sách công thức thô nếu fallback)
+     * @param sourceRecipeIds id các công thức thật đã dùng làm căn cứ trả lời, để truy vết
+     * @param fallback        true nếu LLM lỗi/timeout và answer là fallback thô, không phải LLM
+     */
     public record ChatResponse(String answer, List<String> sourceRecipeIds, boolean fallback) {
     }
 }

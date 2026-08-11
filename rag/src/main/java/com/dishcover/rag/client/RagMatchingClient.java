@@ -23,11 +23,26 @@ public class RagMatchingClient {
 
     private final RestClient restClient;
 
+    /**
+     * @param builder {@code RestClient.Builder} riêng cho client nội bộ (timeout 3s/5s, xem
+     *                {@link com.dishcover.rag.config.RestClientTimeoutConfig})
+     * @param baseUrl địa chỉ Matching Service, cấu hình qua {@code services.matching-url}
+     */
     public RagMatchingClient(@Qualifier("internalServiceRestClientBuilder") RestClient.Builder builder,
                               @Value("${services.matching-url}") String baseUrl) {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
 
+    /**
+     * Gọi {@code POST /matching/internal/match-by-ingredients} lấy danh sách công thức khớp với
+     * nguyên liệu đã trích xuất từ câu hỏi chat.
+     *
+     * @param bearerToken token JWT chuyển tiếp (endpoint đích vẫn giữ {@code @RequiresPlan("PRO")})
+     * @param ingredients nguyên liệu đã normalize (từ {@code IngredientExtractor})
+     * @param topN        số lượng công thức tối đa muốn lấy
+     * @return danh sách công thức khớp, rỗng nếu Matching Service lỗi/timeout (fail-open, xem
+     *         {@code fallbackSearch})
+     */
     @CircuitBreaker(name = "matching-service", fallbackMethod = "fallbackSearch")
     public List<RecipeMatchDto> searchByIngredients(String bearerToken, List<String> ingredients, int topN) {
         List<RecipeMatchDto> result = restClient.post()

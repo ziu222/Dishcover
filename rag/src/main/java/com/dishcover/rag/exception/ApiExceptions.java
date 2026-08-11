@@ -1,5 +1,6 @@
 package com.dishcover.rag.exception;
 
+/** Namespace các exception nghiệp vụ riêng của RAG Service, ánh xạ mã HTTP qua {@link GlobalExceptionHandler}. */
 public final class ApiExceptions {
 
     private ApiExceptions() {
@@ -7,6 +8,8 @@ public final class ApiExceptions {
 
     /** 503 — Matching/User Service không phản hồi được sau khi circuit breaker fallback. */
     public static class UpstreamUnavailableException extends RuntimeException {
+
+        /** @param message thông báo lỗi trả về client */
         public UpstreamUnavailableException(String message) {
             super(message);
         }

@@ -36,6 +36,15 @@ public class InventoryService {
         this.catalog = catalog;
     }
 
+    /**
+     * Liệt kê nguyên liệu của một người dùng, lọc theo trạng thái lưu trữ nếu có. Trạng thái
+     * trong response được tính lại (derived) theo hạn dùng ngay tại thời điểm gọi — xem
+     * {@link #deriveStatus}, không phải giá trị cột {@code status} lưu tĩnh trong DB.
+     *
+     * @param userId id người dùng
+     * @param statusFilter trạng thái lưu trữ cần lọc, null nếu lấy tất cả
+     * @return danh sách nguyên liệu dạng DTO
+     */
     @Transactional(readOnly = true)
     public List<InventoryItemResponse> list(Long userId, String statusFilter) {
         List<UserIngredient> items = statusFilter == null
@@ -44,16 +53,41 @@ public class InventoryService {
         return items.stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Lấy chi tiết một dòng nguyên liệu, chỉ khi thuộc sở hữu đúng người dùng.
+     *
+     * @param userId id người dùng yêu cầu
+     * @param id id dòng nguyên liệu
+     * @return DTO nguyên liệu với status đã derived
+     * @throws ResourceNotFoundException nếu không tồn tại hoặc không thuộc người dùng này
+     */
     @Transactional(readOnly = true)
     public InventoryItemResponse getOne(Long userId, Long id) {
         return toResponse(requireOwned(userId, id));
     }
 
+    /**
+     * Thêm một nguyên liệu nhập tay. Áp dụng business rule upsert theo lô: nếu đã tồn tại dòng
+     * cùng (userId, normalized_name, expiry_date) thì cộng dồn số lượng vào dòng đó (KHÔNG dùng
+     * UNIQUE constraint ở tầng DB), khác lô (khác hạn dùng) thì tạo dòng mới.
+     *
+     * @param userId id người dùng
+     * @param req thông tin nguyên liệu cần thêm
+     * @return DTO nguyên liệu sau khi thêm/gộp lô
+     */
     @Transactional
     public InventoryItemResponse addItem(Long userId, AddItemRequest req) {
         return toResponse(upsert(userId, req, "MANUAL"));
     }
 
+    /**
+     * Thêm nhiều nguyên liệu cùng lúc, đánh dấu nguồn {@code IMAGE_RECOGNITION}. Mỗi phần tử
+     * áp dụng cùng quy tắc upsert theo lô như {@link #addItem}.
+     *
+     * @param userId id người dùng
+     * @param items danh sách nguyên liệu cần thêm
+     * @return danh sách DTO nguyên liệu sau khi thêm/gộp lô
+     */
     @Transactional
     public List<InventoryItemResponse> addBatch(Long userId, List<AddItemRequest> items) {
         return items.stream()
@@ -62,6 +96,18 @@ public class InventoryService {
                 .toList();
     }
 
+    /**
+     * Cập nhật một phần một dòng nguyên liệu đã tồn tại, chỉ khi thuộc sở hữu đúng người dùng.
+     * Field null trong {@code req} giữ nguyên giá trị cũ. Khi đổi {@code expiryDate}, trạng thái
+     * lưu trữ được tính lại ngay theo hạn dùng mới (trừ khi cùng request cũng ghi đè
+     * {@code status} tường minh, áp dụng sau và có ưu tiên cao hơn).
+     *
+     * @param userId id người dùng yêu cầu
+     * @param id id dòng nguyên liệu cần cập nhật
+     * @param req các field cần cập nhật
+     * @return DTO nguyên liệu sau khi cập nhật
+     * @throws ResourceNotFoundException nếu không tồn tại hoặc không thuộc người dùng này
+     */
     @Transactional
     public InventoryItemResponse update(Long userId, Long id, UpdateItemRequest req) {
         UserIngredient item = requireOwned(userId, id);
@@ -82,6 +128,14 @@ public class InventoryService {
         return toResponse(item);
     }
 
+    /**
+     * Xóa một dòng nguyên liệu, chỉ khi thuộc sở hữu đúng người dùng (ownership check ở tầng
+     * repository qua {@code deleteByIdAndUserId}, không ném lỗi nếu id không tồn tại/không thuộc
+     * người dùng — thao tác vô hại/idempotent).
+     *
+     * @param userId id người dùng yêu cầu
+     * @param id id dòng nguyên liệu cần xóa
+     */
     @Transactional
     public void delete(Long userId, Long id) {
         repo.deleteByIdAndUserId(id, userId);
