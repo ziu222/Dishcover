@@ -22,10 +22,20 @@ public class MatchingController {
 
     private final MatchingService service;
 
+    /**
+     * @param service service orchestration chấm điểm/gợi ý công thức
+     */
     public MatchingController(MatchingService service) {
         this.service = service;
     }
 
+    /**
+     * Gợi ý công thức theo nguyên liệu người dùng đang đăng nhập đang có trong tủ lạnh — tính năng PRO.
+     *
+     * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi
+     * @param topN số lượng kết quả tối đa mong muốn; có thể null
+     * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
+     */
     @RequiresPlan("PRO")
     @GetMapping("/suggestions")
     public List<RecipeMatchResponse> suggestions(@RequestHeader("Authorization") String bearerToken,
@@ -37,6 +47,9 @@ public class MatchingController {
      * Nội bộ — dùng cho RAG Service (specs/rag-service.md mục 1.1). VẪN giữ @RequiresPlan("PRO"):
      * Gateway route /matching-service/** là prefix match phẳng, bỏ gate sẽ lộ tính năng PRO miễn
      * phí cho bất kỳ ai gọi thẳng qua Gateway (specs/rag-service.md mục 1.2).
+     *
+     * @param request tên nguyên liệu tự do (VD trích từ câu hỏi chat) + topN mong muốn
+     * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
      */
     @RequiresPlan("PRO")
     @PostMapping("/internal/match-by-ingredients")

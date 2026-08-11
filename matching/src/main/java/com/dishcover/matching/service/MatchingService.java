@@ -31,6 +31,13 @@ public class MatchingService {
     private final MatchingEngine engine;
     private final IngredientCatalog catalog;
 
+    /**
+     * @param inventoryClient client gọi Inventory Service lấy nguyên liệu người dùng đang có
+     * @param recipeClient client gọi Recipe Service lấy toàn bộ công thức kèm nguyên liệu
+     * @param userClient client gọi User Service lấy nhóm dị ứng người dùng
+     * @param engine engine chạy chuỗi {@link com.dishcover.matching.scoring.ScoringRule}
+     * @param catalog từ điển nguyên liệu chuẩn hóa, dùng để resolve tên nguyên liệu tự do
+     */
     public MatchingService(InventoryClient inventoryClient, RecipeClient recipeClient,
                             UserClient userClient, MatchingEngine engine, IngredientCatalog catalog) {
         this.inventoryClient = inventoryClient;
@@ -40,6 +47,17 @@ public class MatchingService {
         this.catalog = catalog;
     }
 
+    /**
+     * Gợi ý công thức theo tủ lạnh + hồ sơ dị ứng thật của người dùng đang đăng nhập: gọi Inventory/
+     * User/Recipe Service, chấm điểm qua {@link MatchingEngine}, loại công thức bị lọc cứng
+     * ({@link Double#NEGATIVE_INFINITY}), sort giảm dần theo điểm rồi lấy top N.
+     *
+     * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi,
+     *                    dùng để gọi tiếp Inventory/User Service
+     * @param topN số lượng kết quả tối đa mong muốn; null dùng mặc định, luôn bị clamp trong
+     *             khoảng [1, {@value #MAX_TOP_N}]
+     * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
+     */
     public List<RecipeMatchResponse> suggest(String bearerToken, Integer topN) {
         int limit = clamp(topN);
 
@@ -63,6 +81,12 @@ public class MatchingService {
      * dùng cho RAG Service trích xuất nguyên liệu từ câu hỏi chat (specs/rag-service.md mục 1.1).
      * expiry rỗng + allergen rỗng khiến ExpiryBonusRule/AllergyFilterRule tự nhiên thành no-op,
      * KHÔNG đổi 1 dòng nào trong ScoringRule/MatchingEngine.
+     *
+     * @param rawIngredientNames tên nguyên liệu tự do (chưa chuẩn hóa), được resolve qua
+     *                           {@link IngredientCatalog} trước khi đưa vào chấm điểm
+     * @param topN số lượng kết quả tối đa mong muốn; null dùng mặc định, luôn bị clamp trong
+     *             khoảng [1, {@value #MAX_TOP_N}]
+     * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
      */
     public List<RecipeMatchResponse> searchByIngredients(List<String> rawIngredientNames, Integer topN) {
         int limit = clamp(topN);

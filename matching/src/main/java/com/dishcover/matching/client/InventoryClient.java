@@ -18,12 +18,24 @@ public class InventoryClient {
 
     private final RestClient restClient;
 
+    /**
+     * @param builder builder RestClient dùng chung của service (timeout áp qua {@code RestClientCustomizer})
+     * @param baseUrl địa chỉ gốc của Inventory Service, nạp từ {@code services.inventory-url}
+     */
     public InventoryClient(RestClient.Builder builder,
                             @Value("${services.inventory-url}") String baseUrl) {
         this.restClient = builder.baseUrl(baseUrl).build();
     }
 
-    /** Chỉ trả nguyên liệu còn "đang có" — loại USED (đã dùng) và EXPIRED (đã hỏng) khỏi tập chấm điểm. */
+    /**
+     * Lấy nguyên liệu người dùng đang có, chỉ trả nguyên liệu còn "đang có" — loại USED (đã dùng)
+     * và EXPIRED (đã hỏng) khỏi tập chấm điểm. Khi Inventory Service lỗi/timeout, circuit breaker
+     * gọi fallback trả danh sách RỖNG (fail-open) thay vì ném exception, vì Inventory chỉ ảnh hưởng
+     * điểm số/gợi ý kém đi, không phải rủi ro an toàn.
+     *
+     * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi
+     * @return danh sách nguyên liệu còn dùng được; danh sách rỗng nếu Inventory Service không khả dụng
+     */
     @CircuitBreaker(name = "inventory-service", fallbackMethod = "fallbackGetFreshItems")
     public List<InventoryItemDto> getFreshItems(String bearerToken) {
         InventoryItemDto[] items = restClient.get()
