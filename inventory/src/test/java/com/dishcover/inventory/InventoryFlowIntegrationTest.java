@@ -16,6 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Inventory Service không tự phát hành JWT (User Service làm việc đó) — test tự ký token bằng
  * cùng JwtService/secret khớp application-test.yml để mô phỏng token thật từ User Service.
+ *
+ * <p>Token ký với plan {@code PRO} vì tủ lạnh ảo là tính năng trả phí (CLAUDE.md mục 8) — mọi
+ * endpoint đều {@code @RequiresPlan("PRO")}. Phần kiểm tra chính sách gói cước (401/402/200)
+ * nằm ở {@code InventoryControllerSecurityTest}; test này chỉ lo luồng nghiệp vụ.</p>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,7 +34,7 @@ class InventoryFlowIntegrationTest {
     ObjectMapper mapper;
 
     private String tokenFor(long userId) {
-        return new JwtService(SECRET, 120).issue(userId, "user" + userId + "@test.com", "FREE");
+        return new JwtService(SECRET, 120).issue(userId, "user" + userId + "@test.com", "PRO");
     }
 
     private String auth(long userId) {

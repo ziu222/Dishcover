@@ -15,7 +15,7 @@ class GroqProviderTest {
 
     @Test
     void constructsWithoutCallingGroq() {
-        GroqProvider provider = new GroqProvider("fake-key", "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile");
+        GroqProvider provider = new GroqProvider("fake-key", "https://api.groq.com/openai", "llama-3.3-70b-versatile");
 
         assertNotNull(provider);
     }

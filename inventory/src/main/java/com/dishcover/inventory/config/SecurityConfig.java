@@ -2,6 +2,7 @@ package com.dishcover.inventory.config;
 
 import com.dishcover.common.security.JwtAuthFilter;
 import com.dishcover.common.security.JwtService;
+import com.dishcover.common.security.RequiresPlanAspect;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * Cấu hình Spring Security cho Inventory Service: xác thực JWT stateless, không session.
  * Toàn bộ endpoint {@code /inventory/**} yêu cầu JWT hợp lệ; chỉ actuator health và
- * Swagger UI được công khai (xem {@link #filterChain}).
+ * Swagger UI được công khai (xem {@link #filterChain}). Trên nền đó còn thêm lớp gating gói
+ * cước: xem {@link #requiresPlanAspect()}.
  */
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)
@@ -29,6 +31,17 @@ public class SecurityConfig {
     @Bean
     JwtAuthFilter jwtAuthFilter(JwtService jwtService) {
         return new JwtAuthFilter(jwtService);
+    }
+
+    /**
+     * Bean cho {@code @RequiresPlan} trên {@code InventoryController} — tủ lạnh ảo là tính năng
+     * gói PRO (CLAUDE.md mục 8). Aspect nằm ở {@code common} nhưng KHÔNG được đánh
+     * {@code @Component} (service con không component-scan package đó), nên mỗi service phải tự
+     * đăng ký như Matching/RAG đang làm.
+     */
+    @Bean
+    RequiresPlanAspect requiresPlanAspect() {
+        return new RequiresPlanAspect();
     }
 
     @Bean
