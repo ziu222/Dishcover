@@ -36,12 +36,13 @@ public class VnpayProvider implements PaymentProvider {
     private final VnpaySigner signer;
     private final Clock clock;
 
-    public VnpayProvider(VnpayProperties props) {
-        this(props, Clock.system(VN_ZONE));
-    }
-
-    /** Cho phép truyền Clock cố định trong test — mốc thời gian nằm trong dữ liệu ký. */
-    VnpayProvider(VnpayProperties props, Clock clock) {
+    /**
+     * Chỉ MỘT constructor — có hai constructor (một cho Spring, một để test tiêm {@link Clock})
+     * thì Spring không biết chọn cái nào và quay ra tìm constructor rỗng, gây lỗi khởi tạo bean.
+     * {@code Clock} lấy từ {@code TimeConfig} vì mốc thời gian nằm trong dữ liệu ký, phải test
+     * được tất định.
+     */
+    public VnpayProvider(VnpayProperties props, Clock clock) {
         this.props = props;
         this.signer = new VnpaySigner(props.hashSecret());
         this.clock = clock;
