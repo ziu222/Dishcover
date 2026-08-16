@@ -7,6 +7,8 @@ import com.dishcover.payment.dto.PaymentDtos.PlanResponse;
 import com.dishcover.payment.dto.PaymentDtos.TransactionResponse;
 import com.dishcover.payment.repository.PlanRepository;
 import com.dishcover.payment.service.CheckoutService;
+import com.dishcover.payment.service.IpnHandler;
+import com.dishcover.payment.service.IpnHandler.IpnResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /** Endpoint thanh toán. userId luôn lấy từ JWT, không bao giờ nhận từ client. */
 @RestController
@@ -29,10 +33,13 @@ public class PaymentController {
 
     private final PlanRepository planRepository;
     private final CheckoutService checkoutService;
+    private final IpnHandler ipnHandler;
 
-    public PaymentController(PlanRepository planRepository, CheckoutService checkoutService) {
+    public PaymentController(PlanRepository planRepository, CheckoutService checkoutService,
+                             IpnHandler ipnHandler) {
         this.planRepository = planRepository;
         this.checkoutService = checkoutService;
+        this.ipnHandler = ipnHandler;
     }
 
     /**
@@ -81,6 +88,23 @@ public class PaymentController {
     public TransactionResponse transaction(@AuthenticationPrincipal AuthenticatedUser me,
                                             @PathVariable String orderId) {
         return checkoutService.getTransaction(me.userId(), orderId);
+    }
+
+    /**
+     * Nhận IPN từ VNPay (server-to-server). KHÔNG yêu cầu JWT — cổng thanh toán không có token
+     * của người dùng; bảo vệ bằng chữ ký HMAC-SHA512 bên trong {@link IpnHandler}.
+     *
+     * <p>Luôn trả HTTP 200 kèm mã {@code RspCode}, kể cả khi từ chối: trả lỗi HTTP sẽ khiến VNPay
+     * hiểu là chưa nhận được và gửi lại liên tục.</p>
+     *
+     * @param params toàn bộ tham số VNPay gửi lên (đọc dạng map để không bỏ sót tham số mới,
+     *               nếu thiếu một tham số khi ký lại thì chữ ký sẽ không khớp)
+     * @return {@code {"RspCode": "...", "Message": "..."}} theo quy ước VNPay
+     */
+    @GetMapping("/vnpay/ipn")
+    public Map<String, String> vnpayIpn(@RequestParam Map<String, String> params) {
+        IpnResult result = ipnHandler.handle(params);
+        return Map.of("RspCode", result.rspCode(), "Message", result.message());
     }
 
     /**
