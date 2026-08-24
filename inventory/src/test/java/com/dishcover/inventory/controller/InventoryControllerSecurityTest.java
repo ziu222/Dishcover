@@ -17,15 +17,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Tủ lạnh ảo là tính năng gói PRO (CLAUDE.md mục 8) — test {@code @RequiresPlan} chạy qua toàn bộ
- * filter chain thật (JWT verify + AOP), {@code InventoryService} mock để không đụng DB.
+ * Chính sách xác thực của tủ lạnh ảo, chạy qua toàn bộ filter chain thật.
  *
- * <p>Trước đây Inventory KHÔNG gate gói cước (chỉ {@code .anyRequest().authenticated()}), nên user
- * FREE dùng được tính năng trả phí — phát hiện lúc đối chiếu sơ đồ use case với code thật.</p>
+ * <p>Trước đây nhóm endpoint này còn bị chặn theo gói cước ({@code @RequiresPlan("PRO")}). Mô hình
+ * Freemium đã gỡ khỏi phạm vi đề tài cùng Payment Service (2026-08-17), nên yêu cầu còn lại chỉ là
+ * JWT hợp lệ — vẫn phải kiểm, vì đây là dữ liệu riêng của từng người dùng.</p>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,8 +38,8 @@ class InventoryControllerSecurityTest {
     @MockitoBean
     InventoryService service;
 
-    private String token(String plan) {
-        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", plan);
+    private String token() {
+        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
     }
 
     @Test
@@ -49,38 +48,28 @@ class InventoryControllerSecurityTest {
     }
 
     @Test
-    void freePlanReturns402PaymentRequired() throws Exception {
-        mvc.perform(get("/inventory/items").header("Authorization", token("FREE")))
-                .andExpect(status().isPaymentRequired())
-                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
-    }
-
-    @Test
-    void proPlanReturns200() throws Exception {
+    void authenticatedUserCanList() throws Exception {
         when(service.list(any(), any())).thenReturn(List.of());
-        mvc.perform(get("/inventory/items").header("Authorization", token("PRO")))
+
+        mvc.perform(get("/inventory/items").header("Authorization", token()))
                 .andExpect(status().isOk());
     }
 
-    /** Endpoint ghi cũng phải bị chặn — không chỉ endpoint đọc. */
+    /** Endpoint ghi cũng phải chặn khi thiếu token, không chỉ endpoint đọc. */
     @Test
-    void freePlanCannotAddItem() throws Exception {
+    void addItemWithoutTokenReturns401() throws Exception {
         mvc.perform(post("/inventory/items")
-                        .header("Authorization", token("FREE"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"ingredientName\":\"Trứng gà\",\"quantity\":2,\"unit\":\"quả\"}"))
-                .andExpect(status().isPaymentRequired())
-                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
+                .andExpect(status().isUnauthorized());
     }
 
-    /** Thêm theo lô là đường đi của luồng nhận diện ảnh (CLAUDE.md mục 7) — cũng phải PRO. */
+    /** Thêm theo lô là đường đi của luồng nhận diện ảnh (CLAUDE.md mục 7) — cũng cần token. */
     @Test
-    void freePlanCannotAddBatch() throws Exception {
+    void addBatchWithoutTokenReturns401() throws Exception {
         mvc.perform(post("/inventory/items/batch")
-                        .header("Authorization", token("FREE"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"items\":[{\"ingredientName\":\"Cà chua\",\"quantity\":1,\"unit\":\"quả\"}]}"))
-                .andExpect(status().isPaymentRequired())
-                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
+                .andExpect(status().isUnauthorized());
     }
 }

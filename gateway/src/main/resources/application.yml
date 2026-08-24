@@ -36,7 +36,3 @@ spring:
           uri: ${IMAGE_SERVICE_URL:http://localhost:8086}
           predicates: [Path=/image-service/**]
           filters: [StripPrefix=1]
-        - id: payment
-          uri: ${PAYMENT_SERVICE_URL:http://localhost:8087}
-          predicates: [Path=/payment-service/**]
-          filters: [StripPrefix=1]

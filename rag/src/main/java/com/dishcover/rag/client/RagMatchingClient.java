@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Gọi Matching Service /internal/match-by-ingredients (specs/rag-service.md mục 1.1/3.3) — vẫn
- * cần Bearer token vì endpoint đó giữ @RequiresPlan("PRO") (mục 1.2).
+ * cần Bearer token vì endpoint đó vẫn yêu cầu JWT hợp lệ.
  */
 @Component
 public class RagMatchingClient {
@@ -37,7 +37,7 @@ public class RagMatchingClient {
      * Gọi {@code POST /matching/internal/match-by-ingredients} lấy danh sách công thức khớp với
      * nguyên liệu đã trích xuất từ câu hỏi chat.
      *
-     * @param bearerToken token JWT chuyển tiếp (endpoint đích vẫn giữ {@code @RequiresPlan("PRO")})
+     * @param bearerToken token JWT chuyển tiếp (endpoint đích yêu cầu JWT hợp lệ)
      * @param ingredients nguyên liệu đã normalize (từ {@code IngredientExtractor})
      * @param topN        số lượng công thức tối đa muốn lấy
      * @return danh sách công thức khớp, rỗng nếu Matching Service lỗi/timeout (fail-open, xem

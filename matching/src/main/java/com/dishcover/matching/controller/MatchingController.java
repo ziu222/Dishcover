@@ -1,6 +1,5 @@
 package com.dishcover.matching.controller;
 
-import com.dishcover.common.security.RequiresPlan;
 import com.dishcover.matching.dto.MatchingDtos.MatchByIngredientsRequest;
 import com.dishcover.matching.dto.MatchingDtos.RecipeMatchResponse;
 import com.dishcover.matching.service.MatchingService;
@@ -30,13 +29,12 @@ public class MatchingController {
     }
 
     /**
-     * Gợi ý công thức theo nguyên liệu người dùng đang đăng nhập đang có trong tủ lạnh — tính năng PRO.
+     * Gợi ý công thức theo nguyên liệu người dùng đang có trong tủ lạnh ảo.
      *
      * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi
      * @param topN số lượng kết quả tối đa mong muốn; có thể null
      * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
      */
-    @RequiresPlan("PRO")
     @GetMapping("/suggestions")
     public List<RecipeMatchResponse> suggestions(@RequestHeader("Authorization") String bearerToken,
                                                   @RequestParam(required = false) Integer topN) {
@@ -44,14 +42,13 @@ public class MatchingController {
     }
 
     /**
-     * Nội bộ — dùng cho RAG Service (specs/rag-service.md mục 1.1). VẪN giữ @RequiresPlan("PRO"):
-     * Gateway route /matching-service/** là prefix match phẳng, bỏ gate sẽ lộ tính năng PRO miễn
-     * phí cho bất kỳ ai gọi thẳng qua Gateway (specs/rag-service.md mục 1.2).
+     * Nội bộ — dùng cho RAG Service (specs/rag-service.md mục 1.1). Vẫn yêu cầu JWT hợp lệ vì
+     * route Gateway là prefix match phẳng, ai cũng gọi thẳng vào được chứ không riêng RAG Service;
+     * chỉ bỏ phần chặn theo gói cước sau khi gỡ Freemium.
      *
-     * @param request tên nguyên liệu tự do (VD trích từ câu hỏi chat) + topN mong muốn
+     * @param request danh sách nguyên liệu cần so khớp và số lượng kết quả mong muốn
      * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
      */
-    @RequiresPlan("PRO")
     @PostMapping("/internal/match-by-ingredients")
     public List<RecipeMatchResponse> matchByIngredients(@Valid @RequestBody MatchByIngredientsRequest request) {
         return service.searchByIngredients(request.ingredients(), request.topN());

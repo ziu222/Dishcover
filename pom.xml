@@ -72,6 +72,5 @@
     <module>matching</module>
     <module>rag</module>
     <module>image</module>
-    <module>payment</module>
   </modules>
 </project>

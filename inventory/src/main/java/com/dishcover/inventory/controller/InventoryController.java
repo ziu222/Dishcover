@@ -1,7 +1,6 @@
 package com.dishcover.inventory.controller;
 
 import com.dishcover.common.security.AuthenticatedUser;
-import com.dishcover.common.security.RequiresPlan;
 import com.dishcover.inventory.dto.InventoryDtos.AddItemRequest;
 import com.dishcover.inventory.dto.InventoryDtos.BatchAddRequest;
 import com.dishcover.inventory.dto.InventoryDtos.InventoryItemResponse;
@@ -27,10 +26,9 @@ import java.util.List;
 /**
  * userId luôn lấy từ JWT (specs/inventory-service.md mục 3) — không bao giờ nhận từ client.
  *
- * <p>Toàn bộ endpoint đều {@code @RequiresPlan("PRO")}: tủ lạnh ảo là tính năng trả phí theo bảng
- * Freemium (CLAUDE.md mục 8). Annotation đặt trên TỪNG phương thức chứ không phải trên lớp vì
- * {@code RequiresPlanAspect} khớp theo {@code @annotation(...)} (mức phương thức) — giống cách
- * {@code MatchingController}/{@code ChatController} đang làm.</p>
+ * <p>Mọi endpoint chỉ yêu cầu JWT hợp lệ. Trước đây cả nhóm bị chặn bằng {@code @RequiresPlan("PRO")}
+ * theo mô hình Freemium; mô hình này đã bị gỡ khỏi phạm vi đề tài cùng với Payment Service
+ * (2026-08-17), nên tủ lạnh ảo giờ mở cho mọi người dùng đã đăng nhập.</p>
  */
 @RestController
 @RequestMapping("/inventory/items")
@@ -51,7 +49,6 @@ public class InventoryController {
      * @param status trạng thái lọc (FRESH/EXPIRING_SOON/EXPIRED/USED), null nếu không lọc
      * @return danh sách nguyên liệu của người dùng
      */
-    @RequiresPlan("PRO")
     @GetMapping
     public List<InventoryItemResponse> list(@AuthenticationPrincipal AuthenticatedUser me,
                                             @RequestParam(required = false) String status) {
@@ -66,7 +63,6 @@ public class InventoryController {
      * @return chi tiết nguyên liệu
      * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tồn tại hoặc không thuộc người dùng này
      */
-    @RequiresPlan("PRO")
     @GetMapping("/{id}")
     public InventoryItemResponse getOne(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {
         return service.getOne(me.userId(), id);
@@ -81,7 +77,6 @@ public class InventoryController {
      * @param req thông tin nguyên liệu cần thêm
      * @return nguyên liệu sau khi thêm/gộp lô, HTTP 201
      */
-    @RequiresPlan("PRO")
     @PostMapping
     public ResponseEntity<InventoryItemResponse> add(@AuthenticationPrincipal AuthenticatedUser me,
                                                       @Valid @RequestBody AddItemRequest req) {
@@ -97,7 +92,6 @@ public class InventoryController {
      * @param req danh sách nguyên liệu cần thêm
      * @return danh sách nguyên liệu sau khi thêm/gộp lô, HTTP 201
      */
-    @RequiresPlan("PRO")
     @PostMapping("/batch")
     public ResponseEntity<List<InventoryItemResponse>> addBatch(@AuthenticationPrincipal AuthenticatedUser me,
                                                                  @Valid @RequestBody BatchAddRequest req) {
@@ -114,7 +108,6 @@ public class InventoryController {
      * @return nguyên liệu sau khi cập nhật
      * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tồn tại hoặc không thuộc người dùng này
      */
-    @RequiresPlan("PRO")
     @PatchMapping("/{id}")
     public InventoryItemResponse update(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id,
                                         @Valid @RequestBody UpdateItemRequest req) {
@@ -127,7 +120,6 @@ public class InventoryController {
      * @param me người dùng đã xác thực, lấy từ JWT
      * @param id id dòng nguyên liệu cần xóa
      */
-    @RequiresPlan("PRO")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {

@@ -20,7 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/** Test @RequiresPlan chạy qua toàn bộ filter chain thật — ChatOrchestrator mock (specs/rag-service.md mục 6). */
+/**
+ * Chính sách xác thực của /chat qua toàn bộ filter chain thật — ChatOrchestrator mock
+ * (specs/rag-service.md mục 6). Freemium đã gỡ (2026-08-17) nên chỉ còn yêu cầu JWT hợp lệ.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -33,8 +36,8 @@ class ChatControllerSecurityTest {
     @MockitoBean
     ChatOrchestrator orchestrator;
 
-    private String token(String plan) {
-        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", plan);
+    private String token() {
+        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
     }
 
     @Test
@@ -46,20 +49,10 @@ class ChatControllerSecurityTest {
     }
 
     @Test
-    void freePlanReturns402PaymentRequired() throws Exception {
-        mvc.perform(post("/chat")
-                        .header("Authorization", token("FREE"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"message\":\"tôi có trứng\"}"))
-                .andExpect(status().isPaymentRequired())
-                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
-    }
-
-    @Test
-    void proPlanReturns200() throws Exception {
+    void authenticatedUserReturns200() throws Exception {
         when(orchestrator.handle(any(), any())).thenReturn(new ChatResponse("ok", List.of(), false));
         mvc.perform(post("/chat")
-                        .header("Authorization", token("PRO"))
+                        .header("Authorization", token())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"message\":\"tôi có trứng\"}"))
                 .andExpect(status().isOk());
