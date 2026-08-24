@@ -28,6 +28,13 @@ groq:
   # KHÔNG thêm /v1 — OpenAiApi tự nối /v1/chat/completions (xem Javadoc GroqProvider).
   base-url: https://api.groq.com/openai
   model: llama-3.3-70b-versatile
+openai:
+  api-key: ${OPENAI_API_KEY:changeme}
+  # base-url để mặc định của thư viện; cũng KHÔNG thêm /v1 vì cùng lý do trên.
+  base-url: https://api.openai.com
+  # Dòng mini nằm trong diện token miễn phí hằng ngày nếu bật chia sẻ dữ liệu, và nhận cả ảnh
+  # (dùng lại được cho Image Recognition ở mục 7).
+  model: gpt-4o-mini
 
 # Địa chỉ 2 service gọi ra (không Eureka — Docker DNS/localhost, cùng quy ước với Gateway).
 services:
