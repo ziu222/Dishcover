@@ -1,0 +1,41 @@
+{
+  "_note": "Ground truth cho bộ 30 ảnh đo accuracy Image Recognition (CLAUDE.md mục 7/11). 'expected' = danh sách normalized_name (khóa catalog, bỏ dấu + đ->d) mà ảnh THẬT SỰ chứa. Ảnh nhóm 'empty' có expected rỗng []. Điền đúng nhãn thật rồi chạy run-eval.mjs.",
+  "categories": {
+    "single": "10 ảnh rõ 1 nguyên liệu",
+    "multi": "10 ảnh nhiều nguyên liệu",
+    "confusable": "5 ảnh khó/dễ nhầm (vd hành lá vs hẹ, ngò vs cần)",
+    "empty": "5 ảnh KHÔNG có nguyên liệu nấu ăn (bàn trống, bao bì, tay người...)"
+  },
+  "images": [
+    { "file": "single_01.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_02.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_03.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_04.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_05.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_06.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_07.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_08.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_09.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "single_10.jpg", "category": "single", "expected": ["<normalized_name>"] },
+    { "file": "multi_01.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_02.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_03.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_04.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_05.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_06.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_07.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_08.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_09.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "multi_10.jpg", "category": "multi", "expected": ["<nl1>", "<nl2>"] },
+    { "file": "confusable_01.jpg", "category": "confusable", "expected": ["<normalized_name>"] },
+    { "file": "confusable_02.jpg", "category": "confusable", "expected": ["<normalized_name>"] },
+    { "file": "confusable_03.jpg", "category": "confusable", "expected": ["<normalized_name>"] },
+    { "file": "confusable_04.jpg", "category": "confusable", "expected": ["<normalized_name>"] },
+    { "file": "confusable_05.jpg", "category": "confusable", "expected": ["<normalized_name>"] },
+    { "file": "empty_01.jpg", "category": "empty", "expected": [] },
+    { "file": "empty_02.jpg", "category": "empty", "expected": [] },
+    { "file": "empty_03.jpg", "category": "empty", "expected": [] },
+    { "file": "empty_04.jpg", "category": "empty", "expected": [] },
+    { "file": "empty_05.jpg", "category": "empty", "expected": [] }
+  ]
+}

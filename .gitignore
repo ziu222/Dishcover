@@ -43,3 +43,7 @@ build/
 .env.local
 .env.*.local
 !.env.example
+
+# Bộ 30 ảnh đánh giá — không commit ảnh (bản quyền/dung lượng), giữ harness
+eval/image/images/*
+!eval/image/images/.gitkeep
