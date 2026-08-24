@@ -40,8 +40,6 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Công khai: đăng ký, đăng nhập, health. Còn lại cần JWT hợp lệ.
-                        // (Endpoint /internal đổi plan để dành cho luồng Payment mục 10 — chưa làm,
-                        //  vì Gateway StripPrefix có thể để lộ /internal ra ngoài, cần chặn ở Gateway trước.)
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         // Swagger UI + OpenAPI docs công khai (chỉ tài liệu, không lộ dữ liệu)

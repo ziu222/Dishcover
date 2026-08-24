@@ -6,7 +6,7 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   full_name VARCHAR(100),
   avatar_url TEXT,
-  plan VARCHAR(20) DEFAULT 'FREE',   -- FREE | PRO (đồng bộ với payment_service.subscriptions)
+  plan VARCHAR(20) DEFAULT 'FREE',   -- trường dự phòng, KHÔNG còn dùng sau khi gỡ Freemium (CLAUDE.md mục 8)
   created_at TIMESTAMPTZ DEFAULT now()
 );
 

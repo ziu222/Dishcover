@@ -12,7 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/** Toàn bộ /chat yêu cầu JWT hợp lệ — không có route public (Chatbot RAG là PRO-only, CLAUDE.md mục 8). */
+/** Toàn bộ /chat yêu cầu JWT hợp lệ — không có route public, giống Inventory/Matching. */
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityConfig {

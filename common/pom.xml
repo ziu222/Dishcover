@@ -25,11 +25,6 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
     </dependency>
-    <!-- AOP cho @RequiresPlan (gating PRO, dùng chung Matching/RAG/Image — specs/matching-service.md mục 3.5). -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-aop</artifactId>
-    </dependency>
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
