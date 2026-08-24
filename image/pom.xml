@@ -13,7 +13,21 @@
   <artifactId>image</artifactId>
   <packaging>jar</packaging>
   <name>image</name>
-  <description>Image Recognition Service (AI #2) — stateless, gọi Vision API. Dependency Spring AI/Resilience4j thêm khi code checklist mục 8-9.</description>
+  <description>Image Recognition Service (AI #2) — stateless, nhận diện nguyên liệu qua Vision API đa phương thức (CLAUDE.md mục 7), human-in-the-loop (không tự ghi DB).</description>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Cùng phiên bản ghim với rag/pom.xml — Spring AI 2.0.x yêu cầu Spring Boot 4.x, xung đột
+           bean thật với Boot 3.5.3 của dự án (đã verify lúc làm RAG Service). -->
+      <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-bom</artifactId>
+        <version>1.1.8</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -31,11 +45,41 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!-- OpenAPI/Swagger UI: trang tài liệu API tương tác tại /swagger-ui.html -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.8.9</version>
+    </dependency>
+    <!-- Circuit breaker cho lời gọi Vision API (CLAUDE.md mục 7 "Fallback bắt buộc").
+         Ghim 2.2.0 — 2.3.0+ có bug NoClassDefFoundError lúc khởi động (resilience4j/resilience4j#2265),
+         đã gặp thật lúc làm Matching Service. -->
+    <dependency>
+      <groupId>io.github.resilience4j</groupId>
+      <artifactId>resilience4j-spring-boot3</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <!-- Vision: dùng lại OpenAI (gpt-4o-mini nhận ảnh trực tiếp) — cùng lý do OpenAiProvider của
+         RAG Service được thêm (rag/llm/OpenAiProvider.java): 1 khóa OPENAI_API_KEY phủ cả chat lẫn
+         thị giác, không cần model riêng cho Image Service. -->
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-starter-model-openai</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
