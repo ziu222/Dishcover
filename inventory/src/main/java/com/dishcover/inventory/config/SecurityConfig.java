@@ -15,8 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * Cấu hình Spring Security cho Inventory Service: xác thực JWT stateless, không session.
  * Toàn bộ endpoint {@code /inventory/**} yêu cầu JWT hợp lệ; chỉ actuator health và
- * Swagger UI được công khai (xem {@link #filterChain}). Trên nền đó còn thêm lớp gating gói
- * cước: xem {@link #requiresPlanAspect()}.
+ * Swagger UI được công khai (xem {@link #filterChain}).
  */
 @Configuration
 @EnableConfigurationProperties(JwtProperties.class)

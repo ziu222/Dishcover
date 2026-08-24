@@ -4,3 +4,39 @@ server:
 spring:
   application:
     name: image
+  servlet:
+    multipart:
+      # Khớp giới hạn nghiệp vụ 5MB ở ImageValidator (CLAUDE.md mục 7) — chặn sớm ở tầng servlet.
+      max-file-size: 5MB
+      max-request-size: 5MB
+  # Vision qua OpenAI (gpt-4o-mini nhận ảnh trực tiếp) — dùng lại OPENAI_API_KEY đã có từ RAG
+  # Service (rag/application.yml), KHÔNG cần model/key riêng cho Image Service.
+  ai:
+    model:
+      chat: openai
+    openai:
+      api-key: ${OPENAI_API_KEY:changeme}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+      chat:
+        options:
+          model: ${OPENAI_VISION_MODEL:gpt-4o-mini}
+
+# JWT: mọi endpoint bắt buộc token hợp lệ (khác Recipe — Image Service không có endpoint đọc
+# công khai). Cùng secret với các service khác qua env JWT_SECRET.
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+# Circuit breaker cho lời gọi Vision API (CLAUDE.md mục 7 "Fallback bắt buộc": lỗi/timeout ->
+# 503, không chết chức năng). Cùng ngưỡng với instance "llm" của RAG Service.
+resilience4j:
+  circuitbreaker:
+    instances:
+      vision:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+  timelimiter:
+    instances:
+      vision:
+        timeoutDuration: 15s
