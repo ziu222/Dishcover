@@ -39,6 +39,14 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <!-- AspectJ weaver cho aspect @CircuitBreaker/@TimeLimiter của Resilience4j. BẮT BUỘC khai báo
+         tường minh: service này KHÔNG dùng JPA nên không kéo aspectjweaver transitively như Matching
+         Service (qua spring-boot-starter-data-jpa) — thiếu nó thì annotation resilience lặng lẽ
+         no-op, aspect không weave (0 buffered call), fallback vẫn "đúng" tình cờ nhờ try/catch. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
