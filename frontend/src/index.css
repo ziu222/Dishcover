@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+/* Design tokens Larder — trích từ mockup "Larder Foundation". Tailwind v4 tự sinh utility
+   từ các biến này (bg-bg, text-ink, text-accent, font-display, rounded-card...). */
+@theme {
+  --color-bg: #efe9de;
+  --color-surface: #f6f2ea;
+  --color-card: #fbf9f4;
+  --color-ink: #23201a;
+  --color-muted: #57534a;
+  --color-faint: #8c8577;
+  --color-mist: #a89f8c;
+  --color-accent: #a85d42;
+  --color-accent-strong: #8c4a34;
+  --color-accent-wash: #f0e6dd;
+  --color-line: #d8cfbe;
+  --color-line-soft: #e7e0d2;
+
+  /* trạng thái hạn dùng — dùng lại cho Tủ lạnh ảo về sau */
+  --color-fresh: #6e7a56;
+  --color-fresh-bg: #ebeee0;
+  --color-amber: #b98a2e;
+  --color-amber-bg: #f3ead4;
+  --color-expired: #a64b3b;
+  --color-expired-bg: #f3e2dd;
+
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+
+  --radius-card: 14px;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #e4d2c7;
+}
