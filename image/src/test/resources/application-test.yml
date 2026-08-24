@@ -1,0 +1,10 @@
+jwt:
+  secret: test-secret-at-least-32-chars-long-000
+  expiration-minutes: 120
+
+# Giá trị giả — test không bao giờ gọi Vision thật (mock RecognitionService), chỉ cần context load
+# được (spring.ai.openai.api-key không có default, thiếu là service không khởi động được).
+spring:
+  ai:
+    openai:
+      api-key: test-fake-key-never-called
