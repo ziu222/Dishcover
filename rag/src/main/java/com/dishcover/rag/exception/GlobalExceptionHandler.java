@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/** PlanRequiredException/ResourceNotFoundException/validation kế thừa từ CommonExceptionHandler (common). */
+/** ResourceNotFoundException/validation kế thừa từ CommonExceptionHandler (common). */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends CommonExceptionHandler {
 

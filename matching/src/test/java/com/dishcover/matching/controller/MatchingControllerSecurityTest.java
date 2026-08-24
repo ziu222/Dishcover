@@ -17,12 +17,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Test @RequiresPlan chạy qua toàn bộ filter chain thật (JWT verify + AOP) — MatchingService
- * được mock để không cần 3 service ngoài (specs/matching-service.md mục 6/7).
+ * Chính sách xác thực của Matching Service, chạy qua toàn bộ filter chain thật — MatchingService
+ * mock để không cần 3 service ngoài (specs/matching-service.md mục 6/7).
+ *
+ * <p>Trước đây còn kiểm gói cước; Freemium đã gỡ cùng Payment Service (2026-08-17) nên yêu cầu
+ * còn lại chỉ là JWT hợp lệ.</p>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,8 +38,8 @@ class MatchingControllerSecurityTest {
     @MockitoBean
     MatchingService service;
 
-    private String token(String plan) {
-        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", plan);
+    private String token() {
+        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
     }
 
     @Test
@@ -46,33 +48,16 @@ class MatchingControllerSecurityTest {
     }
 
     @Test
-    void freePlanReturns402PaymentRequired() throws Exception {
-        mvc.perform(get("/matching/suggestions").header("Authorization", token("FREE")))
-                .andExpect(status().isPaymentRequired())
-                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
-    }
-
-    @Test
-    void proPlanReturns200() throws Exception {
+    void authenticatedUserReturns200() throws Exception {
         when(service.suggest(any(), any())).thenReturn(List.of());
-        mvc.perform(get("/matching/suggestions").header("Authorization", token("PRO")))
+        mvc.perform(get("/matching/suggestions").header("Authorization", token()))
                 .andExpect(status().isOk());
     }
 
     /**
-     * specs/rag-service.md mục 1.2: endpoint nội bộ VẪN phải PRO-gate — Gateway route là prefix
-     * match phẳng, bỏ gate sẽ lộ tính năng PRO miễn phí cho ai gọi thẳng qua Gateway (không chỉ RAG).
+     * Endpoint nội bộ vẫn phải kiểm token: route Gateway là prefix match phẳng nên ai cũng gọi
+     * thẳng vào được, không riêng RAG Service.
      */
-    @Test
-    void internalMatchByIngredientsFreePlanReturns402() throws Exception {
-        mvc.perform(post("/matching/internal/match-by-ingredients")
-                        .header("Authorization", token("FREE"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"ingredients\":[\"trứng gà\"]}"))
-                .andExpect(status().isPaymentRequired())
-                .andExpect(jsonPath("$.code").value("PAYMENT_REQUIRED"));
-    }
-
     @Test
     void internalMatchByIngredientsNoTokenReturns401() throws Exception {
         mvc.perform(post("/matching/internal/match-by-ingredients")
@@ -82,10 +67,10 @@ class MatchingControllerSecurityTest {
     }
 
     @Test
-    void internalMatchByIngredientsProPlanReturns200() throws Exception {
+    void internalMatchByIngredientsAuthenticatedReturns200() throws Exception {
         when(service.searchByIngredients(any(), any())).thenReturn(List.of());
         mvc.perform(post("/matching/internal/match-by-ingredients")
-                        .header("Authorization", token("PRO"))
+                        .header("Authorization", token())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"ingredients\":[\"trứng gà\"]}"))
                 .andExpect(status().isOk());

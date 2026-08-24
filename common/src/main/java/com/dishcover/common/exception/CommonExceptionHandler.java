@@ -1,6 +1,5 @@
 package com.dishcover.common.exception;
 
-import com.dishcover.common.security.PlanRequiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
  * review đã gộp lại). KHÔNG tự nó là {@code @RestControllerAdvice}: mỗi service khai báo 1
  * subclass (rỗng nếu không có exception riêng) trong package của chính mình để Spring
  * component-scan thấy được — {@code common} không nằm trong base package của service nào, cùng
- * lý do JwtService/JwtAuthFilter/RequiresPlanAspect phải đăng ký thủ công. Kế thừa (không phải
+ * lý do JwtService/JwtAuthFilter phải đăng ký thủ công. Kế thừa (không phải
  * @Bean thủ công) vì @ExceptionHandler là method, method kế thừa Spring vẫn nhận diện được ở
  * subclass — đơn giản hơn.
  */
@@ -31,11 +30,6 @@ public class CommonExceptionHandler {
                 .map(e -> e.getField() + ": " + e.getDefaultMessage())
                 .collect(Collectors.joining("; "));
         return build(HttpStatus.UNPROCESSABLE_ENTITY, "VALIDATION_ERROR", detail);
-    }
-
-    @ExceptionHandler(PlanRequiredException.class)
-    public ResponseEntity<ApiError> handlePlanRequired(PlanRequiredException ex) {
-        return build(HttpStatus.PAYMENT_REQUIRED, "PAYMENT_REQUIRED", ex.getMessage());
     }
 
     protected ResponseEntity<ApiError> build(HttpStatus status, String code, String message) {

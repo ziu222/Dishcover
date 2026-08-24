@@ -2,7 +2,6 @@ package com.dishcover.inventory.config;
 
 import com.dishcover.common.security.JwtAuthFilter;
 import com.dishcover.common.security.JwtService;
-import com.dishcover.common.security.RequiresPlanAspect;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,16 +32,6 @@ public class SecurityConfig {
         return new JwtAuthFilter(jwtService);
     }
 
-    /**
-     * Bean cho {@code @RequiresPlan} trên {@code InventoryController} — tủ lạnh ảo là tính năng
-     * gói PRO (CLAUDE.md mục 8). Aspect nằm ở {@code common} nhưng KHÔNG được đánh
-     * {@code @Component} (service con không component-scan package đó), nên mỗi service phải tự
-     * đăng ký như Matching/RAG đang làm.
-     */
-    @Bean
-    RequiresPlanAspect requiresPlanAspect() {
-        return new RequiresPlanAspect();
-    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
