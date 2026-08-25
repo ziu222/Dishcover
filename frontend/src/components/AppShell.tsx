@@ -27,7 +27,10 @@ const NAV: NavItem[] = [
   { to: '/tai-khoan', label: 'Tài khoản', icon: User, enabled: false },
 ]
 
-const PAGE_TITLE: Record<string, string> = { '/': 'Khám phá' }
+function pageTitle(pathname: string): string {
+  if (pathname.startsWith('/cong-thuc/')) return 'Công thức'
+  return pathname === '/' ? 'Khám phá' : ''
+}
 
 /** Khung ứng dụng sau đăng nhập: sidebar trái + topbar + nội dung route (Outlet).
  *  Tập trung cho desktop; màn nhỏ sidebar ẩn, nội dung tràn rộng. */
@@ -83,7 +86,7 @@ export function AppShell() {
             Larder<span className="text-accent">.</span>
           </span>
           <span className="hidden text-xs font-medium tracking-[0.04em] text-mist lg:inline">
-            {PAGE_TITLE[pathname] ?? ''}
+            {pageTitle(pathname)}
           </span>
           <div className="flex items-center gap-5">
             <Bell className="size-[22px] text-muted" />
