@@ -6,9 +6,16 @@ import { RecipeDetail } from './screens/RecipeDetail'
 import { AppShell } from './components/AppShell'
 import { useAuth } from './auth/AuthContext'
 
-/** Chặn route cần đăng nhập — chưa có token thì đẩy về /login. */
+/**
+ * Chặn route cần đăng nhập. Token nằm trong cookie httpOnly nên không biết được ngay từ
+ * localStorage — phải chờ AuthProvider gọi xong GET /users/me (checking) rồi mới quyết định,
+ * tránh vừa lóe nội dung bảo vệ vừa văng về /login khi phiên đã hết hạn.
+ */
 function RequireAuth() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, checking } = useAuth()
+  if (checking) {
+    return <div className="grid min-h-[100dvh] place-items-center text-sm text-muted">Đang tải…</div>
+  }
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
 }
 

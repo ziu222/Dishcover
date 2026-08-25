@@ -1,10 +1,10 @@
-import { createContext, use, useMemo, useState, type ReactNode } from 'react'
-import { api, getToken, setToken } from '../lib/api'
-import type { AuthResponse, User } from '../types'
+import { createContext, use, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { api } from '../lib/api'
+import type { User } from '../types'
 
 const USER_KEY = 'larder.user'
 
-function loadUser(): User | null {
+function loadCachedUser(): User | null {
   const raw = localStorage.getItem(USER_KEY)
   if (!raw) return null
   try {
@@ -17,46 +17,82 @@ function loadUser(): User | null {
 interface AuthState {
   user: User | null
   isAuthenticated: boolean
+  /** true trong lúc xác thực phiên lúc mở app (GET /users/me) — chưa biết đăng nhập hay chưa. */
+  checking: boolean
   login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string, fullName: string) => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthState | null>(null)
 
-// ponytail: JWT ở localStorage chấp nhận cho đồ án; nâng httpOnly cookie nếu cần chống XSS.
+/**
+ * Token nằm trong cookie httpOnly `auth_token` — JS không đọc được, nên không còn cách nào biết
+ * "đã đăng nhập chưa" chỉ từ localStorage như trước. `user` cache ở đây chỉ để hiện UI ngay
+ * (tên/avatar) trong lúc chờ GET /users/me xác nhận phiên còn hiệu lực; 401 thì coi như chưa
+ * đăng nhập và xoá cache.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => (getToken() ? loadUser() : null))
+  const [user, setUser] = useState<User | null>(loadCachedUser)
+  const [checking, setChecking] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    api<User>('/user-service/users/me')
+      .then((u) => {
+        if (cancelled) return
+        setUser(u)
+        localStorage.setItem(USER_KEY, JSON.stringify(u))
+      })
+      .catch(() => {
+        if (cancelled) return
+        setUser(null)
+        localStorage.removeItem(USER_KEY)
+      })
+      .finally(() => {
+        if (!cancelled) setChecking(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const value = useMemo<AuthState>(() => {
-    function persist(res: AuthResponse) {
-      setToken(res.token)
-      localStorage.setItem(USER_KEY, JSON.stringify(res.user))
-      setUser(res.user)
+    function persist(u: User) {
+      localStorage.setItem(USER_KEY, JSON.stringify(u))
+      setUser(u)
     }
 
     return {
       user,
       isAuthenticated: user !== null,
+      checking,
       async login(email, password) {
-        persist(await api<AuthResponse>('/user-service/auth/login', {
-          method: 'POST',
-          body: { email, password },
-        }))
+        persist(
+          await api<User>('/user-service/auth/login', { method: 'POST', body: { email, password } }),
+        )
       },
       async register(email, password, fullName) {
-        persist(await api<AuthResponse>('/user-service/auth/register', {
-          method: 'POST',
-          body: { email, password, fullName },
-        }))
+        persist(
+          await api<User>('/user-service/auth/register', {
+            method: 'POST',
+            body: { email, password, fullName },
+          }),
+        )
       },
-      logout() {
-        setToken(null)
-        localStorage.removeItem(USER_KEY)
-        setUser(null)
+      async logout() {
+        try {
+          await api('/user-service/auth/logout', { method: 'POST' })
+        } catch {
+          // Lỗi mạng/API khi logout không nên kẹt người dùng ở trạng thái "vẫn đăng nhập" —
+          // vẫn dọn state cục bộ bên dưới.
+        } finally {
+          localStorage.removeItem(USER_KEY)
+          setUser(null)
+        }
       },
     }
-  }, [user])
+  }, [user, checking])
 
   return <AuthContext value={value}>{children}</AuthContext>
 }

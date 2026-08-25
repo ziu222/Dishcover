@@ -1,16 +1,9 @@
 // fetch wrapper mỏng cho Gateway. Frontend luôn gọi path tương đối bắt đầu bằng `/api`
 // (dev proxy chuyển sang http://localhost:8080 và cắt `/api` — xem vite.config.ts).
-
-const TOKEN_KEY = 'larder.token'
-
-export function getToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY)
-}
-
-export function setToken(token: string | null) {
-  if (token) localStorage.setItem(TOKEN_KEY, token)
-  else localStorage.removeItem(TOKEN_KEY)
-}
+//
+// Auth: token nằm trong cookie httpOnly `auth_token` (đặt bởi User Service qua Set-Cookie).
+// JS không đọc/set được cookie này — trình duyệt tự đính kèm mọi request cùng-origin nhờ
+// `credentials: 'include'`, không cần frontend tự quản lý Authorization header nữa.
 
 /** Lỗi API — mang mã lỗi backend ({code, message, traceId}) để UI hiển thị đúng. */
 export class ApiError extends Error {
@@ -39,16 +32,15 @@ export async function api<T>(path: string, opts: RequestOptions = {}): Promise<T
     }
   }
 
-  const token = getToken()
   const headers: Record<string, string> = {}
   if (opts.body !== undefined) headers['Content-Type'] = 'application/json'
-  if (token) headers['Authorization'] = `Bearer ${token}`
 
   let res: Response
   try {
     res = await fetch(url.pathname + url.search, {
       method: opts.method ?? 'GET',
       headers,
+      credentials: 'include',
       body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
     })
   } catch {

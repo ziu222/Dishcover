@@ -57,10 +57,3 @@ export interface User {
   avatarUrl: string | null
   plan: string | null
 }
-
-/** AuthResponse — trả về từ /auth/login và /auth/register. */
-export interface AuthResponse {
-  token: string
-  expiresInSeconds: number
-  user: User
-}
