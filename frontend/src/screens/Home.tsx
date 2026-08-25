@@ -1,11 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { CookingPot } from '@phosphor-icons/react'
 import { useRecipes } from '../hooks/useRecipes'
 import { useFavorites } from '../hooks/useFavorites'
 import { useAuth } from '../auth/AuthContext'
 import { RecipeCard } from '../components/RecipeCard'
-import { Chip } from '../components/Chip'
+import { Select, type SelectOption } from '../components/Select'
+import { Pagination } from '../components/Pagination'
 import { Button } from '../components/Button'
 
 function greeting(name: string): string {
@@ -15,30 +16,43 @@ function greeting(name: string): string {
 }
 
 const grid = 'grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3'
+const PAGE_SIZE = 12
 
 export function Home() {
   const { user } = useAuth()
   const { recipes, loading, error, reload } = useRecipes()
   const { favorites, toggle: toggleFav } = useFavorites()
-  const [activeTag, setActiveTag] = useState<string | null>(null)
+  const [tag, setTag] = useState('')
+  const [page, setPage] = useState(0)
 
-  const topTags = useMemo(() => {
+  // Dropdown: tất cả tag, xếp theo tần suất giảm dần.
+  const tagOptions = useMemo<SelectOption[]>(() => {
     const counts = new Map<string, number>()
     for (const r of recipes) for (const t of r.tags) counts.set(t, (counts.get(t) ?? 0) + 1)
-    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([t]) => t)
+    const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t)
+    return [{ value: '', label: 'Tất cả món' }, ...sorted.map((t) => ({ value: t, label: t }))]
   }, [recipes])
 
   const filtered = useMemo(
-    () => (activeTag ? recipes.filter((r) => r.tags.includes(activeTag)) : recipes),
-    [recipes, activeTag],
+    () => (tag ? recipes.filter((r) => r.tags.includes(tag)) : recipes),
+    [recipes, tag],
   )
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const safePage = Math.min(page, Math.max(0, totalPages - 1))
+  const pageItems = filtered.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE)
+
+  // Đổi trang -> cuộn lên đầu để không bị đứng ở giữa danh sách.
+  useEffect(() => {
+    if (page > 0) window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [page])
 
   const name = user?.fullName?.split(' ').at(-1) || 'bạn'
 
   return (
     <div className="px-6 py-9 lg:px-10">
-      {/* Header — bất đối xứng: lời chào lớn bên trái, chip lọc bên phải */}
-      <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      {/* Header — lời chào trái, dropdown lọc phải */}
+      <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
             {greeting(name)}
@@ -47,17 +61,16 @@ export function Home() {
             Hôm nay nấu gì?
           </h1>
         </div>
-        {topTags.length > 0 && (
-          <div className="flex flex-wrap gap-2 lg:justify-end lg:max-w-xl">
-            <Chip active={activeTag === null} onClick={() => setActiveTag(null)}>
-              Tất cả
-            </Chip>
-            {topTags.map((t) => (
-              <Chip key={t} active={activeTag === t} onClick={() => setActiveTag(t)}>
-                {t}
-              </Chip>
-            ))}
-          </div>
+        {tagOptions.length > 1 && (
+          <Select
+            value={tag}
+            ariaLabel="Lọc theo loại món"
+            options={tagOptions}
+            onChange={(v) => {
+              setTag(v)
+              setPage(0)
+            }}
+          />
         )}
       </div>
 
@@ -86,33 +99,42 @@ export function Home() {
           <CookingPot className="mx-auto mb-4 size-10 text-mist" />
           <p className="font-display text-2xl font-light text-ink">Chưa có món phù hợp</p>
           <p className="mt-2 text-sm text-muted">
-            {activeTag ? 'Thử bỏ bộ lọc để xem tất cả công thức.' : 'Danh sách công thức đang trống.'}
+            {tag ? 'Thử chọn loại món khác.' : 'Danh sách công thức đang trống.'}
           </p>
-          {activeTag && (
-            <Button variant="secondary" className="mt-5" onClick={() => setActiveTag(null)}>
+          {tag && (
+            <Button variant="secondary" className="mt-5" onClick={() => setTag('')}>
               Xem tất cả
             </Button>
           )}
         </div>
       ) : (
-        <motion.div
-          className={grid}
-          initial="hidden"
-          animate="show"
-          variants={{ show: { transition: { staggerChildren: 0.05 } } }}
-        >
-          {filtered.map((r) => (
-            <motion.div
-              key={r.id}
-              variants={{
-                hidden: { opacity: 0, y: 16 },
-                show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 120, damping: 20 } },
-              }}
-            >
-              <RecipeCard recipe={r} favorited={favorites.has(r.id)} onToggleFav={toggleFav} />
-            </motion.div>
-          ))}
-        </motion.div>
+        <>
+          <motion.div
+            key={`${tag}-${safePage}`}
+            className={grid}
+            initial="hidden"
+            animate="show"
+            variants={{ show: { transition: { staggerChildren: 0.04 } } }}
+          >
+            {pageItems.map((r) => (
+              <motion.div
+                key={r.id}
+                variants={{
+                  hidden: { opacity: 0, y: 16 },
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: 'spring', stiffness: 120, damping: 20 },
+                  },
+                }}
+              >
+                <RecipeCard recipe={r} favorited={favorites.has(r.id)} onToggleFav={toggleFav} />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <Pagination page={safePage} totalPages={totalPages} onChange={setPage} />
+        </>
       )}
     </div>
   )
