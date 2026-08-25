@@ -8,8 +8,9 @@ interface State {
   error: string | null
 }
 
-// ponytail: nạp 60 công thức 1 lần rồi lọc phía client — đúng ở quy mô ~62 công thức seed.
-// Khi catalog lớn lên thì chuyển sang phân trang + lọc phía server (backend đã hỗ trợ tag/difficulty).
+// ponytail: nạp toàn bộ công thức 1 lần rồi lọc + phân trang phía client — đúng ở quy mô ~vài trăm.
+// Khi catalog vượt ngưỡng này thì chuyển sang phân trang + lọc phía server (backend đã hỗ trợ
+// page/size/tag/difficulty) + endpoint liệt kê tag cho dropdown.
 export function useRecipes() {
   const [state, setState] = useState<State>({ recipes: [], loading: true, error: null })
   const [reloadKey, setReloadKey] = useState(0)
@@ -17,7 +18,7 @@ export function useRecipes() {
   useEffect(() => {
     let cancelled = false
     setState((s) => ({ ...s, loading: true, error: null }))
-    api<Page<RecipeSummary>>('/recipe-service/recipes', { params: { size: 60, sort: 'name,asc' } })
+    api<Page<RecipeSummary>>('/recipe-service/recipes', { params: { size: 500, sort: 'name,asc' } })
       .then((page) => {
         if (!cancelled) setState({ recipes: page.content, loading: false, error: null })
       })
