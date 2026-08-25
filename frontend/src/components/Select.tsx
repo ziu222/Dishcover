@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { CaretDown, Check } from '@phosphor-icons/react'
 import { cn } from '../lib/cn'
 
@@ -96,8 +96,9 @@ export function Select({ value, onChange, options, ariaLabel }: SelectProps) {
         </motion.span>
       </button>
 
-      <AnimatePresence>
-        {open && (
+      {/* Đóng = unmount tức thì (không dùng AnimatePresence exit — dễ kẹt node trong DOM);
+          giữ animation lúc mở cho mượt. */}
+      {open && (
           <motion.ul
             ref={listRef}
             id={listId}
@@ -105,8 +106,7 @@ export function Select({ value, onChange, options, ariaLabel }: SelectProps) {
             aria-label={ariaLabel}
             initial={{ opacity: 0, y: -8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+            transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
             style={{ transformOrigin: 'top right' }}
             className="absolute right-0 z-30 mt-2 max-h-[340px] min-w-full overflow-y-auto rounded-2xl border border-line-soft bg-card p-1.5 shadow-[0_24px_50px_-20px_rgba(40,34,24,0.35)]"
           >
@@ -131,8 +131,7 @@ export function Select({ value, onChange, options, ariaLabel }: SelectProps) {
               )
             })}
           </motion.ul>
-        )}
-      </AnimatePresence>
+      )}
     </div>
   )
 }
