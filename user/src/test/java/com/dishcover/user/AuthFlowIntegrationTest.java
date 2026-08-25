@@ -24,25 +24,33 @@ class AuthFlowIntegrationTest {
     @Autowired
     ObjectMapper mapper;
 
+    /**
+     * Đăng ký và trả token — token giờ chỉ đi qua cookie httpOnly {@code auth_token}, không
+     * còn trong JSON body (xem AuthController). Test vẫn dùng Bearer header để gọi endpoint
+     * bảo vệ vì JwtAuthFilter chấp nhận cả 2 đường, không cần MockMvc mô phỏng cookie jar.
+     */
     private String register(String email, String pass) throws Exception {
-        String body = mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
+        var response = mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"" + email + "\",\"password\":\"" + pass + "\",\"fullName\":\"Test\"}"))
                 .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString();
-        return mapper.readTree(body).get("token").asText();
+                .andReturn().getResponse();
+        var cookie = response.getCookie("auth_token");
+        org.junit.jupiter.api.Assertions.assertNotNull(cookie, "auth_token cookie phải được đặt sau register");
+        return cookie.getValue();
     }
 
     @Test
     void registerThenLoginThenAccessProtected() throws Exception {
         String token = register("a@b.com", "secret1");
 
-        // Đăng nhập trả token
+        // Đăng nhập đặt cookie httpOnly, body trả thẳng hồ sơ user (cùng shape /users/me)
         mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"a@b.com\",\"password\":\"secret1\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token").isNotEmpty())
-                .andExpect(jsonPath("$.user.plan").value("FREE"))
-                .andExpect(jsonPath("$.user.email").value("a@b.com"));
+                .andExpect(cookie().exists("auth_token"))
+                .andExpect(cookie().httpOnly("auth_token", true))
+                .andExpect(jsonPath("$.plan").value("FREE"))
+                .andExpect(jsonPath("$.email").value("a@b.com"));
 
         // Không token → 401
         mvc.perform(get("/users/me")).andExpect(status().isUnauthorized());
@@ -51,6 +59,13 @@ class AuthFlowIntegrationTest {
         mvc.perform(get("/users/me").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("a@b.com"));
+    }
+
+    @Test
+    void logoutClearsCookie() throws Exception {
+        mvc.perform(post("/auth/logout"))
+                .andExpect(status().isNoContent())
+                .andExpect(cookie().maxAge("auth_token", 0));
     }
 
     @Test

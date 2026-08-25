@@ -35,8 +35,11 @@ public final class AuthDtos {
     ) {
     }
 
-    /** Trả token + thông tin cơ bản để client hiển thị ngay, khỏi gọi thêm /users/me. */
-    public record AuthResponse(
+    /**
+     * Kết quả nội bộ của register()/login() — KHÔNG serialize thẳng ra JSON. Controller tách
+     * {@code token} ra để đặt cookie httpOnly, chỉ trả {@code user} trong response body.
+     */
+    public record AuthResult(
             String token,
             long expiresInSeconds,
             UserResponse user
