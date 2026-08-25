@@ -37,6 +37,8 @@
   { "canonicalName": "Măng", "normalizedName": "mang", "aliases": ["măng tươi", "bamboo shoot"], "category": "rau_cu", "shelfLifeDays": 5, "allergenGroup": null },
   { "canonicalName": "Củ sen", "normalizedName": "cu sen", "aliases": ["ngó sen", "lotus root"], "category": "rau_cu", "shelfLifeDays": 10, "allergenGroup": null },
   { "canonicalName": "Cà pháo", "normalizedName": "ca phao", "aliases": [], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
+  { "canonicalName": "Bí ngòi", "normalizedName": "bi ngoi", "aliases": ["courgette", "zucchini"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
+  { "canonicalName": "Ô liu", "normalizedName": "o liu", "aliases": ["olive", "olives"], "category": "rau_cu", "shelfLifeDays": 180, "allergenGroup": null },
 
   { "canonicalName": "Hành lá", "normalizedName": "hanh la", "aliases": ["hành hoa", "green onion", "scallion"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
   { "canonicalName": "Ngò rí", "normalizedName": "ngo ri", "aliases": ["rau mùi", "cilantro", "coriander"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
@@ -53,6 +55,10 @@
   { "canonicalName": "Lá chanh", "normalizedName": "la chanh", "aliases": ["kaffir lime leaf"], "category": "la_thom", "shelfLifeDays": 10, "allergenGroup": null },
   { "canonicalName": "Rau ngổ", "normalizedName": "rau ngo", "aliases": ["ngò om", "rice paddy herb"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
   { "canonicalName": "Lá dứa", "normalizedName": "la dua", "aliases": ["lá nếp", "pandan"], "category": "la_thom", "shelfLifeDays": 7, "allergenGroup": null },
+  { "canonicalName": "Hương thảo", "normalizedName": "huong thao", "aliases": ["rosemary"], "category": "la_thom", "shelfLifeDays": 10, "allergenGroup": null },
+  { "canonicalName": "Cỏ xạ hương", "normalizedName": "co xa huong", "aliases": ["thyme"], "category": "la_thom", "shelfLifeDays": 10, "allergenGroup": null },
+  { "canonicalName": "Lá nguyệt quế", "normalizedName": "la nguyet que", "aliases": ["bay leaf", "bay leaves"], "category": "la_thom", "shelfLifeDays": 30, "allergenGroup": null },
+  { "canonicalName": "Rau mùi tây", "normalizedName": "rau mui tay", "aliases": ["parsley"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
 
   { "canonicalName": "Thịt heo", "normalizedName": "thit heo", "aliases": ["thịt lợn", "pork"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Ba chỉ", "normalizedName": "ba chi", "aliases": ["thịt ba rọi", "thịt ba chỉ", "pork belly", "belly pork"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
@@ -148,6 +154,12 @@
   { "canonicalName": "Bột bắp", "normalizedName": "bot bap", "aliases": ["bột ngô", "cornstarch"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
   { "canonicalName": "Bột chiên giòn", "normalizedName": "bot chien gion", "aliases": ["crispy frying flour"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": "gluten" },
   { "canonicalName": "Rượu trắng", "normalizedName": "ruou trang", "aliases": ["rượu nấu ăn", "cooking wine"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
+  { "canonicalName": "Rượu vang đỏ", "normalizedName": "ruou vang do", "aliases": ["red wine"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
+  { "canonicalName": "Rượu vang trắng", "normalizedName": "ruou vang trang", "aliases": ["white wine"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
+  { "canonicalName": "Mù tạt", "normalizedName": "mu tat", "aliases": ["mustard"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
+  { "canonicalName": "Bột nở", "normalizedName": "bot no", "aliases": ["baking powder"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
+  { "canonicalName": "Ca cao", "normalizedName": "ca cao", "aliases": ["cocoa powder", "cacao"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
+  { "canonicalName": "Vani", "normalizedName": "vani", "aliases": ["vanilla", "vanilla extract"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
 
   { "canonicalName": "Gạo", "normalizedName": "gao", "aliases": ["gạo tẻ", "rice"], "category": "tinh_bot", "shelfLifeDays": 180, "allergenGroup": null },
   { "canonicalName": "Gạo nếp", "normalizedName": "gao nep", "aliases": ["nếp", "glutinous rice"], "category": "tinh_bot", "shelfLifeDays": 180, "allergenGroup": null },
@@ -166,6 +178,7 @@
   { "canonicalName": "Yến mạch", "normalizedName": "yen mach", "aliases": ["oats", "oatmeal"], "category": "tinh_bot", "shelfLifeDays": 365, "allergenGroup": null },
   { "canonicalName": "Khoai môn", "normalizedName": "khoai mon", "aliases": ["taro"], "category": "tinh_bot", "shelfLifeDays": 14, "allergenGroup": null },
   { "canonicalName": "Khoai mì", "normalizedName": "khoai mi", "aliases": ["sắn", "cassava"], "category": "tinh_bot", "shelfLifeDays": 7, "allergenGroup": null },
+  { "canonicalName": "Bánh quy", "normalizedName": "banh quy", "aliases": ["ladyfinger", "ladyfingers", "biscuit", "biscuits"], "category": "tinh_bot", "shelfLifeDays": 90, "allergenGroup": "gluten" },
 
   { "canonicalName": "Nấm rơm", "normalizedName": "nam rom", "aliases": ["straw mushroom"], "category": "nam", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Nấm hương", "normalizedName": "nam huong", "aliases": ["nấm đông cô", "shiitake"], "category": "nam", "shelfLifeDays": 7, "allergenGroup": null },
@@ -180,6 +193,7 @@
   { "canonicalName": "Đậu xanh", "normalizedName": "dau xanh", "aliases": ["mung bean"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
   { "canonicalName": "Đậu đỏ", "normalizedName": "dau do", "aliases": ["red bean", "adzuki"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
   { "canonicalName": "Đậu đen", "normalizedName": "dau den", "aliases": ["black bean"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
+  { "canonicalName": "Đậu trắng", "normalizedName": "dau trang", "aliases": ["white bean", "cannellini bean", "navy bean", "baked beans"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
   { "canonicalName": "Đậu phộng", "normalizedName": "dau phong", "aliases": ["lạc", "peanut", "peanuts", "roasted peanut", "peanut butter"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "dau_phong" },
   { "canonicalName": "Đậu nành", "normalizedName": "dau nanh", "aliases": ["soybean"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "dau_nanh" },
   { "canonicalName": "Mè", "normalizedName": "me", "aliases": ["vừng", "sesame", "mè rang", "sesame seed", "sesame seeds"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "me" },
@@ -198,6 +212,7 @@
   { "canonicalName": "Nho", "normalizedName": "nho", "aliases": ["grape"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
   { "canonicalName": "Chanh dây", "normalizedName": "chanh day", "aliases": ["passion fruit"], "category": "trai_cay", "shelfLifeDays": 14, "allergenGroup": null },
   { "canonicalName": "Ổi", "normalizedName": "oi", "aliases": ["guava"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
+  { "canonicalName": "Dâu tây", "normalizedName": "dau tay", "aliases": ["strawberry", "strawberries"], "category": "trai_cay", "shelfLifeDays": 5, "allergenGroup": null },
 
   { "canonicalName": "Nước dùng gà", "normalizedName": "nuoc dung ga", "aliases": ["chicken stock", "chicken broth"], "category": "do_kho", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Nước dùng heo", "normalizedName": "nuoc dung heo", "aliases": ["pork broth", "nước hầm xương"], "category": "do_kho", "shelfLifeDays": 3, "allergenGroup": null },
@@ -206,5 +221,6 @@
   { "canonicalName": "Cá ngừ hộp", "normalizedName": "ca ngu hop", "aliases": ["canned tuna"], "category": "do_kho", "shelfLifeDays": 365, "allergenGroup": "ca" },
   { "canonicalName": "Pate", "normalizedName": "pate", "aliases": ["pâté"], "category": "do_kho", "shelfLifeDays": 14, "allergenGroup": null },
   { "canonicalName": "Kim chi", "normalizedName": "kim chi", "aliases": ["kimchi"], "category": "do_kho", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Dưa chua", "normalizedName": "dua chua", "aliases": ["dưa cải", "pickled mustard"], "category": "do_kho", "shelfLifeDays": 14, "allergenGroup": null }
+  { "canonicalName": "Dưa chua", "normalizedName": "dua chua", "aliases": ["dưa cải", "pickled mustard"], "category": "do_kho", "shelfLifeDays": 14, "allergenGroup": null },
+  { "canonicalName": "Cà phê", "normalizedName": "ca phe", "aliases": ["coffee", "espresso"], "category": "do_kho", "shelfLifeDays": 365, "allergenGroup": null }
 ]

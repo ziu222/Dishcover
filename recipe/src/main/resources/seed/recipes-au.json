@@ -1,0 +1,699 @@
+[
+  {
+    "_id": "au_spaghetti_carbonara",
+    "name": "Spaghetti Carbonara",
+    "slug": "spaghetti-carbonara",
+    "cook_time_minutes": 20,
+    "difficulty": "MEDIUM",
+    "tags": ["Ý", "mì Ý", "nhanh"],
+    "dietary_flags": ["contains_gluten", "contains_egg", "contains_meat", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_mi_y", "name": "Mì Ý", "normalized_name": "mi y", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_xong_khoi", "name": "Thịt xông khói", "normalized_name": "thit xong khoi", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 2, "unit": "tép", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_tieu", "name": "Tiêu", "normalized_name": "tieu", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Luộc mì", "content": "Luộc mì Ý theo hướng dẫn trên bao bì đến khi al dente, giữ lại chút nước luộc.", "duration_minutes": 10 },
+      { "order": 2, "title": "Xào thịt xông khói", "content": "Cắt nhỏ thịt xông khói, chiên vàng cùng tỏi băm.", "duration_minutes": 5 },
+      { "order": 3, "title": "Trộn sốt trứng", "content": "Đánh tan trứng với phô mai bào. Tắt bếp, trộn nhanh mì nóng với thịt xông khói rồi đổ hỗn hợp trứng vào đảo đều để trứng chín tới tạo sốt sánh mịn. Rắc tiêu.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/33/Espaguetis_carbonara.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_spaghetti_bolognese",
+    "name": "Spaghetti Bolognese",
+    "slug": "spaghetti-bolognese-y",
+    "cook_time_minutes": 45,
+    "difficulty": "MEDIUM",
+    "tags": ["Ý", "mì Ý", "cơm nhà"],
+    "dietary_flags": ["contains_gluten", "contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_mi_y", "name": "Mì Ý", "normalized_name": "mi y", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_bo", "name": "Thịt bò", "normalized_name": "thit bo", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua_hop", "name": "Cà chua hộp", "normalized_name": "ca chua hop", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 2, "unit": "tép", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_ca_rot", "name": "Cà rốt", "normalized_name": "ca rot", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_can_tay", "name": "Cần tây", "normalized_name": "can tay", "amount": 1, "unit": "cây", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Băm nhỏ hành tây, tỏi, cà rốt, cần tây.", "duration_minutes": 10 },
+      { "order": 2, "title": "Xào thịt", "content": "Phi thơm dầu ô liu, xào thịt bò băm cho săn cùng hành tỏi.", "duration_minutes": 8 },
+      { "order": 3, "title": "Ninh sốt", "content": "Cho cà chua hộp, cà rốt, cần tây vào, ninh lửa nhỏ đến khi sốt sánh.", "duration_minutes": 22 },
+      { "order": 4, "title": "Hoàn thiện", "content": "Luộc mì Ý, trộn cùng sốt bolognese.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Tagliatelle_al_rag%C3%B9_%28image_modified%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_risotto_nam",
+    "name": "Risotto nấm",
+    "slug": "risotto-nam",
+    "cook_time_minutes": 35,
+    "difficulty": "MEDIUM",
+    "tags": ["Ý", "chay", "kem"],
+    "dietary_flags": ["vegetarian", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_gao", "name": "Gạo", "normalized_name": "gao", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nam_mo", "name": "Nấm mỡ", "normalized_name": "nam mo", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 30, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_nuoc_dung_ga", "name": "Nước dùng gà", "normalized_name": "nuoc dung ga", "amount": 800, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ruou_vang_trang", "name": "Rượu vang trắng", "normalized_name": "ruou vang trang", "amount": 100, "unit": "ml", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Nấm rửa sạch cắt lát, hành tây băm nhỏ, nước dùng gà hâm nóng giữ ấm.", "duration_minutes": 10 },
+      { "order": 2, "title": "Xào gạo", "content": "Tan chảy bơ, phi thơm hành tây, cho gạo vào đảo đến khi hạt gạo trong, rưới rượu vang trắng.", "duration_minutes": 5 },
+      { "order": 3, "title": "Nấu risotto", "content": "Múc từng vá nước dùng nóng vào, đảo liên tục đến khi gạo hút hết nước rồi mới thêm vá tiếp, lặp lại đến khi gạo chín mềm sánh.", "duration_minutes": 18 },
+      { "order": 4, "title": "Hoàn thiện", "content": "Cho nấm xào chín, phô mai bào vào đảo đều.", "duration_minutes": 2 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Risotto_with_speck_and_goat_cheese_%286101067436%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_pizza_margherita",
+    "name": "Pizza Margherita",
+    "slug": "pizza-margherita",
+    "cook_time_minutes": 45,
+    "difficulty": "MEDIUM",
+    "tags": ["Ý", "bánh", "tiệc"],
+    "dietary_flags": ["contains_gluten", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua_hop", "name": "Cà chua hộp", "normalized_name": "ca chua hop", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hung_que", "name": "Húng quế", "normalized_name": "hung que", "amount": 10, "unit": "lá", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 2, "unit": "tép", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Nhào bột", "content": "Trộn bột mì với men nở, nước ấm, chút muối, nhào mịn, ủ đến khi nở gấp đôi.", "duration_minutes": 30 },
+      { "order": 2, "title": "Cán đế", "content": "Cán bột thành đế mỏng, phết sốt cà chua nghiền cùng tỏi băm.", "duration_minutes": 5 },
+      { "order": 3, "title": "Nướng bánh", "content": "Rắc phô mai lên đế bánh, nướng ở 220 độ đến khi phô mai chảy vàng, rắc húng quế và dầu ô liu trước khi ăn.", "duration_minutes": 10 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Pizza_Margherita_stu_spivack.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_lasagna",
+    "name": "Lasagna",
+    "slug": "lasagna",
+    "cook_time_minutes": 90,
+    "difficulty": "HARD",
+    "tags": ["Ý", "cơm nhà", "nướng"],
+    "dietary_flags": ["contains_gluten", "contains_meat", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_mi_y", "name": "Mì Ý", "normalized_name": "mi y", "amount": 250, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_bo", "name": "Thịt bò", "normalized_name": "thit bo", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua_hop", "name": "Cà chua hộp", "normalized_name": "ca chua hop", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 500, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Nấu sốt thịt", "content": "Xào hành tây với thịt bò băm, thêm cà chua hộp, ninh sánh.", "duration_minutes": 30 },
+      { "order": 2, "title": "Nấu sốt bechamel", "content": "Tan chảy bơ, cho bột mì vào khuấy, rưới từ từ sữa tươi, khuấy đến khi sánh mịn.", "duration_minutes": 10 },
+      { "order": 3, "title": "Xếp lớp", "content": "Xếp xen kẽ lá mì Ý, sốt thịt, sốt bechamel, phô mai thành nhiều lớp trong khay nướng.", "duration_minutes": 15 },
+      { "order": 4, "title": "Nướng", "content": "Nướng ở 200 độ đến khi mặt trên vàng ruộm.", "duration_minutes": 35 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Lasagne_-_stonesoup.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_bruschetta",
+    "name": "Bruschetta cà chua",
+    "slug": "bruschetta-ca-chua",
+    "cook_time_minutes": 15,
+    "difficulty": "EASY",
+    "tags": ["Ý", "khai vị", "nhanh"],
+    "dietary_flags": ["vegetarian", "contains_gluten"],
+    "ingredients": [
+      { "ingredient_id": "ing_banh_mi", "name": "Bánh mì", "normalized_name": "banh mi", "amount": 1, "unit": "ổ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 4, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 2, "unit": "tép", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hung_que", "name": "Húng quế", "normalized_name": "hung que", "amount": 5, "unit": "lá", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cà chua cắt hạt lựu, trộn với húng quế thái nhỏ, dầu ô liu, chút muối.", "duration_minutes": 8 },
+      { "order": 2, "title": "Nướng bánh", "content": "Bánh mì cắt lát, nướng giòn, chà tỏi lên mặt bánh.", "duration_minutes": 5 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Múc hỗn hợp cà chua lên bánh mì nướng, dùng ngay.", "duration_minutes": 2 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/2014_Bruschetta_The_Larder_Chiang_Mai.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_minestrone",
+    "name": "Súp Minestrone",
+    "slug": "sup-minestrone",
+    "cook_time_minutes": 30,
+    "difficulty": "EASY",
+    "tags": ["Ý", "súp", "chay"],
+    "dietary_flags": ["vegetarian", "contains_gluten"],
+    "ingredients": [
+      { "ingredient_id": "ing_ca_rot", "name": "Cà rốt", "normalized_name": "ca rot", "amount": 1, "unit": "củ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_khoai_tay", "name": "Khoai tây", "normalized_name": "khoai tay", "amount": 1, "unit": "củ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_can_tay", "name": "Cần tây", "normalized_name": "can tay", "amount": 1, "unit": "cây", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_trang", "name": "Đậu trắng", "normalized_name": "dau trang", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua_hop", "name": "Cà chua hộp", "normalized_name": "ca chua hop", "amount": 400, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_mi_y", "name": "Mì Ý", "normalized_name": "mi y", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 1, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cắt hạt lựu cà rốt, khoai tây, cần tây, hành tây.", "duration_minutes": 10 },
+      { "order": 2, "title": "Nấu súp", "content": "Phi thơm hành, cho rau củ vào xào sơ, thêm cà chua hộp, đậu trắng, nước, ninh mềm.", "duration_minutes": 15 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Cho mì Ý vào nấu chín, nêm nếm vừa ăn.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Minestrone_soup_%285%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_tiramisu",
+    "name": "Tiramisu",
+    "slug": "tiramisu",
+    "cook_time_minutes": 30,
+    "difficulty": "MEDIUM",
+    "tags": ["Ý", "tráng miệng", "không cần nướng"],
+    "dietary_flags": ["vegetarian", "contains_egg", "contains_dairy", "contains_gluten"],
+    "ingredients": [
+      { "ingredient_id": "ing_banh_quy", "name": "Bánh quy", "normalized_name": "banh quy", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_phe", "name": "Cà phê", "normalized_name": "ca phe", "amount": 200, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 80, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 250, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_cao", "name": "Ca cao", "normalized_name": "ca cao", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Pha cà phê", "content": "Pha cà phê đậm, để nguội.", "duration_minutes": 5 },
+      { "order": 2, "title": "Làm kem phô mai", "content": "Đánh lòng đỏ trứng với đường đến bông, trộn cùng phô mai mềm thành hỗn hợp mịn.", "duration_minutes": 10 },
+      { "order": 3, "title": "Xếp lớp", "content": "Nhúng nhanh bánh quy vào cà phê, xếp lớp xen kẽ với kem phô mai trong khay.", "duration_minutes": 10 },
+      { "order": 4, "title": "Hoàn thiện", "content": "Rắc ca cao lên mặt, để tủ lạnh ít nhất 2 giờ trước khi dùng.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/58/Tiramisu_-_Raffaele_Diomede.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_caprese",
+    "name": "Salad Caprese",
+    "slug": "salad-caprese",
+    "cook_time_minutes": 10,
+    "difficulty": "EASY",
+    "tags": ["Ý", "salad", "chay", "nhanh"],
+    "dietary_flags": ["vegetarian", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hung_que", "name": "Húng quế", "normalized_name": "hung que", "amount": 10, "unit": "lá", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cà chua và phô mai cắt lát tròn dày bằng nhau.", "duration_minutes": 5 },
+      { "order": 2, "title": "Xếp đĩa", "content": "Xếp xen kẽ cà chua, phô mai, lá húng quế ra đĩa.", "duration_minutes": 3 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Rưới dầu ô liu, rắc chút muối tiêu trước khi dùng.", "duration_minutes": 2 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Caprese-1_%28tigher_crop%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_ratatouille",
+    "name": "Ratatouille",
+    "slug": "ratatouille",
+    "cook_time_minutes": 45,
+    "difficulty": "MEDIUM",
+    "tags": ["Pháp", "chay", "hầm"],
+    "dietary_flags": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "ingredient_id": "ing_bi_ngoi", "name": "Bí ngòi", "normalized_name": "bi ngoi", "amount": 2, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_tim", "name": "Cà tím", "normalized_name": "ca tim", "amount": 1, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ot_chuong", "name": "Ớt chuông", "normalized_name": "ot chuong", "amount": 2, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 4, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 3, "unit": "tép", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 3, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_co_xa_huong", "name": "Cỏ xạ hương", "normalized_name": "co xa huong", "amount": 1, "unit": "nhánh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế", "content": "Cắt lát mỏng bí ngòi, cà tím, ớt chuông, cà chua.", "duration_minutes": 15 },
+      { "order": 2, "title": "Xào nền", "content": "Phi thơm hành tỏi với dầu ô liu.", "duration_minutes": 5 },
+      { "order": 3, "title": "Hầm rau", "content": "Xếp xen kẽ các loại rau vào nồi, thêm cỏ xạ hương, đun liu riu đến khi rau mềm nhừ.", "duration_minutes": 25 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Ratatouille_home_cooked.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_quiche_lorraine",
+    "name": "Quiche Lorraine",
+    "slug": "quiche-lorraine",
+    "cook_time_minutes": 50,
+    "difficulty": "MEDIUM",
+    "tags": ["Pháp", "bánh mặn", "nướng"],
+    "dietary_flags": ["contains_gluten", "contains_egg", "contains_meat", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 250, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 125, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 4, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_kem_tuoi", "name": "Kem tươi", "normalized_name": "kem tuoi", "amount": 200, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_xong_khoi", "name": "Thịt xông khói", "normalized_name": "thit xong khoi", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Làm vỏ bánh", "content": "Trộn bột mì với bơ lạnh, chút nước đá thành khối bột mịn, cán mỏng lót vào khuôn.", "duration_minutes": 20 },
+      { "order": 2, "title": "Làm nhân", "content": "Chiên thịt xông khói với hành tây đến vàng.", "duration_minutes": 8 },
+      { "order": 3, "title": "Trộn hỗn hợp trứng", "content": "Đánh trứng với kem tươi, phô mai, nêm chút muối tiêu.", "duration_minutes": 5 },
+      { "order": 4, "title": "Nướng", "content": "Rải thịt xông khói lên vỏ bánh, đổ hỗn hợp trứng lên trên, nướng 180 độ đến khi mặt vàng đông cứng.", "duration_minutes": 17 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Quiche_de_Lorraine.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_coq_au_vin",
+    "name": "Gà hầm rượu vang (Coq au vin)",
+    "slug": "ga-ham-ruou-vang",
+    "cook_time_minutes": 75,
+    "difficulty": "HARD",
+    "tags": ["Pháp", "hầm", "cơm khách"],
+    "dietary_flags": ["contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_thit_ga", "name": "Thịt gà", "normalized_name": "thit ga", "amount": 800, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ruou_vang_do", "name": "Rượu vang đỏ", "normalized_name": "ruou vang do", "amount": 400, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nam_mo", "name": "Nấm mỡ", "normalized_name": "nam mo", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_xong_khoi", "name": "Thịt xông khói", "normalized_name": "thit xong khoi", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tim", "name": "Hành tím", "normalized_name": "hanh tim", "amount": 6, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 3, "unit": "tép", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 30, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_la_nguyet_que", "name": "Lá nguyệt quế", "normalized_name": "la nguyet que", "amount": 2, "unit": "lá", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Áo vàng gà", "content": "Chiên vàng các miếng gà với bơ, vớt ra.", "duration_minutes": 10 },
+      { "order": 2, "title": "Xào nền", "content": "Trong cùng nồi, xào thịt xông khói, hành tím, tỏi đến thơm.", "duration_minutes": 8 },
+      { "order": 3, "title": "Hầm rượu vang", "content": "Cho gà trở lại nồi, rưới rượu vang đỏ, thêm lá nguyệt quế, đun liu riu đến khi gà mềm.", "duration_minutes": 45 },
+      { "order": 4, "title": "Hoàn thiện", "content": "Thêm nấm vào hầm thêm 10 phút, nêm nếm vừa ăn.", "duration_minutes": 12 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Gourmet_coq_au_vin.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_beef_bourguignon",
+    "name": "Bò hầm vang đỏ (Beef Bourguignon)",
+    "slug": "bo-ham-vang-do",
+    "cook_time_minutes": 120,
+    "difficulty": "HARD",
+    "tags": ["Pháp", "hầm", "cơm khách"],
+    "dietary_flags": ["contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_thit_bo", "name": "Thịt bò", "normalized_name": "thit bo", "amount": 800, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ruou_vang_do", "name": "Rượu vang đỏ", "normalized_name": "ruou vang do", "amount": 500, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_rot", "name": "Cà rốt", "normalized_name": "ca rot", "amount": 2, "unit": "củ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_nam_mo", "name": "Nấm mỡ", "normalized_name": "nam mo", "amount": 200, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_thit_xong_khoi", "name": "Thịt xông khói", "normalized_name": "thit xong khoi", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 3, "unit": "tép", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 30, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_la_nguyet_que", "name": "Lá nguyệt quế", "normalized_name": "la nguyet que", "amount": 2, "unit": "lá", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Áo vàng thịt bò", "content": "Thịt bò cắt khối vuông, áo qua bột mì, chiên vàng các mặt.", "duration_minutes": 15 },
+      { "order": 2, "title": "Xào nền", "content": "Xào thịt xông khói, hành tây, tỏi, cà rốt cắt khúc.", "duration_minutes": 10 },
+      { "order": 3, "title": "Hầm rượu vang", "content": "Cho thịt bò trở lại, rưới rượu vang đỏ ngập xâm xấp, thêm lá nguyệt quế, hầm lửa nhỏ đến khi thịt mềm.", "duration_minutes": 80 },
+      { "order": 4, "title": "Hoàn thiện", "content": "Thêm nấm vào hầm thêm 15 phút cuối.", "duration_minutes": 15 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Beef_bourguignon_NYT.jpg/3840px-Beef_bourguignon_NYT.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_french_onion_soup",
+    "name": "Súp hành Pháp",
+    "slug": "sup-hanh-phap",
+    "cook_time_minutes": 50,
+    "difficulty": "MEDIUM",
+    "tags": ["Pháp", "súp", "chay"],
+    "dietary_flags": ["vegetarian", "contains_gluten", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 4, "unit": "củ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 50, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nuoc_dung_ga", "name": "Nước dùng gà", "normalized_name": "nuoc dung ga", "amount": 1000, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_banh_mi", "name": "Bánh mì", "normalized_name": "banh mi", "amount": 4, "unit": "lát", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 2, "unit": "tép", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Phi hành", "content": "Hành tây thái lát mỏng, phi với bơ lửa nhỏ đến khi caramen hóa vàng nâu.", "duration_minutes": 25 },
+      { "order": 2, "title": "Nấu súp", "content": "Thêm tỏi băm, rưới nước dùng gà, đun sôi rồi hạ lửa liu riu.", "duration_minutes": 15 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Múc súp ra bát chịu nhiệt, đặt lát bánh mì phủ phô mai lên trên, nướng đến khi phô mai chảy vàng.", "duration_minutes": 10 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Soupe_%C3%A0_l%27oignon.jpg/3840px-Soupe_%C3%A0_l%27oignon.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_croque_monsieur",
+    "name": "Croque Monsieur",
+    "slug": "croque-monsieur",
+    "cook_time_minutes": 15,
+    "difficulty": "EASY",
+    "tags": ["Pháp", "bánh mì kẹp", "nhanh"],
+    "dietary_flags": ["contains_gluten", "contains_meat", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_banh_mi", "name": "Bánh mì", "normalized_name": "banh mi", "amount": 4, "unit": "lát", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_giam_bong", "name": "Giăm bông", "normalized_name": "giam bong", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_pho_mai", "name": "Phô mai", "normalized_name": "pho mai", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 30, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 20, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 150, "unit": "ml", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Làm sốt bechamel", "content": "Tan chảy bơ, thêm bột mì khuấy đều, rưới sữa tươi từ từ đến khi sánh mịn.", "duration_minutes": 6 },
+      { "order": 2, "title": "Kẹp bánh", "content": "Xếp giăm bông và phô mai giữa 2 lát bánh mì, phết sốt bechamel lên mặt.", "duration_minutes": 4 },
+      { "order": 3, "title": "Nướng bánh", "content": "Nướng hoặc chiên bánh đến khi 2 mặt vàng giòn, phô mai chảy.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Croque_monsieur.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_creme_brulee",
+    "name": "Crème brûlée",
+    "slug": "creme-brulee",
+    "cook_time_minutes": 40,
+    "difficulty": "MEDIUM",
+    "tags": ["Pháp", "tráng miệng", "nướng"],
+    "dietary_flags": ["vegetarian", "contains_egg", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_kem_tuoi", "name": "Kem tươi", "normalized_name": "kem tuoi", "amount": 500, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 5, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 100, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_vani", "name": "Vani", "normalized_name": "vani", "amount": 1, "unit": "muỗng cà phê", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Đun kem", "content": "Đun kem tươi với vani đến khi vừa sôi lăn tăn, để nguội bớt.", "duration_minutes": 10 },
+      { "order": 2, "title": "Trộn hỗn hợp", "content": "Đánh lòng đỏ trứng với một nửa đường, rưới từ từ kem nóng vào khuấy đều.", "duration_minutes": 10 },
+      { "order": 3, "title": "Hấp cách thủy", "content": "Đổ hỗn hợp ra khuôn nhỏ, nướng cách thủy 150 độ đến khi đông mặt nhưng còn rung nhẹ ở giữa.", "duration_minutes": 15 },
+      { "order": 4, "title": "Hoàn thiện", "content": "Rắc lớp đường mỏng lên mặt, dùng khò lửa hoặc nướng nhanh đến khi đường caramen giòn.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/17/2014_0531_Cr%C3%A8me_br%C3%BBl%C3%A9e_Doi_Mae_Salong_%28cropped%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_salade_nicoise",
+    "name": "Salad Niçoise",
+    "slug": "salad-nicoise",
+    "cook_time_minutes": 20,
+    "difficulty": "EASY",
+    "tags": ["Pháp", "salad", "hải sản"],
+    "dietary_flags": ["contains_seafood", "contains_egg"],
+    "ingredients": [
+      { "ingredient_id": "ing_ca_ngu_hop", "name": "Cá ngừ hộp", "normalized_name": "ca ngu hop", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_khoai_tay", "name": "Khoai tây", "normalized_name": "khoai tay", "amount": 3, "unit": "củ", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_dau_que", "name": "Đậu que", "normalized_name": "dau que", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 3, "unit": "quả", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_o_liu", "name": "Ô liu", "normalized_name": "o liu", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_o_liu", "name": "Dầu ô liu", "normalized_name": "dau o liu", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_chanh", "name": "Chanh", "normalized_name": "chanh", "amount": 1, "unit": "quả", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Luộc nguyên liệu", "content": "Luộc chín khoai tây, trứng, đậu que riêng từng loại rồi để nguội.", "duration_minutes": 15 },
+      { "order": 2, "title": "Sơ chế", "content": "Cắt khoanh khoai tây, bổ tư trứng, cắt miếng cà chua.", "duration_minutes": 3 },
+      { "order": 3, "title": "Trộn salad", "content": "Xếp tất cả nguyên liệu ra đĩa cùng cá ngừ, ô liu, rưới dầu ô liu và nước cốt chanh.", "duration_minutes": 2 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/88/Nizza-Salat_an_der_F_Mittelmeerk%C3%BCste.JPG",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_crepes",
+    "name": "Crêpes",
+    "slug": "crepes",
+    "cook_time_minutes": 40,
+    "difficulty": "EASY",
+    "tags": ["Pháp", "tráng miệng", "bữa sáng"],
+    "dietary_flags": ["vegetarian", "contains_gluten", "contains_egg", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 250, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 500, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 30, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 20, "unit": "g", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Pha bột", "content": "Trộn bột mì, trứng, đường, rưới từ từ sữa tươi và bơ chảy, khuấy đến khi hỗn hợp mịn không vón cục.", "duration_minutes": 10 },
+      { "order": 2, "title": "Ủ bột", "content": "Để bột nghỉ 15-20 phút cho nở đều.", "duration_minutes": 15 },
+      { "order": 3, "title": "Chiên crêpe", "content": "Láng một lớp mỏng bột lên chảo nóng đã phết bơ, chiên đến khi 2 mặt vàng đều.", "duration_minutes": 15 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/09/Crepes_dsc07085.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_fish_and_chips",
+    "name": "Fish and Chips",
+    "slug": "fish-and-chips",
+    "cook_time_minutes": 35,
+    "difficulty": "MEDIUM",
+    "tags": ["Anh", "chiên", "cơm nhà"],
+    "dietary_flags": ["contains_seafood", "contains_gluten"],
+    "ingredients": [
+      { "ingredient_id": "ing_ca_basa", "name": "Cá basa", "normalized_name": "ca basa", "amount": 500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_khoai_tay", "name": "Khoai tây", "normalized_name": "khoai tay", "amount": 500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bot_chien_gion", "name": "Bột chiên giòn", "normalized_name": "bot chien gion", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_an", "name": "Dầu ăn", "normalized_name": "dau an", "amount": 500, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_chanh", "name": "Chanh", "normalized_name": "chanh", "amount": 1, "unit": "quả", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_giam", "name": "Giấm", "normalized_name": "giam", "amount": 1, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Sơ chế khoai", "content": "Khoai tây cắt thanh dài, ngâm nước rồi để ráo.", "duration_minutes": 10 },
+      { "order": 2, "title": "Chiên khoai", "content": "Chiên khoai tây 2 lần lửa vừa rồi lửa lớn đến khi giòn vàng.", "duration_minutes": 15 },
+      { "order": 3, "title": "Chiên cá", "content": "Cá lăn qua bột mì trộn bột chiên giòn với nước lạnh sệt, chiên ngập dầu đến vàng giòn.", "duration_minutes": 10 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Fish_and_chips_blackpool.jpg/3840px-Fish_and_chips_blackpool.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_shepherds_pie",
+    "name": "Shepherd's Pie",
+    "slug": "shepherds-pie",
+    "cook_time_minutes": 60,
+    "difficulty": "MEDIUM",
+    "tags": ["Anh", "nướng", "cơm nhà"],
+    "dietary_flags": ["contains_meat", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_thit_cuu", "name": "Thịt cừu", "normalized_name": "thit cuu", "amount": 500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_khoai_tay", "name": "Khoai tây", "normalized_name": "khoai tay", "amount": 800, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_rot", "name": "Cà rốt", "normalized_name": "ca rot", "amount": 2, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 100, "unit": "ml", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_nuoc_dung_heo", "name": "Nước dùng heo", "normalized_name": "nuoc dung heo", "amount": 300, "unit": "ml", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Luộc khoai", "content": "Luộc chín khoai tây, nghiền nhuyễn cùng bơ và sữa tươi.", "duration_minutes": 20 },
+      { "order": 2, "title": "Xào nhân thịt", "content": "Xào thịt cừu băm với hành tây, cà rốt, rưới nước dùng, ninh sánh.", "duration_minutes": 25 },
+      { "order": 3, "title": "Nướng", "content": "Trải khoai nghiền phủ lên mặt nhân thịt, tạo vân bằng nĩa, nướng 200 độ đến khi mặt vàng.", "duration_minutes": 15 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Homerton_College_-_Shepherd%27s_pie_%28cropped%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_full_english_breakfast",
+    "name": "Full English Breakfast",
+    "slug": "full-english-breakfast",
+    "cook_time_minutes": 25,
+    "difficulty": "EASY",
+    "tags": ["Anh", "bữa sáng", "chiên"],
+    "dietary_flags": ["contains_meat", "contains_egg"],
+    "ingredients": [
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 2, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_thit_xong_khoi", "name": "Thịt xông khói", "normalized_name": "thit xong khoi", "amount": 100, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_xuc_xich", "name": "Xúc xích", "normalized_name": "xuc xich", "amount": 2, "unit": "cái", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_chua", "name": "Cà chua", "normalized_name": "ca chua", "amount": 2, "unit": "quả", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_nam_mo", "name": "Nấm mỡ", "normalized_name": "nam mo", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_banh_mi", "name": "Bánh mì", "normalized_name": "banh mi", "amount": 2, "unit": "lát", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_dau_trang", "name": "Đậu trắng", "normalized_name": "dau trang", "amount": 200, "unit": "g", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Chiên thịt", "content": "Chiên xúc xích và thịt xông khói đến vàng.", "duration_minutes": 10 },
+      { "order": 2, "title": "Chiên rau", "content": "Chiên cà chua bổ đôi và nấm trong cùng chảo.", "duration_minutes": 8 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Chiên trứng ốp la, hâm nóng đậu trắng, nướng bánh mì, bày tất cả ra đĩa.", "duration_minutes": 7 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Full_English_breakfast_%28cropped%29.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_roast_chicken",
+    "name": "Gà quay kiểu Anh",
+    "slug": "ga-quay-kieu-anh",
+    "cook_time_minutes": 90,
+    "difficulty": "MEDIUM",
+    "tags": ["Anh", "nướng", "cơm khách"],
+    "dietary_flags": ["contains_meat"],
+    "ingredients": [
+      { "ingredient_id": "ing_thit_ga", "name": "Thịt gà", "normalized_name": "thit ga", "amount": 1500, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_khoai_tay", "name": "Khoai tây", "normalized_name": "khoai tay", "amount": 600, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_ca_rot", "name": "Cà rốt", "normalized_name": "ca rot", "amount": 3, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_huong_thao", "name": "Hương thảo", "normalized_name": "huong thao", "amount": 2, "unit": "nhánh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_toi", "name": "Tỏi", "normalized_name": "toi", "amount": 4, "unit": "tép", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Ướp gà", "content": "Xoa bơ, tỏi băm, hương thảo, muối tiêu khắp mình gà nguyên con, để ướp 20 phút.", "duration_minutes": 20 },
+      { "order": 2, "title": "Sắp khay", "content": "Xếp khoai tây, cà rốt, hành tây quanh gà trong khay nướng.", "duration_minutes": 10 },
+      { "order": 3, "title": "Nướng", "content": "Nướng ở 200 độ đến khi da gà vàng giòn và chín đều bên trong.", "duration_minutes": 60 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Max%27s_Roasted_Chicken_-_Evan_Swigart.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_beef_wellington",
+    "name": "Beef Wellington",
+    "slug": "beef-wellington",
+    "cook_time_minutes": 90,
+    "difficulty": "HARD",
+    "tags": ["Anh", "nướng", "cơm khách"],
+    "dietary_flags": ["contains_meat", "contains_gluten", "contains_egg"],
+    "ingredients": [
+      { "ingredient_id": "ing_thit_bo", "name": "Thịt bò", "normalized_name": "thit bo", "amount": 800, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_nam_mo", "name": "Nấm mỡ", "normalized_name": "nam mo", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_giam_bong", "name": "Giăm bông", "normalized_name": "giam bong", "amount": 100, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_mu_tat", "name": "Mù tạt", "normalized_name": "mu tat", "amount": 2, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 1, "unit": "quả", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Áo vàng thịt bò", "content": "Chiên áo vàng các mặt thăn bò nguyên khối, để nguội rồi phết mù tạt.", "duration_minutes": 15 },
+      { "order": 2, "title": "Làm nhân nấm", "content": "Băm nhuyễn nấm, xào cạn nước cùng bơ.", "duration_minutes": 15 },
+      { "order": 3, "title": "Làm vỏ bánh", "content": "Trộn bột mì với bơ lạnh thành khối bột, cán mỏng thành lớp vỏ.", "duration_minutes": 25 },
+      { "order": 4, "title": "Bọc và nướng", "content": "Trải giăm bông, nhân nấm, đặt thịt bò lên, cuộn kín trong vỏ bột, quét trứng, nướng 200 độ đến khi vỏ vàng giòn.", "duration_minutes": 35 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Beef_Wellington_2019.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_yorkshire_pudding",
+    "name": "Yorkshire Pudding",
+    "slug": "yorkshire-pudding",
+    "cook_time_minutes": 30,
+    "difficulty": "EASY",
+    "tags": ["Anh", "món phụ", "nướng"],
+    "dietary_flags": ["contains_gluten", "contains_egg", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 150, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 3, "unit": "quả", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 200, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_dau_an", "name": "Dầu ăn", "normalized_name": "dau an", "amount": 3, "unit": "muỗng canh", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Pha bột", "content": "Trộn bột mì, trứng, sữa tươi thành hỗn hợp mịn, để nghỉ 10 phút.", "duration_minutes": 10 },
+      { "order": 2, "title": "Làm nóng khuôn", "content": "Nhỏ dầu ăn vào từng ô khuôn, nướng nóng già ở 220 độ trước.", "duration_minutes": 5 },
+      { "order": 3, "title": "Nướng", "content": "Đổ nhanh bột vào khuôn đang nóng, nướng đến khi bánh phồng vàng giòn, không mở lò giữa chừng.", "duration_minutes": 15 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Yorkshire_Puddings_on_plate.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_bangers_and_mash",
+    "name": "Bangers and Mash",
+    "slug": "bangers-and-mash",
+    "cook_time_minutes": 30,
+    "difficulty": "EASY",
+    "tags": ["Anh", "cơm nhà", "nhanh"],
+    "dietary_flags": ["contains_meat", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_xuc_xich", "name": "Xúc xích", "normalized_name": "xuc xich", "amount": 6, "unit": "cái", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_khoai_tay", "name": "Khoai tây", "normalized_name": "khoai tay", "amount": 600, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 40, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 100, "unit": "ml", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_hanh_tay", "name": "Hành tây", "normalized_name": "hanh tay", "amount": 1, "unit": "củ", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Luộc khoai", "content": "Luộc chín khoai tây, nghiền nhuyễn cùng bơ và sữa tươi.", "duration_minutes": 20 },
+      { "order": 2, "title": "Chiên xúc xích", "content": "Chiên vàng xúc xích cùng hành tây thái lát.", "duration_minutes": 10 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Bày khoai nghiền ra đĩa, xếp xúc xích và hành lên trên.", "duration_minutes": 2 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Sausage_and_mash_with_peas.jpg/3840px-Sausage_and_mash_with_peas.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_scones",
+    "name": "Scones",
+    "slug": "scones",
+    "cook_time_minutes": 30,
+    "difficulty": "EASY",
+    "tags": ["Anh", "bánh", "trà chiều"],
+    "dietary_flags": ["vegetarian", "contains_gluten", "contains_egg", "contains_dairy"],
+    "ingredients": [
+      { "ingredient_id": "ing_bot_mi", "name": "Bột mì", "normalized_name": "bot mi", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_bo", "name": "Bơ", "normalized_name": "bo", "amount": 80, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 150, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_bot_no", "name": "Bột nở", "normalized_name": "bot no", "amount": 1, "unit": "muỗng canh", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 1, "unit": "quả", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Trộn bột", "content": "Trộn bột mì, bột nở, đường, bơ lạnh cắt hạt lựu, xoa đến khi bột tơi mịn.", "duration_minutes": 10 },
+      { "order": 2, "title": "Nhào bột", "content": "Rưới sữa tươi, nhào nhẹ tay thành khối bột, cán dày khoảng 2cm, cắt khuôn tròn.", "duration_minutes": 8 },
+      { "order": 3, "title": "Nướng", "content": "Quét trứng lên mặt, nướng 200 độ đến khi bánh nở vàng.", "duration_minutes": 12 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Scone_varieties.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  },
+  {
+    "_id": "au_trifle",
+    "name": "Trifle",
+    "slug": "trifle",
+    "cook_time_minutes": 30,
+    "difficulty": "MEDIUM",
+    "tags": ["Anh", "tráng miệng", "không cần nướng"],
+    "dietary_flags": ["vegetarian", "contains_gluten", "contains_dairy", "contains_egg"],
+    "ingredients": [
+      { "ingredient_id": "ing_banh_quy", "name": "Bánh quy", "normalized_name": "banh quy", "amount": 200, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_dau_tay", "name": "Dâu tây", "normalized_name": "dau tay", "amount": 300, "unit": "g", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_kem_tuoi", "name": "Kem tươi", "normalized_name": "kem tuoi", "amount": 300, "unit": "ml", "essential": true, "weight": 1.0 },
+      { "ingredient_id": "ing_sua_tuoi", "name": "Sữa tươi", "normalized_name": "sua tuoi", "amount": 300, "unit": "ml", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_duong", "name": "Đường", "normalized_name": "duong", "amount": 50, "unit": "g", "essential": false, "weight": 0.3 },
+      { "ingredient_id": "ing_trung_ga", "name": "Trứng gà", "normalized_name": "trung ga", "amount": 2, "unit": "quả", "essential": false, "weight": 0.3 }
+    ],
+    "steps": [
+      { "order": 1, "title": "Làm custard", "content": "Đun sữa tươi với đường, rưới từ từ vào trứng đánh tan, đun lửa nhỏ đến sánh, để nguội.", "duration_minutes": 15 },
+      { "order": 2, "title": "Xếp lớp", "content": "Xếp lớp bánh quy, dâu tây cắt lát, custard trong ly hoặc tô thủy tinh.", "duration_minutes": 10 },
+      { "order": 3, "title": "Hoàn thiện", "content": "Đánh bông kem tươi phủ lên trên cùng, trang trí thêm dâu tây, để lạnh trước khi dùng.", "duration_minutes": 5 }
+    ],
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Trifle_4layer.jpg",
+    "video_url": null,
+    "created_at": "2026-08-25T00:00:00Z"
+  }
+]

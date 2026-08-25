@@ -18,7 +18,7 @@
       { "order": 2, "title": "Xào cà chua", "content": "Phi thơm, cho cà chua vào xào mềm cho ra nước.", "duration_minutes": 4 },
       { "order": 3, "title": "Chiên trứng", "content": "Đổ trứng vào, đảo nhẹ đến khi trứng chín tới, rắc hành lá.", "duration_minutes": 4 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/60/%E7%95%AA%E8%8C%84%E7%82%92%E8%9B%8B2.PNG",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
@@ -43,7 +43,7 @@
       { "order": 2, "title": "Thắng nước màu", "content": "Đun đường trên lửa nhỏ đến khi chuyển màu cánh gián.", "duration_minutes": 5 },
       { "order": 3, "title": "Kho thịt", "content": "Cho thịt vào đảo săn, thêm nước dừa xâm xấp, luộc trứng bóc vỏ cho vào, kho liu riu đến khi mềm và nước sánh.", "duration_minutes": 45 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Caramelized_Pork_and_Eggs.jpg",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
@@ -68,7 +68,7 @@
       { "order": 2, "title": "Thắng nước màu", "content": "Đun đường đến màu cánh gián, xếp cá vào nồi đất.", "duration_minutes": 5 },
       { "order": 3, "title": "Kho cá", "content": "Rưới nước màu, thêm nước xâm xấp, kho lửa nhỏ đến khi cá thấm và nước sánh, thêm ớt tiêu.", "duration_minutes": 20 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/C%C3%A1_kho_t%E1%BB%99%2C_c%C3%A1_h%C3%BA.jpg",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
@@ -93,7 +93,7 @@
       { "order": 2, "title": "Nấu nước dùng", "content": "Đun sôi nước, cho nước me và cà chua vào nêm chua ngọt.", "duration_minutes": 10 },
       { "order": 3, "title": "Nấu canh", "content": "Thả cá vào nấu chín, cho đậu bắp, giá đỗ, rắc ngò gai rồi tắt bếp.", "duration_minutes": 15 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Canhchua2.jpg",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
@@ -116,7 +116,7 @@
       { "order": 2, "title": "Làm sốt", "content": "Phi tỏi, cho cà chua băm vào xào nhuyễn thành sốt, nêm vừa ăn.", "duration_minutes": 6 },
       { "order": 3, "title": "Rim đậu", "content": "Cho đậu vào sốt, rim 3 phút cho thấm, rắc hành lá.", "duration_minutes": 4 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Tomato-sauced_tofu.jpg",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
@@ -138,7 +138,7 @@
       { "order": 1, "title": "Sơ chế", "content": "Rau muống nhặt, rửa sạch, để ráo. Tỏi băm.", "duration_minutes": 4 },
       { "order": 2, "title": "Xào", "content": "Phi thơm tỏi, cho rau vào xào lửa lớn, nêm hạt nêm, đảo nhanh đến khi rau vừa chín tới.", "duration_minutes": 5 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi.jpg",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
@@ -184,7 +184,7 @@
       { "order": 1, "title": "Sơ chế", "content": "Cà rốt cắt hạt lựu. Đánh tan trứng. Hành lá cắt nhỏ.", "duration_minutes": 5 },
       { "order": 2, "title": "Chiên", "content": "Chiên trứng cho se, cho cà rốt đảo chín, thêm cơm chiên tơi, nêm vừa ăn, rắc hành lá.", "duration_minutes": 8 }
     ],
-    "image_url": null,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Fried_rice_with_chicken_%2817234644521%29.jpg",
     "video_url": null,
     "created_at": "2026-07-21T00:00:00Z"
   },
