@@ -1,7 +1,7 @@
 package com.dishcover.user.service;
 
 import com.dishcover.common.security.JwtService;
-import com.dishcover.user.dto.AuthDtos.AuthResponse;
+import com.dishcover.user.dto.AuthDtos.AuthResult;
 import com.dishcover.user.dto.AuthDtos.LoginRequest;
 import com.dishcover.user.dto.AuthDtos.RegisterRequest;
 import com.dishcover.user.dto.UserResponse;
@@ -38,7 +38,7 @@ public class AuthService {
      * @throws EmailAlreadyExistsException nếu email đã được đăng ký
      */
     @Transactional
-    public AuthResponse register(RegisterRequest req) {
+    public AuthResult register(RegisterRequest req) {
         String email = req.email().trim().toLowerCase();
         if (users.existsByEmail(email)) {
             throw new EmailAlreadyExistsException(email);
@@ -56,7 +56,7 @@ public class AuthService {
      * @throws InvalidCredentialsException nếu email không tồn tại hoặc mật khẩu sai
      */
     @Transactional(readOnly = true)
-    public AuthResponse login(LoginRequest req) {
+    public AuthResult login(LoginRequest req) {
         User user = users.findByEmail(req.email().trim().toLowerCase())
                 .orElseThrow(InvalidCredentialsException::new);
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
@@ -65,8 +65,8 @@ public class AuthService {
         return toAuthResponse(user);
     }
 
-    private AuthResponse toAuthResponse(User user) {
-        return new AuthResponse(
+    private AuthResult toAuthResponse(User user) {
+        return new AuthResult(
                 jwtService.issue(user.getId(), user.getEmail(), user.getPlan()),
                 jwtService.expirationSeconds(),
                 UserResponse.from(user));

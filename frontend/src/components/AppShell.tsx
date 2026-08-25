@@ -4,6 +4,7 @@ import {
   Bell,
   ChatCircle,
   Compass,
+  MagnifyingGlass,
   SignOut,
   Sparkle,
   User,
@@ -21,6 +22,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: '/', label: 'Khám phá', icon: Compass, enabled: true },
+  { to: '/tim-kiem', label: 'Tìm kiếm', icon: MagnifyingGlass, enabled: true },
   { to: '/tu-lanh', label: 'Tủ lạnh ảo', icon: Basket, enabled: false },
   { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', icon: Sparkle, enabled: false },
   { to: '/chatbot', label: 'Trợ lý AI', icon: ChatCircle, enabled: false },
@@ -29,6 +31,7 @@ const NAV: NavItem[] = [
 
 function pageTitle(pathname: string): string {
   if (pathname.startsWith('/cong-thuc/')) return 'Công thức'
+  if (pathname === '/tim-kiem') return 'Tìm kiếm'
   return pathname === '/' ? 'Khám phá' : ''
 }
 
