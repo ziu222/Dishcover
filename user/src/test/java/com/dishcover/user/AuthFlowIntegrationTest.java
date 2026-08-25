@@ -1,5 +1,6 @@
 package com.dishcover.user;
 
+import com.dishcover.user.security.TurnstileClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -23,6 +27,13 @@ class AuthFlowIntegrationTest {
     MockMvc mvc;
     @Autowired
     ObjectMapper mapper;
+    /** Mock để không phụ thuộc mạng thật tới Cloudflare — test riêng TurnstileClient đã cover verify() thật. */
+    @MockitoBean
+    TurnstileClient turnstileClient;
+
+    private String loginBody(String email, String password) {
+        return "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+    }
 
     /**
      * Đăng ký và trả token — token giờ chỉ đi qua cookie httpOnly {@code auth_token}, không
@@ -129,5 +140,77 @@ class AuthFlowIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"type\":\"INVALID\",\"value\":\"x\"}"))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void loginRequiresCaptchaAfterThreeFailures() throws Exception {
+        register("captcha@b.com", "secret1");
+        for (int i = 0; i < 3; i++) {
+            mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                            .content(loginBody("captcha@b.com", "wrongpass")))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        // Lần 4 — dù đúng mật khẩu, thiếu captchaToken vẫn bị chặn TRƯỚC khi chạm AuthService.
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("captcha@b.com", "secret1")))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.code").value("CAPTCHA_REQUIRED"));
+    }
+
+    @Test
+    void loginSucceedsWithValidCaptchaAfterThreeFailures() throws Exception {
+        when(turnstileClient.verify(any(), any())).thenReturn(true);
+        register("captchaok@b.com", "secret1");
+        for (int i = 0; i < 3; i++) {
+            mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                            .content(loginBody("captchaok@b.com", "wrongpass")))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"captchaok@b.com\",\"password\":\"secret1\",\"captchaToken\":\"any-token\"}"))
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists("auth_token"));
+    }
+
+    @Test
+    void loginLockedAfterFiveFailures() throws Exception {
+        when(turnstileClient.verify(any(), any())).thenReturn(true);
+        register("locked@b.com", "secret1");
+        for (int i = 0; i < 5; i++) {
+            mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"email\":\"locked@b.com\",\"password\":\"wrongpass\",\"captchaToken\":\"any-token\"}"))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        // Lần 6 — dù đúng mật khẩu, đã khoá cứng, không cho thử nữa.
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("locked@b.com", "secret1")))
+                .andExpect(status().isTooManyRequests())
+                .andExpect(jsonPath("$.code").value("TOO_MANY_ATTEMPTS"))
+                .andExpect(header().string("Retry-After", "900"));
+    }
+
+    @Test
+    void successfulLoginResetsFailureCounterBelowCaptchaThreshold() throws Exception {
+        register("reset@b.com", "secret1");
+
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("reset@b.com", "wrongpass")))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("reset@b.com", "secret1")))
+                .andExpect(status().isOk());
+
+        // Sau khi đăng nhập đúng, bộ đếm về 0 — sai tiếp 2 lần (dưới ngưỡng CAPTCHA) vẫn không bị bắt captcha.
+        for (int i = 0; i < 2; i++) {
+            mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                            .content(loginBody("reset@b.com", "wrongpass")))
+                    .andExpect(status().isUnauthorized());
+        }
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("reset@b.com", "secret1")))
+                .andExpect(status().isOk());
     }
 }

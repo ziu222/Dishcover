@@ -5,7 +5,13 @@ import com.dishcover.user.dto.AuthDtos.AuthResult;
 import com.dishcover.user.dto.AuthDtos.LoginRequest;
 import com.dishcover.user.dto.AuthDtos.RegisterRequest;
 import com.dishcover.user.dto.UserResponse;
+import com.dishcover.user.exception.ApiExceptions.CaptchaRequiredException;
+import com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException;
+import com.dishcover.user.exception.ApiExceptions.TooManyAttemptsException;
+import com.dishcover.user.security.LoginAttemptTracker;
+import com.dishcover.user.security.TurnstileClient;
 import com.dishcover.user.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -38,13 +44,18 @@ public class AuthController {
     private static final String SAME_SITE = "Lax";
 
     private final AuthService authService;
+    private final LoginAttemptTracker attemptTracker;
+    private final TurnstileClient turnstileClient;
 
     /** secure=false ở dev (http://localhost) — cookie Secure bị trình duyệt chặn nếu không có HTTPS. */
     @Value("${app.cookie-secure:false}")
     private boolean cookieSecure;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, LoginAttemptTracker attemptTracker,
+                           TurnstileClient turnstileClient) {
         this.authService = authService;
+        this.attemptTracker = attemptTracker;
+        this.turnstileClient = turnstileClient;
     }
 
     /**
@@ -63,15 +74,41 @@ public class AuthController {
     }
 
     /**
-     * Đăng nhập bằng email + mật khẩu.
+     * Đăng nhập bằng email + mật khẩu. Bảo vệ bởi {@link LoginAttemptTracker} (Fixed Window
+     * Counter theo email): sai từ {@value LoginAttemptTracker#CAPTCHA_THRESHOLD} lần trở lên
+     * trong cửa sổ phải kèm {@code captchaToken} hợp lệ mới cho thử tiếp; sai đủ
+     * {@value LoginAttemptTracker#LOCK_THRESHOLD} lần thì khoá cứng, từ chối thẳng không chạm
+     * DB/bcrypt. Đăng nhập đúng reset bộ đếm ngay.
      *
-     * @param req payload đăng nhập (email, password)
+     * @param req  payload đăng nhập (email, password, captchaToken tuỳ ngưỡng)
+     * @param http để lấy IP người dùng gửi kèm lúc verify CAPTCHA (chỉ để chấm điểm, không bắt buộc)
      * @return hồ sơ user, token đặt qua cookie httpOnly
-     * @throws com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException nếu sai email hoặc mật khẩu
+     * @throws TooManyAttemptsException     nếu email đã bị khoá tạm thời
+     * @throws CaptchaRequiredException     nếu đến ngưỡng cần CAPTCHA mà token thiếu/sai
+     * @throws InvalidCredentialsException  nếu sai email hoặc mật khẩu
      */
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest req) {
-        AuthResult result = authService.login(req);
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest req, HttpServletRequest http) {
+        String email = req.email().trim().toLowerCase();
+
+        LoginAttemptTracker.Status status = attemptTracker.status(email);
+        if (status == LoginAttemptTracker.Status.LOCKED) {
+            throw new TooManyAttemptsException();
+        }
+        if (status == LoginAttemptTracker.Status.NEEDS_CAPTCHA
+                && !turnstileClient.verify(req.captchaToken(), http.getRemoteAddr())) {
+            throw new CaptchaRequiredException();
+        }
+
+        AuthResult result;
+        try {
+            result = authService.login(req);
+        } catch (InvalidCredentialsException ex) {
+            attemptTracker.recordFailure(email);
+            throw ex;
+        }
+        attemptTracker.reset(email);
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, authCookie(result).toString())
                 .body(result.user());

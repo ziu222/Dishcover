@@ -27,11 +27,16 @@ public final class AuthDtos {
     /**
      * Yêu cầu đăng nhập bằng email + mật khẩu.
      *
-     * @param password mật khẩu dạng plaintext gửi lên, so khớp với password_hash đã lưu
+     * @param password     mật khẩu dạng plaintext gửi lên, so khớp với password_hash đã lưu
+     * @param captchaToken token Cloudflare Turnstile — chỉ bắt buộc khi email đã sai đủ ngưỡng
+     *                     {@link com.dishcover.user.security.LoginAttemptTracker#CAPTCHA_THRESHOLD}
+     *                     lần liên tiếp (AuthController tự kiểm tra), không validate @NotBlank ở
+     *                     đây vì phần lớn lượt đăng nhập bình thường không cần gửi field này
      */
     public record LoginRequest(
             @Email @NotBlank String email,
-            @NotBlank String password
+            @NotBlank String password,
+            String captchaToken
     ) {
     }
 
