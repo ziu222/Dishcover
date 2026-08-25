@@ -7,7 +7,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -114,7 +114,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -245,7 +245,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Việt Nam",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -374,7 +374,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -568,7 +568,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -720,7 +720,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -890,7 +890,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Khác"
+      "khác"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -1021,7 +1021,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -1202,7 +1202,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -1327,7 +1327,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -1424,7 +1424,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -1584,7 +1584,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [],
     "ingredients": [
@@ -1702,7 +1702,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -1860,7 +1860,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_nuts"
@@ -1977,7 +1977,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_nuts"
@@ -2103,7 +2103,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Khác"
+      "khác"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -2244,7 +2244,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -2440,7 +2440,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Việt Nam",
-      "Thuần chay"
+      "thuần chay"
     ],
     "dietary_flags": [],
     "ingredients": [
@@ -2552,7 +2552,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood"
@@ -2666,7 +2666,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -2820,7 +2820,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -2991,7 +2991,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Cừu"
+      "cừu"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -3187,7 +3187,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_sesame",
@@ -3390,7 +3390,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood"
@@ -3534,7 +3534,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -3692,7 +3692,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -3825,7 +3825,7 @@
     "difficulty": "HARD",
     "tags": [
       "Việt Nam",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [],
     "ingredients": [
@@ -3949,7 +3949,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Món phụ"
+      "món phụ"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -4163,7 +4163,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -4395,7 +4395,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -4639,7 +4639,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Trung Quốc",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -4813,7 +4813,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -5064,7 +5064,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_sesame",
@@ -5346,7 +5346,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_egg",
@@ -5519,10 +5519,10 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Chay",
-      "Súp",
-      "Bánh nướng",
-      "Nhiều năng lượng"
+      "chay",
+      "súp",
+      "bánh nướng",
+      "nhiều năng lượng"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -5670,7 +5670,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -5924,7 +5924,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -6206,8 +6206,8 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Heo",
-      "Súp"
+      "heo",
+      "súp"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -6406,7 +6406,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_sesame",
@@ -6571,8 +6571,8 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Hải sản",
-      "Nướng BBQ"
+      "hải sản",
+      "nướng BBQ"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -6721,7 +6721,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -6950,7 +6950,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -7173,7 +7173,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Trung Quốc",
-      "Khác"
+      "khác"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -7291,7 +7291,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Trung Quốc",
-      "Món phụ"
+      "món phụ"
     ],
     "dietary_flags": [
       "contains_sesame"
@@ -7399,7 +7399,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -7667,7 +7667,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -7853,7 +7853,7 @@
     "difficulty": "HARD",
     "tags": [
       "Trung Quốc",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_egg",
@@ -8077,7 +8077,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -8217,7 +8217,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -8368,8 +8368,8 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Bò",
-      "Cà ri"
+      "bò",
+      "cà ri"
     ],
     "dietary_flags": [
       "contains_nuts",
@@ -8527,8 +8527,8 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Gà",
-      "Mì Ý"
+      "gà",
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -8685,7 +8685,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -8849,7 +8849,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -9076,7 +9076,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -9260,7 +9260,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Thái Lan",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -9350,7 +9350,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -9486,7 +9486,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Thái Lan",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -9607,7 +9607,7 @@
     "difficulty": "EASY",
     "tags": [
       "Thái Lan",
-      "Bò"
+      "bò"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -9680,7 +9680,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -9812,7 +9812,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_egg",
@@ -9963,8 +9963,8 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Hải sản",
-      "Súp"
+      "hải sản",
+      "súp"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -10097,7 +10097,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Thái Lan",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -10184,7 +10184,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -10326,8 +10326,8 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Gà",
-      "Súp"
+      "gà",
+      "súp"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -10493,9 +10493,9 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Gà",
-      "Cà ri",
-      "Vị nhẹ"
+      "gà",
+      "cà ri",
+      "vị nhẹ"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -10649,7 +10649,7 @@
     "difficulty": "HARD",
     "tags": [
       "Thái Lan",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -10797,7 +10797,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Thái Lan",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [
       "contains_seafood"
@@ -10902,7 +10902,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Nhật Bản",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -11028,10 +11028,10 @@
     "difficulty": "EASY",
     "tags": [
       "Nhật Bản",
-      "Hải sản",
-      "Cá",
-      "Bữa sáng",
-      "Hẹn hò"
+      "hải sản",
+      "cá",
+      "bữa sáng",
+      "hẹn hò"
     ],
     "dietary_flags": [
       "contains_seafood",
@@ -11116,7 +11116,7 @@
     "difficulty": "EASY",
     "tags": [
       "Nhật Bản",
-      "Món phụ"
+      "món phụ"
     ],
     "dietary_flags": [],
     "ingredients": [
@@ -11183,7 +11183,7 @@
     "difficulty": "HARD",
     "tags": [
       "Nhật Bản",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -11307,9 +11307,9 @@
     "difficulty": "HARD",
     "tags": [
       "Nhật Bản",
-      "Gà",
-      "Cà ri",
-      "Thịt"
+      "gà",
+      "cà ri",
+      "thịt"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -11512,7 +11512,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Nhật Bản",
-      "Hải sản"
+      "hải sản"
     ],
     "dietary_flags": [],
     "ingredients": [
@@ -11660,9 +11660,9 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Nhật Bản",
-      "Gà",
-      "Thịt",
-      "Hầm"
+      "gà",
+      "thịt",
+      "hầm"
     ],
     "dietary_flags": [
       "contains_meat"
@@ -11800,7 +11800,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Nhật Bản",
-      "Heo"
+      "heo"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -11929,8 +11929,8 @@
     "difficulty": "HARD",
     "tags": [
       "Nhật Bản",
-      "Chay",
-      "Ít calo"
+      "chay",
+      "ít calo"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -12054,12 +12054,12 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Tráng miệng",
-      "Bánh ngọt",
-      "Bánh nướng",
-      "Ngọt",
-      "Có cồn",
-      "Nhiều năng lượng"
+      "tráng miệng",
+      "bánh ngọt",
+      "bánh nướng",
+      "ngọt",
+      "có cồn",
+      "nhiều năng lượng"
     ],
     "dietary_flags": [
       "contains_dairy",
@@ -12166,10 +12166,10 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Gà",
-      "Mì Ý",
-      "Thịt",
-      "Từ sữa"
+      "gà",
+      "mì Ý",
+      "thịt",
+      "từ sữa"
     ],
     "dietary_flags": [
       "contains_dairy",
@@ -12483,7 +12483,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Mì Ý"
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -12652,7 +12652,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Mì Ý"
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_dairy"
@@ -12757,7 +12757,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Mì Ý"
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_dairy",
@@ -12866,7 +12866,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Mì Ý"
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -13054,9 +13054,9 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Hải sản",
-      "Mì Ý",
-      "Bánh nướng"
+      "hải sản",
+      "mì Ý",
+      "bánh nướng"
     ],
     "dietary_flags": [
       "contains_dairy",
@@ -13207,7 +13207,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Khác"
+      "khác"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -13464,7 +13464,7 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Mì Ý"
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -13579,7 +13579,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Khác"
+      "khác"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -13772,7 +13772,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Gà"
+      "gà"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -13914,7 +13914,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -14086,8 +14086,8 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Cừu",
-      "Mì Ý"
+      "cừu",
+      "mì Ý"
     ],
     "dietary_flags": [
       "contains_seafood"
@@ -14285,8 +14285,8 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Hải sản",
-      "Cá"
+      "hải sản",
+      "cá"
     ],
     "dietary_flags": [
       "contains_dairy",
@@ -14449,9 +14449,9 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Mì Ý",
-      "Nướng BBQ",
-      "Bữa sáng"
+      "mì Ý",
+      "nướng BBQ",
+      "bữa sáng"
     ],
     "dietary_flags": [
       "contains_gluten",
@@ -14600,9 +14600,9 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Bò",
-      "Mì Ý",
-      "Thịt"
+      "bò",
+      "mì Ý",
+      "thịt"
     ],
     "dietary_flags": [
       "contains_meat",
@@ -14751,9 +14751,9 @@
     "difficulty": "MEDIUM",
     "tags": [
       "Ý",
-      "Chay",
-      "Mì Ý",
-      "Cà ri"
+      "chay",
+      "mì Ý",
+      "cà ri"
     ],
     "dietary_flags": [],
     "ingredients": [
@@ -14862,7 +14862,7 @@
     "difficulty": "HARD",
     "tags": [
       "Ý",
-      "Chay"
+      "chay"
     ],
     "dietary_flags": [
       "contains_dairy"
