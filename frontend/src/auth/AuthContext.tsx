@@ -19,7 +19,7 @@ interface AuthState {
   isAuthenticated: boolean
   /** true trong lúc xác thực phiên lúc mở app (GET /users/me) — chưa biết đăng nhập hay chưa. */
   checking: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string, captchaToken?: string) => Promise<void>
   register: (email: string, password: string, fullName: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -67,9 +67,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       isAuthenticated: user !== null,
       checking,
-      async login(email, password) {
+      async login(email, password, captchaToken) {
         persist(
-          await api<User>('/user-service/auth/login', { method: 'POST', body: { email, password } }),
+          await api<User>('/user-service/auth/login', {
+            method: 'POST',
+            body: { email, password, captchaToken },
+          }),
         )
       },
       async register(email, password, fullName) {
