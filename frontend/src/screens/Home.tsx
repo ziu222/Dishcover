@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { CookingPot } from '@phosphor-icons/react'
 import { useRecipes } from '../hooks/useRecipes'
+import { useFavorites } from '../hooks/useFavorites'
 import { useAuth } from '../auth/AuthContext'
 import { RecipeCard } from '../components/RecipeCard'
 import { Chip } from '../components/Chip'
@@ -13,33 +14,13 @@ function greeting(name: string): string {
   return `Chào buổi ${part}, ${name}`
 }
 
-const FAV_KEY = 'larder.favorites'
-
-function loadFavorites(): Set<string> {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(FAV_KEY) ?? '[]') as string[])
-  } catch {
-    return new Set()
-  }
-}
-
 const grid = 'grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3'
 
 export function Home() {
   const { user } = useAuth()
   const { recipes, loading, error, reload } = useRecipes()
+  const { favorites, toggle: toggleFav } = useFavorites()
   const [activeTag, setActiveTag] = useState<string | null>(null)
-  // Yêu thích chỉ lưu cục bộ — backend chưa có endpoint favorites (ghi chú, làm sau).
-  const [favorites, setFavorites] = useState<Set<string>>(loadFavorites)
-
-  function toggleFav(id: string) {
-    setFavorites((prev) => {
-      const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
-      localStorage.setItem(FAV_KEY, JSON.stringify([...next]))
-      return next
-    })
-  }
 
   const topTags = useMemo(() => {
     const counts = new Map<string, number>()
