@@ -8,7 +8,7 @@ import { RecipeCard } from '../components/RecipeCard'
 import { Select, type SelectOption } from '../components/Select'
 import { Pagination } from '../components/Pagination'
 import { Button } from '../components/Button'
-import { LoadingDots } from '../components/LoadingDots'
+import { Spinner } from '../components/Spinner'
 
 function greeting(name: string): string {
   const h = new Date().getHours()
@@ -83,7 +83,7 @@ export function Home() {
 
       {/* Trạng thái */}
       {loading ? (
-        <LoadingDots />
+        <Spinner />
       ) : error ? (
         <div className="mx-auto max-w-md py-20 text-center">
           <p className="text-[15px] text-muted">{error}</p>

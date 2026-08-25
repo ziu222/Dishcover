@@ -6,7 +6,7 @@ import { useFavorites } from '../hooks/useFavorites'
 import { SearchInput } from '../components/SearchInput'
 import { Chip } from '../components/Chip'
 import { RecipeCard } from '../components/RecipeCard'
-import { LoadingDots } from '../components/LoadingDots'
+import { Spinner } from '../components/Spinner'
 import type { Difficulty } from '../types'
 
 const DIFFICULTIES: Array<{ value: Difficulty | null; label: string }> = [
@@ -56,7 +56,7 @@ export function Search() {
             </p>
           </div>
         ) : loading ? (
-          <LoadingDots label="Đang tìm…" />
+          <Spinner label="Đang tìm…" />
         ) : error ? (
           <div className="mx-auto max-w-md py-16 text-center">
             <p className="text-[15px] text-muted">{error}</p>
