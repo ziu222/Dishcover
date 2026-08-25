@@ -3,6 +3,7 @@ import { Login } from './screens/Login'
 import { Register } from './screens/Register'
 import { Home } from './screens/Home'
 import { Search } from './screens/Search'
+import { Fridge } from './screens/Fridge'
 import { RecipeDetail } from './screens/RecipeDetail'
 import { AppShell } from './components/AppShell'
 import { useAuth } from './auth/AuthContext'
@@ -27,6 +28,7 @@ export function App() {
         <Route element={<AppShell />}>
           <Route path="/" element={<Home />} />
           <Route path="/tim-kiem" element={<Search />} />
+          <Route path="/tu-lanh" element={<Fridge />} />
           <Route path="/cong-thuc/:id" element={<RecipeDetail />} />
         </Route>
       </Route>
