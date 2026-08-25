@@ -8,6 +8,7 @@ import { RecipeCard } from '../components/RecipeCard'
 import { Select, type SelectOption } from '../components/Select'
 import { Pagination } from '../components/Pagination'
 import { Button } from '../components/Button'
+import { LoadingDots } from '../components/LoadingDots'
 
 function greeting(name: string): string {
   const h = new Date().getHours()
@@ -82,17 +83,7 @@ export function Home() {
 
       {/* Trạng thái */}
       {loading ? (
-        <div className={grid} aria-busy>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="overflow-hidden rounded-card border border-line-soft bg-white">
-              <div className="h-49 animate-pulse bg-line-soft/60" />
-              <div className="space-y-3 p-5">
-                <div className="h-5 w-3/4 animate-pulse rounded bg-line-soft/70" />
-                <div className="h-3 w-1/2 animate-pulse rounded bg-line-soft/50" />
-              </div>
-            </div>
-          ))}
-        </div>
+        <LoadingDots />
       ) : error ? (
         <div className="mx-auto max-w-md py-20 text-center">
           <p className="text-[15px] text-muted">{error}</p>
