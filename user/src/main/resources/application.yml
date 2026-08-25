@@ -28,3 +28,18 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+# Turnstile CÓ default (khác JWT_SECRET) — cố ý dùng secret key test chính thức của Cloudflare
+# (luôn verify pass, https://developers.cloudflare.com/turnstile/troubleshooting/testing/), để
+# dev/test chạy được ngay không cần tài khoản Cloudflare thật. Quên set env thật ở prod thì
+# TurnstileClient vẫn "verify pass" mọi lúc — suy biến về "không có CAPTCHA", không phải lỗi crash.
+turnstile:
+  secret-key: ${TURNSTILE_SECRET_KEY:1x0000000000000000000000000000000AA}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      turnstile:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
