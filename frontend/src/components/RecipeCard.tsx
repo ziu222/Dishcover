@@ -1,13 +1,8 @@
 import { motion } from 'framer-motion'
 import { Heart } from '@phosphor-icons/react'
-import type { Difficulty, RecipeSummary } from '../types'
+import type { RecipeSummary } from '../types'
 import { cn } from '../lib/cn'
-
-const DIFFICULTY_VI: Record<Difficulty, string> = {
-  EASY: 'Dễ',
-  MEDIUM: 'Vừa',
-  HARD: 'Khó',
-}
+import { DIFFICULTY_VI } from '../lib/labels'
 
 // Nền sọc chéo thay ảnh khi công thức chưa có imageUrl (giống mockup).
 const PLACEHOLDER =
