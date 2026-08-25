@@ -25,12 +25,18 @@ export function Home() {
   const [tag, setTag] = useState('')
   const [page, setPage] = useState(0)
 
-  // Dropdown: tất cả tag, xếp theo tần suất giảm dần.
+  // Dropdown: tất cả tag, xếp theo tần suất giảm dần. Tag trong DB lộn xộn hoa/thường
+  // (tên vùng viết HOA, tag mô tả viết thường) — viết hoa chữ đầu CHỈ để hiển thị,
+  // value giữ nguyên tag gốc để lọc vẫn khớp recipe.tags.
   const tagOptions = useMemo<SelectOption[]>(() => {
     const counts = new Map<string, number>()
     for (const r of recipes) for (const t of r.tags) counts.set(t, (counts.get(t) ?? 0) + 1)
     const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t)
-    return [{ value: '', label: 'Tất cả món' }, ...sorted.map((t) => ({ value: t, label: t }))]
+    const titleCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)
+    return [
+      { value: '', label: 'Tất cả món' },
+      ...sorted.map((t) => ({ value: t, label: titleCase(t) })),
+    ]
   }, [recipes])
 
   const filtered = useMemo(
