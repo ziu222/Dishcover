@@ -12,6 +12,9 @@ dist-ssr
 *.local
 *.tsbuildinfo
 
+# Env thật — giữ .env.example làm mẫu
+.env
+
 # Editor
 .vscode/*
 !.vscode/extensions.json
