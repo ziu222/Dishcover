@@ -2,6 +2,7 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Login } from './screens/Login'
 import { Register } from './screens/Register'
 import { Home } from './screens/Home'
+import { RecipeDetail } from './screens/RecipeDetail'
 import { AppShell } from './components/AppShell'
 import { useAuth } from './auth/AuthContext'
 
@@ -17,6 +18,7 @@ export function App() {
       <Route element={<RequireAuth />}>
         <Route element={<AppShell />}>
           <Route path="/" element={<Home />} />
+          <Route path="/cong-thuc/:id" element={<RecipeDetail />} />
         </Route>
       </Route>
       <Route path="/login" element={<Login />} />
