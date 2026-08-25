@@ -45,3 +45,13 @@ body {
 ::selection {
   background: #e4d2c7;
 }
+
+/* Skeleton shimmer — vệt sáng quét ngang ô ảnh trong lúc ảnh đang tải (RecipeCard). */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}

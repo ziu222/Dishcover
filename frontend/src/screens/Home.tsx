@@ -8,6 +8,7 @@ import { RecipeCard } from '../components/RecipeCard'
 import { Select, type SelectOption } from '../components/Select'
 import { Pagination } from '../components/Pagination'
 import { Button } from '../components/Button'
+import { Spinner } from '../components/Spinner'
 
 function greeting(name: string): string {
   const h = new Date().getHours()
@@ -25,12 +26,18 @@ export function Home() {
   const [tag, setTag] = useState('')
   const [page, setPage] = useState(0)
 
-  // Dropdown: tất cả tag, xếp theo tần suất giảm dần.
+  // Dropdown: tất cả tag, xếp theo tần suất giảm dần. Tag trong DB lộn xộn hoa/thường
+  // (tên vùng viết HOA, tag mô tả viết thường) — viết hoa chữ đầu CHỈ để hiển thị,
+  // value giữ nguyên tag gốc để lọc vẫn khớp recipe.tags.
   const tagOptions = useMemo<SelectOption[]>(() => {
     const counts = new Map<string, number>()
     for (const r of recipes) for (const t of r.tags) counts.set(t, (counts.get(t) ?? 0) + 1)
     const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t)
-    return [{ value: '', label: 'Tất cả món' }, ...sorted.map((t) => ({ value: t, label: t }))]
+    const titleCase = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)
+    return [
+      { value: '', label: 'Tất cả món' },
+      ...sorted.map((t) => ({ value: t, label: titleCase(t) })),
+    ]
   }, [recipes])
 
   const filtered = useMemo(
@@ -76,17 +83,7 @@ export function Home() {
 
       {/* Trạng thái */}
       {loading ? (
-        <div className={grid} aria-busy>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="overflow-hidden rounded-card border border-line-soft bg-white">
-              <div className="h-49 animate-pulse bg-line-soft/60" />
-              <div className="space-y-3 p-5">
-                <div className="h-5 w-3/4 animate-pulse rounded bg-line-soft/70" />
-                <div className="h-3 w-1/2 animate-pulse rounded bg-line-soft/50" />
-              </div>
-            </div>
-          ))}
-        </div>
+        <Spinner />
       ) : error ? (
         <div className="mx-auto max-w-md py-20 text-center">
           <p className="text-[15px] text-muted">{error}</p>

@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, Heart } from '@phosphor-icons/react'
 import type { RecipeSummary } from '../types'
 import { DIFFICULTY_VI } from '../lib/labels'
+import { cn } from '../lib/cn'
 
 // Nền sọc chéo thay ảnh khi công thức chưa có imageUrl (giống mockup).
 const PLACEHOLDER =
@@ -16,6 +18,7 @@ interface RecipeCardProps {
 
 export function RecipeCard({ recipe, favorited, onToggleFav }: RecipeCardProps) {
   const cuisine = recipe.tags[0]
+  const [imgLoaded, setImgLoaded] = useState(false)
   return (
     <motion.article
       whileHover={{ y: -6 }}
@@ -27,14 +30,29 @@ export function RecipeCard({ recipe, favorited, onToggleFav }: RecipeCardProps) 
         className="block outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
       >
         {/* Ảnh — tỉ lệ cố định tránh nhảy layout, scrim tối đáy để badge nổi + có chiều sâu */}
-        <div className="relative aspect-[4/3] overflow-hidden" style={{ background: PLACEHOLDER }}>
+        <div
+          className="relative aspect-[4/3] overflow-hidden bg-line-soft/50"
+          style={recipe.imageUrl ? undefined : { background: PLACEHOLDER }}
+        >
           {recipe.imageUrl ? (
-            <img
-              src={recipe.imageUrl}
-              alt={recipe.name}
-              loading="lazy"
-              className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-            />
+            <>
+              <img
+                src={recipe.imageUrl}
+                alt={recipe.name}
+                loading="lazy"
+                onLoad={() => setImgLoaded(true)}
+                className={cn(
+                  'size-full object-cover transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.06]',
+                  imgLoaded ? 'opacity-100' : 'opacity-0',
+                )}
+              />
+              {/* Skeleton shimmer trong lúc ảnh đang tải — vệt sáng quét ngang */}
+              {!imgLoaded && (
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                  <div className="absolute inset-0 animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-white/55 to-transparent motion-reduce:animate-none" />
+                </div>
+              )}
+            </>
           ) : (
             <span className="absolute inset-0 grid place-items-center text-[10px] font-medium uppercase tracking-[0.18em] text-mist">
               ảnh · {recipe.name}
