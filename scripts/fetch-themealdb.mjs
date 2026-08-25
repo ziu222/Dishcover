@@ -109,11 +109,18 @@ function parseAmount(s) {
   const v = Number(s.replace(",", ".")); return Number.isFinite(v) ? v : null;
 }
 
+// Một số món TheMealDB chèn dòng tiêu đề riêng kiểu "STEP 1" ngay trước đoạn nội dung thật —
+// split theo dòng trống biến dòng đó thành 1 "bước" riêng chỉ có mỗi số thứ tự (rác). Phát hiện
+// được sau khi seed thật: 47/94 công thức dính, 138/643 bước là rác dạng này. Lọc bỏ trước khi
+// đánh lại order/title theo index còn lại.
+const STEP_HEADER_ONLY = /^(step|bước)\s*\d+[.:)]?$/i;
+
 function splitSteps(instr) {
   let parts = (instr || "").split(/\r?\n+/).map((s) => s.trim()).filter(Boolean);
   if (parts.length < 2) {
     parts = (instr || "").split(/(?<=\.)\s+(?=[A-Z])/).map((s) => s.trim()).filter(Boolean);
   }
+  parts = parts.filter((p) => !STEP_HEADER_ONLY.test(p));
   return parts.map((content, i) => ({
     order: i + 1, title: `Bước ${i + 1}`, content, duration_minutes: 0,
   }));
