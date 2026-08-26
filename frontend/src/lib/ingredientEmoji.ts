@@ -38,6 +38,7 @@ const TABLE: readonly Entry[] = [
 
   // Rau lá & rau củ
   [['gia do', 'gia'], '🌱'], // chặn trước "ga"
+  [['chanh'], '🍋'], // "chanh" chứa "hanh" → phải chặn trước hành
   [['hanh la', 'hanh tay', 'hanh'], '🧅'],
   [['toi'], '🧄'],
   [['gung'], '🫚'],
@@ -55,7 +56,6 @@ const TABLE: readonly Entry[] = [
   [['ca chua bi'], '🍅'],
 
   // Trái cây
-  [['chanh'], '🍋'],
   [['cam', 'quyt'], '🍊'],
   [['chuoi'], '🍌'],
   [['tao'], '🍎'],
@@ -109,6 +109,8 @@ if (import.meta.env.DEV) {
     ['khoai tay', '🥔'],
     ['dau an', '🫒'],
     ['trai bo', '🥑'],
+    ['chanh', '🍋'],
+    ['hanh la', '🧅'],
     ['xyz khong co', '🥘'],
   ]
   for (const [input, want] of cases) {
