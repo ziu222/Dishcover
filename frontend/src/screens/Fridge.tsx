@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Snowflake, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
@@ -8,8 +8,26 @@ import { Chip } from '../components/Chip'
 import { Modal } from '../components/Modal'
 import { IngredientTile } from '../components/IngredientTile'
 import { Spinner } from '../components/Spinner'
+import { cn } from '../lib/cn'
 import { ApiError } from '../lib/api'
 import type { InventoryItem } from '../types'
+
+// Hiệu ứng "mở cửa tủ lạnh" chỉ chạy LẦN ĐẦU vào màn trong mỗi phiên (sessionStorage).
+const DOOR_KEY = 'larder_fridge_opened'
+function doorAlreadyOpened(): boolean {
+  try {
+    return !!sessionStorage.getItem(DOOR_KEY)
+  } catch {
+    return true // storage lỗi (private mode…) → bỏ qua animation, không ép chạy
+  }
+}
+function markDoorOpened() {
+  try {
+    sessionStorage.setItem(DOOR_KEY, '1')
+  } catch {
+    /* bỏ qua */
+  }
+}
 
 const STATUS_FILTERS: Array<{ value: string | null; label: string }> = [
   { value: null, label: 'Tất cả' },
@@ -24,6 +42,7 @@ export function Fridge() {
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<InventoryItem | null>(null)
   const [deleting, setDeleting] = useState<InventoryItem | null>(null)
+  const [showDoor, setShowDoor] = useState(() => !doorAlreadyOpened())
 
   // Sắp hết hạn/hết hạn lên trước (ưu tiên "giải cứu"); không rõ hạn xuống cuối.
   const sorted = useMemo(
@@ -45,6 +64,17 @@ export function Fridge() {
 
   return (
     <div className="px-6 py-9 lg:px-10">
+      {/* Không bọc AnimatePresence: gỡ thẳng khi xong để overlay không bao giờ kẹt che tủ lạnh
+          (exit animation phụ thuộc rAF, có thể đứng yên khi tab ẩn). */}
+      {showDoor && (
+        <FridgeDoorReveal
+          onDone={() => {
+            markDoorOpened()
+            setShowDoor(false)
+          }}
+        />
+      )}
+
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -300,5 +330,61 @@ function ConfirmDelete({
         </Button>
       </div>
     </Modal>
+  )
+}
+
+/**
+ * Hiệu ứng vào màn: hai cánh cửa tủ lạnh tách ra hai bên lộ kệ đồ phía sau + luồng hơi lạnh toả ra.
+ * Gỡ overlay bằng setTimeout (KHÔNG dựa onAnimationComplete) để chắc chắn biến mất kể cả khi
+ * trình duyệt tạm dừng rAF (tab ẩn) — không bao giờ để cửa kẹt che mất tủ lạnh.
+ */
+function FridgeDoorReveal({ onDone }: { onDone: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onDone, 1250)
+    return () => clearTimeout(t)
+  }, [onDone])
+
+  const panel = 'absolute top-0 h-full w-1/2 bg-surface flex items-center'
+  const ease = [0.7, 0, 0.25, 1] as const
+  const slide = { duration: 0.85, ease, delay: 0.25 }
+
+  return (
+    <motion.div className="fixed inset-0 z-50 overflow-hidden">
+      {/* hơi lạnh toả ra rồi tan */}
+      <motion.div
+        className="absolute inset-0 bg-white"
+        initial={{ opacity: 0.55 }}
+        animate={{ opacity: 0 }}
+        transition={{ duration: 1.1 }}
+      />
+      {/* nhãn ở giữa khe cửa, mờ đi trước khi cửa mở */}
+      <motion.div
+        className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 text-accent"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
+        <Snowflake weight="light" className="size-9" />
+        <span className="font-display text-lg font-light tracking-tight text-ink">Mở tủ lạnh…</span>
+      </motion.div>
+      {/* cánh trái */}
+      <motion.div
+        className={cn(panel, 'left-0 justify-end border-r border-line')}
+        initial={{ x: 0 }}
+        animate={{ x: '-101%' }}
+        transition={slide}
+      >
+        <span className="mr-3 h-16 w-1.5 rounded-full bg-line" />
+      </motion.div>
+      {/* cánh phải */}
+      <motion.div
+        className={cn(panel, 'right-0 border-l border-line')}
+        initial={{ x: 0 }}
+        animate={{ x: '101%' }}
+        transition={slide}
+      >
+        <span className="ml-3 h-16 w-1.5 rounded-full bg-line" />
+      </motion.div>
+    </motion.div>
   )
 }
