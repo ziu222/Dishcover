@@ -8,7 +8,6 @@ import { Chip } from '../components/Chip'
 import { Modal } from '../components/Modal'
 import { IngredientTile } from '../components/IngredientTile'
 import { Spinner } from '../components/Spinner'
-import { cn } from '../lib/cn'
 import { ApiError } from '../lib/api'
 import type { InventoryItem } from '../types'
 
@@ -340,50 +339,57 @@ function ConfirmDelete({
  */
 function FridgeDoorReveal({ onDone }: { onDone: () => void }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 1250)
+    const t = setTimeout(onDone, 1700)
     return () => clearTimeout(t)
   }, [onDone])
 
-  const panel = 'absolute top-0 h-full w-1/2 bg-surface flex items-center'
-  const ease = [0.7, 0, 0.25, 1] as const
-  const slide = { duration: 0.85, ease, delay: 0.25 }
+  const ease = [0.7, 0, 0.2, 1] as const
+  const slide = { duration: 1.0, ease, delay: 0.4 }
+  // Chất "thép/kính mờ" — CỐ Ý khác tông kem ấm của nội dung để lúc cửa tách ra thấy rõ.
+  const steel = { background: 'linear-gradient(135deg,#f4f7f9 0%,#dbe3e7 55%,#c6d1d6 100%)' }
 
   return (
     <motion.div className="fixed inset-0 z-50 overflow-hidden">
       {/* hơi lạnh toả ra rồi tan */}
       <motion.div
         className="absolute inset-0 bg-white"
-        initial={{ opacity: 0.55 }}
+        initial={{ opacity: 0.75 }}
         animate={{ opacity: 0 }}
-        transition={{ duration: 1.1 }}
+        transition={{ duration: 1.4 }}
       />
-      {/* nhãn ở giữa khe cửa, mờ đi trước khi cửa mở */}
+      {/* nhãn giữa khe cửa, mờ đi trước khi cửa mở */}
       <motion.div
-        className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 text-accent"
+        className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3"
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <Snowflake weight="light" className="size-9" />
-        <span className="font-display text-lg font-light tracking-tight text-ink">Mở tủ lạnh…</span>
+        <Snowflake weight="light" className="size-12 text-[#5b6b73]" />
+        <span className="font-display text-2xl font-light tracking-tight text-[#39454b]">
+          Tủ lạnh của bạn
+        </span>
       </motion.div>
       {/* cánh trái */}
       <motion.div
-        className={cn(panel, 'left-0 justify-end border-r border-line')}
+        className="absolute left-0 top-0 h-full w-1/2"
+        style={steel}
         initial={{ x: 0 }}
         animate={{ x: '-101%' }}
         transition={slide}
       >
-        <span className="mr-3 h-16 w-1.5 rounded-full bg-line" />
+        <span className="absolute inset-y-8 right-0 w-px bg-white/50" />
+        <span className="absolute right-4 top-1/2 h-24 w-2 -translate-y-1/2 rounded-full bg-[#9aa7ad] shadow-sm" />
       </motion.div>
       {/* cánh phải */}
       <motion.div
-        className={cn(panel, 'right-0 border-l border-line')}
+        className="absolute right-0 top-0 h-full w-1/2"
+        style={steel}
         initial={{ x: 0 }}
         animate={{ x: '101%' }}
         transition={slide}
       >
-        <span className="ml-3 h-16 w-1.5 rounded-full bg-line" />
+        <span className="absolute inset-y-8 left-0 w-px bg-black/10" />
+        <span className="absolute left-4 top-1/2 h-24 w-2 -translate-y-1/2 rounded-full bg-[#9aa7ad] shadow-sm" />
       </motion.div>
     </motion.div>
   )
