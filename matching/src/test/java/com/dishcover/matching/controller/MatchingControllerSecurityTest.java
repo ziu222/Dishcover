@@ -55,6 +55,19 @@ class MatchingControllerSecurityTest {
     }
 
     /**
+     * Regression: trình duyệt dùng httpOnly cookie {@code auth_token} (KHÔNG có header
+     * Authorization) vẫn phải gọi được /suggestions — trước đây bắt buộc header nên frontend luôn 401.
+     */
+    @Test
+    void acceptsAuthCookieWithoutHeader() throws Exception {
+        when(service.suggest(any(), any())).thenReturn(List.of());
+        String raw = new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
+        mvc.perform(get("/matching/suggestions")
+                        .cookie(new jakarta.servlet.http.Cookie("auth_token", raw)))
+                .andExpect(status().isOk());
+    }
+
+    /**
      * Endpoint nội bộ vẫn phải kiểm token: route Gateway là prefix match phẳng nên ai cũng gọi
      * thẳng vào được, không riêng RAG Service.
      */

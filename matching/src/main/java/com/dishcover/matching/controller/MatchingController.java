@@ -1,13 +1,14 @@
 package com.dishcover.matching.controller;
 
+import com.dishcover.common.security.RequestTokenExtractor;
 import com.dishcover.matching.dto.MatchingDtos.MatchByIngredientsRequest;
 import com.dishcover.matching.dto.MatchingDtos.RecipeMatchResponse;
 import com.dishcover.matching.service.MatchingService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,14 +32,17 @@ public class MatchingController {
     /**
      * Gợi ý công thức theo nguyên liệu người dùng đang có trong tủ lạnh ảo.
      *
-     * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi
+     * <p>Token forward xuống Inventory/Recipe/User lấy từ header Authorization HOẶC cookie
+     * {@code auth_token} (trình duyệt dùng httpOnly cookie, không gửi header) — xem
+     * {@link RequestTokenExtractor}. Request đã qua JwtAuthFilter nên chắc chắn có token.</p>
+     *
      * @param topN số lượng kết quả tối đa mong muốn; có thể null
      * @return danh sách công thức phù hợp, sắp xếp giảm dần theo điểm số
      */
     @GetMapping("/suggestions")
-    public List<RecipeMatchResponse> suggestions(@RequestHeader("Authorization") String bearerToken,
+    public List<RecipeMatchResponse> suggestions(HttpServletRequest request,
                                                   @RequestParam(required = false) Integer topN) {
-        return service.suggest(bearerToken, topN);
+        return service.suggest(RequestTokenExtractor.resolveBearer(request), topN);
     }
 
     /**
