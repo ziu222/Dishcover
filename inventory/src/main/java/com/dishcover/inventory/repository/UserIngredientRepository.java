@@ -40,8 +40,9 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
      *
      * @param id id dòng nguyên liệu
      * @param userId id người dùng yêu cầu xóa
+     * @return số dòng bị xóa (0 nếu id không tồn tại hoặc không thuộc người dùng)
      */
-    void deleteByIdAndUserId(Long id, Long userId);
+    long deleteByIdAndUserId(Long id, Long userId);
 
     /**
      * Cùng lô hàng = cùng user + cùng nguyên liệu + cùng hạn dùng (kể cả null — dùng
