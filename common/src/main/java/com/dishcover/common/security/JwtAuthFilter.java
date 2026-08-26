@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +27,7 @@ import java.util.List;
  */
 public class JwtAuthFilter extends OncePerRequestFilter {
 
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
     private static final String PREFIX = "Bearer ";
     public static final String COOKIE_NAME = "auth_token";
 
@@ -46,6 +49,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (JwtException | IllegalArgumentException ex) {
+                // Trước đây nuốt lặng lẽ → 401 không rõ lý do. Log ở DEBUG (KHÔNG log giá trị token).
+                log.debug("JWT bị từ chối ({}): {}", ex.getClass().getSimpleName(), ex.getMessage());
                 SecurityContextHolder.clearContext();
             }
         }
@@ -59,12 +64,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
+            log.debug("Không có token: request KHÔNG kèm cookie nào (header có cookie? {})",
+                    request.getHeader(HttpHeaders.COOKIE) != null);
             return null;
         }
-        return Arrays.stream(cookies)
+        String value = Arrays.stream(cookies)
                 .filter(c -> COOKIE_NAME.equals(c.getName()))
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
+        if (value == null) {
+            log.debug("Không có token: có {} cookie nhưng không có '{}' (tên: {})",
+                    cookies.length, COOKIE_NAME, Arrays.stream(cookies).map(Cookie::getName).toList());
+        }
+        return value;
     }
 }
