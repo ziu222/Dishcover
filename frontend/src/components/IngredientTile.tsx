@@ -11,13 +11,21 @@ import type { InventoryItem, InventoryStatus } from '../types'
 //  USED         → mờ, không nhấn
 
 // Pop-in so le: parent (<motion.ul>) điều phối qua staggerChildren, tile chỉ khai báo variant.
+//  hidden → show : RƠI từ trên xuống + nảy (spring) "vào kệ"
+//  exit          : bay LÊN + co lại + mờ dần "bốc hơi" (khi xoá, qua AnimatePresence)
 export const tileVariants = {
-  hidden: { opacity: 0, scale: 0.6, y: 10 },
+  hidden: { opacity: 0, scale: 0.7, y: -24 },
   show: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { type: 'spring' as const, stiffness: 300, damping: 20 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 18 },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.6,
+    y: -28,
+    transition: { duration: 0.3, ease: 'easeIn' as const },
   },
 }
 
@@ -65,6 +73,7 @@ export function IngredientTile({
   return (
     <motion.li
       variants={tileVariants}
+      exit="exit"
       layout
       className={cn(
         'group relative flex flex-col items-center gap-1.5 rounded-card border bg-card px-3 pb-3 pt-5 text-center',

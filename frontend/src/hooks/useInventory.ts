@@ -18,44 +18,48 @@ export function useInventory() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const reload = useCallback(async () => {
-    setLoading(true)
+  // silent=true: làm mới NGẦM sau khi thêm/sửa/xoá — KHÔNG bật spinner nên danh sách giữ nguyên
+  // mounted, để AnimatePresence thấy thay đổi từng phần và chạy animation rơi-vào/bốc-hơi.
+  const fetchItems = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true)
     setError(null)
     try {
       setItems(await api<InventoryItem[]>(BASE))
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Không tải được tủ lạnh.')
     } finally {
-      setLoading(false)
+      if (!silent) setLoading(false)
     }
   }, [])
 
+  const reload = useCallback(() => fetchItems(false), [fetchItems])
+
   useEffect(() => {
-    reload()
-  }, [reload])
+    fetchItems(false)
+  }, [fetchItems])
 
   const add = useCallback(
     async (input: ItemInput) => {
       await api<InventoryItem>(BASE, { method: 'POST', body: input })
-      await reload()
+      await fetchItems(true)
     },
-    [reload],
+    [fetchItems],
   )
 
   const update = useCallback(
     async (id: number, input: ItemInput) => {
       await api<InventoryItem>(`${BASE}/${id}`, { method: 'PATCH', body: input })
-      await reload()
+      await fetchItems(true)
     },
-    [reload],
+    [fetchItems],
   )
 
   const remove = useCallback(
     async (id: number) => {
       await api<void>(`${BASE}/${id}`, { method: 'DELETE' })
-      await reload()
+      await fetchItems(true)
     },
-    [reload],
+    [fetchItems],
   )
 
   return { items, loading, error, reload, add, update, remove }

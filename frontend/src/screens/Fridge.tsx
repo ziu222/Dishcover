@@ -1,5 +1,5 @@
 import { useMemo, useState, type FormEvent } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Snowflake, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
 import { Button } from '../components/Button'
@@ -111,14 +111,16 @@ export function Fridge() {
               animate="show"
               variants={{ show: { transition: { staggerChildren: 0.04 } } }}
             >
-              {shown.map((item) => (
-                <IngredientTile
-                  key={item.id}
-                  item={item}
-                  onEdit={() => openEdit(item)}
-                  onDelete={() => setDeleting(item)}
-                />
-              ))}
+              <AnimatePresence mode="popLayout">
+                {shown.map((item) => (
+                  <IngredientTile
+                    key={item.id}
+                    item={item}
+                    onEdit={() => openEdit(item)}
+                    onDelete={() => setDeleting(item)}
+                  />
+                ))}
+              </AnimatePresence>
             </motion.ul>
           )}
         </>
