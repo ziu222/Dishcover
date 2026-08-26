@@ -38,6 +38,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // ERROR dispatch (parse/validate/DB/not-found) — JwtAuthFilter bỏ qua dispatch
+                        // này nên nếu chặn sẽ thành 401 che status thật; cho qua để render đúng 4xx/5xx.
+                        .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR).permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         // Toàn bộ /inventory/** đều cần JWT hợp lệ — không có endpoint công khai nào khác
