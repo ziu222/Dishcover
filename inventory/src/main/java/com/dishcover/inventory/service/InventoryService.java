@@ -129,16 +129,19 @@ public class InventoryService {
     }
 
     /**
-     * Xóa một dòng nguyên liệu, chỉ khi thuộc sở hữu đúng người dùng (ownership check ở tầng
-     * repository qua {@code deleteByIdAndUserId}, không ném lỗi nếu id không tồn tại/không thuộc
-     * người dùng — thao tác vô hại/idempotent).
+     * Xóa một dòng nguyên liệu, chỉ khi thuộc sở hữu đúng người dùng. Nếu id không tồn tại hoặc
+     * không thuộc người dùng → 404 (nhất quán với GET/PATCH; không trả 204 gây hiểu nhầm "đã xóa").
+     * Ownership vẫn an toàn: {@code deleteByIdAndUserId} không đụng dữ liệu người khác.
      *
      * @param userId id người dùng yêu cầu
      * @param id id dòng nguyên liệu cần xóa
+     * @throws ResourceNotFoundException nếu không có dòng nào bị xóa
      */
     @Transactional
     public void delete(Long userId, Long id) {
-        repo.deleteByIdAndUserId(id, userId);
+        if (repo.deleteByIdAndUserId(id, userId) == 0) {
+            throw new ResourceNotFoundException("Không tìm thấy nguyên liệu id=" + id);
+        }
     }
 
     // ---- helpers ----

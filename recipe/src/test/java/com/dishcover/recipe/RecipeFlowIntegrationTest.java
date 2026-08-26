@@ -76,6 +76,14 @@ class RecipeFlowIntegrationTest {
         mvc.perform(get("/recipes")).andExpect(status().isOk());
     }
 
+    /** size quá lớn phải bị chặn ở max-page-size (100) để tránh tải toàn bộ collection. */
+    @Test
+    void oversizedPageSizeIsCappedAt100() throws Exception {
+        mvc.perform(get("/recipes").param("size", "100000"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pageable.pageSize").value(100));
+    }
+
     @Test
     void createWithoutTokenReturns401() throws Exception {
         mvc.perform(post("/recipes")

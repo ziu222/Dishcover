@@ -5,6 +5,11 @@ spring:
   application:
     name: recipe
   data:
+    web:
+      pageable:
+        # Chặn size quá lớn (VD ?size=100000) — tránh tải toàn bộ collection gây quá tải.
+        max-page-size: 100
+        default-page-size: 20
     mongodb:
       # Tách từng property thay vì nhét chung 1 URI cho dễ đọc/đổi từng phần.
       # Mật khẩu KHÔNG có giá trị mặc định: thiếu MONGO_ROOT_PASSWORD thì service không khởi động

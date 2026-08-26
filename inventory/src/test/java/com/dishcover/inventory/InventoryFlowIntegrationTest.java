@@ -113,13 +113,19 @@ class InventoryFlowIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("USED"));
 
-        // Stranger không xóa được item của owner
+        // Stranger không xóa được item của owner -> 404 (nhất quán với GET/PATCH, không còn 204 giả)
         mvc.perform(delete("/inventory/items/" + id).header("Authorization", auth(stranger)))
-                .andExpect(status().isNoContent()); // deleteByIdAndUserId không match -> no-op, vẫn 204
+                .andExpect(status().isNotFound());
 
-        // Item của owner vẫn còn nguyên (chứng minh xóa "hụt" ở trên không ảnh hưởng)
+        // Item của owner vẫn còn nguyên (chứng minh xóa "hụt" ở trên không ảnh hưởng ownership)
         mvc.perform(get("/inventory/items/" + id).header("Authorization", auth(owner)))
                 .andExpect(status().isOk());
+
+        // Owner xóa thật -> 204, và sau đó không còn (happy path + xóa lần nữa -> 404)
+        mvc.perform(delete("/inventory/items/" + id).header("Authorization", auth(owner)))
+                .andExpect(status().isNoContent());
+        mvc.perform(delete("/inventory/items/" + id).header("Authorization", auth(owner)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
