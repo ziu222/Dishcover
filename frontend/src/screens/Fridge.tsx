@@ -1,12 +1,12 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Snowflake, Trash, PencilSimple, Warning } from '@phosphor-icons/react'
+import { Plus, Snowflake, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
 import { Button } from '../components/Button'
 import { Field } from '../components/Field'
 import { Chip } from '../components/Chip'
 import { Modal } from '../components/Modal'
-import { StatusPill } from '../components/StatusPill'
+import { IngredientTile } from '../components/IngredientTile'
 import { Spinner } from '../components/Spinner'
 import { ApiError } from '../lib/api'
 import type { InventoryItem } from '../types'
@@ -17,16 +17,6 @@ const STATUS_FILTERS: Array<{ value: string | null; label: string }> = [
   { value: 'EXPIRING_SOON', label: 'Sắp hết hạn' },
   { value: 'EXPIRED', label: 'Hết hạn' },
 ]
-
-function fmtDate(iso: string | null): string {
-  if (!iso) return 'Không rõ hạn'
-  const [y, m, d] = iso.split('-')
-  return `${d}/${m}/${y}`
-}
-
-function qtyLabel(i: InventoryItem): string {
-  return [i.quantity ?? null, i.unit].filter((v) => v !== null && v !== '').join(' ') || '—'
-}
 
 export function Fridge() {
   const { items, loading, error, reload, add, update, remove } = useInventory()
@@ -115,46 +105,19 @@ export function Fridge() {
             <p className="py-16 text-center text-sm text-muted">Không có nguyên liệu ở trạng thái này.</p>
           ) : (
             <motion.ul
-              className="overflow-hidden rounded-card border border-line-soft bg-white"
+              key={status ?? 'all'}
+              className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
               initial="hidden"
               animate="show"
-              variants={{ show: { transition: { staggerChildren: 0.03 } } }}
+              variants={{ show: { transition: { staggerChildren: 0.04 } } }}
             >
               {shown.map((item) => (
-                <motion.li
+                <IngredientTile
                   key={item.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 8 },
-                    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 24 } },
-                  }}
-                  className="flex items-center gap-4 border-b border-line-soft px-5 py-4 last:border-0 hover:bg-surface/50"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate font-medium text-ink">{item.ingredientName}</div>
-                    <div className="mt-0.5 text-[13px] text-mist">
-                      {qtyLabel(item)} · {fmtDate(item.expiryDate)}
-                    </div>
-                  </div>
-                  <StatusPill status={item.status} />
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => openEdit(item)}
-                      aria-label="Sửa"
-                      className="grid size-9 place-items-center rounded-full text-mist transition-colors hover:bg-line-soft hover:text-muted"
-                    >
-                      <PencilSimple className="size-[18px]" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDeleting(item)}
-                      aria-label="Xoá"
-                      className="grid size-9 place-items-center rounded-full text-mist transition-colors hover:bg-expired-bg hover:text-expired"
-                    >
-                      <Trash className="size-[18px]" />
-                    </button>
-                  </div>
-                </motion.li>
+                  item={item}
+                  onEdit={() => openEdit(item)}
+                  onDelete={() => setDeleting(item)}
+                />
               ))}
             </motion.ul>
           )}
