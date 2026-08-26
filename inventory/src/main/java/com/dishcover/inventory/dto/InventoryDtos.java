@@ -2,9 +2,11 @@ package com.dishcover.inventory.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,9 +25,12 @@ public final class InventoryDtos {
      * @param expiryDate hạn sử dụng; nếu để trống, service tự suy ra từ bảng hạn dùng mặc định
      */
     public record AddItemRequest(
-            @NotBlank String ingredientName,
-            @DecimalMin(value = "0", inclusive = false) BigDecimal quantity,
-            String unit,
+            // @Size khớp độ dài cột DB (VARCHAR 100/20) — chặn tại biên trả 422 thay vì để giá trị
+            // quá cỡ lọt xuống DB gây DataIntegrityViolation (từng bị che thành 401).
+            @NotBlank @Size(max = 100) String ingredientName,
+            // DECIMAL(10,2): tối đa 8 chữ số phần nguyên + 2 phần thập phân.
+            @DecimalMin(value = "0", inclusive = false) @Digits(integer = 8, fraction = 2) BigDecimal quantity,
+            @Size(max = 20) String unit,
             LocalDate expiryDate
     ) {
     }
@@ -37,8 +42,8 @@ public final class InventoryDtos {
      * @param status trạng thái mới muốn ghi đè trực tiếp (chỉ nhận FRESH/EXPIRING_SOON/EXPIRED/USED)
      */
     public record UpdateItemRequest(
-            @DecimalMin(value = "0", inclusive = false) BigDecimal quantity,
-            String unit,
+            @DecimalMin(value = "0", inclusive = false) @Digits(integer = 8, fraction = 2) BigDecimal quantity,
+            @Size(max = 20) String unit,
             LocalDate expiryDate,
             @Pattern(regexp = "FRESH|EXPIRING_SOON|EXPIRED|USED", message = "status không hợp lệ") String status
     ) {
