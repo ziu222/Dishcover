@@ -39,6 +39,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // ERROR dispatch (parse/validate/DB/not-found) — JwtAuthFilter bỏ qua dispatch
+                        // này nên nếu chặn sẽ thành 401 che status thật; cho qua để render đúng 4xx/5xx.
+                        .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR).permitAll()
                         // Công khai: đăng ký, đăng nhập, health. Còn lại cần JWT hợp lệ.
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/logout").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
