@@ -72,4 +72,38 @@ class InventoryControllerSecurityTest {
                         .content("{\"items\":[{\"ingredientName\":\"Cà chua\",\"quantity\":1,\"unit\":\"quả\"}]}"))
                 .andExpect(status().isUnauthorized());
     }
+
+    // --- Regression: validation ở biên + lỗi KHÔNG được biến thành 401 (HIGH-2 + BUG errors→401) ---
+
+    /** Tên vượt cột VARCHAR(100) phải bị chặn ở biên (422), không lọt xuống DB. */
+    @Test
+    void oversizedNameReturns422() throws Exception {
+        String name = "X".repeat(150);
+        mvc.perform(post("/inventory/items").header("Authorization", token())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"ingredientName\":\"" + name + "\",\"quantity\":1,\"unit\":\"g\"}"))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    /** Đơn vị vượt cột VARCHAR(20) — trước đây không có ràng buộc nào, lọt xuống DB rồi lỗi. */
+    @Test
+    void oversizedUnitReturns422() throws Exception {
+        String unit = "u".repeat(50);
+        mvc.perform(post("/inventory/items").header("Authorization", token())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"ingredientName\":\"Muối\",\"quantity\":1,\"unit\":\"" + unit + "\"}"))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    /**
+     * Regression cho bug "mọi lỗi → 401": request ĐÃ xác thực nhưng body sai (ngày không parse
+     * được) PHẢI trả 400, KHÔNG được trả 401 (trước đây bị che thành 401 do ERROR dispatch).
+     */
+    @Test
+    void malformedBodyReturns400NotUnauthorized() throws Exception {
+        mvc.perform(post("/inventory/items").header("Authorization", token())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"ingredientName\":\"Cà chua\",\"quantity\":1,\"unit\":\"g\",\"expiryDate\":\"31-12-2026\"}"))
+                .andExpect(status().isBadRequest());
+    }
 }
