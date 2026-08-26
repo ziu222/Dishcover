@@ -46,6 +46,9 @@ public class JwtService {
     public AuthenticatedUser parse(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(key)
+                // Dung sai lệch giờ 60s giữa các service: tránh reject token vừa phát khi đồng hồ
+                // service verify lệch vài giây so với service phát (exp/iat/nbf).
+                .clockSkewSeconds(60)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
