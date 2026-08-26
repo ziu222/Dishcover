@@ -57,3 +57,17 @@ export interface User {
   avatarUrl: string | null
   plan: string | null
 }
+
+export type InventoryStatus = 'FRESH' | 'EXPIRING_SOON' | 'EXPIRED' | 'USED'
+
+/** InventoryItemResponse — 1 dòng nguyên liệu trong tủ lạnh ảo. status do server derive theo hạn dùng. */
+export interface InventoryItem {
+  id: number
+  ingredientName: string
+  normalizedName: string
+  quantity: number | null
+  unit: string | null
+  expiryDate: string | null // 'YYYY-MM-DD'
+  source: string
+  status: InventoryStatus
+}
