@@ -57,4 +57,19 @@ class ChatControllerSecurityTest {
                         .content("{\"message\":\"tôi có trứng\"}"))
                 .andExpect(status().isOk());
     }
+
+    /**
+     * Regression: trình duyệt dùng httpOnly cookie {@code auth_token} (KHÔNG có header
+     * Authorization) vẫn phải gọi được /chat — trước đây bắt buộc header nên frontend luôn 401.
+     */
+    @Test
+    void acceptsAuthCookieWithoutHeader() throws Exception {
+        when(orchestrator.handle(any(), any())).thenReturn(new ChatResponse("ok", List.of(), false));
+        String raw = new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
+        mvc.perform(post("/chat")
+                        .cookie(new jakarta.servlet.http.Cookie("auth_token", raw))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"message\":\"tôi có trứng\"}"))
+                .andExpect(status().isOk());
+    }
 }
