@@ -11,21 +11,37 @@ import type { InventoryItem, InventoryStatus } from '../types'
 //  USED         → mờ, không nhấn
 
 // Pop-in so le: parent (<motion.ul>) điều phối qua staggerChildren, tile chỉ khai báo variant.
+//  hidden → show : RƠI từ trên xuống + nảy (spring) "vào kệ"
+//  exit          : bay LÊN + co lại + mờ dần "bốc hơi" (khi xoá, qua AnimatePresence)
 export const tileVariants = {
-  hidden: { opacity: 0, scale: 0.6, y: 10 },
+  hidden: { opacity: 0, scale: 0.7, y: -24 },
   show: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { type: 'spring' as const, stiffness: 300, damping: 20 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 18 },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.6,
+    y: -28,
+    transition: { duration: 0.3, ease: 'easeIn' as const },
   },
 }
 
 const RING: Record<InventoryStatus, string> = {
   FRESH: 'border-line-soft',
-  EXPIRING_SOON: 'border-amber/50',
-  EXPIRED: 'border-expired/30',
+  EXPIRING_SOON: 'border-amber',
+  EXPIRED: 'border-expired/50',
   USED: 'border-line-soft',
+}
+
+// Nền thẻ nhuốm màu theo độ tươi — để nhìn ẢNH TĨNH cũng phân biệt được ngay, không chỉ dựa animation.
+const BG: Record<InventoryStatus, string> = {
+  FRESH: 'bg-card',
+  EXPIRING_SOON: 'bg-amber-bg/60',
+  EXPIRED: 'bg-expired-bg/50',
+  USED: 'bg-card',
 }
 
 const EXPIRY_TEXT: Record<InventoryStatus, string> = {
@@ -65,29 +81,36 @@ export function IngredientTile({
   return (
     <motion.li
       variants={tileVariants}
+      exit="exit"
       layout
       className={cn(
-        'group relative flex flex-col items-center gap-1.5 rounded-card border bg-card px-3 pb-3 pt-5 text-center',
+        'group relative flex flex-col items-center gap-1.5 rounded-card border px-3 pb-3 pt-5 text-center',
         RING[status],
+        BG[status],
         status === 'USED' && 'opacity-60',
       )}
     >
-      {/* Sương lạnh: đốm sáng mờ góc trên (chỉ đồ còn tươi) */}
+      {/* Sương lạnh: mặt kính bóng góc trên + ánh xanh mát góc dưới (chỉ đồ còn tươi) */}
       {status === 'FRESH' && (
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-card bg-[radial-gradient(120%_80%_at_25%_0%,rgba(255,255,255,0.85),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 rounded-card"
+          style={{
+            background:
+              'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0) 44%), radial-gradient(75% 55% at 82% 100%, rgba(150,190,205,0.22), transparent 62%)',
+          }}
         />
       )}
 
-      {/* Quầng hổ phách đập nhẹ cho đồ sắp hết hạn */}
+      {/* Quầng hổ phách đập cho đồ sắp hết hạn */}
       {expiring && (
         <motion.span
           aria-hidden
           className="pointer-events-none absolute -inset-px rounded-card ring-2 ring-amber"
-          initial={{ opacity: 0.25 }}
-          animate={{ opacity: [0.25, 0.7, 0.25] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          initial={{ opacity: 0.4 }}
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ boxShadow: '0 0 0 3px rgba(185,138,46,0.12)' }}
         />
       )}
 

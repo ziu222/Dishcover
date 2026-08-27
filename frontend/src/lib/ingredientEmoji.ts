@@ -33,7 +33,8 @@ const TABLE: readonly Entry[] = [
   [['trung'], '🥚'],
   [['pho mai', 'pho mát', 'phô mai'], '🧀'],
   [['sua chua', 'yaourt'], '🥛'],
-  [['bo', 'butter'], '🧈'], // "bo" tổng quát = bơ (đã chặn thịt bò ở trên)
+  [['bo trai', 'trai bo', 'qua bo', 'avocado'], '🥑'], // "bơ" = cả bơ lẫn quả bơ → quả bơ chặn trước
+  [['bo', 'butter'], '🧈'], // "bo" trơ = bơ ăn (đã chặn thịt bò + quả bơ ở trên)
   [['sua'], '🥛'],
 
   // Rau lá & rau củ
@@ -52,7 +53,7 @@ const TABLE: readonly Entry[] = [
   [['bi do', 'bi ngo', 'bi'], '🎃'],
   [['ngo', 'bap'], '🌽'],
   [['dau hu', 'dau phu', 'tofu'], '⬜'],
-  [['dau que', 'dau cove', 'dau ha lan', 'dau'], '🫛'],
+  [['dau que', 'dau cove', 'dau ha lan', 'dau xanh', 'dau do'], '🫛'], // KHÔNG bắt bare "dau" (dầu ăn)
   [['ca chua bi'], '🍅'],
 
   // Trái cây
@@ -63,7 +64,6 @@ const TABLE: readonly Entry[] = [
   [['dua hau'], '🍉'],
   [['dua'], '🍍'],
   [['xoai'], '🥭'],
-  [['bo trai', 'trai bo', 'qua bo', 'avocado'], '🥑'],
   [['dau tay', 'strawberry'], '🍓'],
 
   // Tinh bột & khô
