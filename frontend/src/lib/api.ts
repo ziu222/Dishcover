@@ -51,7 +51,16 @@ export async function api<T>(path: string, opts: RequestOptions = {}): Promise<T
   if (res.status === 204) return undefined as T
 
   const text = await res.text()
-  const data = text ? JSON.parse(text) : null
+  let data: { code?: string; message?: string } | null = null
+  if (text) {
+    try {
+      data = JSON.parse(text)
+    } catch {
+      // Gateway/proxy đôi khi trả trang lỗi HTML/text thay vì JSON {code,message,traceId} —
+      // không để lỗi parse thô văng ra ngoài, coi như không đọc được body có cấu trúc.
+      data = null
+    }
+  }
 
   if (!res.ok) {
     const code = data?.code ?? `HTTP_${res.status}`
