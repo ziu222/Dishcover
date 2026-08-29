@@ -16,12 +16,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Business rule đầy đủ ở specs/inventory-service.md mục 3.3:
  * (a) chuẩn hóa tên + fallback hạn dùng lúc ghi, (b) upsert theo lô hàng (cùng user+normalized_name
- * +expiry_date thì cộng dồn số lượng thay vì tạo dòng mới — KHÔNG phải bug nếu thấy nhiều dòng cùng
- * normalized_name khác expiry_date, đó là 2 lô thật), (c) status derived khi map response, không cron job.
+ * +expiry_date thì cộng dồn số lượng vào lô còn "sống" (chưa USED) và cùng đơn vị tính, khác đơn vị
+ * hoặc lô cũ đã USED thì tạo dòng mới — KHÔNG phải bug nếu thấy nhiều dòng cùng normalized_name
+ * khác expiry_date, đó là 2 lô thật), (c) status derived khi map response, không cron job.
  */
 @Service
 public class InventoryService {
@@ -30,6 +32,14 @@ public class InventoryService {
 
     private final UserIngredientRepository repo;
     private final IngredientCatalog catalog;
+
+    // ponytail: khoá trong-tiến-trình theo lô (userId+normalizedName+expiryDate) để thu hẹp race
+    // khi 2 request cùng thêm 1 lô cùng lúc tạo 2 dòng trùng (bảng không có UNIQUE constraint —
+    // quyết định kiến trúc, xem specs/inventory-service.md). Chưa tuyệt đối (không bọc tới lúc
+    // transaction commit), nhưng khớp kiến trúc hiện tại "1 instance mỗi service". Nếu sau này
+    // scale ngang nhiều instance Inventory thì cần khoá cấp DB thật (advisory lock/SELECT FOR
+    // UPDATE) thay cho khoá JVM này.
+    private final ConcurrentHashMap<String, Object> upsertLocks = new ConcurrentHashMap<>();
 
     public InventoryService(UserIngredientRepository repo, IngredientCatalog catalog) {
         this.repo = repo;
@@ -155,22 +165,39 @@ public class InventoryService {
         String normalizedName = catalog.resolve(req.ingredientName());
         LocalDate expiryDate = req.expiryDate() != null ? req.expiryDate() : defaultExpiryDate(req.ingredientName());
 
-        Optional<UserIngredient> existing =
-                repo.findByUserIdAndNormalizedNameAndExpiryDate(userId, normalizedName, expiryDate);
-        if (existing.isPresent()) {
-            UserIngredient item = existing.get();
-            item.setQuantity(sumQuantity(item.getQuantity(), req.quantity()));
-            if (req.unit() != null) {
-                item.setUnit(req.unit());
-            }
-            return item;
-        }
+        String lockKey = userId + "|" + normalizedName + "|" + expiryDate;
+        synchronized (upsertLocks.computeIfAbsent(lockKey, k -> new Object())) {
+            List<UserIngredient> sameKey =
+                    repo.findByUserIdAndNormalizedNameAndExpiryDate(userId, normalizedName, expiryDate);
+            // Chỉ gộp vào lô còn "sống" (chưa đánh dấu USED) và đơn vị tương thích — lô đã dùng
+            // hết hoặc khác đơn vị thì tạo dòng mới, không cộng nhầm số lượng khác đơn vị vào nhau.
+            Optional<UserIngredient> mergeable = sameKey.stream()
+                    .filter(i -> !"USED".equals(i.getStatus()))
+                    .filter(i -> unitsCompatible(i.getUnit(), req.unit()))
+                    .findFirst();
 
-        String status = deriveStatus("FRESH", expiryDate);
-        UserIngredient created = new UserIngredient(
-                userId, req.ingredientName(), normalizedName, req.quantity(), req.unit(),
-                expiryDate, source, status);
-        return repo.save(created);
+            if (mergeable.isPresent()) {
+                UserIngredient item = mergeable.get();
+                item.setQuantity(sumQuantity(item.getQuantity(), req.quantity()));
+                if (req.unit() != null) {
+                    item.setUnit(req.unit());
+                }
+                return item;
+            }
+
+            String status = deriveStatus("FRESH", expiryDate);
+            UserIngredient created = new UserIngredient(
+                    userId, req.ingredientName(), normalizedName, req.quantity(), req.unit(),
+                    expiryDate, source, status);
+            return repo.save(created);
+        }
+    }
+
+    /** Thiếu đơn vị ở 1 bên (null/rỗng) coi là tương thích — nhận đơn vị còn lại, không chặn gộp. */
+    private static boolean unitsCompatible(String existingUnit, String incomingUnit) {
+        if (incomingUnit == null || incomingUnit.isBlank()) return true;
+        if (existingUnit == null || existingUnit.isBlank()) return true;
+        return existingUnit.trim().equalsIgnoreCase(incomingUnit.trim());
     }
 
     private LocalDate defaultExpiryDate(String rawIngredientName) {
