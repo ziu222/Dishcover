@@ -24,6 +24,7 @@ public interface DietaryPreferenceRepository extends JpaRepository<DietaryPrefer
      *
      * @param id     id mục cần xóa
      * @param userId id user sở hữu mục cần xóa
+     * @return số dòng bị xóa (0 nếu id không tồn tại hoặc không thuộc user này)
      */
-    void deleteByIdAndUserId(Long id, Long userId);
+    long deleteByIdAndUserId(Long id, Long userId);
 }

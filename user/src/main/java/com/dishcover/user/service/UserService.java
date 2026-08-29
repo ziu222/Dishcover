@@ -74,10 +74,13 @@ public class UserService {
      *
      * @param userId       id user sở hữu mục cần xóa
      * @param preferenceId id mục cần xóa
+     * @throws ResourceNotFoundException nếu id không tồn tại hoặc không thuộc user này
      */
     @Transactional
     public void deletePreference(Long userId, Long preferenceId) {
-        preferences.deleteByIdAndUserId(preferenceId, userId);
+        if (preferences.deleteByIdAndUserId(preferenceId, userId) == 0) {
+            throw new ResourceNotFoundException("Không tìm thấy mục hồ sơ ăn uống id=" + preferenceId);
+        }
     }
 
     private User requireUser(Long userId) {
