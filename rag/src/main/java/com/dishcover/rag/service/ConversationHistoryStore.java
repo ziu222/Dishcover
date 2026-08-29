@@ -51,9 +51,14 @@ public class ConversationHistoryStore {
         Entry entry = store.compute(conversationId, (id, existing) ->
                 (existing == null || isExpired(existing)) ? new Entry() : existing);
         entry.lastAccess.set(Instant.now());
-        entry.turns.add(new ConversationTurn(role, text, Instant.now()));
-        while (entry.turns.size() > MAX_TURNS) {
-            entry.turns.remove(0);
+        // synchronized trên entry: 2 request cùng conversationId ghi đồng thời có thể vượt
+        // MAX_TURNS nhất thời hoặc cùng remove(0) nếu không khoá — entry ổn định theo compute()
+        // ở trên nên khoá trên chính nó không ảnh hưởng conversationId khác.
+        synchronized (entry) {
+            entry.turns.add(new ConversationTurn(role, text, Instant.now()));
+            while (entry.turns.size() > MAX_TURNS) {
+                entry.turns.remove(0);
+            }
         }
     }
 
