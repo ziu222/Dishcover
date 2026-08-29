@@ -5,6 +5,7 @@ import { Home } from './screens/Home'
 import { Search } from './screens/Search'
 import { Fridge } from './screens/Fridge'
 import { Matching } from './screens/Matching'
+import { Chatbot } from './screens/Chatbot'
 import { RecipeDetail } from './screens/RecipeDetail'
 import { AppShell } from './components/AppShell'
 import { useAuth } from './auth/AuthContext'
@@ -31,6 +32,7 @@ export function App() {
           <Route path="/tim-kiem" element={<Search />} />
           <Route path="/tu-lanh" element={<Fridge />} />
           <Route path="/goi-y" element={<Matching />} />
+          <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/cong-thuc/:id" element={<RecipeDetail />} />
         </Route>
       </Route>

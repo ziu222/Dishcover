@@ -25,7 +25,7 @@ const NAV: NavItem[] = [
   { to: '/tim-kiem', label: 'Tìm kiếm', icon: MagnifyingGlass, enabled: true },
   { to: '/tu-lanh', label: 'Tủ lạnh ảo', icon: Basket, enabled: true },
   { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', icon: Sparkle, enabled: true },
-  { to: '/chatbot', label: 'Trợ lý AI', icon: ChatCircle, enabled: false },
+  { to: '/chatbot', label: 'Trợ lý AI', icon: ChatCircle, enabled: true },
   { to: '/tai-khoan', label: 'Tài khoản', icon: User, enabled: false },
 ]
 
@@ -34,6 +34,7 @@ function pageTitle(pathname: string): string {
   if (pathname === '/tim-kiem') return 'Tìm kiếm'
   if (pathname === '/tu-lanh') return 'Tủ lạnh ảo'
   if (pathname === '/goi-y') return 'Gợi ý theo nguyên liệu'
+  if (pathname === '/chatbot') return 'Trợ lý AI'
   return pathname === '/' ? 'Khám phá' : ''
 }
 
