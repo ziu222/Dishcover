@@ -72,6 +72,15 @@ export interface InventoryItem {
   status: InventoryStatus
 }
 
+export type DietaryType = 'ALLERGY' | 'DIET'
+
+/** DietaryPreferenceResponse — 1 mục hồ sơ ăn uống (dị ứng/chế độ ăn) của user. */
+export interface DietaryPreference {
+  id: number
+  type: DietaryType
+  value: string
+}
+
 /** RecipeMatchResponse — GET /matching/suggestions, 1 công thức gợi ý theo tủ lạnh hiện tại. */
 export interface RecipeMatch {
   recipeId: string
