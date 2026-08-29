@@ -80,6 +80,8 @@ export function Select({ value, onChange, options, ariaLabel }: SelectProps) {
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={listId}
+        aria-activedescendant={open ? `${listId}-opt-${active}` : undefined}
         aria-label={ariaLabel}
         onClick={() => setOpen((o) => !o)}
         onKeyDown={onKeyDown}
@@ -113,7 +115,13 @@ export function Select({ value, onChange, options, ariaLabel }: SelectProps) {
             {options.map((o, i) => {
               const isSel = o.value === value
               return (
-                <li key={o.value} role="option" aria-selected={isSel} data-idx={i}>
+                <li
+                  key={o.value}
+                  id={`${listId}-opt-${i}`}
+                  role="option"
+                  aria-selected={isSel}
+                  data-idx={i}
+                >
                   <button
                     type="button"
                     onClick={() => choose(o.value)}
