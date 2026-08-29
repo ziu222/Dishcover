@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Chatbot RAG — tính năng PRO (CLAUDE.md mục 8). Gateway: POST /rag-service/chat -> POST /chat. */
+/** Chatbot RAG — chỉ yêu cầu JWT hợp lệ (Freemium đã gỡ, CLAUDE.md mục 8). Gateway: POST /rag-service/chat -> POST /chat. */
 @RestController
 public class ChatController {
 

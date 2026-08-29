@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/** Gợi ý công thức theo nguyên liệu — tính năng PRO (CLAUDE.md mục 8). */
+/** Gợi ý công thức theo nguyên liệu — chỉ yêu cầu JWT hợp lệ (Freemium đã gỡ, CLAUDE.md mục 8). */
 @RestController
 @RequestMapping("/matching")
 public class MatchingController {
