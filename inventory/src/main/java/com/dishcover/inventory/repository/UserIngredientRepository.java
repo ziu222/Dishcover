@@ -47,8 +47,11 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
     /**
      * Cùng lô hàng = cùng user + cùng nguyên liệu + cùng hạn dùng (kể cả null — dùng
      * "IS NOT DISTINCT FROM" qua @Query nếu cần, nhưng đơn giản hoá: chỉ coalesce ở tầng service
-     * khi expiryDate null thì luôn tạo dòng mới, không tìm lô cũ). Xem InventoryService.
+     * khi expiryDate null thì luôn tạo dòng mới, không tìm lô cũ). Trả về {@code List} chứ không
+     * phải {@code Optional} vì KHÔNG có UNIQUE constraint ở tầng DB — có thể có nhiều dòng cùng
+     * khoá (VD khác đơn vị tính, hoặc trước đây từng race tạo trùng); InventoryService tự chọn
+     * dòng phù hợp để gộp. Xem InventoryService.upsert().
      */
-    Optional<UserIngredient> findByUserIdAndNormalizedNameAndExpiryDate(
+    List<UserIngredient> findByUserIdAndNormalizedNameAndExpiryDate(
             Long userId, String normalizedName, LocalDate expiryDate);
 }
