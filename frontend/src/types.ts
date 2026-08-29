@@ -71,3 +71,14 @@ export interface InventoryItem {
   source: string
   status: InventoryStatus
 }
+
+/** RecipeMatchResponse — GET /matching/suggestions, 1 công thức gợi ý theo tủ lạnh hiện tại. */
+export interface RecipeMatch {
+  recipeId: string
+  name: string
+  slug: string
+  score: number
+  matchedIngredients: string[]
+  missingIngredients: string[]
+  imageUrl: string | null
+}

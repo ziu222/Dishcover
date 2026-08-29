@@ -24,7 +24,7 @@ const NAV: NavItem[] = [
   { to: '/', label: 'Khám phá', icon: Compass, enabled: true },
   { to: '/tim-kiem', label: 'Tìm kiếm', icon: MagnifyingGlass, enabled: true },
   { to: '/tu-lanh', label: 'Tủ lạnh ảo', icon: Basket, enabled: true },
-  { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', icon: Sparkle, enabled: false },
+  { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', icon: Sparkle, enabled: true },
   { to: '/chatbot', label: 'Trợ lý AI', icon: ChatCircle, enabled: false },
   { to: '/tai-khoan', label: 'Tài khoản', icon: User, enabled: false },
 ]
@@ -33,6 +33,7 @@ function pageTitle(pathname: string): string {
   if (pathname.startsWith('/cong-thuc/')) return 'Công thức'
   if (pathname === '/tim-kiem') return 'Tìm kiếm'
   if (pathname === '/tu-lanh') return 'Tủ lạnh ảo'
+  if (pathname === '/goi-y') return 'Gợi ý theo nguyên liệu'
   return pathname === '/' ? 'Khám phá' : ''
 }
 
