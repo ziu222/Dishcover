@@ -6,6 +6,7 @@ import { useChat, type ChatMessage } from '../hooks/useChat'
 import { useRecipes } from '../hooks/useRecipes'
 import { Button } from '../components/Button'
 import { cn } from '../lib/cn'
+import type { RecipeSummary } from '../types'
 
 const SUGGESTIONS = [
   'Tôi còn trứng và cà chua, nấu được món gì?',
@@ -28,8 +29,7 @@ function TypingDots() {
   )
 }
 
-function SourceChips({ ids }: { ids: string[] }) {
-  const { recipes } = useRecipes()
+function SourceChips({ ids, recipes }: { ids: string[]; recipes: RecipeSummary[] }) {
   if (ids.length === 0) return null
   return (
     <div className="mt-2.5 flex flex-wrap gap-1.5">
@@ -49,7 +49,7 @@ function SourceChips({ ids }: { ids: string[] }) {
   )
 }
 
-function Bubble({ message }: { message: ChatMessage }) {
+function Bubble({ message, recipes }: { message: ChatMessage; recipes: RecipeSummary[] }) {
   const isUser = message.role === 'user'
   return (
     <motion.div
@@ -77,7 +77,7 @@ function Bubble({ message }: { message: ChatMessage }) {
         )}
         <p className="whitespace-pre-wrap">{message.content}</p>
         {!isUser && !message.error && message.sourceRecipeIds && (
-          <SourceChips ids={message.sourceRecipeIds} />
+          <SourceChips ids={message.sourceRecipeIds} recipes={recipes} />
         )}
         {message.fallback && (
           <p className="mt-2 text-[11.5px] text-faint">
@@ -91,6 +91,9 @@ function Bubble({ message }: { message: ChatMessage }) {
 
 export function Chatbot() {
   const { messages, sending, send } = useChat()
+  // Nạp 1 lần ở đây rồi truyền xuống — trước đó mỗi SourceChips tự useRecipes(), N tin nhắn
+  // có nguồn = N lần gọi lại GET /recipes (500 công thức) không cần thiết.
+  const { recipes } = useRecipes()
   const [draft, setDraft] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -144,7 +147,7 @@ export function Chatbot() {
           <div className="mx-auto flex max-w-2xl flex-col gap-4">
             <AnimatePresence initial={false}>
               {messages.map((m) => (
-                <Bubble key={m.id} message={m} />
+                <Bubble key={m.id} message={m} recipes={recipes} />
               ))}
             </AnimatePresence>
             {sending && (
@@ -166,6 +169,7 @@ export function Chatbot() {
         <div className="mx-auto flex max-w-2xl items-end gap-3">
           <textarea
             rows={1}
+            aria-label="Nhập câu hỏi cho trợ lý"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={onKeyDown}
