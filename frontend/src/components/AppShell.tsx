@@ -26,7 +26,7 @@ const NAV: NavItem[] = [
   { to: '/tu-lanh', label: 'Tủ lạnh ảo', icon: Basket, enabled: true },
   { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', icon: Sparkle, enabled: true },
   { to: '/chatbot', label: 'Trợ lý AI', icon: ChatCircle, enabled: true },
-  { to: '/tai-khoan', label: 'Tài khoản', icon: User, enabled: false },
+  { to: '/tai-khoan', label: 'Tài khoản', icon: User, enabled: true },
 ]
 
 function pageTitle(pathname: string): string {
@@ -35,6 +35,7 @@ function pageTitle(pathname: string): string {
   if (pathname === '/tu-lanh') return 'Tủ lạnh ảo'
   if (pathname === '/goi-y') return 'Gợi ý theo nguyên liệu'
   if (pathname === '/chatbot') return 'Trợ lý AI'
+  if (pathname === '/tai-khoan') return 'Tài khoản'
   return pathname === '/' ? 'Khám phá' : ''
 }
 
