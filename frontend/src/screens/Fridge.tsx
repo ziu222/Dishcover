@@ -4,6 +4,8 @@ import { Camera, Plus, Snowflake, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
 import { Button } from '../components/Button'
 import { Field } from '../components/Field'
+import { IngredientCombobox } from '../components/IngredientCombobox'
+import { useIngredientCatalog } from '../hooks/useIngredientCatalog'
 import { Chip } from '../components/Chip'
 import { Modal } from '../components/Modal'
 import { IngredientRow } from '../components/IngredientRow'
@@ -225,6 +227,7 @@ function ItemFormModal({
   onClose: () => void
   onSubmit: (input: ItemInput) => Promise<void>
 }) {
+  const catalog = useIngredientCatalog()
   const [name, setName] = useState('')
   const [quantity, setQuantity] = useState('')
   const [unit, setUnit] = useState('')
@@ -274,13 +277,14 @@ function ItemFormModal({
             <div className="text-[15px] font-medium text-ink">{editing.ingredientName}</div>
           </div>
         ) : (
-          <Field
+          <IngredientCombobox
             label="Tên nguyên liệu"
             required
             autoFocus
             placeholder="VD: Cà chua"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={setName}
+            suggestions={catalog}
           />
         )}
         <div className="grid grid-cols-2 gap-4">
