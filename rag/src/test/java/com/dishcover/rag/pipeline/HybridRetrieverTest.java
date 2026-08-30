@@ -35,8 +35,9 @@ class HybridRetrieverTest {
     private final HybridRetriever retriever = new HybridRetriever(matchingClient, recipeClient, userClient, catalog);
 
     @BeforeEach
-    void noNameMatchByDefault() {
+    void noNameOrCategoryMatchByDefault() {
         when(recipeClient.searchByName(anyString())).thenReturn(List.of());
+        when(recipeClient.searchByCategory(anyString())).thenReturn(List.of());
     }
 
     @Test
@@ -101,6 +102,19 @@ class HybridRetrieverTest {
         List<RetrievedRecipe> result = retriever.retrieve("Bearer x", "Gỏi tôm làm sao?", List.of());
 
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void categoryChannelRecoversDifficultyQuestionWithNoIngredients() {
+        when(recipeClient.searchByCategory(anyString())).thenReturn(List.of(
+                new RecipeDetailDto("r5", "Rau muống xào tỏi", "rau-muong-xao-toi",
+                        List.of(new RecipeIngredientDto("Rau muống"), new RecipeIngredientDto("Tỏi")))));
+        when(userClient.getDietaryPreferences(anyString())).thenReturn(List.of());
+
+        List<RetrievedRecipe> result = retriever.retrieve("Bearer x", "Gợi ý món dễ làm cho người mới tập nấu ăn.", List.of());
+
+        assertEquals(1, result.size());
+        assertEquals("r5", result.get(0).recipeId());
     }
 
     @Test

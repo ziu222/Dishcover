@@ -20,10 +20,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 2 kênh truy hồi giai đoạn A: (1) lọc cứng theo nguyên liệu qua Matching Service (specs/
- * rag-service.md mục 3.2/1.3), (2) tìm theo TÊN MÓN qua {@link RagRecipeClient} — thêm sau khi bộ
- * eval phát hiện câu hỏi kiểu "Cho tôi công thức Phở bò" luôn bị từ chối dù món có thật, vì kênh
- * (1) chỉ trích được nguyên liệu, không trích được tên món (xem eval/results/chatbot-report.md).
+ * 3 kênh truy hồi giai đoạn A: (1) lọc cứng theo nguyên liệu qua Matching Service (specs/
+ * rag-service.md mục 3.2/1.3), (2) tìm theo TÊN MÓN, (3) tìm theo TIÊU CHÍ danh mục (chay/nhanh/
+ * dễ) — (2)+(3) qua {@link RagRecipeClient}, thêm sau khi bộ eval phát hiện câu hỏi kiểu "Cho tôi
+ * công thức Phở bò" hoặc "món nào dễ làm" luôn bị từ chối dù có đáp án đúng thật, vì kênh (1) chỉ
+ * trích được nguyên liệu (xem eval/results/chatbot-report.md).
  *
  * <p><b>Lưu ý tên gọi</b>: tên "Hybrid" theo đúng danh sách 5 class CLAUDE.md mục 9 bắt buộc.
  * Giai đoạn B (ngoài phạm vi, vector search pgvector) sẽ mở rộng THÊM 1 kênh nữa VÀO CHÍNH class
@@ -67,12 +68,16 @@ public class HybridRetriever {
                 ? List.of() // không có nguyên liệu -> khỏi gọi Matching, đỡ tốn network
                 : ragMatchingClient.searchByIngredients(bearerToken, extractedIngredients, FETCH_N);
         List<RecipeDetailDto> byName = ragRecipeClient.searchByName(question);
+        List<RecipeDetailDto> byCategory = ragRecipeClient.searchByCategory(question);
 
         Map<String, RetrievedRecipe> merged = new LinkedHashMap<>();
         for (RecipeMatchDto c : byIngredient) {
             merged.put(c.recipeId(), toRetrieved(c));
         }
         for (RecipeDetailDto r : byName) {
+            merged.putIfAbsent(r.id(), toRetrieved(r));
+        }
+        for (RecipeDetailDto r : byCategory) {
             merged.putIfAbsent(r.id(), toRetrieved(r));
         }
 
