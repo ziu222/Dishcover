@@ -12,10 +12,11 @@ import com.dishcover.rag.client.RecipeIngredientDto;
 import com.dishcover.rag.client.RecipeMatchDto;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,8 @@ public class HybridRetriever {
                 : ragMatchingClient.searchByIngredients(bearerToken, extractedIngredients, FETCH_N);
         List<RecipeDetailDto> byName = ragRecipeClient.searchByName(question);
         List<RecipeDetailDto> byCategory = ragRecipeClient.searchByCategory(question);
+        Set<String> allergens = allergenGroupsOf(ragUserClient.getDietaryPreferences(bearerToken));
+        Set<String> nameMatchIds = byName.stream().map(RecipeDetailDto::id).collect(Collectors.toSet());
 
         // Thứ tự chèn = thứ tự ưu tiên khi .limit(TOP_N) cắt bớt: tên món/danh mục là tín hiệu RÕ
         // RÀNG (người dùng hỏi thẳng), phải ưu tiên hơn kênh nguyên liệu (Jaccard, dễ có nhiều kết
@@ -77,21 +80,24 @@ public class HybridRetriever {
         // quan) đã chiếm đủ 5 chỗ trước khi tới lượt kênh tên món dù nó khớp tuyệt đối.
         Map<String, RetrievedRecipe> merged = new LinkedHashMap<>();
         for (RecipeDetailDto r : byName) {
-            merged.putIfAbsent(r.id(), toRetrieved(r));
+            merged.putIfAbsent(r.id(), toRetrieved(r, allergens));
         }
         for (RecipeDetailDto r : byCategory) {
-            merged.putIfAbsent(r.id(), toRetrieved(r));
+            merged.putIfAbsent(r.id(), toRetrieved(r, allergens));
         }
         for (RecipeMatchDto c : byIngredient) {
             // put() (không phải putIfAbsent): nếu trùng id với kênh tên món/danh mục, ưu tiên GIỮ
             // vị trí đã chèn (đầu danh sách) nhưng THAY nội dung bằng bản kênh nguyên liệu — có
             // matchedIngredients/missingIngredients thật để hiển thị "đã có/cần thêm" đúng.
-            merged.put(c.recipeId(), toRetrieved(c));
+            merged.put(c.recipeId(), toRetrieved(c, allergens));
         }
 
-        Set<String> allergens = allergenGroupsOf(ragUserClient.getDietaryPreferences(bearerToken));
+        // Kênh TÊN MÓN (hỏi thẳng) -> giữ lại dù có dietaryConflicts, chỉ gắn cờ cảnh báo (LLM +
+        // frontend xử lý, xem PromptBuilder/ChatResponse.dietaryWarnings) vì người dùng tự quyết
+        // định khi đã hỏi đích danh. Kênh khác (gợi ý chủ động) vẫn chặn cứng như trước — hệ thống
+        // không tự đề xuất món vi phạm ăn kiêng khi người dùng không hỏi thẳng tên.
         return merged.values().stream()
-                .filter(r -> !violatesAllergy(r, allergens))
+                .filter(r -> nameMatchIds.contains(r.recipeId()) || r.dietaryConflicts().isEmpty())
                 .limit(TOP_N)
                 .toList();
     }
@@ -104,30 +110,41 @@ public class HybridRetriever {
                 .collect(Collectors.toSet());
     }
 
-    /** Tái tạo lại tập nguyên liệu đầy đủ của công thức (matched ∪ missing = R gốc, mục 1.3), tra allergenGroup. */
-    private boolean violatesAllergy(RetrievedRecipe r, Set<String> allergens) {
+    /**
+     * Tái tạo lại tập nguyên liệu đầy đủ của công thức (matched ∪ missing = R gốc, mục 1.3), tra
+     * allergenGroup từng nguyên liệu -- tính SẴN bằng code, không để LLM tự suy đoán (log thật
+     * cho thấy LLM suy đoán không nhất quán giữa các câu hỏi tương tự, xem eval/results/
+     * bao-cao-tong-hop-danh-gia.md).
+     *
+     * @return tên hiển thị (canonicalName) các nguyên liệu vi phạm, rỗng nếu không xung đột
+     */
+    private List<String> computeDietaryConflicts(List<String> matched, List<String> missing, Set<String> allergens) {
         if (allergens.isEmpty()) {
-            return false;
+            return List.of();
         }
-        Set<String> allIngredients = new HashSet<>(r.matchedIngredients());
-        allIngredients.addAll(r.missingIngredients());
+        Set<String> allIngredients = new LinkedHashSet<>(matched);
+        allIngredients.addAll(missing);
         return allIngredients.stream()
-                .anyMatch(name -> catalog.lookup(name)
-                        .map(IngredientEntry::allergenGroup)
-                        .filter(group -> group != null && allergens.contains(group))
-                        .isPresent());
+                .map(catalog::lookup)
+                .flatMap(Optional::stream)
+                .filter(e -> e.allergenGroup() != null && allergens.contains(e.allergenGroup()))
+                .map(IngredientEntry::canonicalName)
+                .distinct()
+                .toList();
     }
 
-    private RetrievedRecipe toRetrieved(RecipeMatchDto c) {
+    private RetrievedRecipe toRetrieved(RecipeMatchDto c, Set<String> allergens) {
         return new RetrievedRecipe(c.recipeId(), c.name(), c.slug(),
-                c.matchedIngredients(), c.missingIngredients(), c.imageUrl());
+                c.matchedIngredients(), c.missingIngredients(), c.imageUrl(),
+                computeDietaryConflicts(c.matchedIngredients(), c.missingIngredients(), allergens));
     }
 
     /** Khớp qua tên món (không phải nguyên liệu người dùng có) -> toàn bộ nguyên liệu là "cần thêm". */
-    private RetrievedRecipe toRetrieved(RecipeDetailDto r) {
+    private RetrievedRecipe toRetrieved(RecipeDetailDto r, Set<String> allergens) {
         List<String> ingredientNames = r.ingredients() == null
                 ? List.of()
                 : r.ingredients().stream().map(RecipeIngredientDto::name).toList();
-        return new RetrievedRecipe(r.id(), r.name(), r.slug(), List.of(), ingredientNames, null);
+        return new RetrievedRecipe(r.id(), r.name(), r.slug(), List.of(), ingredientNames, null,
+                computeDietaryConflicts(List.of(), ingredientNames, allergens));
     }
 }

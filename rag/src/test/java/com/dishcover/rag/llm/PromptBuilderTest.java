@@ -26,7 +26,7 @@ class PromptBuilderTest {
     void nonEmptyContextAndHistoryRenderContent() {
         List<RetrievedRecipe> candidates = List.of(
                 new RetrievedRecipe("r1", "Trứng chiên cà chua", "trung-chien-ca-chua",
-                        List.of("trung ga"), List.of("ca chua"), null));
+                        List.of("trung ga"), List.of("ca chua"), null, List.of()));
         List<ConversationTurn> history = List.of(
                 new ConversationTurn("user", "tôi có trứng", Instant.now()),
                 new ConversationTurn("assistant", "Bạn nấu trứng chiên nhé", Instant.now()));
@@ -38,5 +38,29 @@ class PromptBuilderTest {
         assertTrue(prompt.contains("Người dùng: tôi có trứng"));
         assertTrue(prompt.contains("Trợ lý: Bạn nấu trứng chiên nhé"));
         assertTrue(prompt.contains("Dị ứng: hải sản"));
+    }
+
+    @Test
+    void candidateWithDietaryConflictsRendersWarningMarker() {
+        List<RetrievedRecipe> candidates = List.of(
+                new RetrievedRecipe("r1", "Phở bò", "pho-bo",
+                        List.of(), List.of("Nước mắm", "Thăn bò"), null, List.of("Nước mắm")));
+
+        String prompt = builder.build("Dị ứng: hải sản", candidates, List.of(), "cho tôi công thức phở bò");
+
+        assertTrue(prompt.contains("⚠ LƯU Ý: chứa Nước mắm"));
+    }
+
+    @Test
+    void candidateWithoutDietaryConflictsHasNoWarningMarker() {
+        List<RetrievedRecipe> candidates = List.of(
+                new RetrievedRecipe("r1", "Trứng chiên cà chua", "trung-chien-ca-chua",
+                        List.of("trung ga"), List.of("ca chua"), null, List.of()));
+
+        String prompt = builder.build("(không có thông tin)", candidates, List.of(), "nấu gì được?");
+
+        // Rule 3 (văn bản tĩnh) LUÔN nhắc tới "⚠ LƯU Ý" như mô tả quy ước — chỉ kiểm tra marker
+        // ĐỘNG gắn theo từng công thức cụ thể không xuất hiện khi không có xung đột.
+        assertTrue(!prompt.contains("⚠ LƯU Ý: chứa"));
     }
 }

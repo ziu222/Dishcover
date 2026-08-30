@@ -8,12 +8,15 @@ export interface ChatMessage {
   sourceRecipeIds?: string[]
   fallback?: boolean
   error?: boolean
+  /** Nguyên liệu vi phạm đặc điểm ăn uống đã khai báo — tính sẵn ở backend, không parse từ content. */
+  dietaryWarnings?: string[]
 }
 
 interface ChatResponse {
   answer: string
   sourceRecipeIds: string[]
   fallback: boolean
+  dietaryWarnings: string[]
 }
 
 /** Chat RAG — POST /rag-service/chat. 1 conversationId cố định suốt phiên chat (lịch sử lưu server-side TTL 30'). */
@@ -42,6 +45,7 @@ export function useChat() {
             content: res.answer,
             sourceRecipeIds: res.sourceRecipeIds,
             fallback: res.fallback,
+            dietaryWarnings: res.dietaryWarnings,
           },
         ])
       } catch (err) {

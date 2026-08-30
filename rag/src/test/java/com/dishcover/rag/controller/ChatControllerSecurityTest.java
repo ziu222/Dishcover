@@ -50,7 +50,7 @@ class ChatControllerSecurityTest {
 
     @Test
     void authenticatedUserReturns200() throws Exception {
-        when(orchestrator.handle(any(), any())).thenReturn(new ChatResponse("ok", List.of(), false));
+        when(orchestrator.handle(any(), any())).thenReturn(new ChatResponse("ok", List.of(), false, List.of()));
         mvc.perform(post("/chat")
                         .header("Authorization", token())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -64,7 +64,7 @@ class ChatControllerSecurityTest {
      */
     @Test
     void acceptsAuthCookieWithoutHeader() throws Exception {
-        when(orchestrator.handle(any(), any())).thenReturn(new ChatResponse("ok", List.of(), false));
+        when(orchestrator.handle(any(), any())).thenReturn(new ChatResponse("ok", List.of(), false, List.of()));
         String raw = new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
         mvc.perform(post("/chat")
                         .cookie(new jakarta.servlet.http.Cookie("auth_token", raw))

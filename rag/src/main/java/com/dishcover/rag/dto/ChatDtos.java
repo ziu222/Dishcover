@@ -28,7 +28,12 @@ public final class ChatDtos {
      * @param answer          câu trả lời (LLM thật hoặc danh sách công thức thô nếu fallback)
      * @param sourceRecipeIds id các công thức thật đã dùng làm căn cứ trả lời, để truy vết
      * @param fallback        true nếu LLM lỗi/timeout và answer là fallback thô, không phải LLM
+     * @param dietaryWarnings tên nguyên liệu vi phạm đặc điểm ăn uống đã khai báo, tính SẴN bằng
+     *                        code (không phải trích từ văn bản LLM trả lời) — dùng để frontend
+     *                        hiển thị badge/callout cảnh báo nổi bật, độc lập với cách LLM diễn
+     *                        đạt trong {@code answer}. Rỗng nếu không có xung đột nào.
      */
-    public record ChatResponse(String answer, List<String> sourceRecipeIds, boolean fallback) {
+    public record ChatResponse(String answer, List<String> sourceRecipeIds, boolean fallback,
+                                List<String> dietaryWarnings) {
     }
 }
