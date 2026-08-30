@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Snowflake, Warning } from '@phosphor-icons/react'
+import { Camera, Plus, Snowflake, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
 import { Button } from '../components/Button'
 import { Field } from '../components/Field'
 import { Chip } from '../components/Chip'
 import { Modal } from '../components/Modal'
 import { IngredientTile } from '../components/IngredientTile'
+import { ImageRecognitionModal } from '../components/ImageRecognitionModal'
 import { Spinner } from '../components/Spinner'
 import { ApiError } from '../lib/api'
 import type { InventoryItem } from '../types'
@@ -36,9 +37,10 @@ const STATUS_FILTERS: Array<{ value: string | null; label: string }> = [
 ]
 
 export function Fridge() {
-  const { items, loading, error, reload, add, update, remove } = useInventory()
+  const { items, loading, error, reload, add, update, remove, addBatch } = useInventory()
   const [status, setStatus] = useState<string | null>(null)
   const [formOpen, setFormOpen] = useState(false)
+  const [scanOpen, setScanOpen] = useState(false)
   const [editing, setEditing] = useState<InventoryItem | null>(null)
   const [deleting, setDeleting] = useState<InventoryItem | null>(null)
   const [showDoor, setShowDoor] = useState(() => !doorAlreadyOpened())
@@ -95,10 +97,16 @@ export function Fridge() {
             </p>
           )}
         </div>
-        <Button onClick={openAdd} className="self-start sm:self-auto">
-          <Plus weight="bold" className="size-4" />
-          Thêm nguyên liệu
-        </Button>
+        <div className="flex gap-2.5 self-start sm:self-auto">
+          <Button variant="secondary" onClick={() => setScanOpen(true)}>
+            <Camera weight="bold" className="size-4" />
+            Nhận diện từ ảnh
+          </Button>
+          <Button onClick={openAdd}>
+            <Plus weight="bold" className="size-4" />
+            Thêm nguyên liệu
+          </Button>
+        </div>
       </div>
 
       {loading ? (
@@ -173,6 +181,12 @@ export function Fridge() {
           if (deleting) await remove(deleting.id)
           setDeleting(null)
         }}
+      />
+
+      <ImageRecognitionModal
+        open={scanOpen}
+        onClose={() => setScanOpen(false)}
+        onConfirm={addBatch}
       />
     </div>
   )
