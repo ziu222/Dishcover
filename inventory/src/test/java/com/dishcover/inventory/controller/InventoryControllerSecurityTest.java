@@ -73,6 +73,18 @@ class InventoryControllerSecurityTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    /** Danh sách gợi ý tên nguyên liệu (autocomplete) cũng chỉ yêu cầu JWT hợp lệ, không public. */
+    @Test
+    void catalogIngredientsWithoutTokenReturns401() throws Exception {
+        mvc.perform(get("/inventory/catalog/ingredients")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void catalogIngredientsWithTokenReturns200() throws Exception {
+        mvc.perform(get("/inventory/catalog/ingredients").header("Authorization", token()))
+                .andExpect(status().isOk());
+    }
+
     // --- Regression: validation ở biên + lỗi KHÔNG được biến thành 401 (HIGH-2 + BUG errors→401) ---
 
     /** Tên vượt cột VARCHAR(100) phải bị chặn ở biên (422), không lọt xuống DB. */
