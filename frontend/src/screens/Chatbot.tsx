@@ -49,6 +49,18 @@ function SourceChips({ ids, recipes }: { ids: string[]; recipes: RecipeSummary[]
   )
 }
 
+function DietaryWarningCallout({ warnings }: { warnings: string[] }) {
+  if (warnings.length === 0) return null
+  return (
+    <div className="mb-2.5 flex items-start gap-2 rounded-xl border border-amber/25 bg-amber-bg px-3 py-2.5">
+      <Warning weight="fill" className="mt-0.5 size-4 shrink-0 text-amber" />
+      <p className="text-[13px] font-medium leading-snug text-amber">
+        Món này chứa {warnings.join(', ')} — có thể vi phạm đặc điểm ăn uống bạn đã khai báo.
+      </p>
+    </div>
+  )
+}
+
 function Bubble({ message, recipes }: { message: ChatMessage; recipes: RecipeSummary[] }) {
   const isUser = message.role === 'user'
   return (
@@ -74,6 +86,9 @@ function Bubble({ message, recipes }: { message: ChatMessage; recipes: RecipeSum
             <Warning weight="fill" className="size-3.5" />
             Lỗi
           </span>
+        )}
+        {!isUser && !message.error && message.dietaryWarnings && (
+          <DietaryWarningCallout warnings={message.dietaryWarnings} />
         )}
         <p className="whitespace-pre-wrap">{message.content}</p>
         {!isUser && !message.error && message.sourceRecipeIds && (
