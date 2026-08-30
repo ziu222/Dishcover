@@ -62,5 +62,15 @@ export function useInventory() {
     [fetchItems],
   )
 
-  return { items, loading, error, reload, add, update, remove }
+  /** Sau bước người dùng xác nhận kết quả nhận diện ảnh (human-in-the-loop) — mỗi item cùng
+   *  quy tắc upsert theo lô như add(). */
+  const addBatch = useCallback(
+    async (items: ItemInput[]) => {
+      await api<unknown>(`${BASE}/batch`, { method: 'POST', body: { items } })
+      await fetchItems(true)
+    },
+    [fetchItems],
+  )
+
+  return { items, loading, error, reload, add, update, remove, addBatch }
 }

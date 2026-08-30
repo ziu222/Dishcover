@@ -72,6 +72,15 @@ export interface InventoryItem {
   status: InventoryStatus
 }
 
+/** RecognizedIngredientDto — GET /image-service/recognize, 1 nguyên liệu Vision API nhận diện được. */
+export interface RecognizedIngredient {
+  name: string
+  normalizedName: string
+  confidence: number
+  quantityGuess: string | null
+  suggestedExpiryDate: string | null // 'YYYY-MM-DD'
+}
+
 export type DietaryType = 'ALLERGY' | 'DIET'
 
 /** DietaryPreferenceResponse — 1 mục hồ sơ ăn uống (dị ứng/chế độ ăn) của user. */
