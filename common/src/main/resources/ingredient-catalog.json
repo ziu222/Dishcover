@@ -64,7 +64,7 @@
   { "canonicalName": "Ba chỉ", "normalizedName": "ba chi", "aliases": ["thịt ba rọi", "thịt ba chỉ", "pork belly", "belly pork"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Sườn heo", "normalizedName": "suon heo", "aliases": ["sườn non", "pork rib"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Nạc vai", "normalizedName": "nac vai", "aliases": ["thịt nạc vai", "pork shoulder"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Thịt bò", "normalizedName": "thit bo", "aliases": ["beef", "minced beef", "beef mince", "steak", "stewing beef"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
+  { "canonicalName": "Thịt bò", "normalizedName": "thit bo", "aliases": ["beef", "minced beef", "beef mince", "steak", "stewing beef", "sirloin steak"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Bắp bò", "normalizedName": "bap bo", "aliases": ["beef shank"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Gân bò", "normalizedName": "gan bo", "aliases": ["beef tendon"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
   { "canonicalName": "Thịt gà", "normalizedName": "thit ga", "aliases": ["chicken", "gà", "chicken liver", "chicken breasts", "chicken thighs"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
