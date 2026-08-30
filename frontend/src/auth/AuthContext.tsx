@@ -22,6 +22,7 @@ interface AuthState {
   login: (email: string, password: string, captchaToken?: string) => Promise<void>
   register: (email: string, password: string, fullName: string) => Promise<void>
   logout: () => Promise<void>
+  updateProfile: (fields: { fullName?: string; avatarUrl?: string }) => Promise<void>
 }
 
 const AuthContext = createContext<AuthState | null>(null)
@@ -80,6 +81,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           await api<User>('/user-service/auth/register', {
             method: 'POST',
             body: { email, password, fullName },
+          }),
+        )
+      },
+      async updateProfile(fields) {
+        persist(
+          await api<User>('/user-service/users/me', {
+            method: 'PATCH',
+            body: fields,
           }),
         )
       },

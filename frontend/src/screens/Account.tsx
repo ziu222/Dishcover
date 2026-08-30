@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ForkKnife, Plus, ShieldWarning, SignOut, Warning, X } from '@phosphor-icons/react'
+import { ForkKnife, PencilSimple, Plus, ShieldWarning, SignOut, Warning, X } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
 import { useDietaryPreferences } from '../hooks/useDietaryPreferences'
 import { Button } from '../components/Button'
 import { Chip } from '../components/Chip'
+import { Field } from '../components/Field'
 import { Spinner } from '../components/Spinner'
 import { ApiError } from '../lib/api'
 import { cn } from '../lib/cn'
@@ -87,10 +88,61 @@ function AddPreferenceForm({
   )
 }
 
+function EditProfileForm({ onClose }: { onClose: () => void }) {
+  const { user, updateProfile } = useAuth()
+  const [fullName, setFullName] = useState(user?.fullName ?? '')
+  const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl ?? '')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function submit(e: FormEvent) {
+    e.preventDefault()
+    setSaving(true)
+    setError(null)
+    try {
+      await updateProfile({ fullName: fullName.trim(), avatarUrl: avatarUrl.trim() })
+      onClose()
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Lưu thất bại, thử lại.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="flex flex-col gap-4 rounded-card border border-line-soft bg-white p-6">
+      <Field
+        label="Họ tên"
+        autoFocus
+        placeholder="Nguyễn Minh"
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+      />
+      <Field
+        label="URL ảnh đại diện"
+        placeholder="https://…"
+        helperText="Để trống sẽ dùng chữ cái đầu của tên làm avatar"
+        value={avatarUrl}
+        onChange={(e) => setAvatarUrl(e.target.value)}
+      />
+      {error && <p className="text-xs text-expired">{error}</p>}
+      <div className="mt-1 flex gap-3">
+        <Button type="button" variant="secondary" fullWidth onClick={onClose}>
+          Huỷ
+        </Button>
+        <Button type="submit" fullWidth loading={saving}>
+          Lưu
+        </Button>
+      </div>
+    </form>
+  )
+}
+
 export function Account() {
   const { user, logout } = useAuth()
   const { items, loading, error, reload, add, remove } = useDietaryPreferences()
   const [removingId, setRemovingId] = useState<number | null>(null)
+  const [editingProfile, setEditingProfile] = useState(false)
   const initial = (user?.fullName || user?.email || '?').trim().charAt(0).toUpperCase()
 
   async function handleRemove(id: number) {
@@ -115,23 +167,45 @@ export function Account() {
 
       <div className="mx-auto flex max-w-2xl flex-col gap-8">
         {/* Hồ sơ */}
-        <div className="flex items-center justify-between gap-4 rounded-card border border-line-soft bg-white p-6">
-          <div className="flex items-center gap-4">
-            <span className="grid size-14 shrink-0 place-items-center rounded-full bg-accent text-xl font-semibold text-surface">
-              {initial}
-            </span>
-            <div className="min-w-0">
-              <p className="truncate text-lg font-medium text-ink">
-                {user?.fullName || 'Chưa đặt tên'}
-              </p>
-              <p className="truncate text-sm text-muted">{user?.email}</p>
+        {editingProfile ? (
+          <EditProfileForm onClose={() => setEditingProfile(false)} />
+        ) : (
+          <div className="flex items-center justify-between gap-4 rounded-card border border-line-soft bg-white p-6">
+            <div className="flex min-w-0 items-center gap-4">
+              {user?.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt=""
+                  className="size-14 shrink-0 rounded-full object-cover"
+                />
+              ) : (
+                <span className="grid size-14 shrink-0 place-items-center rounded-full bg-accent text-xl font-semibold text-surface">
+                  {initial}
+                </span>
+              )}
+              <div className="min-w-0">
+                <p className="truncate text-lg font-medium text-ink">
+                  {user?.fullName || 'Chưa đặt tên'}
+                </p>
+                <p className="truncate text-sm text-muted">{user?.email}</p>
+              </div>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <button
+                type="button"
+                onClick={() => setEditingProfile(true)}
+                aria-label="Sửa hồ sơ"
+                className="grid size-10 place-items-center rounded-full text-mist transition-colors hover:bg-line-soft hover:text-accent"
+              >
+                <PencilSimple className="size-[18px]" />
+              </button>
+              <Button variant="secondary" onClick={() => void logout()}>
+                <SignOut className="size-4" />
+                Đăng xuất
+              </Button>
             </div>
           </div>
-          <Button variant="secondary" onClick={() => void logout()}>
-            <SignOut className="size-4" />
-            Đăng xuất
-          </Button>
-        </div>
+        )}
 
         {/* Hồ sơ ăn uống */}
         <div>
