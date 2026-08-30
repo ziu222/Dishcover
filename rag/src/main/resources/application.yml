@@ -40,6 +40,7 @@ openai:
 services:
   matching-url: ${MATCHING_SERVICE_URL:http://localhost:8084}
   user-url: ${USER_SERVICE_URL:http://localhost:8081}
+  recipe-url: ${RECIPE_SERVICE_URL:http://localhost:8083}
 
 # JWT: CÙNG secret với User/Inventory/Recipe/Matching qua env JWT_SECRET.
 jwt:
@@ -55,6 +56,10 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
       user-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+      recipe-service:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
