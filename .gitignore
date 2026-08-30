@@ -47,3 +47,6 @@ build/
 # Bộ 30 ảnh đánh giá — không commit ảnh (bản quyền/dung lượng), giữ harness
 eval/image/images/*
 !eval/image/images/.gitkeep
+
+# Báo cáo tổng hợp dùng riêng cho đồ án, không phải tài liệu vận hành hệ thống
+eval/results/bao-cao-tong-hop-danh-gia.md
