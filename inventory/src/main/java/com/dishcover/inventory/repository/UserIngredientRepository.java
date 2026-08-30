@@ -21,17 +21,6 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
      */
     List<UserIngredient> findByUserId(Long userId);
 
-    /**
-     * Lấy nguyên liệu của một người dùng đang có trạng thái lưu trữ khớp {@code status}.
-     * Lưu ý: đây là trạng thái lưu trong DB, không phải status derived (xem
-     * {@code InventoryService}).
-     *
-     * @param userId id người dùng
-     * @param status giá trị trạng thái lưu trữ cần lọc
-     * @return danh sách nguyên liệu khớp điều kiện
-     */
-    List<UserIngredient> findByUserIdAndStatus(Long userId, String status);
-
     /** Ownership check: chỉ trả về nếu dòng thuộc đúng user — dùng cho GET/PATCH/DELETE 1 item. */
     Optional<UserIngredient> findByIdAndUserId(Long id, Long userId);
 

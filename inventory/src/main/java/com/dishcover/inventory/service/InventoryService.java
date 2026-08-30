@@ -51,16 +51,24 @@ public class InventoryService {
      * trong response được tính lại (derived) theo hạn dùng ngay tại thời điểm gọi — xem
      * {@link #deriveStatus}, không phải giá trị cột {@code status} lưu tĩnh trong DB.
      *
+     * <p>LỌC CŨNG PHẢI theo status đã derived, không phải cột thô: cột {@code status} chỉ cập
+     * nhật lúc ghi (không cron job — xem javadoc lớp), nên 1 dòng tạo FRESH từ tuần trước có thể
+     * đã EXPIRED thật nhưng cột vẫn còn "FRESH". Lọc bằng {@code repo.findByUserIdAndStatus} (cột
+     * thô) sẽ cho kết quả sai lệch với status hiển thị — xác nhận thấy trên DB dev thật (nhiều
+     * dòng status='FRESH' nhưng expiry_date đã qua hàng chục ngày).</p>
+     *
      * @param userId id người dùng
      * @param statusFilter trạng thái lưu trữ cần lọc, null nếu lấy tất cả
      * @return danh sách nguyên liệu dạng DTO
      */
     @Transactional(readOnly = true)
     public List<InventoryItemResponse> list(Long userId, String statusFilter) {
-        List<UserIngredient> items = statusFilter == null
-                ? repo.findByUserId(userId)
-                : repo.findByUserIdAndStatus(userId, statusFilter);
-        return items.stream().map(this::toResponse).toList();
+        List<InventoryItemResponse> items = repo.findByUserId(userId).stream()
+                .map(this::toResponse)
+                .toList();
+        return statusFilter == null
+                ? items
+                : items.stream().filter(i -> statusFilter.equals(i.status())).toList();
     }
 
     /**
