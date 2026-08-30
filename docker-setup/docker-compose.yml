@@ -31,7 +31,7 @@ services:
     volumes:
       - mongo-data:/data/db
     ports:
-      - "27017:27017"
+      - "${MONGO_HOST_PORT:-27017}:27017"
     networks:
       - private-net
     healthcheck:
