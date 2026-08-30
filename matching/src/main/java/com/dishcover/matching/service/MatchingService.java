@@ -117,13 +117,15 @@ public class MatchingService {
     }
 
     private RecipeMatchResponse toResponse(RecipeDetailDto recipe, double score, MatchingContext ctx) {
+        // So khớp bằng normalizedName (khoá không dấu), nhưng trả về client bằng name (tên hiển thị
+        // có dấu) — trước đây trả nhầm normalizedName khiến FE hiện "Ca hoi" thay vì "Cá hồi".
         List<String> matched = recipe.ingredients().stream()
-                .map(RecipeIngredientDto::normalizedName)
-                .filter(ctx.userNormalizedNames()::contains)
+                .filter(i -> ctx.userNormalizedNames().contains(i.normalizedName()))
+                .map(RecipeIngredientDto::name)
                 .toList();
         List<String> missing = recipe.ingredients().stream()
-                .map(RecipeIngredientDto::normalizedName)
-                .filter(n -> !ctx.userNormalizedNames().contains(n))
+                .filter(i -> !ctx.userNormalizedNames().contains(i.normalizedName()))
+                .map(RecipeIngredientDto::name)
                 .toList();
         return new RecipeMatchResponse(recipe.id(), recipe.name(), recipe.slug(), score,
                 matched, missing, recipe.imageUrl());

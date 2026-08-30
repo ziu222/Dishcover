@@ -17,8 +17,9 @@ public final class MatchingDtos {
      * @param name tên hiển thị của công thức
      * @param slug slug dùng cho URL thân thiện
      * @param score điểm số cuối cùng sau khi chạy hết chuỗi {@link com.dishcover.matching.scoring.ScoringRule}
-     * @param matchedIngredients tên nguyên liệu (đã chuẩn hóa) người dùng đang có và công thức cần
-     * @param missingIngredients tên nguyên liệu (đã chuẩn hóa) công thức cần nhưng người dùng chưa có
+     * @param matchedIngredients tên hiển thị (có dấu) nguyên liệu người dùng đang có và công thức cần —
+     *                            so khớp nội bộ dùng normalizedName, nhưng trả ra client bằng tên thật
+     * @param missingIngredients tên hiển thị (có dấu) nguyên liệu công thức cần nhưng người dùng chưa có
      * @param imageUrl URL ảnh minh họa công thức, có thể null
      */
     public record RecipeMatchResponse(

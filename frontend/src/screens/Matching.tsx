@@ -9,11 +9,6 @@ import type { RecipeMatch } from '../types'
 const PLACEHOLDER =
   'repeating-linear-gradient(135deg,#E9E1D2,#E9E1D2 11px,#E4DBC9 11px,#E4DBC9 22px)'
 
-/** "ca chua" → "Ca chua" — tên nguyên liệu backend trả về đã chuẩn hoá (thường + không dấu tone gốc). */
-function displayName(normalized: string): string {
-  return normalized.charAt(0).toUpperCase() + normalized.slice(1)
-}
-
 function coverage(m: RecipeMatch): number {
   const total = m.matchedIngredients.length + m.missingIngredients.length
   return total === 0 ? 0 : m.matchedIngredients.length / total
@@ -86,7 +81,7 @@ function MatchCard({ match, best }: { match: RecipeMatch; best: boolean }) {
                 className="inline-flex items-center gap-1 rounded-full bg-fresh-bg px-2.5 py-1 text-[11.5px] font-medium text-fresh"
               >
                 <CheckCircle weight="fill" className="size-3.5" />
-                {displayName(name)}
+                {name}
               </span>
             ))}
             {match.missingIngredients.map((name) => (
@@ -95,7 +90,7 @@ function MatchCard({ match, best }: { match: RecipeMatch; best: boolean }) {
                 className="inline-flex items-center gap-1 rounded-full border border-dashed border-line px-2.5 py-1 text-[11.5px] font-medium text-faint"
               >
                 <Circle className="size-3.5" />
-                {displayName(name)}
+                {name}
               </span>
             ))}
           </div>
