@@ -1,0 +1,691 @@
+[
+  {
+    "id": "a01",
+    "group": "single",
+    "query": "chicken egg white background",
+    "file": "a01-trung-ga.jpg",
+    "expected": [
+      "trứng gà"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "trứng",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 2353
+  },
+  {
+    "id": "a02",
+    "group": "single",
+    "query": "tomato fruit",
+    "file": "a02-ca-chua.jpg",
+    "expected": [
+      "cà chua"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "Cà chua",
+        "confidence": 0.9
+      },
+      {
+        "name": "Ớt chuông",
+        "confidence": 0.7
+      },
+      {
+        "name": "Chanh",
+        "confidence": 0.6
+      },
+      {
+        "name": "Quả cam",
+        "confidence": 0.5
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1910
+  },
+  {
+    "id": "a03",
+    "group": "single",
+    "query": "carrot vegetable",
+    "file": "a03-ca-rot.jpg",
+    "expected": [
+      "cà rốt"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "cà rốt",
+        "confidence": 0.9
+      },
+      {
+        "name": "cà rốt",
+        "confidence": 0.7
+      },
+      {
+        "name": "cà rốt",
+        "confidence": 0.7
+      },
+      {
+        "name": "cà rốt",
+        "confidence": 0.7
+      },
+      {
+        "name": "cà rốt",
+        "confidence": 0.7
+      }
+    ],
+    "hit": true,
+    "latencyMs": 3012
+  },
+  {
+    "id": "a04",
+    "group": "single",
+    "query": "onion bulb vegetable",
+    "file": "a04-hanh-tay.jpg",
+    "expected": [
+      "hành tây"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "hành tây",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1317
+  },
+  {
+    "id": "a05",
+    "group": "single",
+    "query": "garlic bulb",
+    "file": "a05-toi.jpg",
+    "expected": [
+      "tỏi"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "tỏi",
+        "confidence": 0.9
+      },
+      {
+        "name": "tỏi",
+        "confidence": 0.8
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1327
+  },
+  {
+    "id": "a06",
+    "group": "single",
+    "query": "potato vegetable",
+    "file": "a06-khoai-tay.jpg",
+    "expected": [
+      "khoai tây"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "khoai tây",
+        "confidence": 0.9
+      },
+      {
+        "name": "cà chua",
+        "confidence": 0.7
+      }
+    ],
+    "hit": true,
+    "latencyMs": 2846
+  },
+  {
+    "id": "a07",
+    "group": "single",
+    "query": "banana fruit bunch",
+    "file": "a07-chuoi.jpg",
+    "expected": [
+      "chuối"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "chuối",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1334
+  },
+  {
+    "id": "a08",
+    "group": "single",
+    "query": "orange citrus fruit",
+    "file": "a08-cam.jpg",
+    "expected": [
+      "cam"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "Cam",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1066
+  },
+  {
+    "id": "a09",
+    "group": "single",
+    "query": "raw beef steak meat",
+    "file": "a09-thit-bo.jpg",
+    "expected": [
+      "thịt bò"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "thịt bò",
+        "confidence": 0.9
+      },
+      {
+        "name": "trứng gà",
+        "confidence": 0.9
+      },
+      {
+        "name": "hành lá",
+        "confidence": 0.8
+      },
+      {
+        "name": "cà chua",
+        "confidence": 0.8
+      },
+      {
+        "name": "dưa chua",
+        "confidence": 0.7
+      },
+      {
+        "name": "hành tây",
+        "confidence": 0.7
+      }
+    ],
+    "hit": true,
+    "latencyMs": 2611
+  },
+  {
+    "id": "a10",
+    "group": "single",
+    "query": "raw shrimp prawn seafood",
+    "file": "a10-tom.jpg",
+    "expected": [
+      "tôm"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "mực",
+        "confidence": 0.9
+      },
+      {
+        "name": "tôm",
+        "confidence": 0.9
+      },
+      {
+        "name": "nghêu",
+        "confidence": 0.8
+      },
+      {
+        "name": "cá",
+        "confidence": 0.9
+      },
+      {
+        "name": "cá lóc",
+        "confidence": 0.7
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1967
+  },
+  {
+    "id": "b01",
+    "group": "multi",
+    "query": "farmers market vegetable stall photograph",
+    "file": "b01-rau-cu-mix.jpg",
+    "expected": [
+      "nhiều loại rau củ"
+    ],
+    "skipped": true,
+    "detected": [],
+    "hit": false,
+    "latencyMs": 965
+  },
+  {
+    "id": "b02",
+    "group": "multi",
+    "query": "wok stir fry beef broccoli carrot photo",
+    "file": "b02-xao-thit-rau.jpg",
+    "expected": [
+      "thịt",
+      "rau"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "bông cải xanh",
+        "confidence": 0.9
+      },
+      {
+        "name": "carrot",
+        "confidence": 0.8
+      },
+      {
+        "name": "ớt chuông đỏ",
+        "confidence": 0.8
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1595
+  },
+  {
+    "id": "b03",
+    "group": "multi",
+    "query": "shakshuka eggs poached tomato sauce",
+    "file": "b03-trung-ca-chua.jpg",
+    "expected": [
+      "trứng",
+      "cà chua"
+    ],
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Shakshuka_011.jpg/960px-Shakshuka_011.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "sourcePage": "https://commons.wikimedia.org/wiki/File:Shakshuka_011.jpg",
+    "sourceTitle": "File:Shakshuka 011.jpg",
+    "sizeBytes": 205111,
+    "detected": [
+      {
+        "name": "trứng",
+        "confidence": 0.8
+      },
+      {
+        "name": "sốt cà chua",
+        "confidence": 0.7
+      },
+      {
+        "name": "bánh mì",
+        "confidence": 0.6
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1911
+  },
+  {
+    "id": "b04",
+    "group": "multi",
+    "query": "fish market ice display photograph",
+    "file": "b04-hai-san.jpg",
+    "expected": [
+      "nhiều loại hải sản"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "cá",
+        "confidence": 0.9
+      }
+    ],
+    "hit": false,
+    "latencyMs": 1137
+  },
+  {
+    "id": "b05",
+    "group": "multi",
+    "query": "fruit stand market colorful photograph",
+    "file": "b05-gio-trai-cay.jpg",
+    "expected": [
+      "nhiều loại trái cây"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "Cà chua",
+        "confidence": 0.9
+      },
+      {
+        "name": "Ớt chuông",
+        "confidence": 0.7
+      },
+      {
+        "name": "Dưa leo",
+        "confidence": 0.8
+      },
+      {
+        "name": "Gừng",
+        "confidence": 0.6
+      },
+      {
+        "name": "Hành tây",
+        "confidence": 0.8
+      },
+      {
+        "name": "Bông cải",
+        "confidence": 0.7
+      },
+      {
+        "name": "Rau diếp",
+        "confidence": 0.6
+      }
+    ],
+    "hit": true,
+    "latencyMs": 2565
+  },
+  {
+    "id": "b06",
+    "group": "multi",
+    "query": "chopped vegetables cutting board photograph",
+    "file": "b06-rau-cu-ban-bep.jpg",
+    "expected": [
+      "nhiều loại rau củ"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "ớt",
+        "confidence": 0.9
+      },
+      {
+        "name": "gừng",
+        "confidence": 0.9
+      },
+      {
+        "name": "tỏi",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1369
+  },
+  {
+    "id": "b07",
+    "group": "multi",
+    "query": "raw whole chicken rosemary garlic photograph",
+    "file": "b07-ga-gia-vi.jpg",
+    "expected": [
+      "thịt gà",
+      "gia vị"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "thịt gà",
+        "confidence": 0.9
+      },
+      {
+        "name": "khoai tây",
+        "confidence": 0.8
+      },
+      {
+        "name": "hương thảo",
+        "confidence": 0.6
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1647
+  },
+  {
+    "id": "b08",
+    "group": "multi",
+    "query": "noodles vegetables meat dish",
+    "file": "b08-mi-rau-thit.jpg",
+    "expected": [
+      "mì",
+      "rau",
+      "thịt"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "thịt bò",
+        "confidence": 0.8
+      },
+      {
+        "name": "rau cải",
+        "confidence": 0.7
+      },
+      {
+        "name": "ớt",
+        "confidence": 0.6
+      },
+      {
+        "name": "hành",
+        "confidence": 0.6
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1607
+  },
+  {
+    "id": "b09",
+    "group": "multi",
+    "query": "mixed salad vegetables bowl",
+    "file": "b09-salad.jpg",
+    "expected": [
+      "nhiều loại rau"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "xà lách",
+        "confidence": 0.9
+      },
+      {
+        "name": "cà chua",
+        "confidence": 0.8
+      },
+      {
+        "name": "ớt chuông",
+        "confidence": 0.7
+      },
+      {
+        "name": "hành tím",
+        "confidence": 0.6
+      },
+      {
+        "name": "cà rốt",
+        "confidence": 0.5
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1780
+  },
+  {
+    "id": "b10",
+    "group": "multi",
+    "query": "vegetables and spices kitchen photograph",
+    "file": "b10-nguyen-lieu-flatlay.jpg",
+    "expected": [
+      "nhiều nguyên liệu"
+    ],
+    "skipped": true,
+    "detected": [
+      {
+        "name": "ớt xanh",
+        "confidence": 0.8
+      },
+      {
+        "name": "hành",
+        "confidence": 0.7
+      },
+      {
+        "name": "rau",
+        "confidence": 0.6
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1524
+  },
+  {
+    "id": "c01",
+    "group": "confusable",
+    "query": "lime citrus fruit green",
+    "file": "c01-chanh.jpg",
+    "expected": [
+      "chanh"
+    ],
+    "note": "dễ nhầm chanh ta/chanh vàng",
+    "skipped": true,
+    "detected": [
+      {
+        "name": "chanh",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1142
+  },
+  {
+    "id": "c02",
+    "group": "confusable",
+    "query": "sweet potato raw",
+    "file": "c02-khoai-lang.jpg",
+    "expected": [
+      "khoai lang"
+    ],
+    "note": "dễ nhầm khoai tây",
+    "skipped": true,
+    "detected": [
+      {
+        "name": "khoai môn",
+        "confidence": 0.9
+      }
+    ],
+    "hit": false,
+    "latencyMs": 1269
+  },
+  {
+    "id": "c03",
+    "group": "confusable",
+    "query": "red bell pepper",
+    "file": "c03-ot-chuong.jpg",
+    "expected": [
+      "ớt chuông"
+    ],
+    "note": "dễ nhầm cà chua",
+    "skipped": true,
+    "detected": [
+      {
+        "name": "Ớt chuông đỏ",
+        "confidence": 0.9
+      },
+      {
+        "name": "Ớt chuông xanh",
+        "confidence": 0.7
+      },
+      {
+        "name": "Ớt chuông vàng",
+        "confidence": 0.7
+      },
+      {
+        "name": "Hạt giống",
+        "confidence": 0.5
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1672
+  },
+  {
+    "id": "c04",
+    "group": "confusable",
+    "query": "shallot onion small",
+    "file": "c04-hanh-tim.jpg",
+    "expected": [
+      "hành tím"
+    ],
+    "note": "dễ nhầm tỏi/hành tây",
+    "skipped": true,
+    "detected": [
+      {
+        "name": "Hành tím",
+        "confidence": 0.9
+      }
+    ],
+    "hit": true,
+    "latencyMs": 1369
+  },
+  {
+    "id": "c05",
+    "group": "confusable",
+    "query": "cherry tomatoes cluster",
+    "file": "c05-ca-chua-bi.jpg",
+    "expected": [
+      "cà chua bi"
+    ],
+    "note": "dễ nhầm nho đỏ",
+    "skipped": true,
+    "detected": [
+      {
+        "name": "cà chua xanh",
+        "confidence": 0.7
+      }
+    ],
+    "hit": false,
+    "latencyMs": 1263
+  },
+  {
+    "id": "d01",
+    "group": "none",
+    "query": "car vehicle road",
+    "file": "d01-oto.jpg",
+    "expected": [],
+    "skipped": true,
+    "detected": [],
+    "hit": true,
+    "latencyMs": 928
+  },
+  {
+    "id": "d02",
+    "group": "none",
+    "query": "laptop computer desk",
+    "file": "d02-laptop.jpg",
+    "expected": [],
+    "skipped": true,
+    "detected": [],
+    "hit": true,
+    "latencyMs": 839
+  },
+  {
+    "id": "d03",
+    "group": "none",
+    "query": "stack of books photograph library",
+    "file": "d03-sach.jpg",
+    "expected": [],
+    "skipped": true,
+    "detected": [],
+    "hit": true,
+    "latencyMs": 776
+  },
+  {
+    "id": "d04",
+    "group": "none",
+    "query": "wooden chair furniture",
+    "file": "d04-ghe.jpg",
+    "expected": [],
+    "skipped": true,
+    "detected": [],
+    "hit": true,
+    "latencyMs": 969
+  },
+  {
+    "id": "d05",
+    "group": "none",
+    "query": "building architecture city",
+    "file": "d05-toa-nha.jpg",
+    "expected": [],
+    "skipped": true,
+    "detected": [],
+    "hit": true,
+    "latencyMs": 1406
+  }
+]
