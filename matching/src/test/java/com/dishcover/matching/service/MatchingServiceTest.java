@@ -87,15 +87,15 @@ class MatchingServiceTest {
         recipeServer.expect(requestTo("http://recipe/recipes/r1"))
                 .andRespond(withSuccess("""
                         {"id":"r1","name":"Trứng chiên cà chua","slug":"trung-chien-ca-chua","imageUrl":null,
-                         "ingredients":[{"normalizedName":"trung ga","essential":true,"weight":1.0},
-                                        {"normalizedName":"ca chua","essential":true,"weight":1.0},
-                                        {"normalizedName":"hanh la","essential":false,"weight":0.3}]}
+                         "ingredients":[{"name":"trung ga","normalizedName":"trung ga","essential":true,"weight":1.0},
+                                        {"name":"ca chua","normalizedName":"ca chua","essential":true,"weight":1.0},
+                                        {"name":"hanh la","normalizedName":"hanh la","essential":false,"weight":0.3}]}
                         """, MediaType.APPLICATION_JSON));
 
         recipeServer.expect(requestTo("http://recipe/recipes/r2"))
                 .andRespond(withSuccess("""
                         {"id":"r2","name":"Tôm rang me","slug":"tom-rang-me","imageUrl":null,
-                         "ingredients":[{"normalizedName":"tom","essential":true,"weight":1.0}]}
+                         "ingredients":[{"name":"tom","normalizedName":"tom","essential":true,"weight":1.0}]}
                         """, MediaType.APPLICATION_JSON));
 
         List<RecipeMatchResponse> result = service.suggest(BEARER, 5);

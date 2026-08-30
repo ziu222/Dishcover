@@ -16,7 +16,7 @@ class JaccardBaseRuleTest {
 
     private RecipeDetailDto recipe(String... normalizedNames) {
         List<RecipeIngredientDto> ingredients = List.of(normalizedNames).stream()
-                .map(n -> new RecipeIngredientDto(n, true, 1.0))
+                .map(n -> new RecipeIngredientDto(n, n, true, 1.0))
                 .toList();
         return new RecipeDetailDto("id", "name", "slug", null, ingredients);
     }
