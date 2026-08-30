@@ -40,7 +40,7 @@ class ChatOrchestratorTest {
 
     private final RetrievedRecipe candidate = new RetrievedRecipe(
             "r1", "Trứng chiên cà chua", "trung-chien-ca-chua",
-            List.of("trung ga"), List.of("ca chua"), null);
+            List.of("trung ga"), List.of("ca chua"), null, List.of());
 
     @BeforeEach
     void commonStubs() {
@@ -104,5 +104,26 @@ class ChatOrchestratorTest {
         Mockito.verify(promptBuilder).build(
                 org.mockito.ArgumentMatchers.eq("Dị ứng: hải sản; Chế độ ăn: chay"),
                 any(), any(), any());
+    }
+
+    @Test
+    void dietaryWarningsAggregatedFromCandidatesWithConflicts() {
+        RetrievedRecipe conflicting = new RetrievedRecipe(
+                "r2", "Phở bò", "pho-bo", List.of(), List.of("Nước mắm"), null, List.of("Nước mắm"));
+        when(retriever.retrieve(anyString(), anyString(), any())).thenReturn(List.of(candidate, conflicting));
+        when(llmGateway.chat(anyString())).thenReturn(new LlmChatResult("ok", false));
+
+        ChatResponse response = orchestrator.handle(BEARER, new ChatRequest("tôi có trứng gà", null));
+
+        assertEquals(List.of("Nước mắm"), response.dietaryWarnings());
+    }
+
+    @Test
+    void noDietaryWarningsWhenNoCandidateConflicts() {
+        when(llmGateway.chat(anyString())).thenReturn(new LlmChatResult("ok", false));
+
+        ChatResponse response = orchestrator.handle(BEARER, new ChatRequest("tôi có trứng gà", null));
+
+        assertTrue(response.dietaryWarnings().isEmpty());
     }
 }

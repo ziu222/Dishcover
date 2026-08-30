@@ -92,14 +92,34 @@ class HybridRetrieverTest {
         Mockito.verifyNoInteractions(matchingClient);
     }
 
+    /**
+     * Live-verify (eval/results/bao-cao-tong-hop-danh-gia.md) cho thấy hỏi THẲNG TÊN món vẫn nên
+     * được trả lời kèm cảnh báo thay vì bị chặn hoàn toàn -- người dùng tự quyết định khi đã hỏi
+     * đích danh. Chỉ gợi ý CHỦ ĐỘNG (kênh nguyên liệu/danh mục) mới bị chặn cứng như trước.
+     */
     @Test
-    void nameChannelCandidateStillFilteredByAllergy() {
+    void nameChannelCandidateKeptWithConflictFlagInsteadOfFiltered() {
         when(recipeClient.searchByName(anyString())).thenReturn(List.of(
                 new RecipeDetailDto("r9", "Gỏi tôm", "goi-tom", List.of(new RecipeIngredientDto("Tôm")))));
         when(userClient.getDietaryPreferences(anyString())).thenReturn(List.of(
                 new DietaryPreferenceDto(1L, "ALLERGY", "hải sản")));
 
         List<RetrievedRecipe> result = retriever.retrieve("Bearer x", "Gỏi tôm làm sao?", List.of());
+
+        assertEquals(1, result.size());
+        assertEquals("r9", result.get(0).recipeId());
+        assertEquals(List.of("Tôm"), result.get(0).dietaryConflicts());
+    }
+
+    /** Gợi ý CHỦ ĐỘNG (kênh danh mục) vẫn chặn cứng như trước -- hệ thống không tự đề xuất món vi phạm. */
+    @Test
+    void categoryChannelCandidateStillFilteredByAllergy() {
+        when(recipeClient.searchByCategory(anyString())).thenReturn(List.of(
+                new RecipeDetailDto("r9", "Gỏi tôm", "goi-tom", List.of(new RecipeIngredientDto("Tôm")))));
+        when(userClient.getDietaryPreferences(anyString())).thenReturn(List.of(
+                new DietaryPreferenceDto(1L, "ALLERGY", "hải sản")));
+
+        List<RetrievedRecipe> result = retriever.retrieve("Bearer x", "Gợi ý món dễ làm", List.of());
 
         assertTrue(result.isEmpty());
     }

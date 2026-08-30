@@ -80,7 +80,11 @@ public class ChatOrchestrator {
         }
 
         List<String> sourceRecipeIds = candidates.stream().map(RetrievedRecipe::recipeId).toList();
-        return new ChatResponse(answer, sourceRecipeIds, fallback);
+        List<String> dietaryWarnings = candidates.stream()
+                .flatMap(c -> c.dietaryConflicts().stream())
+                .distinct()
+                .toList();
+        return new ChatResponse(answer, sourceRecipeIds, fallback, dietaryWarnings);
     }
 
     /** ALLERGY + DIET đều đưa vào text — DIET chỉ ràng buộc mềm ở prompt (mục 1.3), ALLERGY đã lọc cứng ở HybridRetriever rồi. */
