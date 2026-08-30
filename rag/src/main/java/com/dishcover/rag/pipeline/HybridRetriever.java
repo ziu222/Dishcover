@@ -5,23 +5,30 @@ import com.dishcover.common.ingredient.IngredientEntry;
 import com.dishcover.common.text.VietnameseTextNormalizer;
 import com.dishcover.rag.client.DietaryPreferenceDto;
 import com.dishcover.rag.client.RagMatchingClient;
+import com.dishcover.rag.client.RagRecipeClient;
 import com.dishcover.rag.client.RagUserClient;
+import com.dishcover.rag.client.RecipeDetailDto;
+import com.dishcover.rag.client.RecipeIngredientDto;
 import com.dishcover.rag.client.RecipeMatchDto;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Kênh lọc cứng theo nguyên liệu qua Matching Service (specs/rag-service.md mục 3.2/1.3).
+ * 2 kênh truy hồi giai đoạn A: (1) lọc cứng theo nguyên liệu qua Matching Service (specs/
+ * rag-service.md mục 3.2/1.3), (2) tìm theo TÊN MÓN qua {@link RagRecipeClient} — thêm sau khi bộ
+ * eval phát hiện câu hỏi kiểu "Cho tôi công thức Phở bò" luôn bị từ chối dù món có thật, vì kênh
+ * (1) chỉ trích được nguyên liệu, không trích được tên món (xem eval/results/chatbot-report.md).
  *
- * <p><b>Lưu ý tên gọi</b>: tên "Hybrid" theo đúng danh sách 5 class CLAUDE.md mục 9 bắt buộc,
- * NHƯNG giai đoạn A chỉ có 1 kênh (qua Matching Service) — chưa có kênh vector, chưa có bước hợp
- * nhất. Giai đoạn B (ngoài phạm vi) sẽ mở rộng THÊM kênh vector + bước merge VÀO CHÍNH class này
- * (không tạo class mới, không đổi tên) — để chữ ký gọi từ {@code ChatOrchestrator} không đổi
- * giữa 2 giai đoạn.</p>
+ * <p><b>Lưu ý tên gọi</b>: tên "Hybrid" theo đúng danh sách 5 class CLAUDE.md mục 9 bắt buộc.
+ * Giai đoạn B (ngoài phạm vi, vector search pgvector) sẽ mở rộng THÊM 1 kênh nữa VÀO CHÍNH class
+ * này (không tạo class mới, không đổi tên) — để chữ ký gọi từ {@code ChatOrchestrator} không đổi
+ * giữa các giai đoạn.</p>
  */
 @Component
 public class HybridRetriever {
@@ -34,34 +41,45 @@ public class HybridRetriever {
     private static final int FETCH_N = 20;
 
     private final RagMatchingClient ragMatchingClient;
+    private final RagRecipeClient ragRecipeClient;
     private final RagUserClient ragUserClient;
     private final IngredientCatalog catalog;
 
-    public HybridRetriever(RagMatchingClient ragMatchingClient, RagUserClient ragUserClient,
-                            IngredientCatalog catalog) {
+    public HybridRetriever(RagMatchingClient ragMatchingClient, RagRecipeClient ragRecipeClient,
+                            RagUserClient ragUserClient, IngredientCatalog catalog) {
         this.ragMatchingClient = ragMatchingClient;
+        this.ragRecipeClient = ragRecipeClient;
         this.ragUserClient = ragUserClient;
         this.catalog = catalog;
     }
 
     /**
-     * Lấy top công thức khớp nguyên liệu, đã lọc dị ứng thật của user.
+     * Lấy top công thức khớp nguyên liệu VÀ/HOẶC khớp tên món, đã lọc dị ứng thật của user.
      *
-     * @param bearerToken         token JWT chuyển tiếp cho Matching/User Service
-     * @param extractedIngredients nguyên liệu đã trích xuất từ câu hỏi (IngredientExtractor)
-     * @return tối đa {@link #TOP_N} công thức an toàn (không chứa nguyên liệu dị ứng), rỗng nếu
-     *         {@code extractedIngredients} rỗng hoặc Matching Service không trả kết quả nào
+     * @param bearerToken           token JWT chuyển tiếp cho Matching/User Service
+     * @param question              câu hỏi gốc, dùng cho kênh tìm theo tên món
+     * @param extractedIngredients  nguyên liệu đã trích xuất từ câu hỏi (IngredientExtractor)
+     * @return tối đa {@link #TOP_N} công thức an toàn (không chứa nguyên liệu dị ứng), ưu tiên
+     *         khớp nguyên liệu trước, rồi đến khớp tên món (không trùng lặp)
      */
-    public List<RetrievedRecipe> retrieve(String bearerToken, List<String> extractedIngredients) {
-        if (extractedIngredients.isEmpty()) {
-            return List.of(); // không có gì để chấm điểm -> khỏi gọi Matching, đỡ tốn network
+    public List<RetrievedRecipe> retrieve(String bearerToken, String question, List<String> extractedIngredients) {
+        List<RecipeMatchDto> byIngredient = extractedIngredients.isEmpty()
+                ? List.of() // không có nguyên liệu -> khỏi gọi Matching, đỡ tốn network
+                : ragMatchingClient.searchByIngredients(bearerToken, extractedIngredients, FETCH_N);
+        List<RecipeDetailDto> byName = ragRecipeClient.searchByName(question);
+
+        Map<String, RetrievedRecipe> merged = new LinkedHashMap<>();
+        for (RecipeMatchDto c : byIngredient) {
+            merged.put(c.recipeId(), toRetrieved(c));
         }
-        List<RecipeMatchDto> candidates = ragMatchingClient.searchByIngredients(bearerToken, extractedIngredients, FETCH_N);
+        for (RecipeDetailDto r : byName) {
+            merged.putIfAbsent(r.id(), toRetrieved(r));
+        }
+
         Set<String> allergens = allergenGroupsOf(ragUserClient.getDietaryPreferences(bearerToken));
-        return candidates.stream()
-                .filter(c -> !violatesAllergy(c, allergens))
+        return merged.values().stream()
+                .filter(r -> !violatesAllergy(r, allergens))
                 .limit(TOP_N)
-                .map(this::toRetrieved)
                 .toList();
     }
 
@@ -74,12 +92,12 @@ public class HybridRetriever {
     }
 
     /** Tái tạo lại tập nguyên liệu đầy đủ của công thức (matched ∪ missing = R gốc, mục 1.3), tra allergenGroup. */
-    private boolean violatesAllergy(RecipeMatchDto c, Set<String> allergens) {
+    private boolean violatesAllergy(RetrievedRecipe r, Set<String> allergens) {
         if (allergens.isEmpty()) {
             return false;
         }
-        Set<String> allIngredients = new HashSet<>(c.matchedIngredients());
-        allIngredients.addAll(c.missingIngredients());
+        Set<String> allIngredients = new HashSet<>(r.matchedIngredients());
+        allIngredients.addAll(r.missingIngredients());
         return allIngredients.stream()
                 .anyMatch(name -> catalog.lookup(name)
                         .map(IngredientEntry::allergenGroup)
@@ -90,5 +108,13 @@ public class HybridRetriever {
     private RetrievedRecipe toRetrieved(RecipeMatchDto c) {
         return new RetrievedRecipe(c.recipeId(), c.name(), c.slug(),
                 c.matchedIngredients(), c.missingIngredients(), c.imageUrl());
+    }
+
+    /** Khớp qua tên món (không phải nguyên liệu người dùng có) -> toàn bộ nguyên liệu là "cần thêm". */
+    private RetrievedRecipe toRetrieved(RecipeDetailDto r) {
+        List<String> ingredientNames = r.ingredients() == null
+                ? List.of()
+                : r.ingredients().stream().map(RecipeIngredientDto::name).toList();
+        return new RetrievedRecipe(r.id(), r.name(), r.slug(), List.of(), ingredientNames, null);
     }
 }

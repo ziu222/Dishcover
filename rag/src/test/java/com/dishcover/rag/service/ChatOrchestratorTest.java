@@ -45,7 +45,7 @@ class ChatOrchestratorTest {
     @BeforeEach
     void commonStubs() {
         when(extractor.extract(anyString())).thenReturn(List.of("trung ga"));
-        when(retriever.retrieve(anyString(), any())).thenReturn(List.of(candidate));
+        when(retriever.retrieve(anyString(), anyString(), any())).thenReturn(List.of(candidate));
         when(userClient.getDietaryPreferences(anyString())).thenReturn(List.of());
         when(historyStore.recentTurns(any())).thenReturn(List.of());
         when(promptBuilder.build(any(), any(), any(), any())).thenReturn("prompt giả lập");

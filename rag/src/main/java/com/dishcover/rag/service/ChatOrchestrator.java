@@ -54,7 +54,7 @@ public class ChatOrchestrator {
      */
     public ChatResponse handle(String bearerToken, ChatRequest request) {
         List<String> ingredients = ingredientExtractor.extract(request.message());
-        List<RetrievedRecipe> candidates = hybridRetriever.retrieve(bearerToken, ingredients);
+        List<RetrievedRecipe> candidates = hybridRetriever.retrieve(bearerToken, request.message(), ingredients);
 
         String dietaryText = formatDietaryText(ragUserClient.getDietaryPreferences(bearerToken));
         List<ConversationTurn> history = historyStore.recentTurns(request.conversationId());

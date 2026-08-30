@@ -23,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
         "services.matching-url=http://localhost:1",
-        "services.user-url=http://localhost:1"
+        "services.user-url=http://localhost:1",
+        "services.recipe-url=http://localhost:1"
 })
 class ClientResilienceTest {
 
@@ -31,10 +32,18 @@ class ClientResilienceTest {
     RagMatchingClient ragMatchingClient;
     @Autowired
     RagUserClient ragUserClient;
+    @Autowired
+    RagRecipeClient ragRecipeClient;
 
     @Test
     void matchingFailureFallsBackToEmptyListInsteadOfCrashing() {
         List<RecipeMatchDto> result = ragMatchingClient.searchByIngredients("Bearer x", List.of("trung ga"), 5);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void recipeNameSearchFailureFallsBackToEmptyListInsteadOfCrashing() {
+        List<RecipeDetailDto> result = ragRecipeClient.searchByName("Phở bò");
         assertTrue(result.isEmpty());
     }
 
