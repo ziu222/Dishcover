@@ -1,6 +1,8 @@
 package com.dishcover.inventory;
 
 import com.dishcover.common.security.JwtService;
+import com.dishcover.inventory.entity.UserIngredient;
+import com.dishcover.inventory.repository.UserIngredientRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,6 +36,8 @@ class InventoryFlowIntegrationTest {
     MockMvc mvc;
     @Autowired
     ObjectMapper mapper;
+    @Autowired
+    UserIngredientRepository repo;
 
     private String tokenFor(long userId) {
         return new JwtService(SECRET, 120).issue(userId, "user" + userId + "@test.com", "PRO");
@@ -169,5 +175,25 @@ class InventoryFlowIntegrationTest {
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].normalizedName").value("ca rot"))
                 .andExpect(jsonPath("$[1].normalizedName").value("khoai tay"));
+    }
+
+    @Test
+    void statusFilterUsesDerivedStatusNotStaleDbColumn() throws Exception {
+        long uid = System.nanoTime();
+        // Mô phỏng dữ liệu thật đã "cũ": tạo thẳng qua repository với status='FRESH' còn nguyên
+        // từ lúc tạo, nhưng expiry_date đã qua từ lâu -- đúng kiểu lệch dữ liệu tìm thấy trên DB
+        // dev thật (status không có cron nào cập nhật lại, xem InventoryService.list()).
+        UserIngredient stale = new UserIngredient(uid, "Sữa tươi", "sua tuoi",
+                BigDecimal.ONE, "hộp", java.time.LocalDate.now().minusDays(30), "MANUAL", "FRESH");
+        repo.save(stale);
+
+        // Lọc ?status=EXPIRED phải THẤY dòng này (đã hết hạn thật), dù cột DB vẫn ghi FRESH.
+        mvc.perform(get("/inventory/items?status=EXPIRED").header("Authorization", auth(uid)))
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].status").value("EXPIRED"));
+
+        // Lọc ?status=FRESH KHÔNG được trả dòng này, dù cột DB thô vẫn ghi FRESH.
+        mvc.perform(get("/inventory/items?status=FRESH").header("Authorization", auth(uid)))
+                .andExpect(jsonPath("$.length()").value(0));
     }
 }
