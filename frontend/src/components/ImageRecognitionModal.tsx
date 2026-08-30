@@ -4,7 +4,7 @@ import { Camera, CheckCircle, Image as ImageIcon, Warning } from '@phosphor-icon
 import { Modal } from './Modal'
 import { Button } from './Button'
 import { useImageRecognition } from '../hooks/useImageRecognition'
-import { ingredientEmoji } from '../lib/ingredientEmoji'
+import { ingredientIcon } from '../lib/ingredientIcon'
 import { ApiError } from '../lib/api'
 import { cn } from '../lib/cn'
 import type { ItemInput } from '../hooks/useInventory'
@@ -15,6 +15,7 @@ const LOW_CONFIDENCE = 0.6
 interface Row {
   included: boolean
   name: string
+  normalizedName: string
   quantity: string
   unit: string
   expiryDate: string
@@ -26,6 +27,7 @@ function toRows(items: RecognizedIngredient[]): Row[] {
   return items.map((i) => ({
     included: true,
     name: i.name,
+    normalizedName: i.normalizedName,
     quantity: '',
     unit: '',
     expiryDate: i.suggestedExpiryDate ?? '',
@@ -82,6 +84,7 @@ function ScanningPreview({ src, scanning }: { src: string; scanning: boolean }) 
 
 function ConfirmRow({ row, onChange }: { row: Row; onChange: (next: Row) => void }) {
   const low = row.confidence < LOW_CONFIDENCE
+  const Icon = ingredientIcon(row.normalizedName)
   return (
     <motion.li
       layout
@@ -107,8 +110,8 @@ function ConfirmRow({ row, onChange }: { row: Row; onChange: (next: Row) => void
           <CheckCircle weight="fill" className="size-4" />
         </button>
 
-        <span className="mt-0.5 text-xl leading-none" aria-hidden style={{ fontFamily: '"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif' }}>
-          {ingredientEmoji(row.name.toLowerCase())}
+        <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-card text-muted" aria-hidden>
+          <Icon weight="duotone" className="size-4" />
         </span>
 
         <div className="min-w-0 flex-1">

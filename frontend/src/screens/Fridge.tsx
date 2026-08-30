@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Camera, Plus, Snowflake, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
@@ -6,28 +6,13 @@ import { Button } from '../components/Button'
 import { Field } from '../components/Field'
 import { Chip } from '../components/Chip'
 import { Modal } from '../components/Modal'
-import { IngredientTile } from '../components/IngredientTile'
+import { IngredientRow } from '../components/IngredientRow'
 import { ImageRecognitionModal } from '../components/ImageRecognitionModal'
 import { Spinner } from '../components/Spinner'
 import { ApiError } from '../lib/api'
+import { ingredientIcon } from '../lib/ingredientIcon'
+import { cn } from '../lib/cn'
 import type { InventoryItem } from '../types'
-
-// Hiệu ứng "mở cửa tủ lạnh" chỉ chạy LẦN ĐẦU vào màn trong mỗi phiên (sessionStorage).
-const DOOR_KEY = 'larder_fridge_opened'
-function doorAlreadyOpened(): boolean {
-  try {
-    return !!sessionStorage.getItem(DOOR_KEY)
-  } catch {
-    return true // storage lỗi (private mode…) → bỏ qua animation, không ép chạy
-  }
-}
-function markDoorOpened() {
-  try {
-    sessionStorage.setItem(DOOR_KEY, '1')
-  } catch {
-    /* bỏ qua */
-  }
-}
 
 const STATUS_FILTERS: Array<{ value: string | null; label: string }> = [
   { value: null, label: 'Tất cả' },
@@ -36,6 +21,58 @@ const STATUS_FILTERS: Array<{ value: string | null; label: string }> = [
   { value: 'EXPIRED', label: 'Hết hạn' },
 ]
 
+function daysUntil(iso: string): number {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const target = new Date(`${iso}T00:00:00`)
+  return Math.round((target.getTime() - today.getTime()) / 86_400_000)
+}
+
+/** Câu ưu tiên "giải cứu" — mục tiêu chính của trụ cột Tủ lạnh ảo (CLAUDE.md mục 1). */
+function urgencyText(days: number): string {
+  if (days < 0) return `Đã hết hạn ${Math.abs(days)} ngày trước`
+  if (days === 0) return 'Hết hạn hôm nay'
+  if (days === 1) return 'Hết hạn ngày mai'
+  return `Còn ${days} ngày là hết hạn`
+}
+
+/** Khối nổi bật cho nguyên liệu cần dùng gấp nhất — điểm nhấn thị giác duy nhất của trang,
+ *  thay cho lưới ô vuông trước đây. Chỉ hiện khi thật sự có nguyên liệu sắp/đã hết hạn. */
+function UrgentSpotlight({ item }: { item: InventoryItem }) {
+  const expired = item.status === 'EXPIRED'
+  const Icon = ingredientIcon(item.normalizedName)
+  const days = item.expiryDate ? daysUntil(item.expiryDate) : 0
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+      className={cn(
+        'mb-8 flex items-center gap-5 rounded-2xl border px-6 py-5',
+        expired ? 'border-expired/25 bg-expired-bg' : 'border-amber/25 bg-amber-bg',
+      )}
+    >
+      <span
+        className={cn(
+          'grid size-14 shrink-0 place-items-center rounded-full bg-white/70',
+          expired ? 'text-expired' : 'text-amber',
+        )}
+      >
+        <Icon weight="duotone" className="size-7" />
+      </span>
+      <div className="min-w-0">
+        <p className={cn('text-[11px] font-semibold uppercase tracking-[0.14em]', expired ? 'text-expired' : 'text-amber')}>
+          Ưu tiên dùng trước
+        </p>
+        <p className="mt-1 font-display text-2xl font-normal leading-tight text-ink sm:text-3xl">
+          {item.ingredientName} — {urgencyText(days)}
+        </p>
+      </div>
+    </motion.div>
+  )
+}
+
 export function Fridge() {
   const { items, loading, error, reload, add, update, remove, addBatch } = useInventory()
   const [status, setStatus] = useState<string | null>(null)
@@ -43,7 +80,6 @@ export function Fridge() {
   const [scanOpen, setScanOpen] = useState(false)
   const [editing, setEditing] = useState<InventoryItem | null>(null)
   const [deleting, setDeleting] = useState<InventoryItem | null>(null)
-  const [showDoor, setShowDoor] = useState(() => !doorAlreadyOpened())
 
   // Sắp hết hạn/hết hạn lên trước (ưu tiên "giải cứu"); không rõ hạn xuống cuối.
   const sorted = useMemo(
@@ -52,6 +88,7 @@ export function Fridge() {
     [items],
   )
   const shown = status ? sorted.filter((i) => i.status === status) : sorted
+  const urgent = sorted.find((i) => i.status === 'EXPIRING_SOON' || i.status === 'EXPIRED') ?? null
   const expiringCount = items.filter((i) => i.status === 'EXPIRING_SOON' || i.status === 'EXPIRED').length
 
   function openAdd() {
@@ -65,17 +102,6 @@ export function Fridge() {
 
   return (
     <div className="px-6 py-9 lg:px-10">
-      {/* Không bọc AnimatePresence: gỡ thẳng khi xong để overlay không bao giờ kẹt che tủ lạnh
-          (exit animation phụ thuộc rAF, có thể đứng yên khi tab ẩn). */}
-      {showDoor && (
-        <FridgeDoorReveal
-          onDone={() => {
-            markDoorOpened()
-            setShowDoor(false)
-          }}
-        />
-      )}
-
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -110,7 +136,7 @@ export function Fridge() {
       </div>
 
       {loading ? (
-        <Spinner label="Đang mở tủ lạnh…" />
+        <Spinner label="Đang tải tủ lạnh…" />
       ) : error ? (
         <div className="mx-auto max-w-md py-20 text-center">
           <p className="text-[15px] text-muted">{error}</p>
@@ -130,7 +156,9 @@ export function Fridge() {
         </div>
       ) : (
         <>
-          <div className="mb-6 flex flex-wrap gap-2">
+          {urgent && <UrgentSpotlight item={urgent} />}
+
+          <div className="mb-5 flex flex-wrap gap-2">
             {STATUS_FILTERS.map((f) => (
               <Chip key={f.label} active={status === f.value} onClick={() => setStatus(f.value)}>
                 {f.label}
@@ -141,16 +169,10 @@ export function Fridge() {
           {shown.length === 0 ? (
             <p className="py-16 text-center text-sm text-muted">Không có nguyên liệu ở trạng thái này.</p>
           ) : (
-            <motion.ul
-              key={status ?? 'all'}
-              className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-              initial="hidden"
-              animate="show"
-              variants={{ show: { transition: { staggerChildren: 0.04 } } }}
-            >
-              <AnimatePresence mode="popLayout">
+            <ul className="rounded-card border border-line-soft bg-white px-5">
+              <AnimatePresence initial={false}>
                 {shown.map((item) => (
-                  <IngredientTile
+                  <IngredientRow
                     key={item.id}
                     item={item}
                     onEdit={() => openEdit(item)}
@@ -158,7 +180,7 @@ export function Fridge() {
                   />
                 ))}
               </AnimatePresence>
-            </motion.ul>
+            </ul>
           )}
         </>
       )}
@@ -343,68 +365,5 @@ function ConfirmDelete({
         </Button>
       </div>
     </Modal>
-  )
-}
-
-/**
- * Hiệu ứng vào màn: hai cánh cửa tủ lạnh tách ra hai bên lộ kệ đồ phía sau + luồng hơi lạnh toả ra.
- * Gỡ overlay bằng setTimeout (KHÔNG dựa onAnimationComplete) để chắc chắn biến mất kể cả khi
- * trình duyệt tạm dừng rAF (tab ẩn) — không bao giờ để cửa kẹt che mất tủ lạnh.
- */
-function FridgeDoorReveal({ onDone }: { onDone: () => void }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 1700)
-    return () => clearTimeout(t)
-  }, [onDone])
-
-  const ease = [0.7, 0, 0.2, 1] as const
-  const slide = { duration: 1.0, ease, delay: 0.4 }
-  // Chất "thép/kính mờ" — CỐ Ý khác tông kem ấm của nội dung để lúc cửa tách ra thấy rõ.
-  const steel = { background: 'linear-gradient(135deg,#f4f7f9 0%,#dbe3e7 55%,#c6d1d6 100%)' }
-
-  return (
-    <motion.div className="fixed inset-0 z-50 overflow-hidden">
-      {/* hơi lạnh toả ra rồi tan */}
-      <motion.div
-        className="absolute inset-0 bg-white"
-        initial={{ opacity: 0.75 }}
-        animate={{ opacity: 0 }}
-        transition={{ duration: 1.4 }}
-      />
-      {/* nhãn giữa khe cửa, mờ đi trước khi cửa mở */}
-      <motion.div
-        className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
-        <Snowflake weight="light" className="size-12 text-[#5b6b73]" />
-        <span className="font-display text-2xl font-light tracking-tight text-[#39454b]">
-          Tủ lạnh của bạn
-        </span>
-      </motion.div>
-      {/* cánh trái */}
-      <motion.div
-        className="absolute left-0 top-0 h-full w-1/2"
-        style={steel}
-        initial={{ x: 0 }}
-        animate={{ x: '-101%' }}
-        transition={slide}
-      >
-        <span className="absolute inset-y-8 right-0 w-px bg-white/50" />
-        <span className="absolute right-4 top-1/2 h-24 w-2 -translate-y-1/2 rounded-full bg-[#9aa7ad] shadow-sm" />
-      </motion.div>
-      {/* cánh phải */}
-      <motion.div
-        className="absolute right-0 top-0 h-full w-1/2"
-        style={steel}
-        initial={{ x: 0 }}
-        animate={{ x: '101%' }}
-        transition={slide}
-      >
-        <span className="absolute inset-y-8 left-0 w-px bg-black/10" />
-        <span className="absolute left-4 top-1/2 h-24 w-2 -translate-y-1/2 rounded-full bg-[#9aa7ad] shadow-sm" />
-      </motion.div>
-    </motion.div>
   )
 }
