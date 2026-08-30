@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-/** So khớp tên món + nhận diện tiêu chó danh mục (chay/nhanh/dễ) qua HTTP thật giả lập. */
+/** So khớp tên món + nhận diện tiêu chí danh mục (chay/nhanh/dễ) qua HTTP thật giả lập. */
 class RagRecipeClientTest {
 
     private static final String SUMMARY_PAGE = """
             {"content": [
                 {"id": "vn_trung_chien_ca_chua", "name": "Trứng chiên cà chua", "cookTimeMinutes": 15},
                 {"id": "au_tiramisu", "name": "Tiramisu", "cookTimeMinutes": 30}
-            ]}
+            ], "last": true}
             """;
     private static final String DETAIL = """
             {"id": "au_tiramisu", "name": "Tiramisu", "slug": "tiramisu",
@@ -37,7 +37,7 @@ class RagRecipeClientTest {
     void searchByNameMatchesRecipeNameAsSubstringOfQuestion() {
         MockRestServiceServer[] holder = new MockRestServiceServer[1];
         RagRecipeClient client = buildClientReturning(holder);
-        holder[0].expect(requestTo("http://recipe-service/recipes?size=500"))
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&page=0"))
                 .andRespond(withSuccess(SUMMARY_PAGE, MediaType.APPLICATION_JSON));
         holder[0].expect(requestTo("http://recipe-service/recipes/au_tiramisu"))
                 .andRespond(withSuccess(DETAIL, MediaType.APPLICATION_JSON));
@@ -52,7 +52,7 @@ class RagRecipeClientTest {
     void searchByNameFindsNothingWhenQuestionIsUnrelated() {
         MockRestServiceServer[] holder = new MockRestServiceServer[1];
         RagRecipeClient client = buildClientReturning(holder);
-        holder[0].expect(requestTo("http://recipe-service/recipes?size=500"))
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&page=0"))
                 .andRespond(withSuccess(SUMMARY_PAGE, MediaType.APPLICATION_JSON));
 
         List<RecipeDetailDto> result = client.searchByName("Hôm nay nấu gì cũng được, gợi ý đại đi.");
@@ -60,13 +60,41 @@ class RagRecipeClientTest {
         assertTrue(result.isEmpty());
     }
 
+    /**
+     * Regression: Recipe Service giới hạn cứng max-page-size=100 (application.yml). Nếu chỉ gọi
+     * 1 trang, công thức nằm ở trang 2 trở đi sẽ ÂM THẦM không bao giờ khớp được — bug thật tìm
+     * được lúc live-verify (131 công thức, trang đầu chỉ có 100).
+     */
+    @Test
+    void fetchSummariesLoopsThroughAllPagesUntilLast() {
+        MockRestServiceServer[] holder = new MockRestServiceServer[1];
+        RagRecipeClient client = buildClientReturning(holder);
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&page=0"))
+                .andRespond(withSuccess("""
+                        {"content": [{"id": "page0_item", "name": "Món trang một", "cookTimeMinutes": 10}], "last": false}
+                        """, MediaType.APPLICATION_JSON));
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&page=1"))
+                .andRespond(withSuccess("""
+                        {"content": [{"id": "page1_item", "name": "Phở bò", "cookTimeMinutes": 30}], "last": true}
+                        """, MediaType.APPLICATION_JSON));
+        holder[0].expect(requestTo("http://recipe-service/recipes/page1_item"))
+                .andRespond(withSuccess("""
+                        {"id": "page1_item", "name": "Phở bò", "slug": "pho-bo", "ingredients": []}
+                        """, MediaType.APPLICATION_JSON));
+
+        List<RecipeDetailDto> result = client.searchByName("Cho tôi công thức Phở bò được không?");
+
+        assertEquals(1, result.size());
+        assertEquals("page1_item", result.get(0).id());
+    }
+
     @Test
     void searchByCategoryDetectsDifficultyKeyword() {
         MockRestServiceServer[] holder = new MockRestServiceServer[1];
         RagRecipeClient client = buildClientReturning(holder);
-        holder[0].expect(requestTo("http://recipe-service/recipes?difficulty=EASY"))
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&difficulty=EASY&page=0"))
                 .andRespond(withSuccess("""
-                        {"content": [{"id": "vn_trung_chien_ca_chua", "name": "Trứng chiên cà chua", "cookTimeMinutes": 15}]}
+                        {"content": [{"id": "vn_trung_chien_ca_chua", "name": "Trứng chiên cà chua", "cookTimeMinutes": 15}], "last": true}
                         """, MediaType.APPLICATION_JSON));
         holder[0].expect(requestTo("http://recipe-service/recipes/vn_trung_chien_ca_chua"))
                 .andRespond(withSuccess("""
@@ -84,7 +112,7 @@ class RagRecipeClientTest {
     void searchByCategoryExtractsExplicitMinutesThreshold() {
         MockRestServiceServer[] holder = new MockRestServiceServer[1];
         RagRecipeClient client = buildClientReturning(holder);
-        holder[0].expect(requestTo("http://recipe-service/recipes?size=500"))
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&page=0"))
                 .andRespond(withSuccess(SUMMARY_PAGE, MediaType.APPLICATION_JSON));
         holder[0].expect(requestTo("http://recipe-service/recipes/vn_trung_chien_ca_chua"))
                 .andRespond(withSuccess("""

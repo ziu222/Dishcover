@@ -70,15 +70,23 @@ public class HybridRetriever {
         List<RecipeDetailDto> byName = ragRecipeClient.searchByName(question);
         List<RecipeDetailDto> byCategory = ragRecipeClient.searchByCategory(question);
 
+        // Thứ tự chèn = thứ tự ưu tiên khi .limit(TOP_N) cắt bớt: tên món/danh mục là tín hiệu RÕ
+        // RÀNG (người dùng hỏi thẳng), phải ưu tiên hơn kênh nguyên liệu (Jaccard, dễ có nhiều kết
+        // quả "na ná" lấp đầy hết chỗ) — xem eval/results/bao-cao-tong-hop-danh-gia.md, bug tìm
+        // được lúc live-verify: hỏi thẳng "Phở bò" vẫn bị từ chối vì kênh nguyên liệu (không liên
+        // quan) đã chiếm đủ 5 chỗ trước khi tới lượt kênh tên món dù nó khớp tuyệt đối.
         Map<String, RetrievedRecipe> merged = new LinkedHashMap<>();
-        for (RecipeMatchDto c : byIngredient) {
-            merged.put(c.recipeId(), toRetrieved(c));
-        }
         for (RecipeDetailDto r : byName) {
             merged.putIfAbsent(r.id(), toRetrieved(r));
         }
         for (RecipeDetailDto r : byCategory) {
             merged.putIfAbsent(r.id(), toRetrieved(r));
+        }
+        for (RecipeMatchDto c : byIngredient) {
+            // put() (không phải putIfAbsent): nếu trùng id với kênh tên món/danh mục, ưu tiên GIỮ
+            // vị trí đã chèn (đầu danh sách) nhưng THAY nội dung bằng bản kênh nguyên liệu — có
+            // matchedIngredients/missingIngredients thật để hiển thị "đã có/cần thêm" đúng.
+            merged.put(c.recipeId(), toRetrieved(c));
         }
 
         Set<String> allergens = allergenGroupsOf(ragUserClient.getDietaryPreferences(bearerToken));

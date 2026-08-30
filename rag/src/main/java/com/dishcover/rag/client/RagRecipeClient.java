@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,16 +107,34 @@ public class RagRecipeClient {
     }
 
     private List<RecipeSummaryDto> fetchAllSummaries() {
-        return fetchSummaries("size=500");
+        return fetchSummaries("");
     }
 
-    private List<RecipeSummaryDto> fetchSummaries(String queryString) {
-        PageDto<RecipeSummaryDto> page = restClient.get()
-                .uri("/recipes?" + queryString)
-                .retrieve()
-                .body(new ParameterizedTypeReference<PageDto<RecipeSummaryDto>>() {
-                });
-        return page == null || page.content() == null ? List.of() : page.content();
+    /**
+     * Lặp qua từng trang tới khi hết (Recipe Service giới hạn cứng max-page-size=100, xem
+     * {@link PageDto}) — gọi 1 lần với {@code size=500} sẽ ÂM THẦM bị cắt còn 100 công thức đầu,
+     * bỏ sót phần còn lại mà không có dấu hiệu lỗi nào.
+     */
+    private List<RecipeSummaryDto> fetchSummaries(String filterQueryString) {
+        String base = "/recipes?size=100" + (filterQueryString.isEmpty() ? "" : "&" + filterQueryString);
+        List<RecipeSummaryDto> all = new ArrayList<>();
+        int pageNumber = 0;
+        while (true) {
+            PageDto<RecipeSummaryDto> page = restClient.get()
+                    .uri(base + "&page=" + pageNumber)
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<PageDto<RecipeSummaryDto>>() {
+                    });
+            if (page == null || page.content() == null || page.content().isEmpty()) {
+                break;
+            }
+            all.addAll(page.content());
+            if (page.last()) {
+                break;
+            }
+            pageNumber++;
+        }
+        return all;
     }
 
     private RecipeDetailDto fetchDetail(String id) {
