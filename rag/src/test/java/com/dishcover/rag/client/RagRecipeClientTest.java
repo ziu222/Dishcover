@@ -127,6 +127,34 @@ class RagRecipeClientTest {
         assertEquals("vn_trung_chien_ca_chua", result.get(0).id());
     }
 
+    /**
+     * Regression bug thật tìm được lúc live-verify (eval/results/bao-cao-tong-hop-danh-gia.md
+     * mục 3.3): câu vừa nói "chay" vừa nói "dễ làm" trước đây trộn cả nhánh difficulty=EASY
+     * (không lọc ăn kiêng) lẫn tag=chay, kéo nhầm món có hải sản vào chung danh sách với món chay
+     * thật -- LLM thấy danh sách tự mâu thuẫn nên từ chối cả loạt. "chay" phải là ràng buộc CỨNG,
+     * chặn hẳn nhánh difficulty -- chỉ gọi đúng 1 request tag=chay, không gọi difficulty=EASY.
+     */
+    @Test
+    void chayIsHardConstraintAndSuppressesDifficultyBranchEvenWhenBothKeywordsPresent() {
+        MockRestServiceServer[] holder = new MockRestServiceServer[1];
+        RagRecipeClient client = buildClientReturning(holder);
+        holder[0].expect(requestTo("http://recipe-service/recipes?size=100&tag=chay&page=0"))
+                .andRespond(withSuccess("""
+                        {"content": [{"id": "vn_rau_muong_xao_toi", "name": "Rau muống xào tỏi", "cookTimeMinutes": 10}], "last": true}
+                        """, MediaType.APPLICATION_JSON));
+        holder[0].expect(requestTo("http://recipe-service/recipes/vn_rau_muong_xao_toi"))
+                .andRespond(withSuccess("""
+                        {"id": "vn_rau_muong_xao_toi", "name": "Rau muống xào tỏi", "slug": "rau-muong-xao-toi",
+                         "ingredients": [{"name": "Rau muống"}, {"name": "Tỏi"}]}
+                        """, MediaType.APPLICATION_JSON));
+
+        List<RecipeDetailDto> result = client.searchByCategory("Tôi ăn chay, gợi ý vài món chay dễ làm.");
+
+        assertEquals(1, result.size());
+        assertEquals("vn_rau_muong_xao_toi", result.get(0).id());
+        holder[0].verify(); // chỉ đúng 2 request (tag=chay + detail) -- không có request difficulty=EASY nào
+    }
+
     @Test
     void searchByCategoryReturnsNothingWhenNoTriggerKeywordMatches() {
         MockRestServiceServer[] holder = new MockRestServiceServer[1];

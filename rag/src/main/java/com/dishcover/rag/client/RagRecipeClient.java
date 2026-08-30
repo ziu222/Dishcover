@@ -84,20 +84,28 @@ public class RagRecipeClient {
     public List<RecipeDetailDto> searchByCategory(String question) {
         String normalized = VietnameseTextNormalizer.normalize(question);
         Map<String, RecipeSummaryDto> matched = new LinkedHashMap<>();
+        boolean isChay = normalized.contains("chay");
 
-        if (normalized.contains("de lam") || normalized.contains("moi tap") || normalized.contains("co ban")) {
-            fetchSummaries("difficulty=EASY").forEach(r -> matched.putIfAbsent(r.id(), r));
-        }
-        if (normalized.contains("chay")) {
+        // "chay" là RÀNG BUỘC ĂN KIÊNG (cứng) -- không trộn chung với "dễ làm"/"nhanh" (sở thích
+        // mềm) nữa: bug thật tìm được lúc live-verify (eval/results/bao-cao-tong-hop-danh-gia.md
+        // mục 3.3) -- câu "Tôi ăn chay, gợi ý vài món chay dễ làm" trước đây trộn cả nhánh
+        // difficulty=EASY (không lọc ăn kiêng) lẫn tag=chay, kéo cả "Cá hồi sốt Teriyaki" (hải
+        // sản!) vào chung danh sách với món chay thật -- LLM thấy danh sách tự mâu thuẫn nên từ
+        // chối luôn cả loạt thay vì chọn lọc. Khi có "chay", CHỈ dùng tag=chay, bỏ qua 2 nhánh kia.
+        if (isChay) {
             fetchSummaries("tag=chay").forEach(r -> matched.putIfAbsent(r.id(), r));
-        }
-        Matcher m = MINUTES_PATTERN.matcher(normalized);
-        boolean hasExplicitMinutes = m.find();
-        if (hasExplicitMinutes || normalized.contains("nhanh")) {
-            int maxMinutes = hasExplicitMinutes ? Integer.parseInt(m.group(1)) : DEFAULT_FAST_MINUTES;
-            fetchAllSummaries().stream()
-                    .filter(r -> r.cookTimeMinutes() > 0 && r.cookTimeMinutes() < maxMinutes)
-                    .forEach(r -> matched.putIfAbsent(r.id(), r));
+        } else {
+            if (normalized.contains("de lam") || normalized.contains("moi tap") || normalized.contains("co ban")) {
+                fetchSummaries("difficulty=EASY").forEach(r -> matched.putIfAbsent(r.id(), r));
+            }
+            Matcher m = MINUTES_PATTERN.matcher(normalized);
+            boolean hasExplicitMinutes = m.find();
+            if (hasExplicitMinutes || normalized.contains("nhanh")) {
+                int maxMinutes = hasExplicitMinutes ? Integer.parseInt(m.group(1)) : DEFAULT_FAST_MINUTES;
+                fetchAllSummaries().stream()
+                        .filter(r -> r.cookTimeMinutes() > 0 && r.cookTimeMinutes() < maxMinutes)
+                        .forEach(r -> matched.putIfAbsent(r.id(), r));
+            }
         }
 
         return matched.values().stream()
