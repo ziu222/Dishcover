@@ -2,6 +2,7 @@ package com.dishcover.user.controller;
 
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceRequest;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceResponse;
+import com.dishcover.user.dto.UpdateProfileRequest;
 import com.dishcover.user.dto.UserResponse;
 import com.dishcover.common.security.AuthenticatedUser;
 import com.dishcover.user.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +43,21 @@ public class UserController {
     @GetMapping
     public UserResponse me(@AuthenticationPrincipal AuthenticatedUser me) {
         return userService.getProfile(me.userId());
+    }
+
+    /**
+     * Cập nhật một phần hồ sơ của user đang đăng nhập (họ tên, avatar). KHÔNG cho sửa email/mật
+     * khẩu ở đây — đổi mật khẩu/email cần luồng xác thực riêng, ngoài phạm vi màn Tài khoản.
+     *
+     * @param me  user đã xác thực, suy ra từ JWT
+     * @param req field cần cập nhật
+     * @return hồ sơ user sau khi cập nhật
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu user không còn tồn tại
+     */
+    @PatchMapping
+    public UserResponse updateMe(@AuthenticationPrincipal AuthenticatedUser me,
+                                  @Valid @RequestBody UpdateProfileRequest req) {
+        return userService.updateProfile(me.userId(), req);
     }
 
     /**

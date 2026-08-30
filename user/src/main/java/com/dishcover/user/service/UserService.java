@@ -2,6 +2,7 @@ package com.dishcover.user.service;
 
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceRequest;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceResponse;
+import com.dishcover.user.dto.UpdateProfileRequest;
 import com.dishcover.user.dto.UserResponse;
 import com.dishcover.user.entity.DietaryPreference;
 import com.dishcover.user.entity.User;
@@ -38,6 +39,27 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponse getProfile(Long userId) {
         return UserResponse.from(requireUser(userId));
+    }
+
+    /**
+     * Cập nhật một phần hồ sơ user (họ tên, avatar). Field null trong {@code req} giữ nguyên giá
+     * trị cũ, chỉ field khác null mới được ghi — không cho sửa email/password ở đây.
+     *
+     * @param userId id user cần cập nhật
+     * @param req    field cần cập nhật
+     * @return hồ sơ user sau khi cập nhật
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu user không tồn tại
+     */
+    @Transactional
+    public UserResponse updateProfile(Long userId, UpdateProfileRequest req) {
+        User user = requireUser(userId);
+        if (req.fullName() != null) {
+            user.setFullName(req.fullName());
+        }
+        if (req.avatarUrl() != null) {
+            user.setAvatarUrl(req.avatarUrl());
+        }
+        return UserResponse.from(user);
     }
 
     /**
