@@ -55,11 +55,11 @@ export function IngredientRow({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       className={cn(
-        'group flex items-center gap-4 border-b border-line-soft px-1 py-3.5 last:border-0',
+        'group flex items-center gap-2 border-b border-line-soft px-1 py-3.5 last:border-0 sm:gap-4',
         status === 'USED' && 'opacity-50',
       )}
     >
-      <span className={cn('grid size-11 shrink-0 place-items-center rounded-full', ICON_TINT[status])}>
+      <span className={cn('grid size-9 shrink-0 place-items-center rounded-full sm:size-11', ICON_TINT[status])}>
         <Icon weight="duotone" className="size-5" />
       </span>
 
@@ -72,7 +72,9 @@ export function IngredientRow({
         {fmtExpiry(item.expiryDate, status)}
       </span>
 
-      <div className="flex shrink-0 gap-0.5 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+      {/* Dưới lg (chạm, không hover) luôn hiện; từ lg mới ẩn chờ hover — khớp quy ước breakpoint
+          "lg = có chuột" đã dùng xuyên suốt app (sidebar/bottom-tab-bar). */}
+      <div className="flex shrink-0 gap-0.5 opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100">
         <button
           type="button"
           onClick={onEdit}
