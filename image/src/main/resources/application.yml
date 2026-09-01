@@ -40,3 +40,10 @@ resilience4j:
     instances:
       vision:
         timeoutDuration: 15s
+
+# Lộ endpoint circuitbreakers cho kịch bản demo (eval/circuit-breaker/README.md).
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,circuitbreakers,circuitbreakerevents

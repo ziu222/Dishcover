@@ -71,3 +71,11 @@ resilience4j:
     instances:
       llm:
         timeoutDuration: 15s
+
+# Lộ endpoint circuitbreakers cho kịch bản demo (eval/circuit-breaker/README.md) — xem trạng thái
+# CLOSED/OPEN/HALF_OPEN thật qua GET /actuator/circuitbreakers.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,circuitbreakers,circuitbreakerevents
