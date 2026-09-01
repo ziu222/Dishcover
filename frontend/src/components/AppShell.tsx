@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import {
   Basket,
   Bell,
@@ -144,12 +145,24 @@ function BottomTabBar({ pathname }: { pathname: string }) {
             to={to}
             end={to === '/'}
             className={cn(
-              'flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-[11px] transition-colors',
+              'relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-[11px] transition-colors',
               isActive ? 'text-accent-strong' : 'text-mist',
             )}
           >
-            <Ico className="size-6 shrink-0" weight={isActive ? 'fill' : 'regular'} />
-            <span className="w-full truncate px-1 text-center leading-none">{shortLabel}</span>
+            {isActive && (
+              <motion.span
+                layoutId="bottom-tab-pill"
+                className="absolute inset-x-3 top-1 h-9 rounded-full bg-accent-wash"
+                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+              />
+            )}
+            <motion.span
+              whileTap={{ scale: 0.92 }}
+              className="relative z-10 flex flex-col items-center gap-1"
+            >
+              <Ico className="size-6 shrink-0" weight={isActive ? 'fill' : 'regular'} />
+              <span className="w-full truncate px-1 text-center leading-none">{shortLabel}</span>
+            </motion.span>
           </NavLink>
         ) : (
           <span
