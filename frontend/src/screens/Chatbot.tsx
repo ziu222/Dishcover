@@ -131,7 +131,10 @@ export function Chatbot() {
   }
 
   return (
-    <div className="flex h-[calc(100dvh-4.5rem)] flex-col">
+    // h-full (không tự tính dvh trừ header) -- <main> ở AppShell đã trừ đúng header +
+    // bottom tab bar mobile qua padding-bottom, tự tính lại ở đây từng gây ô nhập bị khuất
+    // sau tab bar trên mobile.
+    <div className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto px-6 py-8 lg:px-10">
         {messages.length === 0 ? (
           <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center text-center">
