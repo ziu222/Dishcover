@@ -16,17 +16,19 @@ import { cn } from '../lib/cn'
 interface NavItem {
   to: string
   label: string
+  /** Nhãn ngắn cho bottom tab bar mobile — 6 mục chia đều 375px không đủ chỗ cho label đầy đủ. */
+  shortLabel: string
   icon: Icon
   enabled: boolean
 }
 
 const NAV: NavItem[] = [
-  { to: '/', label: 'Khám phá', icon: Compass, enabled: true },
-  { to: '/tim-kiem', label: 'Tìm kiếm', icon: MagnifyingGlass, enabled: true },
-  { to: '/tu-lanh', label: 'Tủ lạnh ảo', icon: Basket, enabled: true },
-  { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', icon: Sparkle, enabled: true },
-  { to: '/chatbot', label: 'Trợ lý AI', icon: ChatCircle, enabled: true },
-  { to: '/tai-khoan', label: 'Tài khoản', icon: User, enabled: true },
+  { to: '/', label: 'Khám phá', shortLabel: 'Khám phá', icon: Compass, enabled: true },
+  { to: '/tim-kiem', label: 'Tìm kiếm', shortLabel: 'Tìm kiếm', icon: MagnifyingGlass, enabled: true },
+  { to: '/tu-lanh', label: 'Tủ lạnh ảo', shortLabel: 'Tủ lạnh', icon: Basket, enabled: true },
+  { to: '/goi-y', label: 'Gợi ý theo nguyên liệu', shortLabel: 'Gợi ý', icon: Sparkle, enabled: true },
+  { to: '/chatbot', label: 'Trợ lý AI', shortLabel: 'Trợ lý AI', icon: ChatCircle, enabled: true },
+  { to: '/tai-khoan', label: 'Tài khoản', shortLabel: 'Tài khoản', icon: User, enabled: true },
 ]
 
 function pageTitle(pathname: string): string {
@@ -116,10 +118,50 @@ export function AppShell() {
           </div>
         </header>
 
-        <main className="min-w-0 flex-1">
+        {/* pb bù chiều cao BottomTabBar (h-16 + safe-area) để nội dung cuối trang không bị che */}
+        <main className="min-w-0 flex-1 pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
           <Outlet />
         </main>
       </div>
+
+      <BottomTabBar pathname={pathname} />
     </div>
+  )
+}
+
+/** Thay sidebar dưới 1024px (mục lg) — 6 mục giống hệt NAV, cố định đáy màn hình. */
+function BottomTabBar({ pathname }: { pathname: string }) {
+  return (
+    <nav
+      className="fixed inset-x-0 bottom-0 z-20 flex h-16 items-stretch border-t border-line-soft bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
+      aria-label="Điều hướng chính"
+    >
+      {NAV.map(({ to, shortLabel, icon: Ico, enabled }) => {
+        const isActive = to === '/' ? pathname === '/' : pathname.startsWith(to)
+        return enabled ? (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === '/'}
+            className={cn(
+              'flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-[11px] transition-colors',
+              isActive ? 'text-accent-strong' : 'text-mist',
+            )}
+          >
+            <Ico className="size-6 shrink-0" weight={isActive ? 'fill' : 'regular'} />
+            <span className="w-full truncate px-1 text-center leading-none">{shortLabel}</span>
+          </NavLink>
+        ) : (
+          <span
+            key={to}
+            title="Sắp có"
+            className="flex min-w-0 flex-1 cursor-not-allowed flex-col items-center justify-center gap-1 text-[11px] text-faint/60"
+          >
+            <Ico className="size-6 shrink-0" />
+            <span className="w-full truncate px-1 text-center leading-none">{shortLabel}</span>
+          </span>
+        )
+      })}
+    </nav>
   )
 }
