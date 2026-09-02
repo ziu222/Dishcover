@@ -1,12 +1,16 @@
 package com.dishcover.user.service;
 
+import com.dishcover.user.dto.CalorieGoalDtos.CalorieGoalRequest;
+import com.dishcover.user.dto.CalorieGoalDtos.CalorieGoalResponse;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceRequest;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceResponse;
 import com.dishcover.user.dto.UpdateProfileRequest;
 import com.dishcover.user.dto.UserResponse;
+import com.dishcover.user.entity.CalorieGoal;
 import com.dishcover.user.entity.DietaryPreference;
 import com.dishcover.user.entity.User;
 import com.dishcover.common.exception.ResourceNotFoundException;
+import com.dishcover.user.repository.CalorieGoalRepository;
 import com.dishcover.user.repository.DietaryPreferenceRepository;
 import com.dishcover.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,10 +27,13 @@ public class UserService {
 
     private final UserRepository users;
     private final DietaryPreferenceRepository preferences;
+    private final CalorieGoalRepository calorieGoals;
 
-    public UserService(UserRepository users, DietaryPreferenceRepository preferences) {
+    public UserService(UserRepository users, DietaryPreferenceRepository preferences,
+                        CalorieGoalRepository calorieGoals) {
         this.users = users;
         this.preferences = preferences;
+        this.calorieGoals = calorieGoals;
     }
 
     /**
@@ -103,6 +110,37 @@ public class UserService {
         if (preferences.deleteByIdAndUserId(preferenceId, userId) == 0) {
             throw new ResourceNotFoundException("Không tìm thấy mục hồ sơ ăn uống id=" + preferenceId);
         }
+    }
+
+    /**
+     * Lấy mục tiêu calo/macro/ngày hiện tại của user, nếu có.
+     *
+     * @param userId id user cần lấy
+     * @return mục tiêu hiện tại, {@code null} nếu user chưa đặt mục tiêu (opt-in, không ảnh hưởng
+     *         hành vi những nơi dùng nếu không set — Recipe Detail/Matching Rule coi là "chưa đặt")
+     */
+    @Transactional(readOnly = true)
+    public CalorieGoalResponse getCalorieGoal(Long userId) {
+        return calorieGoals.findByUserId(userId).map(CalorieGoalResponse::from).orElse(null);
+    }
+
+    /**
+     * Đặt/sửa mục tiêu calo/macro/ngày — upsert theo user (mỗi user tối đa 1 mục tiêu).
+     *
+     * @param userId id user sở hữu mục tiêu
+     * @param req    4 con số mục tiêu mới
+     * @return mục tiêu sau khi lưu
+     */
+    @Transactional
+    public CalorieGoalResponse upsertCalorieGoal(Long userId, CalorieGoalRequest req) {
+        CalorieGoal goal = calorieGoals.findByUserId(userId).orElse(null);
+        if (goal == null) {
+            goal = calorieGoals.save(new CalorieGoal(
+                    userId, req.calorieTarget(), req.proteinTarget(), req.carbTarget(), req.fatTarget()));
+        } else {
+            goal.update(req.calorieTarget(), req.proteinTarget(), req.carbTarget(), req.fatTarget());
+        }
+        return CalorieGoalResponse.from(goal);
     }
 
     private User requireUser(Long userId) {
