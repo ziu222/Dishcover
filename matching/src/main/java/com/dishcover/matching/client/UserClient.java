@@ -70,4 +70,31 @@ public class UserClient {
         throw new UpstreamUnavailableException(
                 "Không xác nhận được thông tin dị ứng, tạm ngừng gợi ý để đảm bảo an toàn");
     }
+
+    /**
+     * Lấy mục tiêu calo/bữa (mục tiêu/ngày chia 3) của người dùng, cho {@link
+     * com.dishcover.matching.scoring.CalorieProximityRule}. Khác {@link #getAllergenGroups}: đây
+     * KHÔNG phải rủi ro an toàn — User Service lỗi/timeout chỉ khiến rule tự thành no-op (fail-open,
+     * trả null) thay vì chặn toàn bộ gợi ý.
+     *
+     * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi
+     * @return calo mục tiêu/bữa, hoặc null nếu chưa đặt mục tiêu hoặc User Service không khả dụng
+     */
+    @CircuitBreaker(name = "user-service", fallbackMethod = "fallbackGetCalorieTargetPerMeal")
+    public Integer getCalorieTargetPerMeal(String bearerToken) {
+        CalorieGoalDto goal = restClient.get()
+                .uri("/users/me/calorie-goal")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                .retrieve()
+                .body(CalorieGoalDto.class);
+        if (goal == null || goal.calorieTarget() == null) {
+            return null;
+        }
+        return goal.calorieTarget() / 3;
+    }
+
+    @SuppressWarnings("unused")
+    private Integer fallbackGetCalorieTargetPerMeal(String bearerToken, Throwable ex) {
+        return null;
+    }
 }

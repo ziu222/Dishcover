@@ -1,6 +1,7 @@
 package com.dishcover.matching.controller;
 
 import com.dishcover.common.security.JwtService;
+import com.dishcover.matching.dto.MatchingDtos.RecipeAvailabilityResponse;
 import com.dishcover.matching.service.MatchingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,19 @@ class MatchingControllerSecurityTest {
                         .header("Authorization", token())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"ingredients\":[\"trứng gà\"]}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void availabilityNoTokenReturns401() throws Exception {
+        mvc.perform(get("/matching/recipes/r1/availability")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void availabilityAuthenticatedReturns200() throws Exception {
+        when(service.checkAvailability(any(), any()))
+                .thenReturn(new RecipeAvailabilityResponse("r1", "n", List.of()));
+        mvc.perform(get("/matching/recipes/r1/availability").header("Authorization", token()))
                 .andExpect(status().isOk());
     }
 }

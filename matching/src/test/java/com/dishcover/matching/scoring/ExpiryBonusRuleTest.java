@@ -17,14 +17,14 @@ class ExpiryBonusRuleTest {
 
     private RecipeDetailDto recipeWith(String... normalizedNames) {
         List<RecipeIngredientDto> ingredients = List.of(normalizedNames).stream()
-                .map(n -> new RecipeIngredientDto(n, n, true, 1.0))
+                .map(n -> new RecipeIngredientDto(n, n, null, null, true, 1.0))
                 .toList();
-        return new RecipeDetailDto("id", "n", "s", null, ingredients);
+        return new RecipeDetailDto("id", "n", "s", null, ingredients, null);
     }
 
     @Test
     void noMatchedIngredientsGivesNoBonus() {
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of());
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), null);
         double score = rule.apply(recipeWith("trung ga"), ctx, 1.0);
         assertEquals(1.0, score, 1e-9);
     }
@@ -34,7 +34,7 @@ class ExpiryBonusRuleTest {
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga"),
                 Map.of("trung ga", LocalDate.now().plusDays(10)),
-                Set.of());
+                Set.of(), null);
         double score = rule.apply(recipeWith("trung ga"), ctx, 1.0);
         assertEquals(1.0, score, 1e-9);
     }
@@ -44,7 +44,7 @@ class ExpiryBonusRuleTest {
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga"),
                 Map.of("trung ga", LocalDate.now().plusDays(2)),
-                Set.of());
+                Set.of(), null);
         double score = rule.apply(recipeWith("trung ga"), ctx, 1.0);
         assertEquals(1.5, score, 1e-9); // 1.0 + BONUS_PER_ITEM(0.5) * 1
     }
@@ -54,7 +54,7 @@ class ExpiryBonusRuleTest {
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga", "ca chua"),
                 Map.of("trung ga", LocalDate.now().plusDays(1), "ca chua", LocalDate.now().plusDays(3)),
-                Set.of());
+                Set.of(), null);
         double score = rule.apply(recipeWith("trung ga", "ca chua"), ctx, 0.0);
         assertEquals(1.0, score, 1e-9); // 0.0 + 0.5*2
     }

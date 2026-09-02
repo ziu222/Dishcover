@@ -34,14 +34,14 @@ class MatchingEngineTest {
     void workedExampleFromReportMatchesExpectedScore() {
         RecipeDetailDto recipe = new RecipeDetailDto("recipe_trung_chien", "Trứng chiên cà chua", "trung-chien-ca-chua",
                 null, List.of(
-                        new RecipeIngredientDto("trung ga", "trung ga", true, 1.0),
-                        new RecipeIngredientDto("ca chua", "ca chua", true, 1.0),
-                        new RecipeIngredientDto("hanh la", "hanh la", false, 0.3)));
+                        new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0),
+                        new RecipeIngredientDto("ca chua", "ca chua", null, null, true, 1.0),
+                        new RecipeIngredientDto("hanh la", "hanh la", null, null, false, 0.3)), null);
 
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga", "sua tuoi", "rau muong"),
                 Map.of("trung ga", LocalDate.now().plusDays(2)),
-                Set.of());
+                Set.of(), null);
 
         double score = engine.score(recipe, ctx);
 
@@ -54,9 +54,9 @@ class MatchingEngineTest {
     @Test
     void allergyViolationOverridesEverythingElse() {
         RecipeDetailDto recipe = new RecipeDetailDto("id", "n", "s", null,
-                List.of(new RecipeIngredientDto("trung ga", "trung ga", true, 1.0)));
+                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null);
         MatchingContext ctx = new MatchingContext(
-                Set.of("trung ga"), Map.of("trung ga", LocalDate.now().plusDays(1)), Set.of("trung"));
+                Set.of("trung ga"), Map.of("trung ga", LocalDate.now().plusDays(1)), Set.of("trung"), null);
 
         double score = engine.score(recipe, ctx);
         assertEquals(Double.NEGATIVE_INFINITY, score);

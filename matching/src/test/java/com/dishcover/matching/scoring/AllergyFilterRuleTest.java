@@ -23,8 +23,8 @@ class AllergyFilterRuleTest {
     @Test
     void recipeWithoutAllergenIsUnaffected() {
         RecipeDetailDto recipe = new RecipeDetailDto("id", "n", "s", null,
-                List.of(new RecipeIngredientDto("ca chua", "ca chua", true, 1.0)));
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of("trung"));
+                List.of(new RecipeIngredientDto("ca chua", "ca chua", null, null, true, 1.0)), null);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of("trung"), null);
         double score = rule.apply(recipe, ctx, 0.7);
         assertEquals(0.7, score, 1e-9);
     }
@@ -32,8 +32,8 @@ class AllergyFilterRuleTest {
     @Test
     void recipeWithAllergenIsHardExcluded() {
         RecipeDetailDto recipe = new RecipeDetailDto("id", "n", "s", null,
-                List.of(new RecipeIngredientDto("trung ga", "trung ga", true, 1.0)));
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of("trung"));
+                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of("trung"), null);
         double score = rule.apply(recipe, ctx, 0.9);
         assertEquals(Double.NEGATIVE_INFINITY, score);
     }
@@ -41,8 +41,8 @@ class AllergyFilterRuleTest {
     @Test
     void userWithoutMatchingAllergyKeepsScore() {
         RecipeDetailDto recipe = new RecipeDetailDto("id", "n", "s", null,
-                List.of(new RecipeIngredientDto("trung ga", "trung ga", true, 1.0)));
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of("hai_san"));
+                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of("hai_san"), null);
         double score = rule.apply(recipe, ctx, 0.9);
         assertEquals(0.9, score, 1e-9);
     }

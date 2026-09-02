@@ -5,6 +5,8 @@ import com.dishcover.common.ingredient.IngredientEntry;
 import com.dishcover.matching.client.InventoryClient;
 import com.dishcover.matching.client.RecipeClient;
 import com.dishcover.matching.client.UserClient;
+import com.dishcover.matching.dto.MatchingDtos.IngredientAvailabilityResponse;
+import com.dishcover.matching.dto.MatchingDtos.RecipeAvailabilityResponse;
 import com.dishcover.matching.dto.MatchingDtos.RecipeMatchResponse;
 import com.dishcover.matching.scoring.AllergyFilterRule;
 import com.dishcover.matching.scoring.EssentialWeightRule;
@@ -18,6 +20,7 @@ import org.springframework.web.client.RestClient;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
@@ -78,6 +81,9 @@ class MatchingServiceTest {
                 .andRespond(withSuccess("""
                         [{"id":1,"type":"ALLERGY","value":"hải sản"}]
                         """, MediaType.APPLICATION_JSON));
+        userServer.expect(requestTo("http://user/users/me/calorie-goal"))
+                .andExpect(header("Authorization", BEARER))
+                .andRespond(withSuccess("", MediaType.APPLICATION_JSON));
 
         recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
                 .andRespond(withSuccess("""
@@ -120,6 +126,8 @@ class MatchingServiceTest {
                 .andRespond(withSuccess("[]", MediaType.APPLICATION_JSON));
         userServer.expect(requestTo("http://user/users/me/dietary-preferences"))
                 .andRespond(withSuccess("[]", MediaType.APPLICATION_JSON));
+        userServer.expect(requestTo("http://user/users/me/calorie-goal"))
+                .andRespond(withSuccess("", MediaType.APPLICATION_JSON));
         recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
                 .andRespond(withSuccess("{\"content\":[]}", MediaType.APPLICATION_JSON));
 
@@ -160,5 +168,50 @@ class MatchingServiceTest {
         assertEquals("r1", result.get(1).recipeId());
 
         recipeServer.verify();
+    }
+
+    @Test
+    void availabilityComparesQuantityAgainstInventory() {
+        MatchingService service = buildService();
+
+        recipeServer.expect(requestTo("http://recipe/recipes/r1"))
+                .andRespond(withSuccess("""
+                        {"id":"r1","name":"Món test","slug":"mon-test","imageUrl":null,
+                         "ingredients":[
+                           {"name":"Trứng gà","normalizedName":"trung ga","amount":300,"unit":"g","essential":true,"weight":1.0},
+                           {"name":"Cà chua","normalizedName":"ca chua","amount":500,"unit":"g","essential":true,"weight":1.0},
+                           {"name":"Muối","normalizedName":"muoi","amount":10,"unit":"g","essential":false,"weight":0.3},
+                           {"name":"Hành lá","normalizedName":"hanh la","amount":1,"unit":"nhánh","essential":false,"weight":0.3}
+                         ]}
+                        """, MediaType.APPLICATION_JSON));
+
+        inventoryServer.expect(requestTo("http://inventory/inventory/items"))
+                .andExpect(header("Authorization", BEARER))
+                .andRespond(withSuccess("""
+                        [{"id":1,"normalizedName":"trung ga","quantity":200,"unit":"g","status":"FRESH"},
+                         {"id":2,"normalizedName":"muoi","quantity":50,"unit":"g","status":"FRESH"},
+                         {"id":3,"normalizedName":"hanh la","quantity":2,"unit":"nhánh","status":"FRESH"}]
+                        """, MediaType.APPLICATION_JSON));
+
+        RecipeAvailabilityResponse result = service.checkAvailability("r1", BEARER);
+
+        assertEquals("r1", result.recipeId());
+        Map<String, IngredientAvailabilityResponse> byName = result.ingredients().stream()
+                .collect(java.util.stream.Collectors.toMap(IngredientAvailabilityResponse::normalizedName, i -> i));
+
+        assertEquals("PARTIAL", byName.get("trung ga").status()); // cần 300g, có 200g
+        assertEquals(100.0, byName.get("trung ga").shortfallAmount(), 1e-9);
+
+        assertEquals("MISSING", byName.get("ca chua").status()); // không có trong tủ lạnh
+        assertEquals(500.0, byName.get("ca chua").shortfallAmount(), 1e-9);
+
+        assertEquals("SUFFICIENT", byName.get("muoi").status()); // cần 10g, có 50g
+        assertEquals(0, byName.get("hanh la").availableGrams(), 1e-9); // "nhánh" không có unitToGram -> gram=0
+        // catalog fixture (IngredientEntry.basic) không có unitToGram cho "nhánh" -> không quy đổi được lượng cần,
+        // nhưng lô hành lá vẫn tồn tại trong tủ lạnh -> UNKNOWN (khác MISSING)
+        assertEquals("UNKNOWN", byName.get("hanh la").status());
+
+        recipeServer.verify();
+        inventoryServer.verify();
     }
 }

@@ -1,10 +1,12 @@
 package com.dishcover.matching.client;
 
+import com.dishcover.common.exception.ResourceNotFoundException;
 import com.dishcover.matching.exception.ApiExceptions.UpstreamUnavailableException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -63,6 +65,33 @@ public class RecipeClient {
     /** Recipe down -> không có gì để chấm điểm, không thể giả vờ trả danh sách rỗng như gợi ý "0 kết quả". */
     @SuppressWarnings("unused")
     private List<RecipeDetailDto> fallbackGetAllRecipes(Throwable ex) {
+        throw new UpstreamUnavailableException("Recipe Service tạm thời không khả dụng, thử lại sau");
+    }
+
+    /**
+     * Lấy chi tiết 1 công thức theo id — dùng cho endpoint availability (so số lượng đủ/thiếu nguyên
+     * liệu), khác {@link #getAllRecipesWithIngredients} vốn lấy toàn bộ để chấm điểm gợi ý.
+     *
+     * @param id id công thức bên Recipe Service
+     * @return chi tiết công thức
+     * @throws ResourceNotFoundException nếu không tìm thấy công thức với id chỉ định
+     * @throws UpstreamUnavailableException nếu Recipe Service không khả dụng (khác 404)
+     */
+    @CircuitBreaker(name = "recipe-service", fallbackMethod = "fallbackGetRecipeById")
+    public RecipeDetailDto getRecipeById(String id) {
+        try {
+            return restClient.get().uri("/recipes/{id}", id).retrieve().body(RecipeDetailDto.class);
+        } catch (HttpClientErrorException.NotFound ex) {
+            throw new ResourceNotFoundException("Không tìm thấy công thức id=" + id);
+        }
+    }
+
+    /** 404 không phải "Recipe Service down" — cho đi qua nguyên trạng, chỉ fallback lỗi khác thành 503. */
+    @SuppressWarnings("unused")
+    private RecipeDetailDto fallbackGetRecipeById(String id, Throwable ex) {
+        if (ex instanceof ResourceNotFoundException notFound) {
+            throw notFound;
+        }
         throw new UpstreamUnavailableException("Recipe Service tạm thời không khả dụng, thử lại sau");
     }
 }

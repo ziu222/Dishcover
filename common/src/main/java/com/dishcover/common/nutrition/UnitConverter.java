@@ -52,9 +52,13 @@ public final class UnitConverter {
     private UnitConverter() {
     }
 
-    /** Quy đổi {@code amount} theo {@code unit} sang gram, tra thêm {@code entry} cho đơn vị đếm. */
-    public static Optional<Double> toGrams(Double amount, String unit, IngredientEntry entry) {
-        if (amount == null || unit == null) {
+    /**
+     * Tra hệ số gram-trên-1-đơn-vị cho {@code unit} — đơn vị đo lường chung tra trước, đơn vị đếm
+     * riêng của {@code entry} tra sau. Dùng riêng (ngoài {@link #toGrams}) khi cần quy đổi NGƯỢC
+     * (VD số gram thiếu → số đơn vị gốc của công thức, xem Matching Service availability endpoint).
+     */
+    public static Optional<Double> gramsPerUnit(String unit, IngredientEntry entry) {
+        if (unit == null) {
             return Optional.empty();
         }
         String key = unit.trim().toLowerCase(Locale.ROOT);
@@ -62,9 +66,14 @@ public final class UnitConverter {
         if (perUnit == null && entry != null && entry.unitToGram() != null) {
             perUnit = entry.unitToGram().get(unit.trim());
         }
-        if (perUnit == null) {
+        return Optional.ofNullable(perUnit);
+    }
+
+    /** Quy đổi {@code amount} theo {@code unit} sang gram, tra thêm {@code entry} cho đơn vị đếm. */
+    public static Optional<Double> toGrams(Double amount, String unit, IngredientEntry entry) {
+        if (amount == null) {
             return Optional.empty();
         }
-        return Optional.of(amount * perUnit);
+        return gramsPerUnit(unit, entry).map(perUnit -> amount * perUnit);
     }
 }

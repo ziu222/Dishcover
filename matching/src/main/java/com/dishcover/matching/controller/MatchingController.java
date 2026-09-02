@@ -2,11 +2,13 @@ package com.dishcover.matching.controller;
 
 import com.dishcover.common.security.RequestTokenExtractor;
 import com.dishcover.matching.dto.MatchingDtos.MatchByIngredientsRequest;
+import com.dishcover.matching.dto.MatchingDtos.RecipeAvailabilityResponse;
 import com.dishcover.matching.dto.MatchingDtos.RecipeMatchResponse;
 import com.dishcover.matching.service.MatchingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,5 +58,19 @@ public class MatchingController {
     @PostMapping("/internal/match-by-ingredients")
     public List<RecipeMatchResponse> matchByIngredients(@Valid @RequestBody MatchByIngredientsRequest request) {
         return service.searchByIngredients(request.ingredients(), request.topN());
+    }
+
+    /**
+     * So số lượng đủ/thiếu từng nguyên liệu của 1 công thức với tủ lạnh người dùng đang đăng nhập —
+     * dùng cho màn Chi tiết công thức (vào thẳng từ Tìm kiếm/link, không chỉ từ Gợi ý) và màn xác
+     * nhận "Đã nấu xong" (tự điền số lượng sắp trừ kho).
+     *
+     * @param id id công thức cần kiểm tra
+     * @return so sánh đủ/thiếu cho từng nguyên liệu của công thức
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tìm thấy công thức
+     */
+    @GetMapping("/recipes/{id}/availability")
+    public RecipeAvailabilityResponse availability(HttpServletRequest request, @PathVariable String id) {
+        return service.checkAvailability(id, RequestTokenExtractor.resolveBearer(request));
     }
 }
