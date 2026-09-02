@@ -178,6 +178,69 @@ class InventoryFlowIntegrationTest {
     }
 
     @Test
+    void cookDeductDepletesEarlierExpiryLotFirst() throws Exception {
+        long uid = System.nanoTime();
+        java.time.LocalDate soon = java.time.LocalDate.now().plusDays(2);
+        java.time.LocalDate later = java.time.LocalDate.now().plusDays(10);
+        repo.save(new UserIngredient(uid, "Trứng gà", "trung ga", new BigDecimal("100"), "g", soon, "MANUAL", "FRESH"));
+        repo.save(new UserIngredient(uid, "Trứng gà", "trung ga", new BigDecimal("100"), "g", later, "MANUAL", "FRESH"));
+
+        mvc.perform(post("/inventory/items/cook-deduct")
+                        .header("Authorization", auth(uid))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"items\":[{\"normalizedName\":\"trung ga\",\"amount\":150,\"unit\":\"g\"}]}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results[0].normalizedName").value("trung ga"))
+                .andExpect(jsonPath("$.results[0].requestedGrams").value(150.0))
+                .andExpect(jsonPath("$.results[0].deductedGrams").value(150.0));
+
+        mvc.perform(get("/inventory/items").header("Authorization", auth(uid)))
+                .andExpect(jsonPath("$[?(@.expiryDate=='" + soon + "')].quantity").value(0.0))
+                .andExpect(jsonPath("$[?(@.expiryDate=='" + soon + "')].status").value("USED"))
+                .andExpect(jsonPath("$[?(@.expiryDate=='" + later + "')].quantity").value(50.0))
+                .andExpect(jsonPath("$[?(@.expiryDate=='" + later + "')].status").value("FRESH"));
+    }
+
+    @Test
+    void cookDeductInsufficientStockDeductsWhatIsAvailableWithoutBlocking() throws Exception {
+        long uid = System.nanoTime();
+        repo.save(new UserIngredient(uid, "Cà chua", "ca chua", new BigDecimal("50"), "g",
+                java.time.LocalDate.now().plusDays(5), "MANUAL", "FRESH"));
+
+        mvc.perform(post("/inventory/items/cook-deduct")
+                        .header("Authorization", auth(uid))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"items\":[{\"normalizedName\":\"ca chua\",\"amount\":200,\"unit\":\"g\"}]}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results[0].requestedGrams").value(200.0))
+                .andExpect(jsonPath("$.results[0].deductedGrams").value(50.0)); // chỉ có 50g, trừ hết không chặn
+
+        mvc.perform(get("/inventory/items").header("Authorization", auth(uid)))
+                .andExpect(jsonPath("$[0].quantity").value(0.0))
+                .andExpect(jsonPath("$[0].status").value("USED"));
+    }
+
+    @Test
+    void cookDeductConvertsAcrossDifferentUnits() throws Exception {
+        long uid = System.nanoTime();
+        // Tủ lạnh lưu 1kg đường, công thức cần 200g -> phải quy đổi kg<->g qua cùng UnitConverter
+        repo.save(new UserIngredient(uid, "Đường", "duong", new BigDecimal("1"), "kg",
+                java.time.LocalDate.now().plusDays(30), "MANUAL", "FRESH"));
+
+        mvc.perform(post("/inventory/items/cook-deduct")
+                        .header("Authorization", auth(uid))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"items\":[{\"normalizedName\":\"duong\",\"amount\":200,\"unit\":\"g\"}]}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results[0].deductedGrams").value(200.0));
+
+        // 1000g - 200g = 800g, lưu lại theo unit gốc của lô (kg) -> 0.8
+        mvc.perform(get("/inventory/items").header("Authorization", auth(uid)))
+                .andExpect(jsonPath("$[0].quantity").value(0.8))
+                .andExpect(jsonPath("$[0].unit").value("kg"));
+    }
+
+    @Test
     void statusFilterUsesDerivedStatusNotStaleDbColumn() throws Exception {
         long uid = System.nanoTime();
         // Mô phỏng dữ liệu thật đã "cũ": tạo thẳng qua repository với status='FRESH' còn nguyên

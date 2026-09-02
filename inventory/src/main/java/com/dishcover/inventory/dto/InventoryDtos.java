@@ -5,6 +5,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -77,6 +78,50 @@ public final class InventoryDtos {
             LocalDate expiryDate,
             String source,
             String status
+    ) {
+    }
+
+    /**
+     * 1 dòng nguyên liệu cần trừ sau khi nấu — client (FE) tự điền sẵn từ
+     * {@code GET /matching/recipes/{id}/availability}, người dùng sửa lại số lượng thực tế đã dùng
+     * trước khi gửi (màn xác nhận "Đã nấu xong", human-in-the-loop — CLAUDE.md phần nguyên tắc chung).
+     *
+     * @param normalizedName tên nguyên liệu đã chuẩn hóa
+     * @param amount số lượng thực tế đã dùng
+     * @param unit đơn vị của {@link #amount}
+     */
+    public record CookDeductLineRequest(
+            @NotBlank String normalizedName,
+            @NotNull @DecimalMin(value = "0", inclusive = false) @Digits(integer = 8, fraction = 2) BigDecimal amount,
+            @NotBlank @Size(max = 20) String unit
+    ) {
+    }
+
+    /** @param items danh sách nguyên liệu cần trừ, không được rỗng */
+    public record CookDeductRequest(
+            @NotEmpty @Valid List<CookDeductLineRequest> items
+    ) {
+    }
+
+    /**
+     * Kết quả trừ kho cho 1 nguyên liệu — {@code deductedGrams} có thể NHỎ HƠN
+     * {@code requestedGrams} nếu tủ lạnh không đủ (trừ hết những gì có, không chặn hành động nấu ăn
+     * thật của người dùng — quyết định thiết kế đã chốt).
+     *
+     * @param normalizedName tên nguyên liệu đã chuẩn hóa
+     * @param requestedGrams số gram yêu cầu trừ (quy đổi từ amount+unit client gửi)
+     * @param deductedGrams số gram thực tế đã trừ được (&le; requestedGrams)
+     */
+    public record CookDeductResultLine(
+            String normalizedName,
+            double requestedGrams,
+            double deductedGrams
+    ) {
+    }
+
+    /** @param results kết quả trừ kho cho từng nguyên liệu, cùng thứ tự với request */
+    public record CookDeductResponse(
+            List<CookDeductResultLine> results
     ) {
     }
 }

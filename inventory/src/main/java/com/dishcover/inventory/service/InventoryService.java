@@ -3,7 +3,10 @@ package com.dishcover.inventory.service;
 import com.dishcover.common.ingredient.DefaultShelfLifeTable;
 import com.dishcover.common.ingredient.IngredientCatalog;
 import com.dishcover.common.ingredient.IngredientEntry;
+import com.dishcover.common.nutrition.UnitConverter;
 import com.dishcover.inventory.dto.InventoryDtos.AddItemRequest;
+import com.dishcover.inventory.dto.InventoryDtos.CookDeductLineRequest;
+import com.dishcover.inventory.dto.InventoryDtos.CookDeductResultLine;
 import com.dishcover.inventory.dto.InventoryDtos.InventoryItemResponse;
 import com.dishcover.inventory.dto.InventoryDtos.UpdateItemRequest;
 import com.dishcover.inventory.entity.UserIngredient;
@@ -13,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InventoryService {
 
     private static final int NEAR_EXPIRY_DAYS = 3;
+    private static final double GRAM_EPSILON = 0.01;
 
     private final UserIngredientRepository repo;
     private final IngredientCatalog catalog;
@@ -160,6 +166,70 @@ public class InventoryService {
         if (repo.deleteByIdAndUserId(id, userId) == 0) {
             throw new ResourceNotFoundException("Không tìm thấy nguyên liệu id=" + id);
         }
+    }
+
+    /**
+     * Trừ kho sau khi nấu — mỗi dòng trừ FEFO (lô hết hạn sớm hơn trừ trước) trên các lô "còn dùng
+     * được" (loại USED/EXPIRED đã derive, giống chính sách Matching Service coi là "không sẵn có").
+     * Tủ lạnh không đủ so với yêu cầu → trừ hết những gì có, KHÔNG chặn hành động nấu ăn thật của
+     * người dùng (quyết định thiết kế đã chốt — người dùng có thể đã mua thêm ngoài, hoặc tự biết
+     * thực tế khác số liệu hệ thống).
+     *
+     * @param userId id người dùng
+     * @param lines danh sách nguyên liệu cần trừ, đã qua màn xác nhận sửa số lượng (human-in-the-loop)
+     * @return kết quả trừ kho cho từng nguyên liệu, cùng thứ tự với {@code lines}
+     */
+    @Transactional
+    public List<CookDeductResultLine> cookDeduct(Long userId, List<CookDeductLineRequest> lines) {
+        return lines.stream().map(line -> deductOneIngredient(userId, line)).toList();
+    }
+
+    private CookDeductResultLine deductOneIngredient(Long userId, CookDeductLineRequest line) {
+        String normalizedName = catalog.resolve(line.normalizedName());
+        IngredientEntry entry = catalog.lookup(normalizedName).orElse(null);
+
+        double requestedGrams = UnitConverter.toGrams(line.amount().doubleValue(), line.unit(), entry).orElse(0.0);
+        double remaining = requestedGrams;
+
+        for (UserIngredient lot : fefoLots(userId, normalizedName)) {
+            if (remaining <= GRAM_EPSILON) {
+                break;
+            }
+            Optional<Double> perUnit = UnitConverter.gramsPerUnit(lot.getUnit(), entry);
+            if (perUnit.isEmpty() || perUnit.get() <= 0) {
+                continue; // lô có unit không quy đổi được sang gram -> bỏ qua, không đoán bừa
+            }
+            double lotGrams = lot.getQuantity().doubleValue() * perUnit.get();
+            double deductFromLot = Math.min(remaining, lotGrams);
+            double newLotGrams = lotGrams - deductFromLot;
+
+            if (newLotGrams <= GRAM_EPSILON) {
+                lot.setQuantity(BigDecimal.ZERO);
+                lot.setStatus("USED");
+            } else {
+                lot.setQuantity(BigDecimal.valueOf(newLotGrams / perUnit.get()).setScale(2, RoundingMode.HALF_UP));
+            }
+            remaining -= deductFromLot;
+        }
+
+        double deductedGrams = requestedGrams - Math.max(remaining, 0);
+        return new CookDeductResultLine(line.normalizedName(), round1(requestedGrams), round1(deductedGrams));
+    }
+
+    /** FEFO: lô hết hạn sớm hơn trước, lô không rõ hạn dùng (null) xếp sau cùng. */
+    private List<UserIngredient> fefoLots(Long userId, String normalizedName) {
+        return repo.findByUserIdAndNormalizedName(userId, normalizedName).stream()
+                .filter(i -> {
+                    String derived = deriveStatus(i.getStatus(), i.getExpiryDate());
+                    return !"USED".equals(derived) && !"EXPIRED".equals(derived);
+                })
+                .sorted(Comparator.comparing(UserIngredient::getExpiryDate,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
+                .toList();
+    }
+
+    private static double round1(double v) {
+        return Math.round(v * 10.0) / 10.0;
     }
 
     // ---- helpers ----

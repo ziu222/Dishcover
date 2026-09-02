@@ -43,4 +43,15 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
      */
     List<UserIngredient> findByUserIdAndNormalizedNameAndExpiryDate(
             Long userId, String normalizedName, LocalDate expiryDate);
+
+    /**
+     * Mọi lô của 1 nguyên liệu thuộc 1 user, KHÔNG lọc theo status ở tầng query — status hiển thị
+     * là derived (xem javadoc lớp {@code InventoryService}), lọc/sắp xếp FEFO thực hiện ở tầng
+     * service sau khi derive, không tin cột status thô.
+     *
+     * @param userId id người dùng
+     * @param normalizedName tên nguyên liệu đã chuẩn hóa
+     * @return mọi lô (kể cả USED/EXPIRED thô) của nguyên liệu này, chưa sắp xếp
+     */
+    List<UserIngredient> findByUserIdAndNormalizedName(Long userId, String normalizedName);
 }

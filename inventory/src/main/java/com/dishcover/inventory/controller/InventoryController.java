@@ -3,6 +3,8 @@ package com.dishcover.inventory.controller;
 import com.dishcover.common.security.AuthenticatedUser;
 import com.dishcover.inventory.dto.InventoryDtos.AddItemRequest;
 import com.dishcover.inventory.dto.InventoryDtos.BatchAddRequest;
+import com.dishcover.inventory.dto.InventoryDtos.CookDeductRequest;
+import com.dishcover.inventory.dto.InventoryDtos.CookDeductResponse;
 import com.dishcover.inventory.dto.InventoryDtos.InventoryItemResponse;
 import com.dishcover.inventory.dto.InventoryDtos.UpdateItemRequest;
 import com.dishcover.inventory.service.InventoryService;
@@ -124,5 +126,20 @@ public class InventoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {
         service.delete(me.userId(), id);
+    }
+
+    /**
+     * Trừ kho sau khi nấu ăn — client gửi danh sách nguyên liệu đã qua màn xác nhận (sửa số lượng
+     * thực tế), server trừ FEFO trên các lô còn dùng được. Không đủ trong tủ lạnh vẫn không chặn,
+     * trừ hết những gì có (xem {@code InventoryService.cookDeduct}).
+     *
+     * @param me  người dùng đã xác thực, lấy từ JWT
+     * @param req danh sách nguyên liệu cần trừ
+     * @return kết quả trừ kho cho từng nguyên liệu
+     */
+    @PostMapping("/cook-deduct")
+    public CookDeductResponse cookDeduct(@AuthenticationPrincipal AuthenticatedUser me,
+                                          @Valid @RequestBody CookDeductRequest req) {
+        return new CookDeductResponse(service.cookDeduct(me.userId(), req.items()));
     }
 }
