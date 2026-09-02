@@ -180,6 +180,31 @@ class RecipeFlowIntegrationTest {
     }
 
     @Test
+    void createComputesNutritionFromIngredientsAndServings() throws Exception {
+        String tag = "test-" + System.nanoTime();
+        String payload = """
+                {"name":"Trứng chiên calo test %s","cookTimeMinutes":15,"difficulty":"EASY","tags":["%s"],
+                 "servings":2,
+                 "ingredients":[
+                   {"name":"Trứng gà","amount":4,"unit":"quả","essential":true}
+                 ],
+                 "steps":[{"order":1,"title":"Sơ chế","content":"Rửa sạch","durationMinutes":5}]}
+                """.formatted(tag, tag);
+
+        String body = mvc.perform(post("/recipes")
+                        .header("Authorization", auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.servings").value(2))
+                // 4 quả trứng * 50g = 200g -> 310 kcal, chia 2 khẩu phần = 155 kcal/khẩu phần
+                .andExpect(jsonPath("$.nutrition.caloriesPerServing").value(155.0))
+                .andExpect(jsonPath("$.nutrition.incomplete").value(false))
+                .andReturn().getResponse().getContentAsString();
+        createdIds.add(mapper.readTree(body).get("id").asText());
+    }
+
+    @Test
     void createRejectsEmptyIngredientsAndSteps() throws Exception {
         mvc.perform(post("/recipes")
                         .header("Authorization", auth())

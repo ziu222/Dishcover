@@ -1,5 +1,8 @@
 package com.dishcover.recipe.seed;
 
+import com.dishcover.common.nutrition.NutritionIngredientLine;
+import com.dishcover.common.nutrition.RecipeNutrition;
+import com.dishcover.common.nutrition.RecipeNutritionCalculator;
 import com.dishcover.common.text.VietnameseTextNormalizer;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -27,14 +30,21 @@ public class RecipeSeeder implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(RecipeSeeder.class);
     private static final String COLLECTION = "recipes";
+    // ponytail: seed gốc không có số khẩu phần thật — 2 là giả định hộ gia đình phổ biến, sửa tay
+    // qua PATCH /recipes/{id} nếu công thức cụ thể nào cần số khác.
+    private static final int DEFAULT_SEED_SERVINGS = 2;
 
     private final MongoTemplate mongo;
+    private final RecipeNutritionCalculator nutritionCalculator;
 
     /**
-     * @param mongo template MongoDB dùng để đọc/ghi trực tiếp collection {@code recipes}
+     * @param mongo               template MongoDB dùng để đọc/ghi trực tiếp collection {@code recipes}
+     * @param nutritionCalculator tính calo/macro mỗi khẩu phần cho từng công thức seed (RecipeSeeder
+     *                            insert BSON thô, không qua RecipeService, nên phải tự tính ở đây)
      */
-    public RecipeSeeder(MongoTemplate mongo) {
+    public RecipeSeeder(MongoTemplate mongo, RecipeNutritionCalculator nutritionCalculator) {
         this.mongo = mongo;
+        this.nutritionCalculator = nutritionCalculator;
     }
 
     /**
@@ -86,11 +96,47 @@ public class RecipeSeeder implements CommandLineRunner {
                 // thay vì sửa tay 62 dòng JSON, để dữ liệu cũ vẫn tìm kiếm được như dữ liệu mới tạo qua API.
                 for (Document item : items) {
                     item.put("normalized_name", VietnameseTextNormalizer.normalize(item.getString("name")));
+                    item.put("servings", item.getInteger("servings", DEFAULT_SEED_SERVINGS));
+                    item.put("nutrition", toDocument(computeNutrition(item)));
                 }
                 all.addAll(items);
                 log.info("Nạp {} công thức từ {}", items.size(), file.getFilename());
             }
         }
         return all;
+    }
+
+    /**
+     * Tính calo/macro cho 1 document công thức thô (chưa qua RecipeService) — đọc lại
+     * {@code ingredients[].normalized_name/amount/unit} y hệt field đã có trong seed JSON.
+     *
+     * @param item document công thức đã có {@code servings}
+     * @return kết quả tính calo/macro mỗi khẩu phần, {@code incomplete=true} nếu thiếu ingredients
+     */
+    private RecipeNutrition computeNutrition(Document item) {
+        List<Document> ingredientDocs = item.getList("ingredients", Document.class);
+        if (ingredientDocs == null || ingredientDocs.isEmpty()) {
+            return RecipeNutrition.EMPTY;
+        }
+        List<NutritionIngredientLine> lines = ingredientDocs.stream()
+                .map(d -> {
+                    Object rawAmount = d.get("amount");
+                    Double amount = rawAmount instanceof Number n ? n.doubleValue() : null;
+                    return new NutritionIngredientLine(d.getString("normalized_name"), amount, d.getString("unit"));
+                })
+                .toList();
+        return nutritionCalculator.calculate(lines, item.getInteger("servings"));
+    }
+
+    /**
+     * Chuyển {@link RecipeNutrition} sang {@link Document} khớp field name Spring Data Mongo sẽ đọc
+     * lại qua {@code Recipe.nutrition} (record field camelCase, không có @Field renaming — xem entity).
+     */
+    private static Document toDocument(RecipeNutrition n) {
+        return new Document("caloriesPerServing", n.caloriesPerServing())
+                .append("proteinPerServing", n.proteinPerServing())
+                .append("carbPerServing", n.carbPerServing())
+                .append("fatPerServing", n.fatPerServing())
+                .append("incomplete", n.incomplete());
     }
 }

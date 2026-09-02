@@ -47,7 +47,8 @@ public final class RecipeDtos {
     /**
      * Payload tạo mới công thức (dùng cho {@code POST /recipes}).
      *
-     * @param slug  tùy chọn — server tự sinh từ name nếu không gửi
+     * @param slug      tùy chọn — server tự sinh từ name nếu không gửi
+     * @param servings  số khẩu phần, tùy chọn — mặc định 1 nếu không gửi (dùng để chia calo/khẩu phần)
      */
     public record CreateRecipeRequest(
             @NotBlank String name,
@@ -58,6 +59,7 @@ public final class RecipeDtos {
             List<String> dietaryFlags,
             @NotEmpty @Valid List<RecipeIngredientRequest> ingredients,
             @NotEmpty @Valid List<RecipeStepRequest> steps,
+            @Min(1) Integer servings,
             String imageUrl,
             String videoUrl
     ) {
@@ -72,8 +74,20 @@ public final class RecipeDtos {
             List<String> dietaryFlags,
             @Valid List<RecipeIngredientRequest> ingredients,
             @Valid List<RecipeStepRequest> steps,
+            @Min(1) Integer servings,
             String imageUrl,
             String videoUrl
+    ) {
+    }
+
+    /**
+     * Calo/macro mỗi khẩu phần trả về trong response — tách khỏi
+     * {@link com.dishcover.common.nutrition.RecipeNutrition} theo nguyên tắc DTO ≠ Entity (CLAUDE.md
+     * mục 9), không expose thẳng type nội bộ của module {@code common} qua API.
+     */
+    public record NutritionResponse(
+            double caloriesPerServing, double proteinPerServing, double carbPerServing,
+            double fatPerServing, boolean incomplete
     ) {
     }
 
@@ -110,6 +124,7 @@ public final class RecipeDtos {
             String id, String name, String slug, int cookTimeMinutes, String difficulty,
             List<String> tags, List<String> dietaryFlags,
             List<RecipeIngredientResponse> ingredients, List<RecipeStepResponse> steps,
+            Integer servings, NutritionResponse nutrition,
             String imageUrl, String videoUrl
     ) {
     }
