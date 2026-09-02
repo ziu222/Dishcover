@@ -9,6 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,5 +50,16 @@ class ClientResilienceTest {
     @Test
     void userFailureFailsClosedInsteadOfAssumingNoAllergies() {
         assertThrows(UpstreamUnavailableException.class, () -> userClient.getAllergenGroups("Bearer x"));
+    }
+
+    /** Khác getAllergenGroups: đây fail-open (không phải rủi ro an toàn), trả null thay vì ném lỗi. */
+    @Test
+    void calorieGoalFailureFailsOpenToNull() {
+        assertNull(userClient.getCalorieTargetPerMeal("Bearer x"));
+    }
+
+    @Test
+    void recipeByIdFailureThrowsUpstreamUnavailable() {
+        assertThrows(UpstreamUnavailableException.class, () -> recipeClient.getRecipeById("r1"));
     }
 }

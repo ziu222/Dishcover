@@ -44,4 +44,40 @@ public final class MatchingDtos {
             Integer topN
     ) {
     }
+
+    /**
+     * So sánh 1 nguyên liệu của công thức với số lượng đang có trong tủ lạnh người dùng.
+     *
+     * @param name tên hiển thị nguyên liệu
+     * @param normalizedName tên đã chuẩn hóa
+     * @param neededAmount số lượng cần theo công thức (đơn vị {@link #neededUnit})
+     * @param neededUnit đơn vị của {@link #neededAmount}
+     * @param availableGrams tổng số gram đang có trong tủ lạnh (0 nếu không có), quy đổi từ mọi lô
+     *                       cùng nguyên liệu
+     * @param status SUFFICIENT (đủ dùng) | PARTIAL (có nhưng thiếu) | MISSING (không có) | UNKNOWN
+     *               (không quy đổi được đơn vị công thức sang gram để so sánh số lượng)
+     * @param shortfallAmount số lượng còn thiếu, quy đổi lại theo {@link #neededUnit} — null nếu
+     *                        SUFFICIENT hoặc UNKNOWN
+     */
+    public record IngredientAvailabilityResponse(
+            String name,
+            String normalizedName,
+            Double neededAmount,
+            String neededUnit,
+            double availableGrams,
+            String status,
+            Double shortfallAmount
+    ) {
+    }
+
+    /**
+     * Kết quả so đủ/thiếu nguyên liệu của 1 công thức với tủ lạnh người dùng đang đăng nhập —
+     * GET /matching/recipes/{id}/availability.
+     */
+    public record RecipeAvailabilityResponse(
+            String recipeId,
+            String name,
+            List<IngredientAvailabilityResponse> ingredients
+    ) {
+    }
 }
