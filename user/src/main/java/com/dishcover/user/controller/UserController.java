@@ -1,5 +1,7 @@
 package com.dishcover.user.controller;
 
+import com.dishcover.user.dto.CalorieGoalDtos.CalorieGoalRequest;
+import com.dishcover.user.dto.CalorieGoalDtos.CalorieGoalResponse;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceRequest;
 import com.dishcover.user.dto.DietaryDtos.DietaryPreferenceResponse;
 import com.dishcover.user.dto.UpdateProfileRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -97,5 +100,30 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePreference(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {
         userService.deletePreference(me.userId(), id);
+    }
+
+    /**
+     * Lấy mục tiêu calo/macro/ngày của user đang đăng nhập. Cũng là endpoint Matching Service gọi
+     * (forward JWT) để chấm điểm công thức gần mục tiêu (CalorieProximityRule).
+     *
+     * @param me user đã xác thực, suy ra từ JWT
+     * @return mục tiêu hiện tại, body {@code null} nếu chưa đặt (opt-in — không phải lỗi)
+     */
+    @GetMapping("/calorie-goal")
+    public CalorieGoalResponse getCalorieGoal(@AuthenticationPrincipal AuthenticatedUser me) {
+        return userService.getCalorieGoal(me.userId());
+    }
+
+    /**
+     * Đặt/sửa mục tiêu calo/macro/ngày của user đang đăng nhập — upsert, cả 4 field bắt buộc.
+     *
+     * @param me  user đã xác thực, suy ra từ JWT
+     * @param req 4 con số mục tiêu mới, đã qua validate {@code @Valid}
+     * @return mục tiêu sau khi lưu
+     */
+    @PutMapping("/calorie-goal")
+    public CalorieGoalResponse putCalorieGoal(@AuthenticationPrincipal AuthenticatedUser me,
+                                               @Valid @RequestBody CalorieGoalRequest req) {
+        return userService.upsertCalorieGoal(me.userId(), req);
     }
 }

@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -140,6 +141,51 @@ class AuthFlowIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"type\":\"INVALID\",\"value\":\"x\"}"))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void calorieGoalDefaultsToUnsetThenUpsertReplacesValues() throws Exception {
+        String token = register("goal@b.com", "secret1");
+
+        // Chưa đặt mục tiêu -> 200 body rỗng (opt-in, không phải lỗi)
+        mvc.perform(get("/users/me/calorie-goal").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
+
+        mvc.perform(put("/users/me/calorie-goal")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"calorieTarget\":2500,\"proteinTarget\":150,\"carbTarget\":300,\"fatTarget\":70}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.calorieTarget").value(2500))
+                .andExpect(jsonPath("$.proteinTarget").value(150));
+
+        mvc.perform(get("/users/me/calorie-goal").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.calorieTarget").value(2500));
+
+        // Upsert lần 2 -> ghi đè, không tạo dòng mới
+        mvc.perform(put("/users/me/calorie-goal")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"calorieTarget\":1800,\"proteinTarget\":140,\"carbTarget\":150,\"fatTarget\":50}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.calorieTarget").value(1800));
+    }
+
+    @Test
+    void calorieGoalRejectsNonPositiveValues() throws Exception {
+        String token = register("badgoal@b.com", "secret1");
+        mvc.perform(put("/users/me/calorie-goal")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"calorieTarget\":-1,\"proteinTarget\":150,\"carbTarget\":300,\"fatTarget\":70}"))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void calorieGoalWithoutTokenReturns401() throws Exception {
+        mvc.perform(get("/users/me/calorie-goal")).andExpect(status().isUnauthorized());
     }
 
     @Test
