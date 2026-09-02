@@ -1,5 +1,6 @@
 package com.dishcover.recipe.entity;
 
+import com.dishcover.common.nutrition.RecipeNutrition;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -34,6 +35,12 @@ public class Recipe {
     private List<RecipeIngredient> ingredients;
     private List<RecipeStep> steps;
 
+    /** Số khẩu phần — mẫu số chia calo/macro tổng thành calo/macro mỗi khẩu phần. Mặc định 1 nếu thiếu. */
+    private Integer servings;
+
+    /** Calo/macro mỗi khẩu phần, tính tại thời điểm ghi (create/update) qua RecipeNutritionCalculator. */
+    private RecipeNutrition nutrition;
+
     @Field("image_url")
     private String imageUrl;
 
@@ -59,12 +66,15 @@ public class Recipe {
      * @param dietaryFlags     danh sách cờ chế độ ăn (VD contains_egg)
      * @param ingredients      danh sách nguyên liệu của công thức
      * @param steps            danh sách bước nấu của công thức
+     * @param servings         số khẩu phần
+     * @param nutrition        calo/macro mỗi khẩu phần, tính sẵn từ ingredients+servings
      * @param imageUrl         URL ảnh minh họa (Cloudinary)
      * @param videoUrl         URL video hướng dẫn, có thể null
      */
     public Recipe(String id, String name, String slug, int cookTimeMinutes, String difficulty,
                   List<String> tags, List<String> dietaryFlags, List<RecipeIngredient> ingredients,
-                  List<RecipeStep> steps, String imageUrl, String videoUrl) {
+                  List<RecipeStep> steps, Integer servings, RecipeNutrition nutrition,
+                  String imageUrl, String videoUrl) {
         this.id = id;
         this.name = name;
         this.slug = slug;
@@ -74,6 +84,8 @@ public class Recipe {
         this.dietaryFlags = dietaryFlags;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.servings = servings;
+        this.nutrition = nutrition;
         this.imageUrl = imageUrl;
         this.videoUrl = videoUrl;
         this.createdAt = Instant.now();
@@ -167,6 +179,26 @@ public class Recipe {
     /** @param steps danh sách bước nấu mới */
     public void setSteps(List<RecipeStep> steps) {
         this.steps = steps;
+    }
+
+    /** @return số khẩu phần */
+    public Integer getServings() {
+        return servings;
+    }
+
+    /** @param servings số khẩu phần mới */
+    public void setServings(Integer servings) {
+        this.servings = servings;
+    }
+
+    /** @return calo/macro mỗi khẩu phần */
+    public RecipeNutrition getNutrition() {
+        return nutrition;
+    }
+
+    /** @param nutrition calo/macro mỗi khẩu phần mới, tính lại từ ingredients+servings */
+    public void setNutrition(RecipeNutrition nutrition) {
+        this.nutrition = nutrition;
     }
 
     /** @return URL ảnh minh họa */

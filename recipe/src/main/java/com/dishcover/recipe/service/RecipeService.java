@@ -2,8 +2,12 @@ package com.dishcover.recipe.service;
 
 import com.dishcover.common.ingredient.IngredientCatalog;
 import com.dishcover.common.ingredient.IngredientWeights;
+import com.dishcover.common.nutrition.NutritionIngredientLine;
+import com.dishcover.common.nutrition.RecipeNutrition;
+import com.dishcover.common.nutrition.RecipeNutritionCalculator;
 import com.dishcover.common.text.VietnameseTextNormalizer;
 import com.dishcover.recipe.dto.RecipeDtos.CreateRecipeRequest;
+import com.dishcover.recipe.dto.RecipeDtos.NutritionResponse;
 import com.dishcover.recipe.dto.RecipeDtos.RecipeDetailResponse;
 import com.dishcover.recipe.dto.RecipeDtos.RecipeIngredientRequest;
 import com.dishcover.recipe.dto.RecipeDtos.RecipeIngredientResponse;
@@ -35,14 +39,18 @@ public class RecipeService {
 
     private final RecipeRepository repo;
     private final IngredientCatalog catalog;
+    private final RecipeNutritionCalculator nutritionCalculator;
 
     /**
-     * @param repo    repository truy cập collection {@code recipes} trên MongoDB
-     * @param catalog catalog nguyên liệu chuẩn dùng để chuẩn hóa tên nguyên liệu client gửi lên
+     * @param repo                repository truy cập collection {@code recipes} trên MongoDB
+     * @param catalog             catalog nguyên liệu chuẩn dùng để chuẩn hóa tên nguyên liệu client gửi lên
+     * @param nutritionCalculator tính calo/macro mỗi khẩu phần từ ingredients+servings lúc ghi
      */
-    public RecipeService(RecipeRepository repo, IngredientCatalog catalog) {
+    public RecipeService(RecipeRepository repo, IngredientCatalog catalog,
+                          RecipeNutritionCalculator nutritionCalculator) {
         this.repo = repo;
         this.catalog = catalog;
+        this.nutritionCalculator = nutritionCalculator;
     }
 
     /**
@@ -91,10 +99,13 @@ public class RecipeService {
     public RecipeDetailResponse create(CreateRecipeRequest req) {
         String id = UUID.randomUUID().toString();
         String slug = StringUtils.hasText(req.slug()) ? req.slug() : generateSlug(req.name());
+        List<RecipeIngredient> ingredients = toEntityIngredients(req.ingredients());
+        Integer servings = req.servings();
         Recipe recipe = new Recipe(
                 id, req.name(), slug, req.cookTimeMinutes(), req.difficulty(),
                 req.tags(), req.dietaryFlags(),
-                toEntityIngredients(req.ingredients()), toEntitySteps(req.steps()),
+                ingredients, toEntitySteps(req.steps()),
+                servings, computeNutrition(ingredients, servings),
                 req.imageUrl(), req.videoUrl());
         recipe.setNormalizedName(VietnameseTextNormalizer.normalize(req.name()));
         return toDetail(repo.save(recipe));
@@ -133,12 +144,18 @@ public class RecipeService {
         if (req.steps() != null) {
             recipe.setSteps(toEntitySteps(req.steps()));
         }
+        if (req.servings() != null) {
+            recipe.setServings(req.servings());
+        }
         if (req.imageUrl() != null) {
             recipe.setImageUrl(req.imageUrl());
         }
         if (req.videoUrl() != null) {
             recipe.setVideoUrl(req.videoUrl());
         }
+        // Tính lại nutrition mỗi lần update (kể cả khi chỉ đổi field không liên quan) — đơn giản hơn
+        // theo dõi "ingredients hoặc servings có đổi không", chi phí tính không đáng kể ở quy mô 1 công thức.
+        recipe.setNutrition(computeNutrition(recipe.getIngredients(), recipe.getServings()));
         return toDetail(repo.save(recipe));
     }
 
@@ -189,6 +206,13 @@ public class RecipeService {
         return "ing_" + VietnameseTextNormalizer.normalize(name).replace(' ', '_');
     }
 
+    private RecipeNutrition computeNutrition(List<RecipeIngredient> ingredients, Integer servings) {
+        List<NutritionIngredientLine> lines = ingredients.stream()
+                .map(i -> new NutritionIngredientLine(i.getNormalizedName(), i.getAmount(), i.getUnit()))
+                .toList();
+        return nutritionCalculator.calculate(lines, servings);
+    }
+
     private RecipeSummaryResponse toSummary(Recipe r) {
         return new RecipeSummaryResponse(r.getId(), r.getName(), r.getSlug(), r.getCookTimeMinutes(),
                 r.getDifficulty(), r.getTags(), r.getImageUrl());
@@ -202,8 +226,13 @@ public class RecipeService {
         List<RecipeStepResponse> steps = r.getSteps().stream()
                 .map(s -> new RecipeStepResponse(s.getOrder(), s.getTitle(), s.getContent(), s.getDurationMinutes()))
                 .toList();
+        RecipeNutrition n = r.getNutrition();
+        NutritionResponse nutrition = n == null ? null
+                : new NutritionResponse(n.caloriesPerServing(), n.proteinPerServing(),
+                        n.carbPerServing(), n.fatPerServing(), n.incomplete());
         return new RecipeDetailResponse(r.getId(), r.getName(), r.getSlug(), r.getCookTimeMinutes(),
                 r.getDifficulty(), r.getTags(), r.getDietaryFlags(), ingredients, steps,
+                r.getServings(), nutrition,
                 r.getImageUrl(), r.getVideoUrl());
     }
 }
