@@ -25,9 +25,9 @@ import static org.mockito.Mockito.when;
 class HybridRetrieverTest {
 
     private final IngredientCatalog catalog = new IngredientCatalog(List.of(
-            new IngredientEntry("Trứng gà", "trung ga", List.of(), "dam_dong_vat", 21, "trung"),
-            new IngredientEntry("Tôm", "tom", List.of(), "hai_san", 3, "hai_san"),
-            new IngredientEntry("Cà chua", "ca chua", List.of(), "rau_cu", 7, null)));
+            IngredientEntry.basic("Trứng gà", "trung ga", List.of(), "dam_dong_vat", 21, "trung"),
+            IngredientEntry.basic("Tôm", "tom", List.of(), "hai_san", 3, "hai_san"),
+            IngredientEntry.basic("Cà chua", "ca chua", List.of(), "rau_cu", 7, null)));
 
     private final RagMatchingClient matchingClient = Mockito.mock(RagMatchingClient.class);
     private final RagRecipeClient recipeClient = Mockito.mock(RagRecipeClient.class);

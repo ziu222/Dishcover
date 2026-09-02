@@ -50,10 +50,10 @@ class MatchingServiceTest {
         UserClient userClient = new UserClient(userBuilder, "http://user");
 
         IngredientCatalog catalog = new IngredientCatalog(List.of(
-                new IngredientEntry("Trứng gà", "trung ga", List.of(), "dam_dong_vat", 21, "trung"),
-                new IngredientEntry("Cà chua", "ca chua", List.of(), "rau_cu", 7, null),
-                new IngredientEntry("Hành lá", "hanh la", List.of(), "rau_cu", 5, null),
-                new IngredientEntry("Tôm", "tom", List.of(), "hai_san", 3, "hai_san")));
+                IngredientEntry.basic("Trứng gà", "trung ga", List.of(), "dam_dong_vat", 21, "trung"),
+                IngredientEntry.basic("Cà chua", "ca chua", List.of(), "rau_cu", 7, null),
+                IngredientEntry.basic("Hành lá", "hanh la", List.of(), "rau_cu", 5, null),
+                IngredientEntry.basic("Tôm", "tom", List.of(), "hai_san", 3, "hai_san")));
         MatchingEngine engine = new MatchingEngine(List.of(
                 new JaccardBaseRule(), new EssentialWeightRule(), new ExpiryBonusRule(),
                 new AllergyFilterRule(catalog)));

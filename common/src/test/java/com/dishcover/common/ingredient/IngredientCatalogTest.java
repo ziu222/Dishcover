@@ -113,6 +113,22 @@ class IngredientCatalogTest {
     }
 
     @Test
+    void everyEntryHasCompleteNutritionData() {
+        // Guard cho phần "tính calo" (common/nutrition) — mọi mục catalog PHẢI có đủ 4 số dinh dưỡng
+        // + defaultState hợp lệ, không được bỏ sót khi thêm nguyên liệu mới (khác unitToGram, được
+        // phép null cho nguyên liệu không dùng đơn vị đếm).
+        for (IngredientEntry e : catalog.entries()) {
+            assertNotNull(e.caloriesPer100g(), e.normalizedName() + " thiếu caloriesPer100g");
+            assertNotNull(e.proteinPer100g(), e.normalizedName() + " thiếu proteinPer100g");
+            assertNotNull(e.carbPer100g(), e.normalizedName() + " thiếu carbPer100g");
+            assertNotNull(e.fatPer100g(), e.normalizedName() + " thiếu fatPer100g");
+            assertTrue(e.caloriesPer100g() >= 0, e.normalizedName() + " calo âm");
+            assertTrue("RAW".equals(e.defaultState()) || "COOKED".equals(e.defaultState()),
+                    e.normalizedName() + " defaultState phải là RAW hoặc COOKED, hiện: " + e.defaultState());
+        }
+    }
+
+    @Test
     void ngoDoesNotResolveToCorn() {
         // Regression: trước đây resolve("ngò") trả "bap" (Bắp) do collision
         assertEquals("bap", catalog.resolve("ngô"), "'ngô' vẫn phải ra Bắp");

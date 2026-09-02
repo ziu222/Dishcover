@@ -1,226 +1,3787 @@
 [
-  { "canonicalName": "Cà chua", "normalizedName": "ca chua", "aliases": ["cà chua bi", "tomato"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Dưa leo", "normalizedName": "dua leo", "aliases": ["dưa chuột", "cucumber"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Cà rốt", "normalizedName": "ca rot", "aliases": ["carrot"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Khoai tây", "normalizedName": "khoai tay", "aliases": ["potato"], "category": "rau_cu", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Khoai lang", "normalizedName": "khoai lang", "aliases": ["sweet potato"], "category": "rau_cu", "shelfLifeDays": 21, "allergenGroup": null },
-  { "canonicalName": "Hành tây", "normalizedName": "hanh tay", "aliases": ["onion", "củ hành tây"], "category": "rau_cu", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Hành tím", "normalizedName": "hanh tim", "aliases": ["củ hành tím", "shallot"], "category": "rau_cu", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Tỏi", "normalizedName": "toi", "aliases": ["củ tỏi", "garlic"], "category": "gia_vi", "shelfLifeDays": 60, "allergenGroup": null },
-  { "canonicalName": "Gừng", "normalizedName": "gung", "aliases": ["ginger"], "category": "gia_vi", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Sả", "normalizedName": "sa", "aliases": ["cây sả", "lemongrass"], "category": "gia_vi", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Ớt", "normalizedName": "ot", "aliases": ["ớt sừng", "ớt hiểm", "chili"], "category": "gia_vi", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Ớt chuông", "normalizedName": "ot chuong", "aliases": ["ớt ngọt", "bell pepper"], "category": "rau_cu", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Cải thảo", "normalizedName": "cai thao", "aliases": ["napa cabbage", "cải bắc thảo"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Bắp cải", "normalizedName": "bap cai", "aliases": ["cải bắp", "cabbage"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Cải ngọt", "normalizedName": "cai ngot", "aliases": ["cải xanh"], "category": "rau_cu", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Cải bó xôi", "normalizedName": "cai bo xoi", "aliases": ["rau bina", "spinach"], "category": "rau_cu", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Rau muống", "normalizedName": "rau muong", "aliases": ["water spinach"], "category": "rau_cu", "shelfLifeDays": 4, "allergenGroup": null },
-  { "canonicalName": "Rau dền", "normalizedName": "rau den", "aliases": ["amaranth"], "category": "rau_cu", "shelfLifeDays": 4, "allergenGroup": null },
-  { "canonicalName": "Xà lách", "normalizedName": "xa lach", "aliases": ["rau diếp", "lettuce"], "category": "rau_cu", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Bông cải xanh", "normalizedName": "bong cai xanh", "aliases": ["súp lơ xanh", "broccoli"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Bông cải trắng", "normalizedName": "bong cai trang", "aliases": ["súp lơ trắng", "cauliflower"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Bí đỏ", "normalizedName": "bi do", "aliases": ["bí ngô", "pumpkin"], "category": "rau_cu", "shelfLifeDays": 21, "allergenGroup": null },
-  { "canonicalName": "Bí xanh", "normalizedName": "bi xanh", "aliases": ["bí đao", "winter melon"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Bầu", "normalizedName": "bau", "aliases": ["quả bầu", "bottle gourd"], "category": "rau_cu", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Mướp", "normalizedName": "muop", "aliases": ["luffa"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Khổ qua", "normalizedName": "kho qua", "aliases": ["mướp đắng", "bitter melon"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Cà tím", "normalizedName": "ca tim", "aliases": ["eggplant", "aubergine"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Đậu bắp", "normalizedName": "dau bap", "aliases": ["okra"], "category": "rau_cu", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Đậu que", "normalizedName": "dau que", "aliases": ["đậu cô ve", "green bean"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Giá đỗ", "normalizedName": "gia do", "aliases": ["giá", "bean sprout"], "category": "rau_cu", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Su su", "normalizedName": "su su", "aliases": ["chayote"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Su hào", "normalizedName": "su hao", "aliases": ["kohlrabi"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Củ cải trắng", "normalizedName": "cu cai trang", "aliases": ["củ cải", "daikon", "radish"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Củ dền", "normalizedName": "cu den", "aliases": ["beetroot", "beet"], "category": "rau_cu", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Bắp", "normalizedName": "bap", "aliases": ["ngô", "corn", "bắp ngọt"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Măng", "normalizedName": "mang", "aliases": ["măng tươi", "bamboo shoot"], "category": "rau_cu", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Củ sen", "normalizedName": "cu sen", "aliases": ["ngó sen", "lotus root"], "category": "rau_cu", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Cà pháo", "normalizedName": "ca phao", "aliases": [], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Bí ngòi", "normalizedName": "bi ngoi", "aliases": ["courgette", "zucchini"], "category": "rau_cu", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Ô liu", "normalizedName": "o liu", "aliases": ["olive", "olives"], "category": "rau_cu", "shelfLifeDays": 180, "allergenGroup": null },
-
-  { "canonicalName": "Hành lá", "normalizedName": "hanh la", "aliases": ["hành hoa", "green onion", "scallion"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Ngò rí", "normalizedName": "ngo ri", "aliases": ["rau mùi", "cilantro", "coriander"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Ngò gai", "normalizedName": "ngo gai", "aliases": ["mùi tàu", "culantro"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Rau răm", "normalizedName": "rau ram", "aliases": ["vietnamese coriander"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Húng quế", "normalizedName": "hung que", "aliases": ["rau quế", "thai basil"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Húng lủi", "normalizedName": "hung lui", "aliases": ["bạc hà", "mint"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Tía tô", "normalizedName": "tia to", "aliases": ["perilla", "shiso"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Kinh giới", "normalizedName": "kinh gioi", "aliases": [], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Thì là", "normalizedName": "thi la", "aliases": ["dill"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Lá lốt", "normalizedName": "la lot", "aliases": ["wild betel leaf"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Cần tây", "normalizedName": "can tay", "aliases": ["celery"], "category": "la_thom", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Cần nước", "normalizedName": "can nuoc", "aliases": ["rau cần", "water celery"], "category": "la_thom", "shelfLifeDays": 4, "allergenGroup": null },
-  { "canonicalName": "Lá chanh", "normalizedName": "la chanh", "aliases": ["kaffir lime leaf"], "category": "la_thom", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Rau ngổ", "normalizedName": "rau ngo", "aliases": ["ngò om", "rice paddy herb"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Lá dứa", "normalizedName": "la dua", "aliases": ["lá nếp", "pandan"], "category": "la_thom", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Hương thảo", "normalizedName": "huong thao", "aliases": ["rosemary"], "category": "la_thom", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Cỏ xạ hương", "normalizedName": "co xa huong", "aliases": ["thyme"], "category": "la_thom", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Lá nguyệt quế", "normalizedName": "la nguyet que", "aliases": ["bay leaf", "bay leaves"], "category": "la_thom", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Rau mùi tây", "normalizedName": "rau mui tay", "aliases": ["parsley"], "category": "la_thom", "shelfLifeDays": 5, "allergenGroup": null },
-
-  { "canonicalName": "Thịt heo", "normalizedName": "thit heo", "aliases": ["thịt lợn", "pork"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Ba chỉ", "normalizedName": "ba chi", "aliases": ["thịt ba rọi", "thịt ba chỉ", "pork belly", "belly pork"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Sườn heo", "normalizedName": "suon heo", "aliases": ["sườn non", "pork rib"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Nạc vai", "normalizedName": "nac vai", "aliases": ["thịt nạc vai", "pork shoulder"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Thịt bò", "normalizedName": "thit bo", "aliases": ["beef", "minced beef", "beef mince", "steak", "stewing beef", "sirloin steak"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Bắp bò", "normalizedName": "bap bo", "aliases": ["beef shank"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Gân bò", "normalizedName": "gan bo", "aliases": ["beef tendon"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Thịt gà", "normalizedName": "thit ga", "aliases": ["chicken", "gà", "chicken liver", "chicken breasts", "chicken thighs"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Đùi gà", "normalizedName": "dui ga", "aliases": ["chicken thigh"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Ức gà", "normalizedName": "uc ga", "aliases": ["chicken breast"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Cánh gà", "normalizedName": "canh ga", "aliases": ["chicken wing"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Thịt vịt", "normalizedName": "thit vit", "aliases": ["duck", "vịt"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Thịt băm", "normalizedName": "thit bam", "aliases": ["thịt xay", "ground meat"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Xúc xích", "normalizedName": "xuc xich", "aliases": ["sausage"], "category": "thit", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Chả lụa", "normalizedName": "cha lua", "aliases": ["giò lụa"], "category": "thit", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Lạp xưởng", "normalizedName": "lap xuong", "aliases": ["chinese sausage"], "category": "thit", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Ba chỉ bò", "normalizedName": "ba chi bo", "aliases": ["beef brisket"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Giăm bông", "normalizedName": "giam bong", "aliases": ["ham", "thịt nguội"], "category": "thit", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Thịt cừu", "normalizedName": "thit cuu", "aliases": ["lamb", "lamb shanks", "mutton", "lamb loin"], "category": "thit", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Thịt gà tây", "normalizedName": "thit ga tay", "aliases": ["turkey", "turkey breast"], "category": "thit", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Thịt xông khói", "normalizedName": "thit xong khoi", "aliases": ["bacon", "smoked bacon", "streaky bacon"], "category": "thit", "shelfLifeDays": 14, "allergenGroup": null },
-
-  { "canonicalName": "Cá basa", "normalizedName": "ca basa", "aliases": ["cá tra", "basa fish"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá lóc", "normalizedName": "ca loc", "aliases": ["cá quả", "snakehead fish"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá thu", "normalizedName": "ca thu", "aliases": ["mackerel"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá ngừ", "normalizedName": "ca ngu", "aliases": ["tuna"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá hồi", "normalizedName": "ca hoi", "aliases": ["salmon"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá diêu hồng", "normalizedName": "ca dieu hong", "aliases": ["red tilapia"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá rô phi", "normalizedName": "ca ro phi", "aliases": ["tilapia"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá nục", "normalizedName": "ca nuc", "aliases": ["round scad"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá cơm", "normalizedName": "ca com", "aliases": ["anchovy"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Tôm", "normalizedName": "tom", "aliases": ["tôm sú", "tôm thẻ", "shrimp", "shrimps", "prawn", "prawns", "king prawns", "tiger prawns"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Tôm khô", "normalizedName": "tom kho", "aliases": ["dried shrimp"], "category": "hai_san", "shelfLifeDays": 120, "allergenGroup": "hai_san" },
-  { "canonicalName": "Mực", "normalizedName": "muc", "aliases": ["mực ống", "mực nang", "squid"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Bạch tuộc", "normalizedName": "bach tuoc", "aliases": ["octopus"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Nghêu", "normalizedName": "ngheu", "aliases": ["ngao", "clam"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Sò", "normalizedName": "so", "aliases": ["sò huyết", "sò lông", "cockle"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Ốc", "normalizedName": "oc", "aliases": ["snail"], "category": "hai_san", "shelfLifeDays": 3, "allergenGroup": "hai_san" },
-  { "canonicalName": "Hàu", "normalizedName": "hau", "aliases": ["oyster"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cua", "normalizedName": "cua", "aliases": ["cua biển", "crab"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Ghẹ", "normalizedName": "ghe", "aliases": ["blue crab"], "category": "hai_san", "shelfLifeDays": 2, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá khô", "normalizedName": "ca kho", "aliases": ["khô cá", "dried fish"], "category": "hai_san", "shelfLifeDays": 90, "allergenGroup": "hai_san" },
-  { "canonicalName": "Chả cá", "normalizedName": "cha ca", "aliases": ["fish cake"], "category": "hai_san", "shelfLifeDays": 5, "allergenGroup": "hai_san" },
-  { "canonicalName": "Cá viên", "normalizedName": "ca vien", "aliases": ["fish ball"], "category": "hai_san", "shelfLifeDays": 14, "allergenGroup": "hai_san" },
-  { "canonicalName": "Tôm viên", "normalizedName": "tom vien", "aliases": ["shrimp ball"], "category": "hai_san", "shelfLifeDays": 14, "allergenGroup": "hai_san" },
-  { "canonicalName": "Rong biển", "normalizedName": "rong bien", "aliases": ["tảo biển", "seaweed", "nori"], "category": "hai_san", "shelfLifeDays": 180, "allergenGroup": null },
-
-  { "canonicalName": "Trứng gà", "normalizedName": "trung ga", "aliases": ["trứng", "egg", "eggs", "chicken egg", "egg yolks", "egg whites"], "category": "trung_sua", "shelfLifeDays": 21, "allergenGroup": "trung" },
-  { "canonicalName": "Trứng vịt", "normalizedName": "trung vit", "aliases": ["duck egg"], "category": "trung_sua", "shelfLifeDays": 21, "allergenGroup": "trung" },
-  { "canonicalName": "Trứng cút", "normalizedName": "trung cut", "aliases": ["quail egg"], "category": "trung_sua", "shelfLifeDays": 21, "allergenGroup": "trung" },
-  { "canonicalName": "Trứng vịt bắc thảo", "normalizedName": "trung vit bac thao", "aliases": ["century egg"], "category": "trung_sua", "shelfLifeDays": 60, "allergenGroup": "trung" },
-  { "canonicalName": "Sữa tươi", "normalizedName": "sua tuoi", "aliases": ["milk", "sữa"], "category": "trung_sua", "shelfLifeDays": 7, "allergenGroup": "sua" },
-  { "canonicalName": "Sữa đặc", "normalizedName": "sua dac", "aliases": ["condensed milk"], "category": "trung_sua", "shelfLifeDays": 180, "allergenGroup": "sua" },
-  { "canonicalName": "Bơ", "normalizedName": "bo", "aliases": ["butter"], "category": "trung_sua", "shelfLifeDays": 60, "allergenGroup": "sua" },
-  { "canonicalName": "Phô mai", "normalizedName": "pho mai", "aliases": ["phô mát", "cheese", "parmesan cheese", "cheddar cheese", "mozzarella", "cream cheese"], "category": "trung_sua", "shelfLifeDays": 30, "allergenGroup": "sua" },
-  { "canonicalName": "Sữa chua", "normalizedName": "sua chua", "aliases": ["yaourt", "yogurt"], "category": "trung_sua", "shelfLifeDays": 14, "allergenGroup": "sua" },
-  { "canonicalName": "Kem tươi", "normalizedName": "kem tuoi", "aliases": ["whipping cream", "heavy cream", "double cream", "clotted cream", "single cream"], "category": "trung_sua", "shelfLifeDays": 14, "allergenGroup": "sua" },
-
-  { "canonicalName": "Nước mắm", "normalizedName": "nuoc mam", "aliases": ["fish sauce"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": "hai_san" },
-  { "canonicalName": "Nước tương", "normalizedName": "nuoc tuong", "aliases": ["xì dầu", "soy sauce"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": "dau_nanh" },
-  { "canonicalName": "Muối", "normalizedName": "muoi", "aliases": ["salt"], "category": "gia_vi", "shelfLifeDays": 730, "allergenGroup": null },
-  { "canonicalName": "Đường", "normalizedName": "duong", "aliases": ["đường cát", "sugar"], "category": "gia_vi", "shelfLifeDays": 730, "allergenGroup": null },
-  { "canonicalName": "Đường thốt nốt", "normalizedName": "duong thot not", "aliases": ["palm sugar"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Bột ngọt", "normalizedName": "bot ngot", "aliases": ["mì chính", "msg"], "category": "gia_vi", "shelfLifeDays": 730, "allergenGroup": null },
-  { "canonicalName": "Hạt nêm", "normalizedName": "hat nem", "aliases": ["seasoning powder"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Tiêu", "normalizedName": "tieu", "aliases": ["hạt tiêu", "tiêu xay", "pepper", "black pepper"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Dầu ăn", "normalizedName": "dau an", "aliases": ["cooking oil", "dầu thực vật"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Dầu hào", "normalizedName": "dau hao", "aliases": ["oyster sauce"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": "hai_san" },
-  { "canonicalName": "Dầu mè", "normalizedName": "dau me", "aliases": ["sesame oil", "sesame seed oil"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": "me" },
-  { "canonicalName": "Dầu ô liu", "normalizedName": "dau o liu", "aliases": ["olive oil"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Giấm", "normalizedName": "giam", "aliases": ["giấm gạo", "vinegar"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Tương ớt", "normalizedName": "tuong ot", "aliases": ["chili sauce"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Tương cà", "normalizedName": "tuong ca", "aliases": ["ketchup", "sốt cà chua"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Sa tế", "normalizedName": "sa te", "aliases": ["satay"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Mắm tôm", "normalizedName": "mam tom", "aliases": ["shrimp paste"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": "hai_san" },
-  { "canonicalName": "Mắm ruốc", "normalizedName": "mam ruoc", "aliases": [], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": "hai_san" },
-  { "canonicalName": "Tương đen", "normalizedName": "tuong den", "aliases": ["hoisin sauce"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": "dau_nanh" },
-  { "canonicalName": "Bột nghệ", "normalizedName": "bot nghe", "aliases": ["turmeric powder"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Nghệ", "normalizedName": "nghe", "aliases": ["củ nghệ", "turmeric"], "category": "gia_vi", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Bột cà ri", "normalizedName": "bot ca ri", "aliases": ["curry powder"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Bột ớt", "normalizedName": "bot ot", "aliases": ["chili powder"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Ngũ vị hương", "normalizedName": "ngu vi huong", "aliases": ["five spice"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Quế", "normalizedName": "que", "aliases": ["cinnamon"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Hồi", "normalizedName": "hoi", "aliases": ["hoa hồi", "star anise"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Mật ong", "normalizedName": "mat ong", "aliases": ["honey"], "category": "gia_vi", "shelfLifeDays": 730, "allergenGroup": null },
-  { "canonicalName": "Nước cốt dừa", "normalizedName": "nuoc cot dua", "aliases": ["coconut milk", "coconut cream"], "category": "gia_vi", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Cùi dừa", "normalizedName": "cui dua", "aliases": ["cơm dừa", "dừa nạo", "dừa tươi", "coconut", "shredded coconut"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Nước dừa", "normalizedName": "nuoc dua", "aliases": ["coconut water"], "category": "gia_vi", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Me chua", "normalizedName": "me chua", "aliases": ["me vắt", "tamarind"], "category": "gia_vi", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Chanh", "normalizedName": "chanh", "aliases": ["lime", "lemon"], "category": "gia_vi", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Bột năng", "normalizedName": "bot nang", "aliases": ["tapioca starch"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Bột bắp", "normalizedName": "bot bap", "aliases": ["bột ngô", "cornstarch"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Bột chiên giòn", "normalizedName": "bot chien gion", "aliases": ["crispy frying flour"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": "gluten" },
-  { "canonicalName": "Rượu trắng", "normalizedName": "ruou trang", "aliases": ["rượu nấu ăn", "cooking wine"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Rượu vang đỏ", "normalizedName": "ruou vang do", "aliases": ["red wine"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Rượu vang trắng", "normalizedName": "ruou vang trang", "aliases": ["white wine"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Mù tạt", "normalizedName": "mu tat", "aliases": ["mustard"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Bột nở", "normalizedName": "bot no", "aliases": ["baking powder"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Ca cao", "normalizedName": "ca cao", "aliases": ["cocoa powder", "cacao"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Vani", "normalizedName": "vani", "aliases": ["vanilla", "vanilla extract"], "category": "gia_vi", "shelfLifeDays": 365, "allergenGroup": null },
-
-  { "canonicalName": "Gạo", "normalizedName": "gao", "aliases": ["gạo tẻ", "rice"], "category": "tinh_bot", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Gạo nếp", "normalizedName": "gao nep", "aliases": ["nếp", "glutinous rice"], "category": "tinh_bot", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Cơm", "normalizedName": "com", "aliases": ["cơm trắng", "cơm nguội", "cooked rice"], "category": "tinh_bot", "shelfLifeDays": 2, "allergenGroup": null },
-  { "canonicalName": "Bún", "normalizedName": "bun", "aliases": ["rice vermicelli"], "category": "tinh_bot", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Phở", "normalizedName": "pho", "aliases": ["bánh phở", "pho noodle"], "category": "tinh_bot", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Miến", "normalizedName": "mien", "aliases": ["glass noodle", "vermicelli"], "category": "tinh_bot", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Hủ tiếu", "normalizedName": "hu tieu", "aliases": ["hủ tíu"], "category": "tinh_bot", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Mì gói", "normalizedName": "mi goi", "aliases": ["mì ăn liền", "instant noodle"], "category": "tinh_bot", "shelfLifeDays": 180, "allergenGroup": "gluten" },
-  { "canonicalName": "Mì trứng", "normalizedName": "mi trung", "aliases": ["egg noodle"], "category": "tinh_bot", "shelfLifeDays": 90, "allergenGroup": "gluten" },
-  { "canonicalName": "Mì Ý", "normalizedName": "mi y", "aliases": ["nui", "pasta", "spaghetti"], "category": "tinh_bot", "shelfLifeDays": 365, "allergenGroup": "gluten" },
-  { "canonicalName": "Bánh mì", "normalizedName": "banh mi", "aliases": ["bread"], "category": "tinh_bot", "shelfLifeDays": 3, "allergenGroup": "gluten" },
-  { "canonicalName": "Bột mì", "normalizedName": "bot mi", "aliases": ["flour", "wheat flour"], "category": "tinh_bot", "shelfLifeDays": 365, "allergenGroup": "gluten" },
-  { "canonicalName": "Bánh tráng", "normalizedName": "banh trang", "aliases": ["rice paper"], "category": "tinh_bot", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Bánh phở khô", "normalizedName": "banh pho kho", "aliases": ["dried pho"], "category": "tinh_bot", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Yến mạch", "normalizedName": "yen mach", "aliases": ["oats", "oatmeal"], "category": "tinh_bot", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Khoai môn", "normalizedName": "khoai mon", "aliases": ["taro"], "category": "tinh_bot", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Khoai mì", "normalizedName": "khoai mi", "aliases": ["sắn", "cassava"], "category": "tinh_bot", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Bánh quy", "normalizedName": "banh quy", "aliases": ["ladyfinger", "ladyfingers", "biscuit", "biscuits"], "category": "tinh_bot", "shelfLifeDays": 90, "allergenGroup": "gluten" },
-
-  { "canonicalName": "Nấm rơm", "normalizedName": "nam rom", "aliases": ["straw mushroom"], "category": "nam", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Nấm hương", "normalizedName": "nam huong", "aliases": ["nấm đông cô", "shiitake"], "category": "nam", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Nấm kim châm", "normalizedName": "nam kim cham", "aliases": ["enoki"], "category": "nam", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Nấm bào ngư", "normalizedName": "nam bao ngu", "aliases": ["oyster mushroom"], "category": "nam", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Nấm mèo", "normalizedName": "nam meo", "aliases": ["mộc nhĩ", "wood ear"], "category": "nam", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Nấm đùi gà", "normalizedName": "nam dui ga", "aliases": ["king oyster mushroom"], "category": "nam", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Nấm mỡ", "normalizedName": "nam mo", "aliases": ["nấm trắng", "button mushroom"], "category": "nam", "shelfLifeDays": 5, "allergenGroup": null },
-
-  { "canonicalName": "Đậu hũ", "normalizedName": "dau hu", "aliases": ["đậu phụ", "tàu hũ", "tofu"], "category": "dau_hat", "shelfLifeDays": 5, "allergenGroup": "dau_nanh" },
-  { "canonicalName": "Tàu hũ ky", "normalizedName": "tau hu ky", "aliases": ["váng đậu", "tofu skin"], "category": "dau_hat", "shelfLifeDays": 90, "allergenGroup": "dau_nanh" },
-  { "canonicalName": "Đậu xanh", "normalizedName": "dau xanh", "aliases": ["mung bean"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Đậu đỏ", "normalizedName": "dau do", "aliases": ["red bean", "adzuki"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Đậu đen", "normalizedName": "dau den", "aliases": ["black bean"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Đậu trắng", "normalizedName": "dau trang", "aliases": ["white bean", "cannellini bean", "navy bean", "baked beans"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": null },
-  { "canonicalName": "Đậu phộng", "normalizedName": "dau phong", "aliases": ["lạc", "peanut", "peanuts", "roasted peanut", "peanut butter"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "dau_phong" },
-  { "canonicalName": "Đậu nành", "normalizedName": "dau nanh", "aliases": ["soybean"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "dau_nanh" },
-  { "canonicalName": "Mè", "normalizedName": "me", "aliases": ["vừng", "sesame", "mè rang", "sesame seed", "sesame seeds"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "me" },
-  { "canonicalName": "Hạt điều", "normalizedName": "hat dieu", "aliases": ["cashew", "cashews", "cashew nuts"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "hat" },
-  { "canonicalName": "Hạnh nhân", "normalizedName": "hanh nhan", "aliases": ["almond"], "category": "dau_hat", "shelfLifeDays": 180, "allergenGroup": "hat" },
-  { "canonicalName": "Hạt sen", "normalizedName": "hat sen", "aliases": ["lotus seed"], "category": "dau_hat", "shelfLifeDays": 90, "allergenGroup": null },
-
-  { "canonicalName": "Chuối", "normalizedName": "chuoi", "aliases": ["banana"], "category": "trai_cay", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Táo", "normalizedName": "tao", "aliases": ["apple"], "category": "trai_cay", "shelfLifeDays": 21, "allergenGroup": null },
-  { "canonicalName": "Cam", "normalizedName": "cam", "aliases": ["orange"], "category": "trai_cay", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Xoài", "normalizedName": "xoai", "aliases": ["mango"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Dứa", "normalizedName": "dua", "aliases": ["thơm", "khóm", "pineapple"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Đu đủ", "normalizedName": "du du", "aliases": ["papaya"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Dưa hấu", "normalizedName": "dua hau", "aliases": ["watermelon"], "category": "trai_cay", "shelfLifeDays": 10, "allergenGroup": null },
-  { "canonicalName": "Bơ trái", "normalizedName": "bo trai", "aliases": ["quả bơ", "avocado"], "category": "trai_cay", "shelfLifeDays": 5, "allergenGroup": null },
-  { "canonicalName": "Nho", "normalizedName": "nho", "aliases": ["grape"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Chanh dây", "normalizedName": "chanh day", "aliases": ["passion fruit"], "category": "trai_cay", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Ổi", "normalizedName": "oi", "aliases": ["guava"], "category": "trai_cay", "shelfLifeDays": 7, "allergenGroup": null },
-  { "canonicalName": "Dâu tây", "normalizedName": "dau tay", "aliases": ["strawberry", "strawberries"], "category": "trai_cay", "shelfLifeDays": 5, "allergenGroup": null },
-
-  { "canonicalName": "Nước dùng gà", "normalizedName": "nuoc dung ga", "aliases": ["chicken stock", "chicken broth"], "category": "do_kho", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Nước dùng heo", "normalizedName": "nuoc dung heo", "aliases": ["pork broth", "nước hầm xương"], "category": "do_kho", "shelfLifeDays": 3, "allergenGroup": null },
-  { "canonicalName": "Cà chua hộp", "normalizedName": "ca chua hop", "aliases": ["canned tomato"], "category": "do_kho", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Bắp hộp", "normalizedName": "bap hop", "aliases": ["canned corn"], "category": "do_kho", "shelfLifeDays": 365, "allergenGroup": null },
-  { "canonicalName": "Cá ngừ hộp", "normalizedName": "ca ngu hop", "aliases": ["canned tuna"], "category": "do_kho", "shelfLifeDays": 365, "allergenGroup": "hai_san" },
-  { "canonicalName": "Pate", "normalizedName": "pate", "aliases": ["pâté"], "category": "do_kho", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Kim chi", "normalizedName": "kim chi", "aliases": ["kimchi"], "category": "do_kho", "shelfLifeDays": 30, "allergenGroup": null },
-  { "canonicalName": "Dưa chua", "normalizedName": "dua chua", "aliases": ["dưa cải", "pickled mustard"], "category": "do_kho", "shelfLifeDays": 14, "allergenGroup": null },
-  { "canonicalName": "Cà phê", "normalizedName": "ca phe", "aliases": ["coffee", "espresso"], "category": "do_kho", "shelfLifeDays": 365, "allergenGroup": null }
+  {
+    "canonicalName": "Cà chua",
+    "normalizedName": "ca chua",
+    "aliases": [
+      "cà chua bi",
+      "tomato"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 18,
+    "proteinPer100g": 0.9,
+    "carbPer100g": 3.9,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 100
+    }
+  },
+  {
+    "canonicalName": "Dưa leo",
+    "normalizedName": "dua leo",
+    "aliases": [
+      "dưa chuột",
+      "cucumber"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 15,
+    "proteinPer100g": 0.7,
+    "carbPer100g": 3.6,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 200,
+      "trái": 200
+    }
+  },
+  {
+    "canonicalName": "Cà rốt",
+    "normalizedName": "ca rot",
+    "aliases": [
+      "carrot"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 41,
+    "proteinPer100g": 0.9,
+    "carbPer100g": 9.6,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 80
+    }
+  },
+  {
+    "canonicalName": "Khoai tây",
+    "normalizedName": "khoai tay",
+    "aliases": [
+      "potato"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 77,
+    "proteinPer100g": 2,
+    "carbPer100g": 17.5,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 150
+    }
+  },
+  {
+    "canonicalName": "Khoai lang",
+    "normalizedName": "khoai lang",
+    "aliases": [
+      "sweet potato"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 21,
+    "allergenGroup": null,
+    "caloriesPer100g": 86,
+    "proteinPer100g": 1.6,
+    "carbPer100g": 20.1,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 150
+    }
+  },
+  {
+    "canonicalName": "Hành tây",
+    "normalizedName": "hanh tay",
+    "aliases": [
+      "onion",
+      "củ hành tây"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 40,
+    "proteinPer100g": 1.1,
+    "carbPer100g": 9.3,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 110
+    }
+  },
+  {
+    "canonicalName": "Hành tím",
+    "normalizedName": "hanh tim",
+    "aliases": [
+      "củ hành tím",
+      "shallot"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 72,
+    "proteinPer100g": 2.5,
+    "carbPer100g": 16.8,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 20
+    }
+  },
+  {
+    "canonicalName": "Tỏi",
+    "normalizedName": "toi",
+    "aliases": [
+      "củ tỏi",
+      "garlic"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 60,
+    "allergenGroup": null,
+    "caloriesPer100g": 149,
+    "proteinPer100g": 6.4,
+    "carbPer100g": 33.1,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "tép": 5,
+      "củ": 30
+    }
+  },
+  {
+    "canonicalName": "Gừng",
+    "normalizedName": "gung",
+    "aliases": [
+      "ginger"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 80,
+    "proteinPer100g": 1.8,
+    "carbPer100g": 17.8,
+    "fatPer100g": 0.8,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 50,
+      "nhánh": 15
+    }
+  },
+  {
+    "canonicalName": "Sả",
+    "normalizedName": "sa",
+    "aliases": [
+      "cây sả",
+      "lemongrass"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 99,
+    "proteinPer100g": 1.8,
+    "carbPer100g": 25.3,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 15,
+      "nhánh": 15
+    }
+  },
+  {
+    "canonicalName": "Ớt",
+    "normalizedName": "ot",
+    "aliases": [
+      "ớt sừng",
+      "ớt hiểm",
+      "chili"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 40,
+    "proteinPer100g": 1.9,
+    "carbPer100g": 8.8,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 10,
+      "trái": 10
+    }
+  },
+  {
+    "canonicalName": "Ớt chuông",
+    "normalizedName": "ot chuong",
+    "aliases": [
+      "ớt ngọt",
+      "bell pepper"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 31,
+    "proteinPer100g": 1,
+    "carbPer100g": 6,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 120,
+      "trái": 120
+    }
+  },
+  {
+    "canonicalName": "Cải thảo",
+    "normalizedName": "cai thao",
+    "aliases": [
+      "napa cabbage",
+      "cải bắc thảo"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 16,
+    "proteinPer100g": 1.2,
+    "carbPer100g": 3.2,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 800
+    }
+  },
+  {
+    "canonicalName": "Bắp cải",
+    "normalizedName": "bap cai",
+    "aliases": [
+      "cải bắp",
+      "cabbage"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 25,
+    "proteinPer100g": 1.3,
+    "carbPer100g": 5.8,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 900
+    }
+  },
+  {
+    "canonicalName": "Cải ngọt",
+    "normalizedName": "cai ngot",
+    "aliases": [
+      "cải xanh"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 13,
+    "proteinPer100g": 1.5,
+    "carbPer100g": 2.2,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "bó": 200
+    }
+  },
+  {
+    "canonicalName": "Cải bó xôi",
+    "normalizedName": "cai bo xoi",
+    "aliases": [
+      "rau bina",
+      "spinach"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 23,
+    "proteinPer100g": 2.9,
+    "carbPer100g": 3.6,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "bó": 200
+    }
+  },
+  {
+    "canonicalName": "Rau muống",
+    "normalizedName": "rau muong",
+    "aliases": [
+      "water spinach"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 4,
+    "allergenGroup": null,
+    "caloriesPer100g": 19,
+    "proteinPer100g": 2.6,
+    "carbPer100g": 3.1,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "bó": 250
+    }
+  },
+  {
+    "canonicalName": "Rau dền",
+    "normalizedName": "rau den",
+    "aliases": [
+      "amaranth"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 4,
+    "allergenGroup": null,
+    "caloriesPer100g": 23,
+    "proteinPer100g": 2.5,
+    "carbPer100g": 4,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "bó": 200
+    }
+  },
+  {
+    "canonicalName": "Xà lách",
+    "normalizedName": "xa lach",
+    "aliases": [
+      "rau diếp",
+      "lettuce"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 15,
+    "proteinPer100g": 1.4,
+    "carbPer100g": 2.9,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 250
+    }
+  },
+  {
+    "canonicalName": "Bông cải xanh",
+    "normalizedName": "bong cai xanh",
+    "aliases": [
+      "súp lơ xanh",
+      "broccoli"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 34,
+    "proteinPer100g": 2.8,
+    "carbPer100g": 6.6,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 400
+    }
+  },
+  {
+    "canonicalName": "Bông cải trắng",
+    "normalizedName": "bong cai trang",
+    "aliases": [
+      "súp lơ trắng",
+      "cauliflower"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 25,
+    "proteinPer100g": 1.9,
+    "carbPer100g": 5,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 500
+    }
+  },
+  {
+    "canonicalName": "Bí đỏ",
+    "normalizedName": "bi do",
+    "aliases": [
+      "bí ngô",
+      "pumpkin"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 21,
+    "allergenGroup": null,
+    "caloriesPer100g": 26,
+    "proteinPer100g": 1,
+    "carbPer100g": 6.5,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 1000
+    }
+  },
+  {
+    "canonicalName": "Bí xanh",
+    "normalizedName": "bi xanh",
+    "aliases": [
+      "bí đao",
+      "winter melon"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 13,
+    "proteinPer100g": 0.4,
+    "carbPer100g": 3,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 1500
+    }
+  },
+  {
+    "canonicalName": "Bầu",
+    "normalizedName": "bau",
+    "aliases": [
+      "quả bầu",
+      "bottle gourd"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 15,
+    "proteinPer100g": 0.6,
+    "carbPer100g": 3.4,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "trái": 600
+    }
+  },
+  {
+    "canonicalName": "Mướp",
+    "normalizedName": "muop",
+    "aliases": [
+      "luffa"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 17,
+    "proteinPer100g": 1.2,
+    "carbPer100g": 3.1,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "trái": 200
+    }
+  },
+  {
+    "canonicalName": "Khổ qua",
+    "normalizedName": "kho qua",
+    "aliases": [
+      "mướp đắng",
+      "bitter melon"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 17,
+    "proteinPer100g": 1,
+    "carbPer100g": 3.7,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 200,
+      "trái": 200
+    }
+  },
+  {
+    "canonicalName": "Cà tím",
+    "normalizedName": "ca tim",
+    "aliases": [
+      "eggplant",
+      "aubergine"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 25,
+    "proteinPer100g": 1,
+    "carbPer100g": 5.9,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 250,
+      "trái": 250
+    }
+  },
+  {
+    "canonicalName": "Đậu bắp",
+    "normalizedName": "dau bap",
+    "aliases": [
+      "okra"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 33,
+    "proteinPer100g": 1.9,
+    "carbPer100g": 7.5,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 15
+    }
+  },
+  {
+    "canonicalName": "Đậu que",
+    "normalizedName": "dau que",
+    "aliases": [
+      "đậu cô ve",
+      "green bean"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 31,
+    "proteinPer100g": 1.8,
+    "carbPer100g": 7,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Giá đỗ",
+    "normalizedName": "gia do",
+    "aliases": [
+      "giá",
+      "bean sprout"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 30,
+    "proteinPer100g": 3,
+    "carbPer100g": 5.9,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Su su",
+    "normalizedName": "su su",
+    "aliases": [
+      "chayote"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 19,
+    "proteinPer100g": 0.8,
+    "carbPer100g": 4.5,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 250,
+      "trái": 250
+    }
+  },
+  {
+    "canonicalName": "Su hào",
+    "normalizedName": "su hao",
+    "aliases": [
+      "kohlrabi"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 27,
+    "proteinPer100g": 1.7,
+    "carbPer100g": 6.2,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 200
+    }
+  },
+  {
+    "canonicalName": "Củ cải trắng",
+    "normalizedName": "cu cai trang",
+    "aliases": [
+      "củ cải",
+      "daikon",
+      "radish"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 16,
+    "proteinPer100g": 0.7,
+    "carbPer100g": 3.4,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 250
+    }
+  },
+  {
+    "canonicalName": "Củ dền",
+    "normalizedName": "cu den",
+    "aliases": [
+      "beetroot",
+      "beet"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 43,
+    "proteinPer100g": 1.6,
+    "carbPer100g": 9.6,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 150
+    }
+  },
+  {
+    "canonicalName": "Bắp",
+    "normalizedName": "bap",
+    "aliases": [
+      "ngô",
+      "corn",
+      "bắp ngọt"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 96,
+    "proteinPer100g": 3.4,
+    "carbPer100g": 21,
+    "fatPer100g": 1.5,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "trái": 200,
+      "củ": 200
+    }
+  },
+  {
+    "canonicalName": "Măng",
+    "normalizedName": "mang",
+    "aliases": [
+      "măng tươi",
+      "bamboo shoot"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 27,
+    "proteinPer100g": 2.6,
+    "carbPer100g": 5.2,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Củ sen",
+    "normalizedName": "cu sen",
+    "aliases": [
+      "ngó sen",
+      "lotus root"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 74,
+    "proteinPer100g": 2.6,
+    "carbPer100g": 17.2,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 200
+    }
+  },
+  {
+    "canonicalName": "Cà pháo",
+    "normalizedName": "ca phao",
+    "aliases": [],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 24,
+    "proteinPer100g": 1.1,
+    "carbPer100g": 5.5,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 15,
+      "trái": 15
+    }
+  },
+  {
+    "canonicalName": "Bí ngòi",
+    "normalizedName": "bi ngoi",
+    "aliases": [
+      "courgette",
+      "zucchini"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 17,
+    "proteinPer100g": 1.2,
+    "carbPer100g": 3.1,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 200,
+      "trái": 200
+    }
+  },
+  {
+    "canonicalName": "Ô liu",
+    "normalizedName": "o liu",
+    "aliases": [
+      "olive",
+      "olives"
+    ],
+    "category": "rau_cu",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 115,
+    "proteinPer100g": 0.8,
+    "carbPer100g": 6.3,
+    "fatPer100g": 10.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hành lá",
+    "normalizedName": "hanh la",
+    "aliases": [
+      "hành hoa",
+      "green onion",
+      "scallion"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 32,
+    "proteinPer100g": 1.8,
+    "carbPer100g": 7.3,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 5,
+      "cây": 5
+    }
+  },
+  {
+    "canonicalName": "Ngò rí",
+    "normalizedName": "ngo ri",
+    "aliases": [
+      "rau mùi",
+      "cilantro",
+      "coriander"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 23,
+    "proteinPer100g": 2.1,
+    "carbPer100g": 3.7,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 3,
+      "bó": 30
+    }
+  },
+  {
+    "canonicalName": "Ngò gai",
+    "normalizedName": "ngo gai",
+    "aliases": [
+      "mùi tàu",
+      "culantro"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 25,
+    "proteinPer100g": 2,
+    "carbPer100g": 4,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 3,
+      "lá": 2
+    }
+  },
+  {
+    "canonicalName": "Rau răm",
+    "normalizedName": "rau ram",
+    "aliases": [
+      "vietnamese coriander"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 20,
+    "proteinPer100g": 2,
+    "carbPer100g": 3,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 2
+    }
+  },
+  {
+    "canonicalName": "Húng quế",
+    "normalizedName": "hung que",
+    "aliases": [
+      "rau quế",
+      "thai basil"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 22,
+    "proteinPer100g": 3.2,
+    "carbPer100g": 2.7,
+    "fatPer100g": 0.6,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 3,
+      "lá": 1
+    }
+  },
+  {
+    "canonicalName": "Húng lủi",
+    "normalizedName": "hung lui",
+    "aliases": [
+      "bạc hà",
+      "mint"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 44,
+    "proteinPer100g": 3.3,
+    "carbPer100g": 6.4,
+    "fatPer100g": 0.7,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 2
+    }
+  },
+  {
+    "canonicalName": "Tía tô",
+    "normalizedName": "tia to",
+    "aliases": [
+      "perilla",
+      "shiso"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 37,
+    "proteinPer100g": 3.5,
+    "carbPer100g": 4.4,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "lá": 1,
+      "nhánh": 3
+    }
+  },
+  {
+    "canonicalName": "Kinh giới",
+    "normalizedName": "kinh gioi",
+    "aliases": [],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 25,
+    "proteinPer100g": 2.3,
+    "carbPer100g": 4.3,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 2
+    }
+  },
+  {
+    "canonicalName": "Thì là",
+    "normalizedName": "thi la",
+    "aliases": [
+      "dill"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 43,
+    "proteinPer100g": 3.5,
+    "carbPer100g": 7,
+    "fatPer100g": 1.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 2
+    }
+  },
+  {
+    "canonicalName": "Lá lốt",
+    "normalizedName": "la lot",
+    "aliases": [
+      "wild betel leaf"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 39,
+    "proteinPer100g": 4.4,
+    "carbPer100g": 5.9,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "lá": 2
+    }
+  },
+  {
+    "canonicalName": "Cần tây",
+    "normalizedName": "can tay",
+    "aliases": [
+      "celery"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 16,
+    "proteinPer100g": 0.7,
+    "carbPer100g": 3,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cây": 40,
+      "nhánh": 10
+    }
+  },
+  {
+    "canonicalName": "Cần nước",
+    "normalizedName": "can nuoc",
+    "aliases": [
+      "rau cần",
+      "water celery"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 4,
+    "allergenGroup": null,
+    "caloriesPer100g": 20,
+    "proteinPer100g": 2.1,
+    "carbPer100g": 3.3,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "bó": 100
+    }
+  },
+  {
+    "canonicalName": "Lá chanh",
+    "normalizedName": "la chanh",
+    "aliases": [
+      "kaffir lime leaf"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 28,
+    "proteinPer100g": 2,
+    "carbPer100g": 6,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "lá": 0.5
+    }
+  },
+  {
+    "canonicalName": "Rau ngổ",
+    "normalizedName": "rau ngo",
+    "aliases": [
+      "ngò om",
+      "rice paddy herb"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 22,
+    "proteinPer100g": 2.5,
+    "carbPer100g": 3.5,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 2
+    }
+  },
+  {
+    "canonicalName": "Lá dứa",
+    "normalizedName": "la dua",
+    "aliases": [
+      "lá nếp",
+      "pandan"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 30,
+    "proteinPer100g": 1.4,
+    "carbPer100g": 6,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "lá": 1
+    }
+  },
+  {
+    "canonicalName": "Hương thảo",
+    "normalizedName": "huong thao",
+    "aliases": [
+      "rosemary"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 131,
+    "proteinPer100g": 3.3,
+    "carbPer100g": 20.7,
+    "fatPer100g": 5.9,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 1
+    }
+  },
+  {
+    "canonicalName": "Cỏ xạ hương",
+    "normalizedName": "co xa huong",
+    "aliases": [
+      "thyme"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 276,
+    "proteinPer100g": 9.1,
+    "carbPer100g": 64.1,
+    "fatPer100g": 4.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 0.5
+    }
+  },
+  {
+    "canonicalName": "Lá nguyệt quế",
+    "normalizedName": "la nguyet que",
+    "aliases": [
+      "bay leaf",
+      "bay leaves"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 313,
+    "proteinPer100g": 7.6,
+    "carbPer100g": 75,
+    "fatPer100g": 8.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "lá": 0.2
+    }
+  },
+  {
+    "canonicalName": "Rau mùi tây",
+    "normalizedName": "rau mui tay",
+    "aliases": [
+      "parsley"
+    ],
+    "category": "la_thom",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 36,
+    "proteinPer100g": 3,
+    "carbPer100g": 6.3,
+    "fatPer100g": 0.8,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "nhánh": 2
+    }
+  },
+  {
+    "canonicalName": "Thịt heo",
+    "normalizedName": "thit heo",
+    "aliases": [
+      "thịt lợn",
+      "pork"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 242,
+    "proteinPer100g": 27,
+    "carbPer100g": 0,
+    "fatPer100g": 14,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Ba chỉ",
+    "normalizedName": "ba chi",
+    "aliases": [
+      "thịt ba rọi",
+      "thịt ba chỉ",
+      "pork belly",
+      "belly pork"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 518,
+    "proteinPer100g": 9.3,
+    "carbPer100g": 0,
+    "fatPer100g": 53,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Sườn heo",
+    "normalizedName": "suon heo",
+    "aliases": [
+      "sườn non",
+      "pork rib"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 277,
+    "proteinPer100g": 19,
+    "carbPer100g": 0,
+    "fatPer100g": 22,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nạc vai",
+    "normalizedName": "nac vai",
+    "aliases": [
+      "thịt nạc vai",
+      "pork shoulder"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 143,
+    "proteinPer100g": 21,
+    "carbPer100g": 0,
+    "fatPer100g": 6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt bò",
+    "normalizedName": "thit bo",
+    "aliases": [
+      "beef",
+      "minced beef",
+      "beef mince",
+      "steak",
+      "stewing beef",
+      "sirloin steak"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 250,
+    "proteinPer100g": 26,
+    "carbPer100g": 0,
+    "fatPer100g": 15,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bắp bò",
+    "normalizedName": "bap bo",
+    "aliases": [
+      "beef shank"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 137,
+    "proteinPer100g": 22,
+    "carbPer100g": 0,
+    "fatPer100g": 5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Gân bò",
+    "normalizedName": "gan bo",
+    "aliases": [
+      "beef tendon"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 160,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 8,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt gà",
+    "normalizedName": "thit ga",
+    "aliases": [
+      "chicken",
+      "gà",
+      "chicken liver",
+      "chicken breasts",
+      "chicken thighs"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 215,
+    "proteinPer100g": 18,
+    "carbPer100g": 0,
+    "fatPer100g": 15,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đùi gà",
+    "normalizedName": "dui ga",
+    "aliases": [
+      "chicken thigh"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 209,
+    "proteinPer100g": 18,
+    "carbPer100g": 0,
+    "fatPer100g": 15,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Ức gà",
+    "normalizedName": "uc ga",
+    "aliases": [
+      "chicken breast"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 165,
+    "proteinPer100g": 31,
+    "carbPer100g": 0,
+    "fatPer100g": 3.6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cánh gà",
+    "normalizedName": "canh ga",
+    "aliases": [
+      "chicken wing"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 203,
+    "proteinPer100g": 17,
+    "carbPer100g": 0,
+    "fatPer100g": 14,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt vịt",
+    "normalizedName": "thit vit",
+    "aliases": [
+      "duck",
+      "vịt"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 337,
+    "proteinPer100g": 19,
+    "carbPer100g": 0,
+    "fatPer100g": 28,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt băm",
+    "normalizedName": "thit bam",
+    "aliases": [
+      "thịt xay",
+      "ground meat"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 250,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 18,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Xúc xích",
+    "normalizedName": "xuc xich",
+    "aliases": [
+      "sausage"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 301,
+    "proteinPer100g": 12,
+    "carbPer100g": 3,
+    "fatPer100g": 27,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "cây": 50
+    }
+  },
+  {
+    "canonicalName": "Chả lụa",
+    "normalizedName": "cha lua",
+    "aliases": [
+      "giò lụa"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 200,
+    "proteinPer100g": 17,
+    "carbPer100g": 3,
+    "fatPer100g": 13,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Lạp xưởng",
+    "normalizedName": "lap xuong",
+    "aliases": [
+      "chinese sausage"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 450,
+    "proteinPer100g": 14,
+    "carbPer100g": 5,
+    "fatPer100g": 42,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "cây": 30
+    }
+  },
+  {
+    "canonicalName": "Ba chỉ bò",
+    "normalizedName": "ba chi bo",
+    "aliases": [
+      "beef brisket"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 333,
+    "proteinPer100g": 16,
+    "carbPer100g": 0,
+    "fatPer100g": 29,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Giăm bông",
+    "normalizedName": "giam bong",
+    "aliases": [
+      "ham",
+      "thịt nguội"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 145,
+    "proteinPer100g": 21,
+    "carbPer100g": 1.5,
+    "fatPer100g": 6,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt cừu",
+    "normalizedName": "thit cuu",
+    "aliases": [
+      "lamb",
+      "lamb shanks",
+      "mutton",
+      "lamb loin"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 294,
+    "proteinPer100g": 25,
+    "carbPer100g": 0,
+    "fatPer100g": 21,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt gà tây",
+    "normalizedName": "thit ga tay",
+    "aliases": [
+      "turkey",
+      "turkey breast"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 189,
+    "proteinPer100g": 29,
+    "carbPer100g": 0,
+    "fatPer100g": 7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Thịt xông khói",
+    "normalizedName": "thit xong khoi",
+    "aliases": [
+      "bacon",
+      "smoked bacon",
+      "streaky bacon"
+    ],
+    "category": "thit",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 541,
+    "proteinPer100g": 37,
+    "carbPer100g": 1.4,
+    "fatPer100g": 42,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "miếng": 8
+    }
+  },
+  {
+    "canonicalName": "Cá basa",
+    "normalizedName": "ca basa",
+    "aliases": [
+      "cá tra",
+      "basa fish"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 89,
+    "proteinPer100g": 15,
+    "carbPer100g": 0,
+    "fatPer100g": 3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá lóc",
+    "normalizedName": "ca loc",
+    "aliases": [
+      "cá quả",
+      "snakehead fish"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 90,
+    "proteinPer100g": 18,
+    "carbPer100g": 0,
+    "fatPer100g": 2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá thu",
+    "normalizedName": "ca thu",
+    "aliases": [
+      "mackerel"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 139,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá ngừ",
+    "normalizedName": "ca ngu",
+    "aliases": [
+      "tuna"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 132,
+    "proteinPer100g": 28,
+    "carbPer100g": 0,
+    "fatPer100g": 1.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá hồi",
+    "normalizedName": "ca hoi",
+    "aliases": [
+      "salmon"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 208,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 13,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá diêu hồng",
+    "normalizedName": "ca dieu hong",
+    "aliases": [
+      "red tilapia"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 96,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 1.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá rô phi",
+    "normalizedName": "ca ro phi",
+    "aliases": [
+      "tilapia"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 96,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 1.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá nục",
+    "normalizedName": "ca nuc",
+    "aliases": [
+      "round scad"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 109,
+    "proteinPer100g": 19,
+    "carbPer100g": 0,
+    "fatPer100g": 3.4,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá cơm",
+    "normalizedName": "ca com",
+    "aliases": [
+      "anchovy"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 131,
+    "proteinPer100g": 20,
+    "carbPer100g": 0,
+    "fatPer100g": 4.8,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tôm",
+    "normalizedName": "tom",
+    "aliases": [
+      "tôm sú",
+      "tôm thẻ",
+      "shrimp",
+      "shrimps",
+      "prawn",
+      "prawns",
+      "king prawns",
+      "tiger prawns"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 99,
+    "proteinPer100g": 24,
+    "carbPer100g": 0.2,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tôm khô",
+    "normalizedName": "tom kho",
+    "aliases": [
+      "dried shrimp"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 120,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 264,
+    "proteinPer100g": 59,
+    "carbPer100g": 0,
+    "fatPer100g": 3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mực",
+    "normalizedName": "muc",
+    "aliases": [
+      "mực ống",
+      "mực nang",
+      "squid"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 92,
+    "proteinPer100g": 15.6,
+    "carbPer100g": 3.1,
+    "fatPer100g": 1.4,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bạch tuộc",
+    "normalizedName": "bach tuoc",
+    "aliases": [
+      "octopus"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 82,
+    "proteinPer100g": 15,
+    "carbPer100g": 2.2,
+    "fatPer100g": 1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nghêu",
+    "normalizedName": "ngheu",
+    "aliases": [
+      "ngao",
+      "clam"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 86,
+    "proteinPer100g": 14.8,
+    "carbPer100g": 3.6,
+    "fatPer100g": 1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Sò",
+    "normalizedName": "so",
+    "aliases": [
+      "sò huyết",
+      "sò lông",
+      "cockle"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 72,
+    "proteinPer100g": 12,
+    "carbPer100g": 3,
+    "fatPer100g": 1.6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Ốc",
+    "normalizedName": "oc",
+    "aliases": [
+      "snail"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 3,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 90,
+    "proteinPer100g": 16,
+    "carbPer100g": 2,
+    "fatPer100g": 1.4,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hàu",
+    "normalizedName": "hau",
+    "aliases": [
+      "oyster"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 68,
+    "proteinPer100g": 7,
+    "carbPer100g": 3.9,
+    "fatPer100g": 2.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cua",
+    "normalizedName": "cua",
+    "aliases": [
+      "cua biển",
+      "crab"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 97,
+    "proteinPer100g": 19,
+    "carbPer100g": 0,
+    "fatPer100g": 1.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Ghẹ",
+    "normalizedName": "ghe",
+    "aliases": [
+      "blue crab"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 2,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 97,
+    "proteinPer100g": 19,
+    "carbPer100g": 0,
+    "fatPer100g": 1.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá khô",
+    "normalizedName": "ca kho",
+    "aliases": [
+      "khô cá",
+      "dried fish"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 90,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 280,
+    "proteinPer100g": 55,
+    "carbPer100g": 0,
+    "fatPer100g": 5,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Chả cá",
+    "normalizedName": "cha ca",
+    "aliases": [
+      "fish cake"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 5,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 150,
+    "proteinPer100g": 15,
+    "carbPer100g": 5,
+    "fatPer100g": 8,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá viên",
+    "normalizedName": "ca vien",
+    "aliases": [
+      "fish ball"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 14,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 180,
+    "proteinPer100g": 12,
+    "carbPer100g": 10,
+    "fatPer100g": 10,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tôm viên",
+    "normalizedName": "tom vien",
+    "aliases": [
+      "shrimp ball"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 14,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 170,
+    "proteinPer100g": 11,
+    "carbPer100g": 10,
+    "fatPer100g": 9,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Rong biển",
+    "normalizedName": "rong bien",
+    "aliases": [
+      "tảo biển",
+      "seaweed",
+      "nori"
+    ],
+    "category": "hai_san",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 45,
+    "proteinPer100g": 5,
+    "carbPer100g": 9,
+    "fatPer100g": 0.6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Trứng gà",
+    "normalizedName": "trung ga",
+    "aliases": [
+      "trứng",
+      "egg",
+      "eggs",
+      "chicken egg",
+      "egg yolks",
+      "egg whites"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 21,
+    "allergenGroup": "trung",
+    "caloriesPer100g": 155,
+    "proteinPer100g": 13,
+    "carbPer100g": 1.1,
+    "fatPer100g": 11,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 50
+    }
+  },
+  {
+    "canonicalName": "Trứng vịt",
+    "normalizedName": "trung vit",
+    "aliases": [
+      "duck egg"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 21,
+    "allergenGroup": "trung",
+    "caloriesPer100g": 185,
+    "proteinPer100g": 13,
+    "carbPer100g": 1.5,
+    "fatPer100g": 14,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 70
+    }
+  },
+  {
+    "canonicalName": "Trứng cút",
+    "normalizedName": "trung cut",
+    "aliases": [
+      "quail egg"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 21,
+    "allergenGroup": "trung",
+    "caloriesPer100g": 158,
+    "proteinPer100g": 13,
+    "carbPer100g": 0.4,
+    "fatPer100g": 11,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 10
+    }
+  },
+  {
+    "canonicalName": "Trứng vịt bắc thảo",
+    "normalizedName": "trung vit bac thao",
+    "aliases": [
+      "century egg"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 60,
+    "allergenGroup": "trung",
+    "caloriesPer100g": 171,
+    "proteinPer100g": 13.7,
+    "carbPer100g": 3.6,
+    "fatPer100g": 11.4,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "quả": 65
+    }
+  },
+  {
+    "canonicalName": "Sữa tươi",
+    "normalizedName": "sua tuoi",
+    "aliases": [
+      "milk",
+      "sữa"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 7,
+    "allergenGroup": "sua",
+    "caloriesPer100g": 61,
+    "proteinPer100g": 3.2,
+    "carbPer100g": 4.8,
+    "fatPer100g": 3.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Sữa đặc",
+    "normalizedName": "sua dac",
+    "aliases": [
+      "condensed milk"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 180,
+    "allergenGroup": "sua",
+    "caloriesPer100g": 321,
+    "proteinPer100g": 7.9,
+    "carbPer100g": 54.4,
+    "fatPer100g": 8.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bơ",
+    "normalizedName": "bo",
+    "aliases": [
+      "butter"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 60,
+    "allergenGroup": "sua",
+    "caloriesPer100g": 717,
+    "proteinPer100g": 0.9,
+    "carbPer100g": 0.1,
+    "fatPer100g": 81,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Phô mai",
+    "normalizedName": "pho mai",
+    "aliases": [
+      "phô mát",
+      "cheese",
+      "parmesan cheese",
+      "cheddar cheese",
+      "mozzarella",
+      "cream cheese"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 30,
+    "allergenGroup": "sua",
+    "caloriesPer100g": 402,
+    "proteinPer100g": 25,
+    "carbPer100g": 1.3,
+    "fatPer100g": 33,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "miếng": 20
+    }
+  },
+  {
+    "canonicalName": "Sữa chua",
+    "normalizedName": "sua chua",
+    "aliases": [
+      "yaourt",
+      "yogurt"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 14,
+    "allergenGroup": "sua",
+    "caloriesPer100g": 61,
+    "proteinPer100g": 3.5,
+    "carbPer100g": 4.7,
+    "fatPer100g": 3.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cái": 100
+    }
+  },
+  {
+    "canonicalName": "Kem tươi",
+    "normalizedName": "kem tuoi",
+    "aliases": [
+      "whipping cream",
+      "heavy cream",
+      "double cream",
+      "clotted cream",
+      "single cream"
+    ],
+    "category": "trung_sua",
+    "shelfLifeDays": 14,
+    "allergenGroup": "sua",
+    "caloriesPer100g": 340,
+    "proteinPer100g": 2.1,
+    "carbPer100g": 2.8,
+    "fatPer100g": 36,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nước mắm",
+    "normalizedName": "nuoc mam",
+    "aliases": [
+      "fish sauce"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 35,
+    "proteinPer100g": 5.1,
+    "carbPer100g": 3.6,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nước tương",
+    "normalizedName": "nuoc tuong",
+    "aliases": [
+      "xì dầu",
+      "soy sauce"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": "dau_nanh",
+    "caloriesPer100g": 60,
+    "proteinPer100g": 8.1,
+    "carbPer100g": 5.6,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Muối",
+    "normalizedName": "muoi",
+    "aliases": [
+      "salt"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 730,
+    "allergenGroup": null,
+    "caloriesPer100g": 0,
+    "proteinPer100g": 0,
+    "carbPer100g": 0,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đường",
+    "normalizedName": "duong",
+    "aliases": [
+      "đường cát",
+      "sugar"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 730,
+    "allergenGroup": null,
+    "caloriesPer100g": 387,
+    "proteinPer100g": 0,
+    "carbPer100g": 100,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đường thốt nốt",
+    "normalizedName": "duong thot not",
+    "aliases": [
+      "palm sugar"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 375,
+    "proteinPer100g": 0,
+    "carbPer100g": 97,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bột ngọt",
+    "normalizedName": "bot ngot",
+    "aliases": [
+      "mì chính",
+      "msg"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 730,
+    "allergenGroup": null,
+    "caloriesPer100g": 0,
+    "proteinPer100g": 0,
+    "carbPer100g": 0,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hạt nêm",
+    "normalizedName": "hat nem",
+    "aliases": [
+      "seasoning powder"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 220,
+    "proteinPer100g": 8,
+    "carbPer100g": 40,
+    "fatPer100g": 3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tiêu",
+    "normalizedName": "tieu",
+    "aliases": [
+      "hạt tiêu",
+      "tiêu xay",
+      "pepper",
+      "black pepper"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 251,
+    "proteinPer100g": 10.4,
+    "carbPer100g": 63.9,
+    "fatPer100g": 3.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Dầu ăn",
+    "normalizedName": "dau an",
+    "aliases": [
+      "cooking oil",
+      "dầu thực vật"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 884,
+    "proteinPer100g": 0,
+    "carbPer100g": 0,
+    "fatPer100g": 100,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Dầu hào",
+    "normalizedName": "dau hao",
+    "aliases": [
+      "oyster sauce"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 78,
+    "proteinPer100g": 1.4,
+    "carbPer100g": 18,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Dầu mè",
+    "normalizedName": "dau me",
+    "aliases": [
+      "sesame oil",
+      "sesame seed oil"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": "me",
+    "caloriesPer100g": 884,
+    "proteinPer100g": 0,
+    "carbPer100g": 0,
+    "fatPer100g": 100,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Dầu ô liu",
+    "normalizedName": "dau o liu",
+    "aliases": [
+      "olive oil"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 884,
+    "proteinPer100g": 0,
+    "carbPer100g": 0,
+    "fatPer100g": 100,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Giấm",
+    "normalizedName": "giam",
+    "aliases": [
+      "giấm gạo",
+      "vinegar"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 18,
+    "proteinPer100g": 0,
+    "carbPer100g": 0.4,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tương ớt",
+    "normalizedName": "tuong ot",
+    "aliases": [
+      "chili sauce"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 93,
+    "proteinPer100g": 2,
+    "carbPer100g": 20,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tương cà",
+    "normalizedName": "tuong ca",
+    "aliases": [
+      "ketchup",
+      "sốt cà chua"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 101,
+    "proteinPer100g": 1.3,
+    "carbPer100g": 25.8,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Sa tế",
+    "normalizedName": "sa te",
+    "aliases": [
+      "satay"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 300,
+    "proteinPer100g": 3,
+    "carbPer100g": 15,
+    "fatPer100g": 26,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mắm tôm",
+    "normalizedName": "mam tom",
+    "aliases": [
+      "shrimp paste"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 90,
+    "proteinPer100g": 15,
+    "carbPer100g": 3,
+    "fatPer100g": 2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mắm ruốc",
+    "normalizedName": "mam ruoc",
+    "aliases": [],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 90,
+    "proteinPer100g": 15,
+    "carbPer100g": 3,
+    "fatPer100g": 2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Tương đen",
+    "normalizedName": "tuong den",
+    "aliases": [
+      "hoisin sauce"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": "dau_nanh",
+    "caloriesPer100g": 165,
+    "proteinPer100g": 5,
+    "carbPer100g": 30,
+    "fatPer100g": 2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bột nghệ",
+    "normalizedName": "bot nghe",
+    "aliases": [
+      "turmeric powder"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 312,
+    "proteinPer100g": 9.7,
+    "carbPer100g": 67,
+    "fatPer100g": 3.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nghệ",
+    "normalizedName": "nghe",
+    "aliases": [
+      "củ nghệ",
+      "turmeric"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 78,
+    "proteinPer100g": 2.6,
+    "carbPer100g": 15,
+    "fatPer100g": 1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 30
+    }
+  },
+  {
+    "canonicalName": "Bột cà ri",
+    "normalizedName": "bot ca ri",
+    "aliases": [
+      "curry powder"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 325,
+    "proteinPer100g": 12.7,
+    "carbPer100g": 55,
+    "fatPer100g": 14,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bột ớt",
+    "normalizedName": "bot ot",
+    "aliases": [
+      "chili powder"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 282,
+    "proteinPer100g": 12,
+    "carbPer100g": 50,
+    "fatPer100g": 15,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Ngũ vị hương",
+    "normalizedName": "ngu vi huong",
+    "aliases": [
+      "five spice"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 335,
+    "proteinPer100g": 10,
+    "carbPer100g": 68,
+    "fatPer100g": 5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Quế",
+    "normalizedName": "que",
+    "aliases": [
+      "cinnamon"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 247,
+    "proteinPer100g": 4,
+    "carbPer100g": 81,
+    "fatPer100g": 1.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hồi",
+    "normalizedName": "hoi",
+    "aliases": [
+      "hoa hồi",
+      "star anise"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 337,
+    "proteinPer100g": 18,
+    "carbPer100g": 50,
+    "fatPer100g": 16,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mật ong",
+    "normalizedName": "mat ong",
+    "aliases": [
+      "honey"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 730,
+    "allergenGroup": null,
+    "caloriesPer100g": 304,
+    "proteinPer100g": 0.3,
+    "carbPer100g": 82.4,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nước cốt dừa",
+    "normalizedName": "nuoc cot dua",
+    "aliases": [
+      "coconut milk",
+      "coconut cream"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 230,
+    "proteinPer100g": 2.3,
+    "carbPer100g": 5.5,
+    "fatPer100g": 24,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cùi dừa",
+    "normalizedName": "cui dua",
+    "aliases": [
+      "cơm dừa",
+      "dừa nạo",
+      "dừa tươi",
+      "coconut",
+      "shredded coconut"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 354,
+    "proteinPer100g": 3.3,
+    "carbPer100g": 15.2,
+    "fatPer100g": 33.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nước dừa",
+    "normalizedName": "nuoc dua",
+    "aliases": [
+      "coconut water"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 19,
+    "proteinPer100g": 0.7,
+    "carbPer100g": 3.7,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Me chua",
+    "normalizedName": "me chua",
+    "aliases": [
+      "me vắt",
+      "tamarind"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 239,
+    "proteinPer100g": 2.8,
+    "carbPer100g": 62.5,
+    "fatPer100g": 0.6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Chanh",
+    "normalizedName": "chanh",
+    "aliases": [
+      "lime",
+      "lemon"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 29,
+    "proteinPer100g": 1.1,
+    "carbPer100g": 9.3,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 50,
+      "trái": 50
+    }
+  },
+  {
+    "canonicalName": "Bột năng",
+    "normalizedName": "bot nang",
+    "aliases": [
+      "tapioca starch"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 330,
+    "proteinPer100g": 0.1,
+    "carbPer100g": 84.8,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bột bắp",
+    "normalizedName": "bot bap",
+    "aliases": [
+      "bột ngô",
+      "cornstarch"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 381,
+    "proteinPer100g": 0.3,
+    "carbPer100g": 91.3,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bột chiên giòn",
+    "normalizedName": "bot chien gion",
+    "aliases": [
+      "crispy frying flour"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 361,
+    "proteinPer100g": 8,
+    "carbPer100g": 76,
+    "fatPer100g": 1.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Rượu trắng",
+    "normalizedName": "ruou trang",
+    "aliases": [
+      "rượu nấu ăn",
+      "cooking wine"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 231,
+    "proteinPer100g": 0,
+    "carbPer100g": 0,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Rượu vang đỏ",
+    "normalizedName": "ruou vang do",
+    "aliases": [
+      "red wine"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 85,
+    "proteinPer100g": 0.1,
+    "carbPer100g": 2.6,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Rượu vang trắng",
+    "normalizedName": "ruou vang trang",
+    "aliases": [
+      "white wine"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 82,
+    "proteinPer100g": 0.1,
+    "carbPer100g": 2.6,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mù tạt",
+    "normalizedName": "mu tat",
+    "aliases": [
+      "mustard"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 66,
+    "proteinPer100g": 4.4,
+    "carbPer100g": 5.8,
+    "fatPer100g": 3.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bột nở",
+    "normalizedName": "bot no",
+    "aliases": [
+      "baking powder"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 53,
+    "proteinPer100g": 0,
+    "carbPer100g": 28,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Ca cao",
+    "normalizedName": "ca cao",
+    "aliases": [
+      "cocoa powder",
+      "cacao"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 228,
+    "proteinPer100g": 19.6,
+    "carbPer100g": 57.9,
+    "fatPer100g": 13.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Vani",
+    "normalizedName": "vani",
+    "aliases": [
+      "vanilla",
+      "vanilla extract"
+    ],
+    "category": "gia_vi",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 288,
+    "proteinPer100g": 0.1,
+    "carbPer100g": 12.7,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Gạo",
+    "normalizedName": "gao",
+    "aliases": [
+      "gạo tẻ",
+      "rice"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 365,
+    "proteinPer100g": 7.1,
+    "carbPer100g": 80,
+    "fatPer100g": 0.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Gạo nếp",
+    "normalizedName": "gao nep",
+    "aliases": [
+      "nếp",
+      "glutinous rice"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 370,
+    "proteinPer100g": 7.3,
+    "carbPer100g": 81.7,
+    "fatPer100g": 0.6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cơm",
+    "normalizedName": "com",
+    "aliases": [
+      "cơm trắng",
+      "cơm nguội",
+      "cooked rice"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 2,
+    "allergenGroup": null,
+    "caloriesPer100g": 130,
+    "proteinPer100g": 2.7,
+    "carbPer100g": 28,
+    "fatPer100g": 0.3,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "chén": 150
+    }
+  },
+  {
+    "canonicalName": "Bún",
+    "normalizedName": "bun",
+    "aliases": [
+      "rice vermicelli"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 110,
+    "proteinPer100g": 1.8,
+    "carbPer100g": 25,
+    "fatPer100g": 0.2,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Phở",
+    "normalizedName": "pho",
+    "aliases": [
+      "bánh phở",
+      "pho noodle"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 109,
+    "proteinPer100g": 2,
+    "carbPer100g": 25,
+    "fatPer100g": 0.2,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Miến",
+    "normalizedName": "mien",
+    "aliases": [
+      "glass noodle",
+      "vermicelli"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 320,
+    "proteinPer100g": 0.2,
+    "carbPer100g": 84,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hủ tiếu",
+    "normalizedName": "hu tieu",
+    "aliases": [
+      "hủ tíu"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 110,
+    "proteinPer100g": 1.8,
+    "carbPer100g": 25,
+    "fatPer100g": 0.2,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mì gói",
+    "normalizedName": "mi goi",
+    "aliases": [
+      "mì ăn liền",
+      "instant noodle"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 180,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 436,
+    "proteinPer100g": 9,
+    "carbPer100g": 63,
+    "fatPer100g": 17,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "gói": 75
+    }
+  },
+  {
+    "canonicalName": "Mì trứng",
+    "normalizedName": "mi trung",
+    "aliases": [
+      "egg noodle"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 90,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 348,
+    "proteinPer100g": 12,
+    "carbPer100g": 68,
+    "fatPer100g": 3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mì Ý",
+    "normalizedName": "mi y",
+    "aliases": [
+      "nui",
+      "pasta",
+      "spaghetti"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 365,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 371,
+    "proteinPer100g": 13,
+    "carbPer100g": 74.7,
+    "fatPer100g": 1.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bánh mì",
+    "normalizedName": "banh mi",
+    "aliases": [
+      "bread"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 3,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 265,
+    "proteinPer100g": 9,
+    "carbPer100g": 49,
+    "fatPer100g": 3.2,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "ổ": 100
+    }
+  },
+  {
+    "canonicalName": "Bột mì",
+    "normalizedName": "bot mi",
+    "aliases": [
+      "flour",
+      "wheat flour"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 365,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 364,
+    "proteinPer100g": 10.3,
+    "carbPer100g": 76.3,
+    "fatPer100g": 1,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bánh tráng",
+    "normalizedName": "banh trang",
+    "aliases": [
+      "rice paper"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 300,
+    "proteinPer100g": 0.5,
+    "carbPer100g": 76,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cái": 10
+    }
+  },
+  {
+    "canonicalName": "Bánh phở khô",
+    "normalizedName": "banh pho kho",
+    "aliases": [
+      "dried pho"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 355,
+    "proteinPer100g": 6,
+    "carbPer100g": 82,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Yến mạch",
+    "normalizedName": "yen mach",
+    "aliases": [
+      "oats",
+      "oatmeal"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 389,
+    "proteinPer100g": 16.9,
+    "carbPer100g": 66.3,
+    "fatPer100g": 6.9,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Khoai môn",
+    "normalizedName": "khoai mon",
+    "aliases": [
+      "taro"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 112,
+    "proteinPer100g": 1.5,
+    "carbPer100g": 26.5,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 200
+    }
+  },
+  {
+    "canonicalName": "Khoai mì",
+    "normalizedName": "khoai mi",
+    "aliases": [
+      "sắn",
+      "cassava"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 160,
+    "proteinPer100g": 1.4,
+    "carbPer100g": 38.1,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "củ": 300
+    }
+  },
+  {
+    "canonicalName": "Bánh quy",
+    "normalizedName": "banh quy",
+    "aliases": [
+      "ladyfinger",
+      "ladyfingers",
+      "biscuit",
+      "biscuits"
+    ],
+    "category": "tinh_bot",
+    "shelfLifeDays": 90,
+    "allergenGroup": "gluten",
+    "caloriesPer100g": 480,
+    "proteinPer100g": 6,
+    "carbPer100g": 65,
+    "fatPer100g": 22,
+    "defaultState": "COOKED",
+    "unitToGram": {
+      "cái": 10
+    }
+  },
+  {
+    "canonicalName": "Nấm rơm",
+    "normalizedName": "nam rom",
+    "aliases": [
+      "straw mushroom"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 22,
+    "proteinPer100g": 2.7,
+    "carbPer100g": 3.3,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nấm hương",
+    "normalizedName": "nam huong",
+    "aliases": [
+      "nấm đông cô",
+      "shiitake"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 34,
+    "proteinPer100g": 2.2,
+    "carbPer100g": 6.8,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cái": 10
+    }
+  },
+  {
+    "canonicalName": "Nấm kim châm",
+    "normalizedName": "nam kim cham",
+    "aliases": [
+      "enoki"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 37,
+    "proteinPer100g": 2.7,
+    "carbPer100g": 7.8,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nấm bào ngư",
+    "normalizedName": "nam bao ngu",
+    "aliases": [
+      "oyster mushroom"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 33,
+    "proteinPer100g": 3.3,
+    "carbPer100g": 6.1,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nấm mèo",
+    "normalizedName": "nam meo",
+    "aliases": [
+      "mộc nhĩ",
+      "wood ear"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 25,
+    "proteinPer100g": 1.5,
+    "carbPer100g": 6,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "cái": 5
+    }
+  },
+  {
+    "canonicalName": "Nấm đùi gà",
+    "normalizedName": "nam dui ga",
+    "aliases": [
+      "king oyster mushroom"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 35,
+    "proteinPer100g": 2.7,
+    "carbPer100g": 6.8,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nấm mỡ",
+    "normalizedName": "nam mo",
+    "aliases": [
+      "nấm trắng",
+      "button mushroom"
+    ],
+    "category": "nam",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 22,
+    "proteinPer100g": 3.1,
+    "carbPer100g": 3.3,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu hũ",
+    "normalizedName": "dau hu",
+    "aliases": [
+      "đậu phụ",
+      "tàu hũ",
+      "tofu"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 5,
+    "allergenGroup": "dau_nanh",
+    "caloriesPer100g": 76,
+    "proteinPer100g": 8,
+    "carbPer100g": 1.9,
+    "fatPer100g": 4.8,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "miếng": 100
+    }
+  },
+  {
+    "canonicalName": "Tàu hũ ky",
+    "normalizedName": "tau hu ky",
+    "aliases": [
+      "váng đậu",
+      "tofu skin"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 90,
+    "allergenGroup": "dau_nanh",
+    "caloriesPer100g": 449,
+    "proteinPer100g": 51,
+    "carbPer100g": 12,
+    "fatPer100g": 22,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu xanh",
+    "normalizedName": "dau xanh",
+    "aliases": [
+      "mung bean"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 347,
+    "proteinPer100g": 23.9,
+    "carbPer100g": 62.6,
+    "fatPer100g": 1.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu đỏ",
+    "normalizedName": "dau do",
+    "aliases": [
+      "red bean",
+      "adzuki"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 337,
+    "proteinPer100g": 21.4,
+    "carbPer100g": 62,
+    "fatPer100g": 0.6,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu đen",
+    "normalizedName": "dau den",
+    "aliases": [
+      "black bean"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 341,
+    "proteinPer100g": 21.6,
+    "carbPer100g": 62.4,
+    "fatPer100g": 1.4,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu trắng",
+    "normalizedName": "dau trang",
+    "aliases": [
+      "white bean",
+      "cannellini bean",
+      "navy bean",
+      "baked beans"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": null,
+    "caloriesPer100g": 333,
+    "proteinPer100g": 23.4,
+    "carbPer100g": 60.3,
+    "fatPer100g": 0.9,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu phộng",
+    "normalizedName": "dau phong",
+    "aliases": [
+      "lạc",
+      "peanut",
+      "peanuts",
+      "roasted peanut",
+      "peanut butter"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": "dau_phong",
+    "caloriesPer100g": 567,
+    "proteinPer100g": 25.8,
+    "carbPer100g": 16.1,
+    "fatPer100g": 49.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Đậu nành",
+    "normalizedName": "dau nanh",
+    "aliases": [
+      "soybean"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": "dau_nanh",
+    "caloriesPer100g": 446,
+    "proteinPer100g": 36.5,
+    "carbPer100g": 30.2,
+    "fatPer100g": 19.9,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Mè",
+    "normalizedName": "me",
+    "aliases": [
+      "vừng",
+      "sesame",
+      "mè rang",
+      "sesame seed",
+      "sesame seeds"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": "me",
+    "caloriesPer100g": 573,
+    "proteinPer100g": 17.7,
+    "carbPer100g": 23.4,
+    "fatPer100g": 49.7,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hạt điều",
+    "normalizedName": "hat dieu",
+    "aliases": [
+      "cashew",
+      "cashews",
+      "cashew nuts"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": "hat",
+    "caloriesPer100g": 553,
+    "proteinPer100g": 18.2,
+    "carbPer100g": 30.2,
+    "fatPer100g": 43.9,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hạnh nhân",
+    "normalizedName": "hanh nhan",
+    "aliases": [
+      "almond"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 180,
+    "allergenGroup": "hat",
+    "caloriesPer100g": 579,
+    "proteinPer100g": 21.2,
+    "carbPer100g": 21.6,
+    "fatPer100g": 49.9,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Hạt sen",
+    "normalizedName": "hat sen",
+    "aliases": [
+      "lotus seed"
+    ],
+    "category": "dau_hat",
+    "shelfLifeDays": 90,
+    "allergenGroup": null,
+    "caloriesPer100g": 89,
+    "proteinPer100g": 4.1,
+    "carbPer100g": 17.3,
+    "fatPer100g": 0.5,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Chuối",
+    "normalizedName": "chuoi",
+    "aliases": [
+      "banana"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 89,
+    "proteinPer100g": 1.1,
+    "carbPer100g": 22.8,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 120,
+      "trái": 120
+    }
+  },
+  {
+    "canonicalName": "Táo",
+    "normalizedName": "tao",
+    "aliases": [
+      "apple"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 21,
+    "allergenGroup": null,
+    "caloriesPer100g": 52,
+    "proteinPer100g": 0.3,
+    "carbPer100g": 13.8,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 180,
+      "trái": 180
+    }
+  },
+  {
+    "canonicalName": "Cam",
+    "normalizedName": "cam",
+    "aliases": [
+      "orange"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 47,
+    "proteinPer100g": 0.9,
+    "carbPer100g": 11.8,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 130,
+      "trái": 130
+    }
+  },
+  {
+    "canonicalName": "Xoài",
+    "normalizedName": "xoai",
+    "aliases": [
+      "mango"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 60,
+    "proteinPer100g": 0.8,
+    "carbPer100g": 15,
+    "fatPer100g": 0.4,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 200,
+      "trái": 200
+    }
+  },
+  {
+    "canonicalName": "Dứa",
+    "normalizedName": "dua",
+    "aliases": [
+      "thơm",
+      "khóm",
+      "pineapple"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 50,
+    "proteinPer100g": 0.5,
+    "carbPer100g": 13.1,
+    "fatPer100g": 0.1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 900,
+      "trái": 900
+    }
+  },
+  {
+    "canonicalName": "Đu đủ",
+    "normalizedName": "du du",
+    "aliases": [
+      "papaya"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 43,
+    "proteinPer100g": 0.5,
+    "carbPer100g": 11,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 500,
+      "trái": 500
+    }
+  },
+  {
+    "canonicalName": "Dưa hấu",
+    "normalizedName": "dua hau",
+    "aliases": [
+      "watermelon"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 10,
+    "allergenGroup": null,
+    "caloriesPer100g": 30,
+    "proteinPer100g": 0.6,
+    "carbPer100g": 7.6,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 2500
+    }
+  },
+  {
+    "canonicalName": "Bơ trái",
+    "normalizedName": "bo trai",
+    "aliases": [
+      "quả bơ",
+      "avocado"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 160,
+    "proteinPer100g": 2,
+    "carbPer100g": 8.5,
+    "fatPer100g": 14.7,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 200,
+      "trái": 200
+    }
+  },
+  {
+    "canonicalName": "Nho",
+    "normalizedName": "nho",
+    "aliases": [
+      "grape"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 69,
+    "proteinPer100g": 0.7,
+    "carbPer100g": 18.1,
+    "fatPer100g": 0.2,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Chanh dây",
+    "normalizedName": "chanh day",
+    "aliases": [
+      "passion fruit"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 97,
+    "proteinPer100g": 2.2,
+    "carbPer100g": 23.4,
+    "fatPer100g": 0.7,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 50,
+      "trái": 50
+    }
+  },
+  {
+    "canonicalName": "Ổi",
+    "normalizedName": "oi",
+    "aliases": [
+      "guava"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 7,
+    "allergenGroup": null,
+    "caloriesPer100g": 68,
+    "proteinPer100g": 2.6,
+    "carbPer100g": 14.3,
+    "fatPer100g": 1,
+    "defaultState": "RAW",
+    "unitToGram": {
+      "quả": 150,
+      "trái": 150
+    }
+  },
+  {
+    "canonicalName": "Dâu tây",
+    "normalizedName": "dau tay",
+    "aliases": [
+      "strawberry",
+      "strawberries"
+    ],
+    "category": "trai_cay",
+    "shelfLifeDays": 5,
+    "allergenGroup": null,
+    "caloriesPer100g": 32,
+    "proteinPer100g": 0.7,
+    "carbPer100g": 7.7,
+    "fatPer100g": 0.3,
+    "defaultState": "RAW",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nước dùng gà",
+    "normalizedName": "nuoc dung ga",
+    "aliases": [
+      "chicken stock",
+      "chicken broth"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 15,
+    "proteinPer100g": 1.5,
+    "carbPer100g": 1,
+    "fatPer100g": 0.6,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Nước dùng heo",
+    "normalizedName": "nuoc dung heo",
+    "aliases": [
+      "pork broth",
+      "nước hầm xương"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 3,
+    "allergenGroup": null,
+    "caloriesPer100g": 20,
+    "proteinPer100g": 2,
+    "carbPer100g": 1,
+    "fatPer100g": 1,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cà chua hộp",
+    "normalizedName": "ca chua hop",
+    "aliases": [
+      "canned tomato"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 32,
+    "proteinPer100g": 1.6,
+    "carbPer100g": 7,
+    "fatPer100g": 0.3,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Bắp hộp",
+    "normalizedName": "bap hop",
+    "aliases": [
+      "canned corn"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 76,
+    "proteinPer100g": 2.5,
+    "carbPer100g": 17,
+    "fatPer100g": 0.8,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cá ngừ hộp",
+    "normalizedName": "ca ngu hop",
+    "aliases": [
+      "canned tuna"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 365,
+    "allergenGroup": "hai_san",
+    "caloriesPer100g": 116,
+    "proteinPer100g": 25.5,
+    "carbPer100g": 0,
+    "fatPer100g": 1,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Pate",
+    "normalizedName": "pate",
+    "aliases": [
+      "pâté"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 319,
+    "proteinPer100g": 14,
+    "carbPer100g": 4,
+    "fatPer100g": 28,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Kim chi",
+    "normalizedName": "kim chi",
+    "aliases": [
+      "kimchi"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 30,
+    "allergenGroup": null,
+    "caloriesPer100g": 15,
+    "proteinPer100g": 1.1,
+    "carbPer100g": 2.4,
+    "fatPer100g": 0.5,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Dưa chua",
+    "normalizedName": "dua chua",
+    "aliases": [
+      "dưa cải",
+      "pickled mustard"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 14,
+    "allergenGroup": null,
+    "caloriesPer100g": 11,
+    "proteinPer100g": 0.9,
+    "carbPer100g": 1.8,
+    "fatPer100g": 0.2,
+    "defaultState": "COOKED",
+    "unitToGram": null
+  },
+  {
+    "canonicalName": "Cà phê",
+    "normalizedName": "ca phe",
+    "aliases": [
+      "coffee",
+      "espresso"
+    ],
+    "category": "do_kho",
+    "shelfLifeDays": 365,
+    "allergenGroup": null,
+    "caloriesPer100g": 2,
+    "proteinPer100g": 0.1,
+    "carbPer100g": 0,
+    "fatPer100g": 0,
+    "defaultState": "RAW",
+    "unitToGram": null
+  }
 ]
