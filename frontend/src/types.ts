@@ -32,11 +32,23 @@ export interface RecipeStep {
   durationMinutes: number
 }
 
+/** NutritionResponse — calo/macro mỗi khẩu phần, null nếu Recipe Service cũ chưa có field này. */
+export interface Nutrition {
+  caloriesPerServing: number
+  proteinPerServing: number
+  carbPerServing: number
+  fatPerServing: number
+  /** true = có nguyên liệu/đơn vị không quy đổi được sang gram — số liệu chỉ là ước tính một phần. */
+  incomplete: boolean
+}
+
 /** RecipeDetailResponse — GET /recipes/{id}, kèm ingredients/steps. */
 export interface RecipeDetail extends RecipeSummary {
   dietaryFlags: string[]
   ingredients: RecipeIngredient[]
   steps: RecipeStep[]
+  servings: number | null
+  nutrition: Nutrition | null
   videoUrl: string | null
 }
 
@@ -99,4 +111,40 @@ export interface RecipeMatch {
   matchedIngredients: string[]
   missingIngredients: string[]
   imageUrl: string | null
+}
+
+/** CalorieGoalResponse — mục tiêu calo/macro/ngày. null nếu user chưa đặt (GET trả body rỗng). */
+export interface CalorieGoal {
+  calorieTarget: number
+  proteinTarget: number
+  carbTarget: number
+  fatTarget: number
+}
+
+export type AvailabilityStatus = 'SUFFICIENT' | 'PARTIAL' | 'MISSING' | 'UNKNOWN'
+
+/** IngredientAvailabilityResponse — so 1 nguyên liệu công thức với tủ lạnh người dùng. */
+export interface IngredientAvailability {
+  name: string
+  normalizedName: string
+  neededAmount: number | null
+  neededUnit: string | null
+  availableGrams: number
+  status: AvailabilityStatus
+  /** Số lượng còn thiếu, cùng đơn vị với neededUnit — null nếu SUFFICIENT/UNKNOWN. */
+  shortfallAmount: number | null
+}
+
+/** RecipeAvailabilityResponse — GET /matching/recipes/{id}/availability. */
+export interface RecipeAvailability {
+  recipeId: string
+  name: string
+  ingredients: IngredientAvailability[]
+}
+
+/** CookDeductResultLine — kết quả trừ kho cho 1 nguyên liệu sau POST cook-deduct. */
+export interface CookDeductResult {
+  normalizedName: string
+  requestedGrams: number
+  deductedGrams: number
 }

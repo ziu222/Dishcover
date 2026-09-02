@@ -1,7 +1,17 @@
 import { useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ForkKnife, PencilSimple, Plus, ShieldWarning, SignOut, Warning, X } from '@phosphor-icons/react'
+import {
+  Flame,
+  ForkKnife,
+  PencilSimple,
+  Plus,
+  ShieldWarning,
+  SignOut,
+  Warning,
+  X,
+} from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
+import { useCalorieGoal } from '../hooks/useCalorieGoal'
 import { useDietaryPreferences } from '../hooks/useDietaryPreferences'
 import { Button } from '../components/Button'
 import { Chip } from '../components/Chip'
@@ -9,10 +19,24 @@ import { Field } from '../components/Field'
 import { Spinner } from '../components/Spinner'
 import { ApiError } from '../lib/api'
 import { cn } from '../lib/cn'
-import type { DietaryType } from '../types'
+import type { CalorieGoal, DietaryType } from '../types'
 
 const ALLERGY_PRESETS = ['Hải sản', 'Cá', 'Trứng', 'Sữa', 'Đậu phộng', 'Đậu nành', 'Mè', 'Gluten', 'Hạt']
 const DIET_PRESETS = ['Chay', 'Thuần chay']
+
+// ponytail: số tham khảo khởi điểm, không phải tính từ BMR/cân nặng thật — người dùng luôn sửa lại
+// được ngay trên form. Không lưu nhãn preset đã chọn, chỉ lưu 4 con số cuối cùng (xem CalorieGoalDtos).
+const GOAL_PRESETS: Record<string, CalorieGoal> = {
+  BULK: { calorieTarget: 2500, proteinTarget: 150, carbTarget: 300, fatTarget: 70 },
+  CUT: { calorieTarget: 1800, proteinTarget: 140, carbTarget: 150, fatTarget: 50 },
+  MAINTAIN: { calorieTarget: 2200, proteinTarget: 110, carbTarget: 250, fatTarget: 70 },
+}
+const GOAL_PRESET_LABELS: Record<string, string> = {
+  BULK: 'Tăng cơ',
+  CUT: 'Giảm mỡ',
+  MAINTAIN: 'Duy trì',
+  CUSTOM: 'Tự nhập',
+}
 
 function AddPreferenceForm({
   onAdd,
@@ -138,9 +162,98 @@ function EditProfileForm({ onClose }: { onClose: () => void }) {
   )
 }
 
+const GOAL_FIELDS: Array<{ key: keyof CalorieGoal; label: string; unit: string }> = [
+  { key: 'calorieTarget', label: 'Calo', unit: 'kcal' },
+  { key: 'proteinTarget', label: 'Đạm', unit: 'g' },
+  { key: 'carbTarget', label: 'Tinh bột', unit: 'g' },
+  { key: 'fatTarget', label: 'Béo', unit: 'g' },
+]
+
+function CalorieGoalForm({
+  goal,
+  onSave,
+}: {
+  goal: CalorieGoal | null
+  onSave: (goal: CalorieGoal) => Promise<void>
+}) {
+  const [values, setValues] = useState<CalorieGoal>(
+    goal ?? { calorieTarget: 0, proteinTarget: 0, carbTarget: 0, fatTarget: 0 },
+  )
+  const [preset, setPreset] = useState('CUSTOM')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // goal tải xong SAU lần render đầu (fetch async) — đồng bộ lại form khi có, chỉ 1 lần lúc mới có
+  // dữ liệu để không ghi đè chỉnh sửa đang gõ dở của người dùng ở lần render sau.
+  const [synced, setSynced] = useState(false)
+  if (goal && !synced) {
+    setValues(goal)
+    setSynced(true)
+  }
+
+  function applyPreset(key: string) {
+    setPreset(key)
+    if (GOAL_PRESETS[key]) setValues(GOAL_PRESETS[key])
+  }
+
+  async function submit(e: FormEvent) {
+    e.preventDefault()
+    setSaving(true)
+    setError(null)
+    try {
+      await onSave(values)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Lưu thất bại, thử lại.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="rounded-card border border-line-soft bg-white p-5">
+      <div className="mb-4 flex flex-wrap gap-2">
+        {Object.keys(GOAL_PRESET_LABELS).map((key) => (
+          <Chip key={key} active={preset === key} onClick={() => applyPreset(key)}>
+            {GOAL_PRESET_LABELS[key]}
+          </Chip>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {GOAL_FIELDS.map(({ key, label, unit }) => (
+          <label key={key} className="flex flex-col gap-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">
+              {label}
+            </span>
+            <div className="flex items-center gap-1.5 rounded-xl border border-line bg-card px-3 py-2 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/15">
+              <input
+                type="number"
+                min={0}
+                value={values[key]}
+                onChange={(e) => {
+                  setPreset('CUSTOM')
+                  setValues((v) => ({ ...v, [key]: Number(e.target.value) }))
+                }}
+                className="w-full min-w-0 bg-transparent text-[15px] text-ink outline-none"
+              />
+              <span className="shrink-0 text-[11px] text-mist">{unit}</span>
+            </div>
+          </label>
+        ))}
+      </div>
+
+      {error && <p className="mt-3 text-xs text-expired">{error}</p>}
+      <Button type="submit" className="mt-4" loading={saving}>
+        Lưu mục tiêu
+      </Button>
+    </form>
+  )
+}
+
 export function Account() {
   const { user, logout } = useAuth()
   const { items, loading, error, reload, add, remove } = useDietaryPreferences()
+  const { goal, save: saveGoal } = useCalorieGoal()
   const [removingId, setRemovingId] = useState<number | null>(null)
   const [editingProfile, setEditingProfile] = useState(false)
   const initial = (user?.fullName || user?.email || '?').trim().charAt(0).toUpperCase()
@@ -278,6 +391,19 @@ export function Account() {
         <div className="flex items-start gap-2.5 rounded-card border border-dashed border-line px-4 py-3.5 text-[13px] leading-relaxed text-faint">
           <ShieldWarning className="mt-0.5 size-4 shrink-0" />
           Thông tin dị ứng chỉ dùng để lọc gợi ý — luôn kiểm tra kỹ nguyên liệu trước khi nấu.
+        </div>
+
+        {/* Mục tiêu calo */}
+        <div>
+          <div className="mb-1 flex items-center gap-2">
+            <Flame className="size-5 text-accent" />
+            <h2 className="font-display text-2xl font-light text-ink">Mục tiêu calo/ngày</h2>
+          </div>
+          <p className="mb-5 text-sm text-muted">
+            Dùng để ưu tiên gợi ý công thức gần mục tiêu của bạn — chọn mẫu tham khảo rồi sửa lại
+            cho đúng nhu cầu thật.
+          </p>
+          <CalorieGoalForm goal={goal} onSave={saveGoal} />
         </div>
       </div>
     </div>
