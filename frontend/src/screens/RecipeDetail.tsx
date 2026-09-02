@@ -1,10 +1,46 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Clock, CookingPot, ForkKnife, Timer } from '@phosphor-icons/react'
+import { ArrowLeft, Clock, CookingPot, Flame, ForkKnife, Timer } from '@phosphor-icons/react'
 import { useRecipe } from '../hooks/useRecipes'
+import { useRecipeAvailability } from '../hooks/useAvailability'
 import { Button } from '../components/Button'
+import { CookConfirmModal } from '../components/CookConfirmModal'
+import { cn } from '../lib/cn'
 import { DIFFICULTY_VI, dietaryLabel } from '../lib/labels'
-import type { RecipeIngredient } from '../types'
+import type { AvailabilityStatus, IngredientAvailability, RecipeIngredient } from '../types'
+
+const AVAILABILITY_LABEL: Record<AvailabilityStatus, string> = {
+  SUFFICIENT: 'Đủ dùng',
+  PARTIAL: 'Thiếu',
+  MISSING: 'Không có',
+  UNKNOWN: '',
+}
+
+const AVAILABILITY_TINT: Record<AvailabilityStatus, string> = {
+  SUFFICIENT: 'bg-fresh-bg text-fresh',
+  PARTIAL: 'bg-amber-bg text-amber',
+  MISSING: 'bg-expired-bg text-expired',
+  UNKNOWN: 'bg-line-soft/60 text-mist',
+}
+
+function AvailabilityBadge({ a }: { a: IngredientAvailability | undefined }) {
+  if (!a || a.status === 'UNKNOWN') return null
+  const text =
+    a.status === 'PARTIAL' && a.shortfallAmount !== null
+      ? `Thiếu ${a.shortfallAmount} ${a.neededUnit ?? ''}`.trim()
+      : AVAILABILITY_LABEL[a.status]
+  return (
+    <span
+      className={cn(
+        'shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-medium',
+        AVAILABILITY_TINT[a.status],
+      )}
+    >
+      {text}
+    </span>
+  )
+}
 
 const PLACEHOLDER =
   'repeating-linear-gradient(135deg,#E9E1D2,#E9E1D2 11px,#E4DBC9 11px,#E4DBC9 22px)'
@@ -26,12 +62,19 @@ function BackLink() {
   )
 }
 
-function IngredientRow({ item }: { item: RecipeIngredient }) {
+function IngredientRow({
+  item,
+  availability,
+}: {
+  item: RecipeIngredient
+  availability: IngredientAvailability | undefined
+}) {
   const qty = quantity(item)
   return (
-    <li className="flex items-baseline justify-between gap-4 border-b border-line-soft py-2.5 last:border-0">
-      <span className="text-[15px] text-ink">{item.name}</span>
+    <li className="flex items-baseline justify-between gap-3 border-b border-line-soft py-2.5 last:border-0">
+      <span className="min-w-0 flex-1 text-[15px] text-ink">{item.name}</span>
       {qty && <span className="shrink-0 text-[13px] tabular-nums text-faint">{qty}</span>}
+      <AvailabilityBadge a={availability} />
     </li>
   )
 }
@@ -39,6 +82,11 @@ function IngredientRow({ item }: { item: RecipeIngredient }) {
 export function RecipeDetail() {
   const { id } = useParams<{ id: string }>()
   const { recipe, loading, error, notFound, reload } = useRecipe(id)
+  const { availability } = useRecipeAvailability(id)
+  const [cookModalOpen, setCookModalOpen] = useState(false)
+  const availabilityByName = new Map(
+    (availability?.ingredients ?? []).map((a) => [a.normalizedName, a]),
+  )
 
   if (loading) {
     return (
@@ -136,7 +184,33 @@ export function RecipeDetail() {
             <CookingPot className="size-[18px] text-mist" />
             {recipe.ingredients.length} nguyên liệu
           </span>
+          {recipe.nutrition && (
+            <span className="inline-flex items-center gap-2">
+              <Flame className="size-[18px] text-mist" />
+              {Math.round(recipe.nutrition.caloriesPerServing)} kcal/khẩu phần
+              {recipe.nutrition.incomplete && (
+                <span className="text-faint">(ước tính một phần)</span>
+              )}
+            </span>
+          )}
         </div>
+
+        {recipe.nutrition && (
+          <div className="mt-5 flex flex-wrap gap-4 rounded-card border border-line-soft bg-white px-5 py-4 text-[13px]">
+            <span className="text-muted">
+              Đạm <b className="text-ink">{Math.round(recipe.nutrition.proteinPerServing)}g</b>
+            </span>
+            <span className="text-muted">
+              Tinh bột <b className="text-ink">{Math.round(recipe.nutrition.carbPerServing)}g</b>
+            </span>
+            <span className="text-muted">
+              Béo <b className="text-ink">{Math.round(recipe.nutrition.fatPerServing)}g</b>
+            </span>
+            {recipe.servings && (
+              <span className="ml-auto text-faint">{recipe.servings} khẩu phần</span>
+            )}
+          </div>
+        )}
 
         {recipe.dietaryFlags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
@@ -159,7 +233,7 @@ export function RecipeDetail() {
 
           <ul className="rounded-card border border-line-soft bg-white px-5 py-2">
             {essential.map((i) => (
-              <IngredientRow key={i.normalizedName} item={i} />
+              <IngredientRow key={i.normalizedName} item={i} availability={availabilityByName.get(i.normalizedName)} />
             ))}
           </ul>
 
@@ -170,11 +244,15 @@ export function RecipeDetail() {
               </div>
               <ul className="rounded-card border border-line-soft bg-white/60 px-5 py-2">
                 {optional.map((i) => (
-                  <IngredientRow key={i.normalizedName} item={i} />
+                  <IngredientRow key={i.normalizedName} item={i} availability={availabilityByName.get(i.normalizedName)} />
                 ))}
               </ul>
             </>
           )}
+
+          <Button variant="accent" fullWidth className="mt-6" onClick={() => setCookModalOpen(true)}>
+            Đã nấu xong
+          </Button>
         </aside>
 
         <section>
@@ -214,6 +292,8 @@ export function RecipeDetail() {
           </ol>
         </section>
       </div>
+
+      <CookConfirmModal open={cookModalOpen} onClose={() => setCookModalOpen(false)} recipeId={recipe.id} />
     </motion.div>
   )
 }

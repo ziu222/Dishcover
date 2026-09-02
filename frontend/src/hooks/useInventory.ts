@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api, ApiError } from '../lib/api'
-import type { InventoryItem } from '../types'
+import type { CookDeductResult, InventoryItem } from '../types'
+
+/** 1 dòng nguyên liệu cần trừ — cùng shape body server chấp nhận cho POST cook-deduct. */
+export interface CookDeductLine {
+  normalizedName: string
+  amount: number
+  unit: string
+}
 
 const BASE = '/inventory-service/inventory/items'
 
@@ -73,4 +80,17 @@ export function useInventory() {
   )
 
   return { items, loading, error, reload, add, update, remove, addBatch }
+}
+
+/**
+ * Trừ kho sau khi nấu — server tự chọn lô FEFO, trừ hết những gì có nếu không đủ (không chặn).
+ * Hàm độc lập (không qua hook useInventory) để màn gọi nó (VD Chi tiết công thức) không phải tải
+ * kèm toàn bộ danh sách tủ lạnh chỉ để có quyền truy cập action này.
+ */
+export async function cookDeduct(lines: CookDeductLine[]): Promise<CookDeductResult[]> {
+  const res = await api<{ results: CookDeductResult[] }>(`${BASE}/cook-deduct`, {
+    method: 'POST',
+    body: { items: lines },
+  })
+  return res.results
 }
