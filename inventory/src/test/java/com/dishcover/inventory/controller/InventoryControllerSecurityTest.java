@@ -73,6 +73,15 @@ class InventoryControllerSecurityTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    /** Trừ kho sau khi nấu cũng là endpoint ghi -- cần token như add/addBatch. */
+    @Test
+    void cookDeductWithoutTokenReturns401() throws Exception {
+        mvc.perform(post("/inventory/items/cook-deduct")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"items\":[{\"normalizedName\":\"trung ga\",\"amount\":2,\"unit\":\"quả\"}]}"))
+                .andExpect(status().isUnauthorized());
+    }
+
     /** Danh sách gợi ý tên nguyên liệu (autocomplete) cũng chỉ yêu cầu JWT hợp lệ, không public. */
     @Test
     void catalogIngredientsWithoutTokenReturns401() throws Exception {
