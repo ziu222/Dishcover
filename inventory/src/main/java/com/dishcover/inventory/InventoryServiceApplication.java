@@ -2,6 +2,7 @@ package com.dishcover.inventory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Điểm khởi động Inventory Service (Tủ lạnh ảo) — microservice quản lý nguyên liệu
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * PostgreSQL dùng chung (xem CLAUDE.md mục 3).
  */
 @SpringBootApplication
+@EnableScheduling
 public class InventoryServiceApplication {
 
     /**
