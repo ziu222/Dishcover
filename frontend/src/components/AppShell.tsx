@@ -2,7 +2,6 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Basket,
-  Bell,
   ChatCircle,
   Compass,
   MagnifyingGlass,
@@ -13,6 +12,7 @@ import {
 } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
 import { cn } from '../lib/cn'
+import { NotificationBell } from './NotificationBell'
 
 interface NavItem {
   to: string
@@ -99,7 +99,7 @@ export function AppShell() {
             {pageTitle(pathname)}
           </span>
           <div className="flex items-center gap-5">
-            <Bell className="size-[22px] text-muted" />
+            <NotificationBell />
             <div className="flex items-center gap-2.5">
               <span className="grid size-9 place-items-center rounded-full bg-accent text-sm font-semibold text-surface">
                 {initial}
