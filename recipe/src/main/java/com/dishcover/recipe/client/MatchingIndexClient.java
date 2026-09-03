@@ -39,7 +39,7 @@ public class MatchingIndexClient {
     public void index(String bearerToken, String recipeId, String content, float[] embedding,
                        Map<String, Object> metadata) {
         restClient.post()
-                .uri("/internal/index")
+                .uri("/matching/internal/index")
                 .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .body(new IndexRequest(recipeId, content, embedding, metadata))
                 .retrieve()

@@ -15,6 +15,14 @@ import java.util.Map;
  * Spring Data JPA repository: cột {@code embedding vector(768)} của pgvector không có mapping JPA
  * chuẩn sẵn, thêm thư viện {@code pgvector-java} chỉ cho 2 câu lệnh này không đáng — build vector
  * literal bằng tay ({@code '[0.1,0.2,...]'::vector}, đúng cú pháp pgvector chấp nhận) đơn giản hơn.
+ *
+ * <p><b>{@code public.vector} có schema tường minh</b> — bug thật tìm được lúc live-verify: JDBC
+ * URL của Matching Service đặt {@code currentSchema=matching_service}, khiến pgjdbc set hẳn
+ * {@code search_path} thành riêng schema đó (KHÔNG còn {@code public}) — extension {@code vector}
+ * lại nằm ở schema {@code public} (mặc định của {@code CREATE EXTENSION}), nên type {@code vector}
+ * (không schema) trở nên vô hình với runtime connection, dù bảng vẫn tạo được lúc Flyway baseline
+ * (chạy qua phiên psql khác, search_path mặc định có {@code public}). Ép rõ {@code public.vector}
+ * ở đây bỏ qua hoàn toàn phụ thuộc search_path.</p>
  */
 @Repository
 public class RecipeEmbeddingRepository {
@@ -43,11 +51,11 @@ public class RecipeEmbeddingRepository {
         String metadataJson = toJson(metadata);
         if (metadataJson == null) {
             jdbc.update(
-                    "INSERT INTO recipe_embeddings (recipe_id, content, embedding) VALUES (?, ?, CAST(? AS vector))",
+                    "INSERT INTO recipe_embeddings (recipe_id, content, embedding) VALUES (?, ?, CAST(? AS public.vector))",
                     recipeId, content, toVectorLiteral(embedding));
         } else {
             jdbc.update(
-                    "INSERT INTO recipe_embeddings (recipe_id, content, metadata, embedding) VALUES (?, ?, CAST(? AS jsonb), CAST(? AS vector))",
+                    "INSERT INTO recipe_embeddings (recipe_id, content, metadata, embedding) VALUES (?, ?, CAST(? AS jsonb), CAST(? AS public.vector))",
                     recipeId, content, metadataJson, toVectorLiteral(embedding));
         }
     }
@@ -63,8 +71,8 @@ public class RecipeEmbeddingRepository {
     public List<VectorMatch> findNearest(float[] queryEmbedding, int topK) {
         String literal = toVectorLiteral(queryEmbedding);
         return jdbc.query(
-                "SELECT recipe_id, 1 - (embedding <=> CAST(? AS vector)) AS similarity "
-                        + "FROM recipe_embeddings ORDER BY embedding <=> CAST(? AS vector) LIMIT ?",
+                "SELECT recipe_id, 1 - (embedding <=> CAST(? AS public.vector)) AS similarity "
+                        + "FROM recipe_embeddings ORDER BY embedding <=> CAST(? AS public.vector) LIMIT ?",
                 (rs, rowNum) -> new VectorMatch(rs.getString("recipe_id"), rs.getDouble("similarity")),
                 literal, literal, topK);
     }

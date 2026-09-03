@@ -37,7 +37,7 @@ class RecipeEmbeddingRepositoryTest {
         verify(jdbc).update("DELETE FROM recipe_embeddings WHERE recipe_id = ?", "r1");
         ArgumentCaptor<Object[]> args = ArgumentCaptor.forClass(Object[].class);
         verify(jdbc).update(
-                eq("INSERT INTO recipe_embeddings (recipe_id, content, embedding) VALUES (?, ?, CAST(? AS vector))"),
+                eq("INSERT INTO recipe_embeddings (recipe_id, content, embedding) VALUES (?, ?, CAST(? AS public.vector))"),
                 args.capture());
         assertEquals("r1", args.getValue()[0]);
         assertEquals("noi dung", args.getValue()[1]);
@@ -50,7 +50,7 @@ class RecipeEmbeddingRepositoryTest {
 
         ArgumentCaptor<Object[]> args = ArgumentCaptor.forClass(Object[].class);
         verify(jdbc).update(
-                eq("INSERT INTO recipe_embeddings (recipe_id, content, metadata, embedding) VALUES (?, ?, CAST(? AS jsonb), CAST(? AS vector))"),
+                eq("INSERT INTO recipe_embeddings (recipe_id, content, metadata, embedding) VALUES (?, ?, CAST(? AS jsonb), CAST(? AS public.vector))"),
                 args.capture());
         assertEquals("r2", args.getValue()[0]);
         assertEquals("noi dung", args.getValue()[1]);
