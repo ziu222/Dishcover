@@ -7,4 +7,5 @@
 CREATE SCHEMA IF NOT EXISTS user_service;
 CREATE SCHEMA IF NOT EXISTS inventory_service;
 CREATE SCHEMA IF NOT EXISTS matching_service;
+CREATE SCHEMA IF NOT EXISTS notification_service;
 CREATE EXTENSION IF NOT EXISTS vector;   -- dùng trong matching_service

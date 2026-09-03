@@ -72,5 +72,6 @@
     <module>matching</module>
     <module>rag</module>
     <module>image</module>
+    <module>notification</module>
   </modules>
 </project>

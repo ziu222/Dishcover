@@ -1,0 +1,55 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: notification
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:larder}?currentSchema=notification_service
+    username: ${POSTGRES_USER:larder_app}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: notification_service
+  flyway:
+    schemas: notification_service
+    default-schema: notification_service
+    baseline-on-migrate: true
+    baseline-version: "1"
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.dishcover.common.event
+        spring.json.value.default.type: com.dishcover.common.event.IngredientExpiryEvent
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+internal:
+  service-secret: ${INTERNAL_SERVICE_SECRET}
+
+services:
+  user-url: ${USER_SERVICE_URL:http://localhost:8081}
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5175}
