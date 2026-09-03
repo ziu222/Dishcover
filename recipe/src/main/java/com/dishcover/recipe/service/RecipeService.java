@@ -40,17 +40,20 @@ public class RecipeService {
     private final RecipeRepository repo;
     private final IngredientCatalog catalog;
     private final RecipeNutritionCalculator nutritionCalculator;
+    private final RecipeIndexer indexer;
 
     /**
      * @param repo                repository truy cập collection {@code recipes} trên MongoDB
      * @param catalog             catalog nguyên liệu chuẩn dùng để chuẩn hóa tên nguyên liệu client gửi lên
      * @param nutritionCalculator tính calo/macro mỗi khẩu phần từ ingredients+servings lúc ghi
+     * @param indexer             index công thức vào vector search chạy nền (Giai đoạn B) sau khi lưu
      */
     public RecipeService(RecipeRepository repo, IngredientCatalog catalog,
-                          RecipeNutritionCalculator nutritionCalculator) {
+                          RecipeNutritionCalculator nutritionCalculator, RecipeIndexer indexer) {
         this.repo = repo;
         this.catalog = catalog;
         this.nutritionCalculator = nutritionCalculator;
+        this.indexer = indexer;
     }
 
     /**
@@ -96,7 +99,7 @@ public class RecipeService {
      * @param req payload tạo công thức
      * @return chi tiết công thức vừa tạo
      */
-    public RecipeDetailResponse create(CreateRecipeRequest req) {
+    public RecipeDetailResponse create(CreateRecipeRequest req, String bearerToken) {
         String id = UUID.randomUUID().toString();
         String slug = StringUtils.hasText(req.slug()) ? req.slug() : generateSlug(req.name());
         List<RecipeIngredient> ingredients = toEntityIngredients(req.ingredients());
@@ -108,7 +111,9 @@ public class RecipeService {
                 servings, computeNutrition(ingredients, servings),
                 req.imageUrl(), req.videoUrl());
         recipe.setNormalizedName(VietnameseTextNormalizer.normalize(req.name()));
-        return toDetail(repo.save(recipe));
+        Recipe saved = repo.save(recipe);
+        indexer.indexAsync(bearerToken, saved);
+        return toDetail(saved);
     }
 
     /**
@@ -120,7 +125,7 @@ public class RecipeService {
      * @return chi tiết công thức sau khi cập nhật
      * @throws ResourceNotFoundException nếu không tìm thấy công thức với id chỉ định
      */
-    public RecipeDetailResponse update(String id, UpdateRecipeRequest req) {
+    public RecipeDetailResponse update(String id, UpdateRecipeRequest req, String bearerToken) {
         Recipe recipe = requireById(id);
         if (req.name() != null) {
             recipe.setName(req.name());
@@ -156,7 +161,9 @@ public class RecipeService {
         // Tính lại nutrition mỗi lần update (kể cả khi chỉ đổi field không liên quan) — đơn giản hơn
         // theo dõi "ingredients hoặc servings có đổi không", chi phí tính không đáng kể ở quy mô 1 công thức.
         recipe.setNutrition(computeNutrition(recipe.getIngredients(), recipe.getServings()));
-        return toDetail(repo.save(recipe));
+        Recipe saved = repo.save(recipe);
+        indexer.indexAsync(bearerToken, saved); // luôn re-index -- văn bản đại diện có thể đổi dù chỉ sửa field khác
+        return toDetail(saved);
     }
 
     /**

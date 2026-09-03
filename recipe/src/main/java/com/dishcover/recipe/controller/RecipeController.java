@@ -1,10 +1,12 @@
 package com.dishcover.recipe.controller;
 
+import com.dishcover.common.security.RequestTokenExtractor;
 import com.dishcover.recipe.dto.RecipeDtos.CreateRecipeRequest;
 import com.dishcover.recipe.dto.RecipeDtos.RecipeDetailResponse;
 import com.dishcover.recipe.dto.RecipeDtos.RecipeSummaryResponse;
 import com.dishcover.recipe.dto.RecipeDtos.UpdateRecipeRequest;
 import com.dishcover.recipe.service.RecipeService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,8 +74,10 @@ public class RecipeController {
      * @return response 201 kèm chi tiết công thức vừa tạo
      */
     @PostMapping
-    public ResponseEntity<RecipeDetailResponse> create(@Valid @RequestBody CreateRecipeRequest req) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
+    public ResponseEntity<RecipeDetailResponse> create(HttpServletRequest httpRequest,
+                                                        @Valid @RequestBody CreateRecipeRequest req) {
+        String bearerToken = RequestTokenExtractor.resolveBearer(httpRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req, bearerToken));
     }
 
     /**
@@ -85,8 +89,10 @@ public class RecipeController {
      * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tìm thấy công thức
      */
     @PatchMapping("/{id}")
-    public RecipeDetailResponse update(@PathVariable String id, @Valid @RequestBody UpdateRecipeRequest req) {
-        return service.update(id, req);
+    public RecipeDetailResponse update(HttpServletRequest httpRequest, @PathVariable String id,
+                                        @Valid @RequestBody UpdateRecipeRequest req) {
+        String bearerToken = RequestTokenExtractor.resolveBearer(httpRequest);
+        return service.update(id, req, bearerToken);
     }
 
     /**

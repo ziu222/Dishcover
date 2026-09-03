@@ -26,3 +26,22 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+# Giai đoạn B (vector search, CLAUDE.md mục 6) — Recipe Service gọi ra RAG (embed) + Matching (lưu
+# vector) sau khi tạo/sửa công thức, chạy nền (RecipeIndexer, @Async) — không Eureka, cùng quy ước
+# localhost/Docker DNS với Gateway.
+services:
+  rag-url: ${RAG_SERVICE_URL:http://localhost:8085}
+  matching-url: ${MATCHING_SERVICE_URL:http://localhost:8084}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      rag-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+      matching-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s

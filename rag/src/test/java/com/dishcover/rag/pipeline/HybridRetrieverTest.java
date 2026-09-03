@@ -9,11 +9,13 @@ import com.dishcover.rag.client.RagUserClient;
 import com.dishcover.rag.client.RecipeDetailDto;
 import com.dishcover.rag.client.RecipeIngredientDto;
 import com.dishcover.rag.client.RecipeMatchDto;
+import com.dishcover.rag.embedding.EmbeddingGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,12 +34,15 @@ class HybridRetrieverTest {
     private final RagMatchingClient matchingClient = Mockito.mock(RagMatchingClient.class);
     private final RagRecipeClient recipeClient = Mockito.mock(RagRecipeClient.class);
     private final RagUserClient userClient = Mockito.mock(RagUserClient.class);
-    private final HybridRetriever retriever = new HybridRetriever(matchingClient, recipeClient, userClient, catalog);
+    private final EmbeddingGateway embeddingGateway = Mockito.mock(EmbeddingGateway.class);
+    private final HybridRetriever retriever =
+            new HybridRetriever(matchingClient, recipeClient, userClient, catalog, embeddingGateway);
 
     @BeforeEach
-    void noNameOrCategoryMatchByDefault() {
+    void noNameOrCategoryOrVectorMatchByDefault() {
         when(recipeClient.searchByName(anyString())).thenReturn(List.of());
         when(recipeClient.searchByCategory(anyString())).thenReturn(List.of());
+        when(embeddingGateway.embed(anyString())).thenReturn(Optional.empty());
     }
 
     @Test
@@ -162,6 +167,39 @@ class HybridRetrieverTest {
 
         assertTrue(result.stream().anyMatch(r -> r.recipeId().equals("pho_bo")),
                 "Kênh tên món khớp tuyệt đối phải sống sót qua TOP_N, không bị kênh nguyên liệu lấp đầy chỗ");
+    }
+
+    @Test
+    void vectorChannelFillsResultWhenOtherChannelsEmpty() {
+        when(embeddingGateway.embed(anyString())).thenReturn(Optional.of(new float[]{0.1f, 0.2f}));
+        when(matchingClient.vectorSearch(anyString(), any(), anyInt())).thenReturn(List.of(
+                new com.dishcover.rag.client.VectorSearchDtos.VectorMatch("r7", 0.9)));
+        when(recipeClient.getById("r7")).thenReturn(
+                new RecipeDetailDto("r7", "Súp bí đỏ ấm bụng", "sup-bi-do", List.of(new RecipeIngredientDto("Bí đỏ"))));
+        when(userClient.getDietaryPreferences(anyString())).thenReturn(List.of());
+
+        List<RetrievedRecipe> result = retriever.retrieve("Bearer x", "món gì ấm bụng mùa đông", List.of());
+
+        assertEquals(1, result.size());
+        assertEquals("r7", result.get(0).recipeId());
+    }
+
+    @Test
+    void vectorChannelDoesNotOverrideHigherPriorityChannelForSameRecipe() {
+        when(embeddingGateway.embed(anyString())).thenReturn(Optional.of(new float[]{0.1f, 0.2f}));
+        when(matchingClient.vectorSearch(anyString(), any(), anyInt())).thenReturn(List.of(
+                new com.dishcover.rag.client.VectorSearchDtos.VectorMatch("r1", 0.9)));
+        when(recipeClient.getById("r1")).thenReturn(
+                new RecipeDetailDto("r1", "Trứng chiên cà chua", "trung-chien-ca-chua", List.of()));
+        when(matchingClient.searchByIngredients(anyString(), any(), anyInt())).thenReturn(List.of(
+                new RecipeMatchDto("r1", "Trứng chiên cà chua", "trung-chien-ca-chua", 0.8,
+                        List.of("trung ga", "ca chua"), List.of(), null)));
+        when(userClient.getDietaryPreferences(anyString())).thenReturn(List.of());
+
+        List<RetrievedRecipe> result = retriever.retrieve("Bearer x", "trứng và cà chua", List.of("trung ga", "ca chua"));
+
+        assertEquals(1, result.size());
+        assertEquals(List.of("trung ga", "ca chua"), result.get(0).matchedIngredients());
     }
 
     @Test

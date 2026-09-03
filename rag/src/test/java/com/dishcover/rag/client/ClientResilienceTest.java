@@ -9,6 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,6 +46,20 @@ class ClientResilienceTest {
     void recipeNameSearchFailureFallsBackToEmptyListInsteadOfCrashing() {
         List<RecipeDetailDto> result = ragRecipeClient.searchByName("Phở bò");
         assertTrue(result.isEmpty());
+    }
+
+    /** Giai đoạn B — kênh vector search, fail-open giống searchByIngredients (mất kênh, còn 3 kênh kia). */
+    @Test
+    void vectorSearchFailureFallsBackToEmptyListInsteadOfCrashing() {
+        List<VectorSearchDtos.VectorMatch> result =
+                ragMatchingClient.vectorSearch("Bearer x", new float[]{0.1f, 0.2f}, 8);
+        assertTrue(result.isEmpty());
+    }
+
+    /** Giai đoạn B — fetch chi tiết theo id cho kênh vector search, fail-open (null, bỏ qua id đó). */
+    @Test
+    void getByIdFailureFallsBackToNullInsteadOfCrashing() {
+        assertNull(ragRecipeClient.getById("r7"));
     }
 
     @Test

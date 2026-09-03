@@ -10,12 +10,15 @@ import com.dishcover.rag.client.RagUserClient;
 import com.dishcover.rag.client.RecipeDetailDto;
 import com.dishcover.rag.client.RecipeIngredientDto;
 import com.dishcover.rag.client.RecipeMatchDto;
+import com.dishcover.rag.client.VectorSearchDtos.VectorMatch;
+import com.dishcover.rag.embedding.EmbeddingGateway;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,9 +31,9 @@ import java.util.stream.Collectors;
  * trích được nguyên liệu (xem eval/results/chatbot-report.md).
  *
  * <p><b>Lưu ý tên gọi</b>: tên "Hybrid" theo đúng danh sách 5 class CLAUDE.md mục 9 bắt buộc.
- * Giai đoạn B (ngoài phạm vi, vector search pgvector) sẽ mở rộng THÊM 1 kênh nữa VÀO CHÍNH class
- * này (không tạo class mới, không đổi tên) — để chữ ký gọi từ {@code ChatOrchestrator} không đổi
- * giữa các giai đoạn.</p>
+ * Giai đoạn B (vector search pgvector, CLAUDE.md mục 6) mở rộng THÊM kênh thứ 4 VÀO CHÍNH class
+ * này (không tạo class mới, không đổi tên) — chữ ký gọi từ {@code ChatOrchestrator} không đổi
+ * giữa các giai đoạn, đúng như javadoc cũ ở đây đã hứa trước.</p>
  */
 @Component
 public class HybridRetriever {
@@ -41,18 +44,23 @@ public class HybridRetriever {
     // 20 = MAX_TOP_N Matching Service tự clamp (matching/service/MatchingService.java), không xin
     // được nhiều hơn nên không cần Math.min thêm ở đây.
     private static final int FETCH_N = 20;
+    // Kênh vector search là BỔ SUNG (điền chỗ trống sau 3 kênh kia), không cần xin nhiều như FETCH_N.
+    private static final int VECTOR_FETCH_N = 8;
 
     private final RagMatchingClient ragMatchingClient;
     private final RagRecipeClient ragRecipeClient;
     private final RagUserClient ragUserClient;
     private final IngredientCatalog catalog;
+    private final EmbeddingGateway embeddingGateway;
 
     public HybridRetriever(RagMatchingClient ragMatchingClient, RagRecipeClient ragRecipeClient,
-                            RagUserClient ragUserClient, IngredientCatalog catalog) {
+                            RagUserClient ragUserClient, IngredientCatalog catalog,
+                            EmbeddingGateway embeddingGateway) {
         this.ragMatchingClient = ragMatchingClient;
         this.ragRecipeClient = ragRecipeClient;
         this.ragUserClient = ragUserClient;
         this.catalog = catalog;
+        this.embeddingGateway = embeddingGateway;
     }
 
     /**
@@ -91,6 +99,14 @@ public class HybridRetriever {
             // matchedIngredients/missingIngredients thật để hiển thị "đã có/cần thêm" đúng.
             merged.put(c.recipeId(), toRetrieved(c, allergens));
         }
+        // Giai đoạn B — kênh vector search, ưu tiên THẤP NHẤT (putIfAbsent): chỉ điền chỗ trống còn
+        // lại sau 3 kênh chính xác/tường minh hơn ở trên, dùng cho câu hỏi ngữ nghĩa mà 3 kênh kia
+        // không bắt được (VD "món gì ấm bụng mùa đông" — không khớp tên/danh mục/nguyên liệu cụ thể
+        // nào). Lỗi ở bất kỳ bước nào (embed câu hỏi, gọi Matching, fetch chi tiết) đều fail-open —
+        // hệ thống lùi về đúng hành vi Giai đoạn A, không thêm failure mode mới.
+        for (RetrievedRecipe r : vectorSearchChannel(bearerToken, question, allergens)) {
+            merged.putIfAbsent(r.recipeId(), r);
+        }
 
         // Kênh TÊN MÓN (hỏi thẳng) -> giữ lại dù có dietaryConflicts, chỉ gắn cờ cảnh báo (LLM +
         // frontend xử lý, xem PromptBuilder/ChatResponse.dietaryWarnings) vì người dùng tự quyết
@@ -99,6 +115,25 @@ public class HybridRetriever {
         return merged.values().stream()
                 .filter(r -> nameMatchIds.contains(r.recipeId()) || r.dietaryConflicts().isEmpty())
                 .limit(TOP_N)
+                .toList();
+    }
+
+    /**
+     * Giai đoạn B — embed câu hỏi (trong tiến trình, RAG không tự gọi lại chính mình) rồi gọi
+     * Matching Service lấy top-K {@code recipeId} gần nhất, fetch chi tiết từng cái. Trả rỗng nếu
+     * bất kỳ bước nào lỗi (embed, gọi Matching, hoặc TẤT CẢ fetch chi tiết đều thất bại) — fail-open,
+     * xem javadoc {@link #retrieve}.
+     */
+    private List<RetrievedRecipe> vectorSearchChannel(String bearerToken, String question, Set<String> allergens) {
+        Optional<float[]> embedding = embeddingGateway.embed(question);
+        if (embedding.isEmpty()) {
+            return List.of();
+        }
+        List<VectorMatch> matches = ragMatchingClient.vectorSearch(bearerToken, embedding.get(), VECTOR_FETCH_N);
+        return matches.stream()
+                .map(m -> ragRecipeClient.getById(m.recipeId()))
+                .filter(Objects::nonNull) // getById fail-open trả null nếu Recipe Service lỗi cho 1 id
+                .map(r -> toRetrieved(r, allergens))
                 .toList();
     }
 

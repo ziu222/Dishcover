@@ -5,7 +5,12 @@ spring:
   application:
     name: matching
   datasource:
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:larder}?currentSchema=matching_service
+    # ",public" bắt buộc: pgvector's CREATE EXTENSION đặt type "vector" VÀ operator "<=>" vào
+    # schema public (mặc định) - currentSchema chỉ 1 schema riêng sẽ set search_path đúng mỗi
+    # matching_service, làm cả 2 thứ đó "vô hình" với runtime connection dù bảng vẫn tạo được (lúc
+    # Flyway baseline chạy qua phiên psql khác, search_path mặc định có public) - bug thật tìm được
+    # lúc live-verify Giai đoạn B (RecipeEmbeddingRepository).
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:larder}?currentSchema=matching_service,public
     username: ${POSTGRES_USER:larder_app}
     password: ${POSTGRES_PASSWORD}
   jpa:
