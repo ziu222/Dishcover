@@ -1,5 +1,8 @@
 package com.dishcover.rag.client;
 
+import com.dishcover.rag.client.VectorSearchDtos.VectorMatch;
+import com.dishcover.rag.client.VectorSearchDtos.VectorSearchRequest;
+import com.dishcover.rag.client.VectorSearchDtos.VectorSearchResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +62,34 @@ public class RagMatchingClient {
     @SuppressWarnings("unused")
     private List<RecipeMatchDto> fallbackSearch(String bearerToken, List<String> ingredients, int topN, Throwable ex) {
         log.warn("Matching Service không phản hồi được, fallback rỗng: {}", ex.getMessage());
+        return List.of();
+    }
+
+    /**
+     * Giai đoạn B — kênh vector search của {@code HybridRetriever}: gọi
+     * {@code POST /matching/internal/vector-search} với embedding câu hỏi đã tính sẵn (RAG tự
+     * embed, xem {@code EmbeddingGateway}), lấy top-K {@code recipeId} gần nhất theo cosine.
+     *
+     * @param bearerToken token JWT chuyển tiếp (endpoint đích yêu cầu JWT hợp lệ)
+     * @param embedding   vector câu hỏi đã embed sẵn
+     * @param topK        số kết quả tối đa muốn lấy
+     * @return danh sách khớp, rỗng nếu Matching Service lỗi/timeout (fail-open — kênh này chỉ là
+     *         BỔ SUNG, các kênh Giai đoạn A khác vẫn chạy bình thường)
+     */
+    @CircuitBreaker(name = "matching-service", fallbackMethod = "fallbackVectorSearch")
+    public List<VectorMatch> vectorSearch(String bearerToken, float[] embedding, int topK) {
+        VectorSearchResponse result = restClient.post()
+                .uri("/matching/internal/vector-search")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                .body(new VectorSearchRequest(embedding, topK))
+                .retrieve()
+                .body(VectorSearchResponse.class);
+        return result == null || result.matches() == null ? List.of() : result.matches();
+    }
+
+    @SuppressWarnings("unused")
+    private List<VectorMatch> fallbackVectorSearch(String bearerToken, float[] embedding, int topK, Throwable ex) {
+        log.warn("Matching Service không phản hồi được (vector search), fallback rỗng: {}", ex.getMessage());
         return List.of();
     }
 }

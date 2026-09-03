@@ -152,6 +152,26 @@ public class RagRecipeClient {
                 .body(RecipeDetailDto.class);
     }
 
+    /**
+     * Giai đoạn B — kênh vector search của {@code HybridRetriever} chỉ nhận về {@code recipeId} từ
+     * Matching Service, cần fetch lại chi tiết đầy đủ để dựng {@code RetrievedRecipe} (giống 2 kênh
+     * tên món/danh mục).
+     *
+     * @param id id công thức
+     * @return chi tiết công thức, null nếu không tìm thấy/Recipe Service lỗi (fail-open)
+     */
+    @CircuitBreaker(name = "recipe-service", fallbackMethod = "fallbackGetById")
+    public RecipeDetailDto getById(String id) {
+        return fetchDetail(id);
+    }
+
+    @SuppressWarnings("unused")
+    private RecipeDetailDto fallbackGetById(String id, Throwable ex) {
+        log.warn("Recipe Service không phản hồi được (getById cho vector search), bỏ qua id={}: {}",
+                id, ex.getMessage());
+        return null;
+    }
+
     /** Recipe Service down -> mất kênh này, các kênh còn lại vẫn chạy bình thường (fail-open). */
     @SuppressWarnings("unused")
     private List<RecipeDetailDto> fallbackEmpty(String question, Throwable ex) {

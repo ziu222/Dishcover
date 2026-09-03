@@ -35,6 +35,10 @@ openai:
   # Dòng mini nằm trong diện token miễn phí hằng ngày nếu bật chia sẻ dữ liệu, và nhận cả ảnh
   # (dùng lại được cho Image Recognition ở mục 7).
   model: gpt-4o-mini
+  # Giai đoạn B (vector search) — OpenAiEmbeddingProvider dùng CÙNG api-key/base-url ở trên, chỉ
+  # khác model. Nhà cung cấp embedding DUY NHẤT (không có nhánh Gemini/Groq như LlmProvider — Groq
+  # không có embedding, Gemini đang hết credit prepay, xem OpenAiEmbeddingProvider javadoc).
+  embedding-model: text-embedding-3-small
 
 # Địa chỉ 2 service gọi ra (không Eureka — Docker DNS/localhost, cùng quy ước với Gateway).
 services:
@@ -67,9 +71,15 @@ resilience4j:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
+      embedding:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
   timelimiter:
     instances:
       llm:
+        timeoutDuration: 15s
+      embedding:
         timeoutDuration: 15s
 
 # Lộ endpoint circuitbreakers cho kịch bản demo (eval/circuit-breaker/README.md) — xem trạng thái
