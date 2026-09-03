@@ -45,6 +45,9 @@ public class SecurityConfig {
                         // Công khai: đăng ký, đăng nhập, health. Còn lại cần JWT hợp lệ.
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/logout").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
+                        // Endpoint service-to-service, tự xác thực bằng header X-Internal-Secret
+                        // trong controller (không phải JWT — xem InternalUserController javadoc).
+                        .requestMatchers("/internal/**").permitAll()
                         // Swagger UI + OpenAPI docs công khai (chỉ tài liệu, không lộ dữ liệu)
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())

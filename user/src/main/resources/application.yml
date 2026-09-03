@@ -43,3 +43,6 @@ resilience4j:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
+
+internal:
+  service-secret: ${INTERNAL_SERVICE_SECRET}
