@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.transaction.TestTransaction;
 
@@ -60,14 +61,14 @@ class NotificationServiceTest {
         TestTransaction.end();
 
         TestTransaction.start();
-        assertEquals(1, repository.findByUserId(1L, org.springframework.data.domain.PageRequest.of(0, 10)).getTotalElements());
+        assertEquals(1, repository.findByUserId(1L, PageRequest.of(0, 10)).getTotalElements());
     }
 
     @Test
     void listReturnsUnreadCount() {
         NotificationService svc = service();
         svc.createIfAbsent(new Notification(2L, "INGREDIENT_EXPIRING_SOON", "t", "m", "/goi-y", 20L));
-        NotificationListResponse resp = svc.list(2L, false, 0, 10);
+        NotificationListResponse resp = svc.list(2L, false, PageRequest.of(0, 10));
         assertEquals(1, resp.items().size());
         assertEquals(1, resp.unreadCount());
     }
@@ -85,6 +86,6 @@ class NotificationServiceTest {
         svc.createIfAbsent(new Notification(4L, "INGREDIENT_EXPIRING_SOON", "t", "m", "/goi-y", 40L));
         svc.createIfAbsent(new Notification(4L, "INGREDIENT_EXPIRED", "t2", "m2", "/goi-y", 40L));
         svc.markAllRead(4L);
-        assertEquals(0, svc.list(4L, false, 0, 10).unreadCount());
+        assertEquals(0, svc.list(4L, false, PageRequest.of(0, 10)).unreadCount());
     }
 }

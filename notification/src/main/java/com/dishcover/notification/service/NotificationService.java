@@ -7,9 +7,7 @@ import com.dishcover.notification.entity.Notification;
 import com.dishcover.notification.repository.NotificationRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,8 +35,7 @@ public class NotificationService {
         }
     }
 
-    public NotificationListResponse list(Long userId, boolean unreadOnly, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+    public NotificationListResponse list(Long userId, boolean unreadOnly, Pageable pageable) {
         Page<Notification> result = unreadOnly
                 ? repository.findByUserIdAndRead(userId, false, pageable)
                 : repository.findByUserId(userId, pageable);

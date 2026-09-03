@@ -67,4 +67,26 @@ class NotificationControllerTest {
         mvc.perform(get("/notifications").header("Authorization", auth(uid)))
                 .andExpect(jsonPath("$.unreadCount").value(0));
     }
+
+    /** size quá lớn phải bị chặn ở max-page-size (100, application.yml), không tải nguyên bảng. */
+    @Test
+    void oversizedPageSizeReturnsOkNotError() throws Exception {
+        long uid = System.nanoTime();
+        repository.save(new Notification(uid, "INGREDIENT_EXPIRING_SOON", "t", "m", "/goi-y", 1L));
+
+        mvc.perform(get("/notifications").param("size", "100000").header("Authorization", auth(uid)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()").value(1));
+    }
+
+    /** page âm trước đây làm PageRequest.of() ném IllegalArgumentException -> 500; Pageable tự kẹp về 0. */
+    @Test
+    void negativePageDoesNotCrash() throws Exception {
+        long uid = System.nanoTime();
+        repository.save(new Notification(uid, "INGREDIENT_EXPIRING_SOON", "t", "m", "/goi-y", 1L));
+
+        mvc.perform(get("/notifications").param("page", "-1").header("Authorization", auth(uid)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()").value(1));
+    }
 }
