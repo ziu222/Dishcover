@@ -1,4 +1,7 @@
 # H2 in-memory ở chế độ PostgreSQL, tự tạo schema inventory_service; Hibernate dựng bảng (create-drop).
+# Lưu ý: KHÔNG exclude KafkaAutoConfiguration — KafkaTemplate không kết nối broker lúc khởi tạo bean
+# (chỉ lúc thật sự send()), nên context test vẫn load được mà không cần Kafka thật; loại trừ
+# ngược lại làm mất bean KafkaTemplate mà IngredientExpiryScanner cần, sập mọi test Spring context.
 spring:
   datasource:
     url: jdbc:h2:mem:inventorytest;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,TYPE;INIT=CREATE SCHEMA IF NOT EXISTS inventory_service

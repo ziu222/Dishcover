@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class InventoryService {
 
-    private static final int NEAR_EXPIRY_DAYS = 3;
+    static final int NEAR_EXPIRY_DAYS = 3;
     private static final double GRAM_EPSILON = 0.01;
 
     private final UserIngredientRepository repo;
@@ -298,8 +298,9 @@ public class InventoryService {
         return existing.add(incoming);
     }
 
-    /** Derived status — không ghi xuống DB khi chỉ đọc; chỉ persist lúc tạo mới hoặc đổi expiry_date/status. */
-    private static String deriveStatus(String storedStatus, LocalDate expiryDate) {
+    /** Derived status — không ghi xuống DB khi chỉ đọc; chỉ persist lúc tạo mới hoặc đổi expiry_date/status.
+     *  Package-private: tái dùng bởi {@code IngredientExpiryScanner} (cùng package) để không lặp logic ngưỡng. */
+    static String deriveStatus(String storedStatus, LocalDate expiryDate) {
         if ("USED".equals(storedStatus)) {
             return "USED";
         }

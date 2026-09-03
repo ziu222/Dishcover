@@ -54,4 +54,14 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
      * @return mọi lô (kể cả USED/EXPIRED thô) của nguyên liệu này, chưa sắp xếp
      */
     List<UserIngredient> findByUserIdAndNormalizedName(Long userId, String normalizedName);
+
+    /**
+     * Ứng viên cho quét cảnh báo hết hạn hàng ngày ({@code IngredientExpiryScanner}): mọi dòng
+     * chưa bị đánh dấu USED và có hạn dùng trong ngưỡng — NULL ở {@code expiryDate} tự động bị
+     * loại vì SQL {@code NULL <= threshold} luôn false, không cần điều kiện IS NOT NULL riêng.
+     *
+     * @param status    trạng thái LƯU TRỮ (thô) cần loại trừ — luôn truyền {@code "USED"}
+     * @param threshold ngày xa nhất còn tính là "sắp hết hạn" (hôm nay + NEAR_EXPIRY_DAYS)
+     */
+    List<UserIngredient> findByStatusNotAndExpiryDateLessThanEqual(String status, LocalDate threshold);
 }
