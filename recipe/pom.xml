@@ -41,6 +41,22 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <!-- AspectJ weaver cho aspect @CircuitBreaker/@TimeLimiter của Resilience4j — Recipe Service
+         dùng MongoDB (không JPA) nên KHÔNG kéo aspectjweaver transitively (bài học từ rag/image,
+         xem CLAUDE.md mục 10.8, thiếu dòng này thì annotation resilience lặng lẽ no-op). Cần từ
+         Giai đoạn B: Recipe Service gọi ra RAG/Matching lúc index công thức. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <!-- Circuit breaker cho lời gọi RAG (embed) + Matching (index) lúc lưu công thức — best-effort,
+         không chặn việc lưu. Ghim 2.2.0 — 2.3.0+ có bug NoClassDefFoundError lúc khởi động
+         (resilience4j/resilience4j#2265), đã gặp thật lúc làm Matching/RAG Service. -->
+    <dependency>
+      <groupId>io.github.resilience4j</groupId>
+      <artifactId>resilience4j-spring-boot3</artifactId>
+      <version>2.2.0</version>
+    </dependency>
     <!-- OpenAPI/Swagger UI: trang tài liệu API tương tác tại /swagger-ui.html -->
     <dependency>
       <groupId>org.springdoc</groupId>
