@@ -1,8 +1,10 @@
 package com.dishcover.matching.controller;
 
 import com.dishcover.common.security.JwtService;
+import com.dishcover.matching.dto.IndexDtos.VectorMatch;
 import com.dishcover.matching.dto.MatchingDtos.RecipeAvailabilityResponse;
 import com.dishcover.matching.service.MatchingService;
+import com.dishcover.matching.service.RecipeIndexService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,6 +40,8 @@ class MatchingControllerSecurityTest {
     MockMvc mvc;
     @MockitoBean
     MatchingService service;
+    @MockitoBean
+    RecipeIndexService indexService;
 
     private String token() {
         return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
@@ -87,6 +91,42 @@ class MatchingControllerSecurityTest {
                         .header("Authorization", token())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"ingredients\":[\"trứng gà\"]}"))
+                .andExpect(status().isOk());
+    }
+
+    /** Giai đoạn B — nội bộ, cũng phải kiểm token như /internal/match-by-ingredients. */
+    @Test
+    void internalIndexNoTokenReturns401() throws Exception {
+        mvc.perform(post("/matching/internal/index")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"recipeId\":\"r1\",\"content\":\"x\",\"embedding\":[0.1]}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void internalIndexAuthenticatedReturns204() throws Exception {
+        mvc.perform(post("/matching/internal/index")
+                        .header("Authorization", token())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"recipeId\":\"r1\",\"content\":\"x\",\"embedding\":[0.1]}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void internalVectorSearchNoTokenReturns401() throws Exception {
+        mvc.perform(post("/matching/internal/vector-search")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"embedding\":[0.1],\"topK\":5}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void internalVectorSearchAuthenticatedReturns200() throws Exception {
+        when(indexService.search(any())).thenReturn(List.of(new VectorMatch("r1", 0.9)));
+        mvc.perform(post("/matching/internal/vector-search")
+                        .header("Authorization", token())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"embedding\":[0.1],\"topK\":5}"))
                 .andExpect(status().isOk());
     }
 
