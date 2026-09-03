@@ -148,3 +148,22 @@ export interface CookDeductResult {
   requestedGrams: number
   deductedGrams: number
 }
+
+export type NotificationType = 'INGREDIENT_EXPIRING_SOON' | 'INGREDIENT_EXPIRED'
+
+/** NotificationResponse — 1 thông báo hết hạn nguyên liệu. */
+export interface AppNotification {
+  id: number
+  type: NotificationType
+  title: string
+  message: string
+  actionUrl: string | null
+  isRead: boolean
+  createdAt: string
+}
+
+/** NotificationListResponse — GET /notification-service/notifications. */
+export interface NotificationListResponse {
+  items: AppNotification[]
+  unreadCount: number
+}
