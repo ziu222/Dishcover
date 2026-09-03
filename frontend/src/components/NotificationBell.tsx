@@ -30,7 +30,7 @@ export function NotificationBell() {
         )}
       </button>
       {open && (
-        <div className="absolute right-0 top-full z-10 mt-2 w-80 rounded-lg border border-line-soft bg-surface shadow-lg">
+        <div className="fixed inset-x-4 top-16 z-10 rounded-lg border border-line-soft bg-surface shadow-lg lg:absolute lg:inset-x-auto lg:top-full lg:right-0 lg:mt-2 lg:w-80">
           <div className="flex items-center justify-between border-b border-line-soft px-4 py-2.5">
             <span className="text-sm font-medium text-ink">Thông báo</span>
             {unreadCount > 0 && (
