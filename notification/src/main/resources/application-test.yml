@@ -11,10 +11,15 @@ spring:
         default_schema: notification_service
   flyway:
     enabled: false
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
-      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+  kafka:
+    listener:
+      auto-startup: false
+  # KHÔNG exclude MailSenderAutoConfiguration — EmailSender cần bean JavaMailSender để tạo được
+  # (bản thân bean không kết nối SMTP gì lúc khởi tạo, chỉ khi gọi .send() mới thật sự nối mạng,
+  # giống lý do KafkaTemplate không cần exclude ở Inventory — xem inventory/src/test/resources/application-test.yml).
+  mail:
+    username: test@test.com
+    password: test-password
 
 jwt:
   secret: test-secret-at-least-32-chars-long-000
