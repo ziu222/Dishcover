@@ -205,6 +205,30 @@ class RecipeFlowIntegrationTest {
     }
 
     @Test
+    void tagFilterAlsoMatchesDietaryFlags() throws Exception {
+        // "vegetarian" thường nằm ở dietary_flags (không phải tags) cho batch Spoonacular -- xem
+        // specs/diet-direction-recommendation.md mục 7.4. ?tag= phải tìm được cả 2 field.
+        String uniqueTag = "unique-tag-" + System.nanoTime();
+        String payload = """
+                {"name":"Món chỉ có dietary_flags %s","cookTimeMinutes":10,"difficulty":"EASY",
+                 "tags":[],"dietaryFlags":["%s"],
+                 "ingredients":[{"name":"Trứng gà","amount":1,"unit":"quả","essential":true}],
+                 "steps":[{"order":1,"title":"Sơ chế","content":"Làm","durationMinutes":1}]}
+                """.formatted(uniqueTag, uniqueTag);
+        String body = mvc.perform(post("/recipes")
+                        .header("Authorization", auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        createdIds.add(mapper.readTree(body).get("id").asText());
+
+        mvc.perform(get("/recipes").param("tag", uniqueTag))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
     void createRejectsEmptyIngredientsAndSteps() throws Exception {
         mvc.perform(post("/recipes")
                         .header("Authorization", auth())

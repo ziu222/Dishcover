@@ -16,15 +16,25 @@ const DIFFICULTIES: Array<{ value: Difficulty | null; label: string }> = [
   { value: 'HARD', label: 'Khó' },
 ]
 
+// Giá trị tiếng Anh thật khớp tags/dietary_flags do fetch-spoonacular.mjs sinh ra (xem
+// specs/diet-direction-recommendation.md mục 7.4) — nhãn tiếng Việt chỉ để hiển thị.
+const DIET_TAGS: Array<{ value: string; label: string }> = [
+  { value: 'vegetarian', label: 'Chay' },
+  { value: 'vegan', label: 'Thuần chay' },
+  { value: 'high protein', label: 'Giàu đạm' },
+  { value: 'gluten free', label: 'Không gluten' },
+]
+
 const grid = 'grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3'
 
 export function Search() {
   const [query, setQuery] = useState('')
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null)
-  const { recipes, loading, error } = useRecipeSearch(query, difficulty)
+  const [tag, setTag] = useState<string | null>(null)
+  const { recipes, loading, error } = useRecipeSearch(query, difficulty, tag)
   const { favorites, toggle } = useFavorites()
 
-  const idle = query.trim().length === 0 && difficulty === null
+  const idle = query.trim().length === 0 && difficulty === null && tag === null
 
   return (
     <div className="px-6 py-9 lg:px-10">
@@ -41,6 +51,17 @@ export function Search() {
               onClick={() => setDifficulty(d.value)}
             >
               {d.label}
+            </Chip>
+          ))}
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {DIET_TAGS.map((t) => (
+            <Chip
+              key={t.value}
+              active={tag === t.value}
+              onClick={() => setTag((current) => (current === t.value ? null : t.value))}
+            >
+              {t.label}
             </Chip>
           ))}
         </div>
@@ -66,7 +87,7 @@ export function Search() {
             <SmileySad className="mx-auto mb-4 size-10 text-mist" />
             <p className="font-display text-2xl font-light text-ink">Không tìm thấy món nào</p>
             <p className="mt-2 text-sm text-muted">
-              Thử từ khoá khác hoặc bỏ bớt bộ lọc độ khó.
+              Thử từ khoá khác hoặc bỏ bớt bộ lọc độ khó/định hướng ăn uống.
             </p>
           </div>
         ) : (

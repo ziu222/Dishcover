@@ -68,9 +68,9 @@ public class RecipeService {
         if (StringUtils.hasText(query)) {
             page = repo.findByNormalizedNameContaining(VietnameseTextNormalizer.normalize(query), pageable);
         } else if (StringUtils.hasText(tag) && StringUtils.hasText(difficulty)) {
-            page = repo.findByTagsContainingIgnoreCaseAndDifficulty(tag, difficulty, pageable);
+            page = repo.findByTagsOrDietaryFlagsContainingIgnoreCaseAndDifficulty(tag, difficulty, pageable);
         } else if (StringUtils.hasText(tag)) {
-            page = repo.findByTagsContainingIgnoreCase(tag, pageable);
+            page = repo.findByTagsOrDietaryFlagsContainingIgnoreCase(tag, pageable);
         } else if (StringUtils.hasText(difficulty)) {
             page = repo.findByDifficulty(difficulty, pageable);
         } else {
