@@ -1,0 +1,3147 @@
+[
+  {
+    "_id": "spoon_716406",
+    "name": "Asparagus and Pea Soup: Real Convenience Food",
+    "slug": "asparagus-and-pea-soup-real-convenience-food",
+    "cook_time_minutes": 20,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "antipasti",
+      "soup",
+      "starter",
+      "snack",
+      "appetizer",
+      "antipasto",
+      "hor d'oeuvre",
+      "dairy free",
+      "paleolithic",
+      "lacto ovo vegetarian",
+      "primal"
+    ],
+    "dietary_flags": [
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_asparagus",
+        "name": "asparagus",
+        "normalized_name": "asparagus",
+        "amount": 1,
+        "unit": "bag",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_evoo",
+        "name": "evoo",
+        "normalized_name": "evoo",
+        "amount": 1,
+        "unit": "T",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 2,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 0.5,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_peas",
+        "name": "peas",
+        "normalized_name": "peas",
+        "amount": 2,
+        "unit": "c",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_vegetable_broth",
+        "name": "vegetable broth",
+        "normalized_name": "vegetable broth",
+        "amount": 1,
+        "unit": "box",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Chop the garlic and onions.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Saute the onions in the EVOO, adding the garlic after a couple of minutes; cook until the onions are translucent.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add the whole bag of asparagus and cover everything with the broth. Season with salt and pepper and a pinch of red pepper flakes, if using.Simmer until the asparagus is bright green and tender (if you've thawed the asparagus it will only take a couple of minutes). Turn off the heat and puree using an immersion blender.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add peas (the heat of the soup will quickly thaw them) and puree until smooth; add more until it reaches the thickness you like.Top with chives and a small dollop of creme fraiche or sour cream or greek yogurt.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 2,
+    "nutrition": {
+      "caloriesPerServing": 217.43,
+      "proteinPerServing": 10.84,
+      "carbPerServing": 28.83,
+      "fatPerServing": 7.76,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/716406-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_644387",
+    "name": "Garlicky Kale",
+    "slug": "garlicky-kale",
+    "cook_time_minutes": 45,
+    "difficulty": "EASY",
+    "tags": [
+      "side dish",
+      "gluten free",
+      "dairy free",
+      "paleolithic",
+      "lacto ovo vegetarian",
+      "primal",
+      "whole 30"
+    ],
+    "dietary_flags": [
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_balsamic_vinegar",
+        "name": "balsamic vinegar",
+        "normalized_name": "balsamic vinegar",
+        "amount": 3,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 1,
+        "unit": "clove",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_curly_kale",
+        "name": "curly kale",
+        "normalized_name": "curly kale",
+        "amount": 1,
+        "unit": "bunch",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 2,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Heat the olive oil in a large pot over medium heat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Add the kale and cover.Stir occasionally until the volume of the kale is reduced by half. Uncover.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add garlic and basalmic.Allow to cook for about another 30 seconds or so, mixing well so that the garlic and vinegar are well distributed.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Serve hot.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 2,
+    "nutrition": {
+      "caloriesPerServing": 169.87,
+      "proteinPerServing": 2.11,
+      "carbPerServing": 7.46,
+      "fatPerServing": 14.98,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/644387-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_782601",
+    "name": "Red Kidney Bean Jambalaya",
+    "slug": "red-kidney-bean-jambalaya",
+    "cook_time_minutes": 45,
+    "difficulty": "HARD",
+    "tags": [
+      "lunch",
+      "main course",
+      "main dish",
+      "dinner",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_egg",
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_brown_rice",
+        "name": "brown rice",
+        "normalized_name": "brown rice",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_carrots",
+        "name": "carrots",
+        "normalized_name": "carrots",
+        "amount": 2,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_celery",
+        "name": "celery",
+        "normalized_name": "can tay",
+        "amount": 2,
+        "unit": "stalks",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_celery_seed",
+        "name": "celery seed",
+        "normalized_name": "celery seed",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_kidney_beans",
+        "name": "kidney beans",
+        "normalized_name": "kidney beans",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_marjoram",
+        "name": "marjoram",
+        "normalized_name": "marjoram",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_thyme",
+        "name": "thyme",
+        "normalized_name": "co xa huong",
+        "amount": 2,
+        "unit": "teaspoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_eggplant",
+        "name": "eggplant",
+        "normalized_name": "ca tim",
+        "amount": 1,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 2,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_green_beans",
+        "name": "green beans",
+        "normalized_name": "green beans",
+        "amount": 3,
+        "unit": "handfuls",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_ground_pepper",
+        "name": "ground pepper",
+        "normalized_name": "ground pepper",
+        "amount": 6,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_ground_sage",
+        "name": "ground sage",
+        "normalized_name": "ground sage",
+        "amount": 2,
+        "unit": "teaspoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_liquid_smoke",
+        "name": "liquid smoke",
+        "normalized_name": "liquid smoke",
+        "amount": 0.5,
+        "unit": "teaspoon",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_bell_pepper",
+        "name": "bell pepper",
+        "normalized_name": "ot chuong",
+        "amount": 1,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "small",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sea_salt",
+        "name": "sea salt",
+        "normalized_name": "sea salt",
+        "amount": 1.5,
+        "unit": "teaspoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sriracha",
+        "name": "sriracha",
+        "normalized_name": "sriracha",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_tomatoes",
+        "name": "tomatoes",
+        "normalized_name": "tomatoes",
+        "amount": 2,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_vegetable_stock",
+        "name": "vegetable stock",
+        "normalized_name": "vegetable stock",
+        "amount": 3,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Rinse the kidney beans and brown rice separately. Cover the kidney beans with water and soak for 8 hours or overnight. In a separate bowl, cover the brown rice with water and soak for 8 hours or overnight.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Drain and rinse the kidney beans, then transfer to a medium saucepan and cover with fresh water. Bring to a boil, reduce heat to medium-low, cover, and simmer for 1 hour or until just tender but not falling apart.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Drain and set aside.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Heat the oil in a large saucepan over medium heat. When hot, add the onion and saut for 5 minutes. Now add the garlic, carrots, celery and green beans, and stir for another 5 minutes. Next add the tomatoes, red pepper, eggplant, sage, thyme, marjoram and celery seed, and continue to stir for another few minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Pour in the vegetable stock, liquid smoke, rice and the cooked kidney beans. Bring to a boil, reduce heat to medium low, cover, and cook, stirring occasionally, for 45 minutes or until the rice is tender.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Add water as necessary if the stew becomes too dry.Season with sriracha, salt and pepper, and taste for seasoning  add more liquid smoke, sriracha, salt, pepper or herbs as desired.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 392.8,
+      "proteinPerServing": 18.13,
+      "carbPerServing": 69.36,
+      "fatPerServing": 6.45,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/782601-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_716426",
+    "name": "Cauliflower, Brown Rice, and Vegetable Fried Rice",
+    "slug": "cauliflower-brown-rice-and-vegetable-fried-rice",
+    "cook_time_minutes": 30,
+    "difficulty": "HARD",
+    "tags": [
+      "side dish",
+      "antipasti",
+      "starter",
+      "snack",
+      "appetizer",
+      "antipasto",
+      "hor d'oeuvre",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_sesame",
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_grapeseed_oil",
+        "name": "grapeseed oil",
+        "normalized_name": "grapeseed oil",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_coconut_oil",
+        "name": "coconut oil",
+        "normalized_name": "coconut oil",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_scallions",
+        "name": "scallions",
+        "normalized_name": "scallions",
+        "amount": 7,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 5,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_cauliflower",
+        "name": "cauliflower",
+        "normalized_name": "bong cai trang",
+        "amount": 1,
+        "unit": "head",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_brown_rice",
+        "name": "brown rice",
+        "normalized_name": "brown rice",
+        "amount": 3,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_broccoli",
+        "name": "broccoli",
+        "normalized_name": "bong cai xanh",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_peas",
+        "name": "peas",
+        "normalized_name": "peas",
+        "amount": 1,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_soy_sauce",
+        "name": "soy sauce",
+        "normalized_name": "nuoc tuong",
+        "amount": 3,
+        "unit": "T",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sesame_oil",
+        "name": "sesame oil",
+        "normalized_name": "dau me",
+        "amount": 2,
+        "unit": "teaspoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sesame_seeds",
+        "name": "sesame seeds",
+        "normalized_name": "me",
+        "amount": 8,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_additional_scallion_tops",
+        "name": "additional scallion tops",
+        "normalized_name": "additional scallion tops",
+        "amount": 8,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_salt",
+        "name": "salt",
+        "normalized_name": "muoi",
+        "amount": 8,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Remove the cauliflower's tough stem and reserve for another use. Using a food processor, pulse cauliflower florets until they resemble rice or couscous. You should end up with around four cups of \"cauliflower rice.\"",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Heat 1T butter and 1T oil in a large skillet over medium heat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add garlic and the white and light green pieces of scallion. Sauté about a minute.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add the cauliflower to the pan. Stir to coat with oil, then spread out in pan and let sit; you want it cook a bit and to caramelize (get a bit brown), which will bring out the sweetness. After a couple of minutes, stir and spread out again.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Add cold rice (it separates easily, so it won't clump up during cooking), plus the additional grapeseed and coconut oil or butter. Raise heat to medium-high. Toss everything together and, again, spread the mixture out over the whole pan and press a bit into the bottom.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Let it sit for about two minutes—so the rice can get toasted and a little crispy.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 7,
+        "title": "Bước 7",
+        "content": "Add the peas and broccoli and stir again.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 8,
+        "title": "Bước 8",
+        "content": "Drizzle soy sauce and toasted sesame oil over rice.Cook for another minute or so and turn off heat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 9,
+        "title": "Bước 9",
+        "content": "Add chopped scallion tops and toss.I like to toast some sesame seeds in a dry pan; I sprinkle these and some more raw, chopped scallion over the top of the rice for added flavor and crunch.Season to taste with salt and, if you'd like, more soy sauce. Keep in mind that if you're serving this with something salty and saucy (ie. teriyaki chicken) you may want to hold off on adding too much salt to the fried rice.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 8,
+    "nutrition": {
+      "caloriesPerServing": 248.3,
+      "proteinPerServing": 7.06,
+      "carbPerServing": 28.91,
+      "fatPerServing": 12.96,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/716426-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_716004",
+    "name": "Quinoa and Chickpea Salad with Sun-Dried Tomatoes and Dried Cherries",
+    "slug": "quinoa-and-chickpea-salad-with-sun-dried-tomatoes-and-dried-cherries",
+    "cook_time_minutes": 45,
+    "difficulty": "HARD",
+    "tags": [
+      "lunch",
+      "main course",
+      "main dish",
+      "dinner",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_nuts"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_cashews",
+        "name": "cashews",
+        "normalized_name": "hat dieu",
+        "amount": 0.33333334,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_dried_cherries",
+        "name": "dried cherries",
+        "normalized_name": "dried cherries",
+        "amount": 0.33333334,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_dried_chickpeas",
+        "name": "dried chickpeas",
+        "normalized_name": "dried chickpeas",
+        "amount": 1.5,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_dried_thyme",
+        "name": "dried thyme",
+        "normalized_name": "dried thyme",
+        "amount": 0.5,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_ground_cumin",
+        "name": "ground cumin",
+        "normalized_name": "ground cumin",
+        "amount": 0.5,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_honey",
+        "name": "honey",
+        "normalized_name": "mat ong",
+        "amount": 1.5,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_juice_of_orange",
+        "name": "juice of orange",
+        "normalized_name": "juice of orange",
+        "amount": 1,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_quinoa",
+        "name": "quinoa",
+        "normalized_name": "quinoa",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_red_wine_vinegar",
+        "name": "red wine vinegar",
+        "normalized_name": "red wine vinegar",
+        "amount": 2,
+        "unit": "teaspoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sea_salt",
+        "name": "sea-salt",
+        "normalized_name": "sea salt",
+        "amount": 6,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sun_dried_tomatoes",
+        "name": "sun-dried tomatoes",
+        "normalized_name": "sun dried tomatoes",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_turmeric",
+        "name": "turmeric",
+        "normalized_name": "nghe",
+        "amount": 0.5,
+        "unit": "teaspoon",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Rinse the quinoa and soak for 8 hours or overnight in 2 cups of water. Rinse the chickpeas and soak for 8 hours or overnight in several inches of water.Rinse the chickpeas and transfer to a small saucepan. Cover with fresh water and bring to a boil. Reduce heat to medium-low, cover, and simmer for 1 hour or until buttery soft.While the chickpeas are cooking, soak the sun-dried tomatoes in hot water for 30 minutes, then drain and chop. Meanwhile, bring the quinoa to a boil in a medium saucepan. Reduce heat to the lowest setting, cover, and simmer for 15 minutes or until the water is absorbed.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Remove from heat and wait 5 minutes before fluffing with a fork.Meanwhile, toast the cashews in a dry unoiled skillet or saucepan over medium-low heat, tossing or stirring frequently, for 10 minutes until browned.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Transfer the chickpeas, quinoa, sun-dried tomatoes, cashews and dried cherries to a large mixing bowl.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Whisk the dressing ingredients together and pour over the salad. Stir to combine and serve at room temperature or chilled.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 538.7,
+      "proteinPerServing": 20.86,
+      "carbPerServing": 84.48,
+      "fatPerServing": 14.62,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/716004-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_716627",
+    "name": "Easy Homemade Rice and Beans",
+    "slug": "easy-homemade-rice-and-beans",
+    "cook_time_minutes": 35,
+    "difficulty": "HARD",
+    "tags": [
+      "side dish",
+      "lunch",
+      "main course",
+      "main dish",
+      "dinner",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_black_beans",
+        "name": "black beans",
+        "normalized_name": "black beans",
+        "amount": 15,
+        "unit": "ounce",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_canned_tomatoes",
+        "name": "canned tomatoes",
+        "normalized_name": "canned tomatoes",
+        "amount": 10,
+        "unit": "ounce",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_chili_powder",
+        "name": "chili powder",
+        "normalized_name": "bot ot",
+        "amount": 2,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_cumin",
+        "name": "cumin",
+        "normalized_name": "cumin",
+        "amount": 0.5,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_ground_pepper",
+        "name": "ground pepper",
+        "normalized_name": "ground pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_optional_of_hot_sauce",
+        "name": "optional: of hot sauce",
+        "normalized_name": "optional of hot sauce",
+        "amount": 4,
+        "unit": "dashes",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 1,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 0.25,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_rice",
+        "name": "rice",
+        "normalized_name": "gao",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_water",
+        "name": "water",
+        "normalized_name": "water",
+        "amount": 3,
+        "unit": "Tbsp",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Heat the olive oil in a large pot over medium heat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Add onions and saute until soft, or for about 5 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add all other remaining ingredients and stir together. Increase the heat to medium high and bring to a boil. Cover and reduce heat to medium low so that the mixture simmers. Cook for 15-20 minutes, or until rice is fluffy and liquid is absorbed.*",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Serve with salsa, cheese, and sour cream.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 2,
+    "nutrition": {
+      "caloriesPerServing": 445.69,
+      "proteinPerServing": 19.14,
+      "carbPerServing": 86.11,
+      "fatPerServing": 4.09,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/716627-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_664147",
+    "name": "Tuscan White Bean Soup with Olive Oil and Rosemary",
+    "slug": "tuscan-white-bean-soup-with-olive-oil-and-rosemary",
+    "cook_time_minutes": 45,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "lunch",
+      "soup",
+      "main course",
+      "main dish",
+      "dinner",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_bay_leaf",
+        "name": "bay leaf",
+        "normalized_name": "la nguyet que",
+        "amount": 1,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_rosemary",
+        "name": "rosemary",
+        "normalized_name": "huong thao",
+        "amount": 1,
+        "unit": "tablespoon",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 6,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "medium",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_salt",
+        "name": "salt",
+        "normalized_name": "muoi",
+        "amount": 6,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_water",
+        "name": "water",
+        "normalized_name": "water",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_beans",
+        "name": "beans",
+        "normalized_name": "beans",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Rinse the beans thoroughly and place them in a 7-quart slow cooker along with the water, onion, garlic, and bay leaf. Cover and cook on LOW for about 8 hours, or until the beans are nice and tender.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Remove the bay leaf. Using a handheld immersion blender, puree the remaining ingredients to the desired texture.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add the salt to taste.Ladle the soup into bowls.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Drizzle with the olive oil, sprinkle with rosemary, and serve.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 242.41,
+      "proteinPerServing": 16.13,
+      "carbPerServing": 43.37,
+      "fatPerServing": 1.29,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/664147-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_640941",
+    "name": "Crunchy Brussels Sprouts Side Dish",
+    "slug": "crunchy-brussels-sprouts-side-dish",
+    "cook_time_minutes": 30,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "side dish",
+      "gluten free",
+      "dairy free",
+      "paleolithic",
+      "lacto ovo vegetarian",
+      "primal"
+    ],
+    "dietary_flags": [
+      "contains_nuts"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_pepper",
+        "name": "pepper",
+        "normalized_name": "tieu",
+        "amount": 0.25,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_brussels_sprouts",
+        "name": "brussels sprouts",
+        "normalized_name": "brussels sprouts",
+        "amount": 800,
+        "unit": "g",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_dijon_mustard",
+        "name": "dijon mustard",
+        "normalized_name": "dijon mustard",
+        "amount": 1,
+        "unit": "tsp",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_honey",
+        "name": "honey",
+        "normalized_name": "mat ong",
+        "amount": 0.5,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 3,
+        "unit": "Tbs",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_red_wine_vinegar",
+        "name": "red wine vinegar",
+        "normalized_name": "red wine vinegar",
+        "amount": 2,
+        "unit": "Tbs",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_walnuts",
+        "name": "walnuts",
+        "normalized_name": "walnuts",
+        "amount": 0.25,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Blanch the Brussels sprouts in boiling water for 6-8 minutes or in a microwave oven in a little water for about 4 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Drain.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Saute the Brussels sprouts, stirring constantly, until they become golden-brown in color.Meanwhile mix the vinegar, mustard, honey and olive oil.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add walnuts to the sprouts, stir and combine.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Pour the vinegar dressing over the sprouts, season with pepper.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Mix and combine so that each sprout is covered with the dressing.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 7,
+        "title": "Bước 7",
+        "content": "Serve warm or cold as a side dish.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 4,
+    "nutrition": {
+      "caloriesPerServing": 231.8,
+      "proteinPerServing": 7.94,
+      "carbPerServing": 19.79,
+      "fatPerServing": 15.91,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/640941-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_756814",
+    "name": "Powerhouse Almond Matcha Superfood Smoothie",
+    "slug": "powerhouse-almond-matcha-superfood-smoothie",
+    "cook_time_minutes": 10,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "morning meal",
+      "brunch",
+      "beverage",
+      "breakfast",
+      "drink",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_nuts",
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_natural_almond_butter",
+        "name": "natural almond butter",
+        "normalized_name": "natural almond butter",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_almond_milk",
+        "name": "almond milk",
+        "normalized_name": "almond milk",
+        "amount": 1.5,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_banana",
+        "name": "banana",
+        "normalized_name": "chuoi",
+        "amount": 1,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_chia_seeds",
+        "name": "chia seeds",
+        "normalized_name": "chia seeds",
+        "amount": 2,
+        "unit": "teaspoons",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_baby_kale",
+        "name": "baby kale",
+        "normalized_name": "baby kale",
+        "amount": 1,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_mango_pieces",
+        "name": "mango pieces",
+        "normalized_name": "mango pieces",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_matcha_tea_powder",
+        "name": "matcha tea powder",
+        "normalized_name": "matcha tea powder",
+        "amount": 1,
+        "unit": "tablespoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_pineapple",
+        "name": "pineapple",
+        "normalized_name": "dua",
+        "amount": 0.75,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_vanilla_extract",
+        "name": "vanilla extract",
+        "normalized_name": "vani",
+        "amount": 0.5,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Combine all of the ingredients in a blender. Blend on high until smooth.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Serve immediately.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 2,
+    "nutrition": {
+      "caloriesPerServing": 281.18,
+      "proteinPerServing": 10.33,
+      "carbPerServing": 33.78,
+      "fatPerServing": 12.94,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/756814-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_715769",
+    "name": "Broccolini Quinoa Pilaf",
+    "slug": "broccolini-quinoa-pilaf",
+    "cook_time_minutes": 30,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "side dish",
+      "lunch",
+      "main course",
+      "main dish",
+      "dinner",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_nuts",
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_broccolini",
+        "name": "broccolini",
+        "normalized_name": "broccolini",
+        "amount": 1,
+        "unit": "bunch",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_garlic_clove",
+        "name": "garlic clove",
+        "normalized_name": "garlic clove",
+        "amount": 1,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 1,
+        "unit": "tbsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_quinoa",
+        "name": "quinoa",
+        "normalized_name": "quinoa",
+        "amount": 1,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_vegetable_broth",
+        "name": "vegetable broth",
+        "normalized_name": "vegetable broth",
+        "amount": 2,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_walnuts",
+        "name": "walnuts",
+        "normalized_name": "walnuts",
+        "amount": 2,
+        "unit": "oz",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "In a large pan with lid heat olive oil over medium high heat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Add onions and cook for 1 minute.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add garlic and cook until onions are translucent and garlic is fragrant.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add quinoa to pan, stir to combine. Slowly add in broth and bring to a boil.Cover and reduce heat to low, cook for 15 minutes.In the last 2-3 minutes of cooking add in broccolini on top of the quinoa (do not stir) and cover.Uncover and toss broccolini and quinoa together.Season to taste with salt and pepper.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Add walnuts and serve hot.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 2,
+    "nutrition": {
+      "caloriesPerServing": 625.07,
+      "proteinPerServing": 19.85,
+      "carbPerServing": 71.66,
+      "fatPerServing": 30.69,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/715769-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_715415",
+    "name": "Red Lentil Soup with Chicken and Turnips",
+    "slug": "red-lentil-soup-with-chicken-and-turnips",
+    "cook_time_minutes": 55,
+    "difficulty": "HARD",
+    "tags": [
+      "lunch",
+      "soup",
+      "main course",
+      "main dish",
+      "dinner",
+      "dairy free"
+    ],
+    "dietary_flags": [
+      "contains_meat"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_additional_toppings_avocado",
+        "name": "additional toppings: avocado",
+        "normalized_name": "additional toppings avocado",
+        "amount": 8,
+        "unit": "servings",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_carrots",
+        "name": "carrots",
+        "normalized_name": "carrots",
+        "amount": 3,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_celery_stalks",
+        "name": "celery stalks",
+        "normalized_name": "celery stalks",
+        "amount": 3,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_chicken_breast",
+        "name": "chicken breast",
+        "normalized_name": "uc ga",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_flat_leaf_parsley",
+        "name": "flat leaf parsley",
+        "normalized_name": "flat leaf parsley",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 6,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_canned_tomatoes",
+        "name": "canned tomatoes",
+        "normalized_name": "canned tomatoes",
+        "amount": 28,
+        "unit": "ounce",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_lentils",
+        "name": "lentils",
+        "normalized_name": "lentils",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_salt_and_pepper",
+        "name": "salt and pepper",
+        "normalized_name": "salt and pepper",
+        "amount": 8,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_turnip",
+        "name": "turnip",
+        "normalized_name": "turnip",
+        "amount": 1,
+        "unit": "large",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_vegetable_stock",
+        "name": "vegetable stock",
+        "normalized_name": "vegetable stock",
+        "amount": 8,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "medium",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "To a large dutch oven or soup pot, heat the olive oil over medium heat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Add the onion, carrots and celery and cook for 8-10 minutes or until tender, stirring occasionally.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add the garlic and cook for an additional 2 minutes, or until fragrant. Season conservatively with a pinch of salt and black pepper.To the pot, add the tomatoes, turnip and red lentils. Stir to combine. Stir in the vegetable stock and increase the heat on the stove to high. Bring the soup to a boil and then reduce to a simmer. Simmer for 20 minutes or until the turnips are tender and the lentils are cooked through.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add the chicken breast and parsley. Cook for an additional 5 minutes. Adjust seasoning to taste.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Serve the soup immediately garnished with fresh parsley and any additional toppings. Enjoy!",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 8,
+    "nutrition": {
+      "caloriesPerServing": 477.24,
+      "proteinPerServing": 26.93,
+      "carbPerServing": 51.78,
+      "fatPerServing": 20.34,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/715415-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_715446",
+    "name": "Slow Cooker Beef Stew",
+    "slug": "slow-cooker-beef-stew",
+    "cook_time_minutes": 490,
+    "difficulty": "HARD",
+    "tags": [
+      "lunch",
+      "soup",
+      "main course",
+      "main dish",
+      "dinner"
+    ],
+    "dietary_flags": [
+      "contains_meat",
+      "contains_dairy"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_beef_broth",
+        "name": "beef broth",
+        "normalized_name": "beef broth",
+        "amount": 14.5,
+        "unit": "oz",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_carrots",
+        "name": "carrots",
+        "normalized_name": "carrots",
+        "amount": 2,
+        "unit": "large",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_celery",
+        "name": "celery",
+        "normalized_name": "can tay",
+        "amount": 2,
+        "unit": "stalks",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_cream_of_mushroom_soup",
+        "name": "cream of mushroom soup",
+        "normalized_name": "cream of mushroom soup",
+        "amount": 26,
+        "unit": "oz",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_green_onions",
+        "name": "green onions",
+        "normalized_name": "green onions",
+        "amount": 3,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_new_potatoes",
+        "name": "new potatoes",
+        "normalized_name": "new potatoes",
+        "amount": 10,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "small",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_dale_s_seasoning",
+        "name": "dale's seasoning",
+        "normalized_name": "dale s seasoning",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_stew_meat",
+        "name": "stew meat",
+        "normalized_name": "stew meat",
+        "amount": 2,
+        "unit": "pounds",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_water",
+        "name": "water",
+        "normalized_name": "water",
+        "amount": 2,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "To get started, heat your slow cooker to low.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Pour in the cream of mushroom soup, Dale's seasoning, water, and beef broth and stir until mixed well.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add in your stew meat, potatoes, onions, carrots, celery, and green onions. Stir well until covered and cook on low for 8 hours. You can add salt and pepper as desired, but the flavors and the Dale's marry together so well that you probably won’t need them.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 433.82,
+      "proteinPerServing": 44.24,
+      "carbPerServing": 40.53,
+      "fatPerServing": 11.63,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/715446-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_660306",
+    "name": "Slow Cooker: Pork and Garbanzo Beans",
+    "slug": "slow-cooker-pork-and-garbanzo-beans",
+    "cook_time_minutes": 45,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "lunch",
+      "main course",
+      "main dish",
+      "dinner",
+      "gluten free",
+      "dairy free"
+    ],
+    "dietary_flags": [
+      "contains_meat"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_cinnamon",
+        "name": "cinnamon",
+        "normalized_name": "que",
+        "amount": 2,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_cumin",
+        "name": "cumin",
+        "normalized_name": "cumin",
+        "amount": 1,
+        "unit": "Tbsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garbanzo_beans_1",
+        "name": "garbanzo beans *1",
+        "normalized_name": "garbanzo beans 1",
+        "amount": 16,
+        "unit": "oz",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_ground_pepper",
+        "name": "ground pepper",
+        "normalized_name": "ground pepper",
+        "amount": 2,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "small",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_pork_should_roast",
+        "name": "pork should roast",
+        "normalized_name": "pork should roast",
+        "amount": 3,
+        "unit": "lb",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_salt",
+        "name": "salt",
+        "normalized_name": "muoi",
+        "amount": 2,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_water_2",
+        "name": "water *2",
+        "normalized_name": "water 2",
+        "amount": 4,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "In slow cooker layer in this order: pork, then garbanzo beans, onion, pour water over all.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Mix spices together and sprinkle over pork and beans. Cover. Set on low and cook for approximately 6 hours. The beans should be tender and creamy. The pork should fall very easily from the bone. The pork can be either shredded for cubed for your preference. *3Serving Suggestion: Scoop about 1 cup of beans with broth into a soup bowl. Top with shredded pork.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add 1/4 of an avocado sliced, top with chopped fresh cilantro.NOTES:*1 The beans do not need to be soaked before adding to the slow cooker. They will be perfectly soft and creamy without pre-soaking.*2 Substitute the water for: 2 cups water and 1 bottle of good quality dark beer like Negra Modelo. You can also substitute the water for chicken stock or pork stock. Each of these substitutions will add an extra dimension of flavor.*3 If you want to shred the pork, it is easiest to do when the pork is hot. Use two forks to pull the pork apart and shred. If you want to slice the pork (like for sandwiches) it is best to do when the pork is cold.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Let the pork rest in the refrigerator for several hours or over night. Slice with a serrated knife or a very sharp chef knife.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 586.78,
+      "proteinPerServing": 65.78,
+      "carbPerServing": 48.51,
+      "fatPerServing": 14.04,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/660306-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_642129",
+    "name": "Easy To Make Spring Rolls",
+    "slug": "easy-to-make-spring-rolls",
+    "cook_time_minutes": 45,
+    "difficulty": "HARD",
+    "tags": [
+      "fingerfood",
+      "antipasti",
+      "starter",
+      "snack",
+      "appetizer",
+      "antipasto",
+      "hor d'oeuvre",
+      "pescatarian"
+    ],
+    "dietary_flags": [
+      "contains_seafood"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_you_can_use_regular_basil",
+        "name": "you can use regular basil",
+        "normalized_name": "you can use regular basil",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_boston_lettuce",
+        "name": "boston lettuce",
+        "normalized_name": "boston lettuce",
+        "amount": 1,
+        "unit": "small head",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_chili_pepper",
+        "name": "chili pepper",
+        "normalized_name": "chili pepper",
+        "amount": 1,
+        "unit": "small",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_fish_sauce",
+        "name": "fish sauce",
+        "normalized_name": "nuoc mam",
+        "amount": 0.25,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_coriander_leaves",
+        "name": "coriander leaves",
+        "normalized_name": "coriander leaves",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 1,
+        "unit": "clove",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_lime_juice",
+        "name": "lime juice",
+        "normalized_name": "lime juice",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_mint_leaves",
+        "name": "mint leaves",
+        "normalized_name": "mint leaves",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_bell_pepper",
+        "name": "bell pepper",
+        "normalized_name": "ot chuong",
+        "amount": 4,
+        "unit": "servings",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_rice_vinegar",
+        "name": "rice vinegar",
+        "normalized_name": "rice vinegar",
+        "amount": 0.25,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_shrimp",
+        "name": "shrimp",
+        "normalized_name": "tom",
+        "amount": 8,
+        "unit": "large",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_spring_roll_wrappers",
+        "name": "spring roll wrappers",
+        "normalized_name": "spring roll wrappers",
+        "amount": 8,
+        "unit": "8-inch",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_sugar",
+        "name": "sugar",
+        "normalized_name": "duong",
+        "amount": 1,
+        "unit": "tablespoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_water",
+        "name": "water",
+        "normalized_name": "water",
+        "amount": 0.25,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_nuoc_cham",
+        "name": "nuoc cham",
+        "normalized_name": "nuoc cham",
+        "amount": 4,
+        "unit": "servings",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_nuoc_cham",
+        "name": "nuoc cham",
+        "normalized_name": "nuoc cham",
+        "amount": 4,
+        "unit": "servings",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Have all the ingredients ready for assembly. In a large bowl filled with water, dip a wrapper in the water. The rice wrapper will begin to soften and this is your cue to remove it from the water and lay it flat.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Place 2 shrimp halves in a row across the center and top with basil, mint, cilantro and lettuce. Leave about 1 to 2 inches uncovered on each side.  Fold uncovered sides inward, then tightly roll the wrapper, beginning at the end with the lettuce.  Repeat with remaining wrappers and ingredients.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Cut and serve at room temperature with dipping sauce.The Culinary Chases Note: The rice wrapper can be fussy to handle if you let it soak too long. I usually give it a couple of swishes in the water and then remove. It may feel slightly stiff but by the time you are ready to roll up, the wrapper will become very pliable.  A typical spring roll contains cooked rice vermicelli, slivers of cooked pork and julienned carrots but you can use whatever suits your fancy.  Enjoy!",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 4,
+    "nutrition": {
+      "caloriesPerServing": 161.61,
+      "proteinPerServing": 13.32,
+      "carbPerServing": 28.28,
+      "fatPerServing": 2,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/642129-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_642605",
+    "name": "Farro With Mushrooms and Asparagus",
+    "slug": "farro-with-mushrooms-and-asparagus",
+    "cook_time_minutes": 75,
+    "difficulty": "HARD",
+    "tags": [
+      "side dish",
+      "dairy free"
+    ],
+    "dietary_flags": [
+      "contains_meat"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_asparagus",
+        "name": "asparagus",
+        "normalized_name": "asparagus",
+        "amount": 1,
+        "unit": "bunch",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_chicken_stock",
+        "name": "chicken stock",
+        "normalized_name": "nuoc dung ga",
+        "amount": 2,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_porcini_mushrooms",
+        "name": "porcini mushrooms",
+        "normalized_name": "porcini mushrooms",
+        "amount": 1,
+        "unit": "ounce",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_farro",
+        "name": "farro",
+        "normalized_name": "farro",
+        "amount": 8,
+        "unit": "ounces",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_thyme",
+        "name": "thyme",
+        "normalized_name": "co xa huong",
+        "amount": 1,
+        "unit": "tablespoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 2,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 2,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "medium",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_salt_and_pepper",
+        "name": "salt and pepper",
+        "normalized_name": "salt and pepper",
+        "amount": 4,
+        "unit": "servings",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_sherry_vinegar",
+        "name": "sherry vinegar",
+        "normalized_name": "sherry vinegar",
+        "amount": 3,
+        "unit": "tablespoons",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "In a small bowl, cover dried mushrooms with warm water.  Soak for 25 minutes, or until softened.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Drain the mushrooms, and discard the soaking water.  Chop finely.Bring a large pot of water to a boil.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add farro, and cook for 10 minutes, stirring occasionally.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Drain and reserve.In a large skillet, over medium heat, heat the olive oil, and add onion, garlic, thyme, and mushrooms.Cook, stirring occasionally, for 5 minutes or until onions are tender.Stir in 2 tablespoons of sherry vinegar, and continue cooking for 1 minute.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Add chicken stock, and bring it to a boil.Stir in farro, and return to a boil.Lower the heat to a simmer, and cover with a tight fitting lid.  Cook for 10 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Add asparagus, and cook, covered, for an additional 10 minutes.Season with 1 tablespoon sherry vinegar, salt and pepper.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 4,
+    "nutrition": {
+      "caloriesPerServing": 365.28,
+      "proteinPerServing": 12.3,
+      "carbPerServing": 61.53,
+      "fatPerServing": 9.37,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/642605-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_636589",
+    "name": "Butternut Squash Frittata",
+    "slug": "butternut-squash-frittata",
+    "cook_time_minutes": 45,
+    "difficulty": "EASY",
+    "tags": [
+      "lunch",
+      "main course",
+      "morning meal",
+      "brunch",
+      "main dish",
+      "breakfast",
+      "dinner",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_dairy",
+      "contains_egg"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_butternut_squash",
+        "name": "butternut squash",
+        "normalized_name": "butternut squash",
+        "amount": 1,
+        "unit": "large",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_goat_cheese",
+        "name": "goat cheese",
+        "normalized_name": "goat cheese",
+        "amount": 0.5,
+        "unit": "oz",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_liquid_egg_substitute",
+        "name": "liquid egg substitute",
+        "normalized_name": "liquid egg substitute",
+        "amount": 0.5,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_non_fat_milk",
+        "name": "non-fat milk",
+        "normalized_name": "non fat milk",
+        "amount": 2,
+        "unit": "tbsp",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_bell_pepper",
+        "name": "bell pepper",
+        "normalized_name": "ot chuong",
+        "amount": 1,
+        "unit": "serving",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Preheat oven to 350Spray a 10 oz oven safe dish with cooking spray",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Add your butternut squash",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "In a measuring cup add your eggs and milk.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Mix until combined.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Pour over butternut squash.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Sprinkle with pepper and top with cheese.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 7,
+        "title": "Bước 7",
+        "content": "Bake in oven for 30-35 minutes, until middle is slightly firm",
+        "duration_minutes": 0
+      },
+      {
+        "order": 8,
+        "title": "Bước 8",
+        "content": "Let it cool for a few minutes",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 1,
+    "nutrition": {
+      "caloriesPerServing": 462.09,
+      "proteinPerServing": 23.89,
+      "carbPerServing": 96.03,
+      "fatPerServing": 3.99,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/636589-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_646738",
+    "name": "Herbivoracious' White Bean and Kale Soup",
+    "slug": "herbivoracious-white-bean-and-kale-soup",
+    "cook_time_minutes": 45,
+    "difficulty": "HARD",
+    "tags": [
+      "lunch",
+      "soup",
+      "main course",
+      "main dish",
+      "dinner",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "contains_dairy",
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 0.25,
+        "unit": "cup",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": "medium",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 1,
+        "unit": "head",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_carrot",
+        "name": "carrot",
+        "normalized_name": "ca rot",
+        "amount": 1,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_kosher_salt",
+        "name": "kosher salt",
+        "normalized_name": "kosher salt",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_bay_leaves",
+        "name": "bay leaves",
+        "normalized_name": "la nguyet que",
+        "amount": 2,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_rosemary_leaves",
+        "name": "rosemary leaves",
+        "normalized_name": "rosemary leaves",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_the_following_parmesan_rind",
+        "name": "the following: parmesan rind)",
+        "normalized_name": "the following parmesan rind",
+        "amount": 1,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_navy",
+        "name": "navy",
+        "normalized_name": "navy",
+        "amount": 2,
+        "unit": "cups",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_water",
+        "name": "water",
+        "normalized_name": "water",
+        "amount": 7,
+        "unit": "cups",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_dinosaur_kale",
+        "name": "dinosaur kale",
+        "normalized_name": "dinosaur kale",
+        "amount": 1,
+        "unit": "bunch",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_juice_of_lemon",
+        "name": "juice of lemon",
+        "normalized_name": "juice of lemon",
+        "amount": 1,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "PRESSURE COOKER METHOD",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "In the pressure cooker base, but without pressure, heat the olive oil over medium-high heat. Saut the onion, garlic, carrot, and 1 teaspoon salt until the onion is translucent, about 4 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add the bay leaves, rosemary, and your choice(s) of the Parmesan rind, dried porcini, or broth powder.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add the dry beans and water. Bring up to high pressure and cook for 40 minutes, then allow the pressure to release naturally. Open the lid.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Remove the bay leaves and Parmesan rind, if using.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Add the kale and lemon juice and simmer for 10 minutes, until the kale is tender. Taste and adjust the seasoning, then serve, garnished with a generous drizzle of extra-virgin olive oil.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 7,
+        "title": "Bước 7",
+        "content": "STOVETOP METHOD",
+        "duration_minutes": 0
+      },
+      {
+        "order": 8,
+        "title": "Bước 8",
+        "content": "Cover the beans with several inches of water and soak overnight.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 9,
+        "title": "Bước 9",
+        "content": "Drain the beans and place in a large saucepan. Cover with water by at least 2 inches and bring to a boil. Reduce the heat and simmer the beans until tender, about 1 1/2 to 2 hours.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 10,
+        "title": "Bước 10",
+        "content": "Drain the beans, reserving the bean broth.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 11,
+        "title": "Bước 11",
+        "content": "In a large saucepan, heat the olive oil over medium-high heat. Saut the onion, garlic, carrot, and 1 teaspoon salt until the onion is translucent, about 4 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 12,
+        "title": "Bước 12",
+        "content": "Add 4 cups of the bean broth, the bay leaves, rosemary, and your choice of the Parmesan rind, dried porcini, or broth powder. Bring to a simmer and cook for 30 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 13,
+        "title": "Bước 13",
+        "content": "Remove the bay leaves and Parmesan rind, if using.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 14,
+        "title": "Bước 14",
+        "content": "Add the beans, kale, and lemon juice and simmer for 10 minutes, until the kale is tender. Taste and adjust the seasoning, then serve, garnished with a generous drizzle of extra-virgin olive oil.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 331.54,
+      "proteinPerServing": 16.99,
+      "carbPerServing": 46.27,
+      "fatPerServing": 9.98,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/646738-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_663559",
+    "name": "Tomato and lentil soup",
+    "slug": "tomato-and-lentil-soup",
+    "cook_time_minutes": 45,
+    "difficulty": "HARD",
+    "tags": [
+      "lunch",
+      "soup",
+      "main course",
+      "main dish",
+      "dinner",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 2,
+        "unit": "Tbs",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_onion",
+        "name": "onion",
+        "normalized_name": "hanh tay",
+        "amount": 1,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 2,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_carrots",
+        "name": "carrots",
+        "normalized_name": "carrots",
+        "amount": 3,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_tomatoes",
+        "name": "tomatoes",
+        "normalized_name": "tomatoes",
+        "amount": 480,
+        "unit": "g",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_bay_leaf",
+        "name": "bay leaf",
+        "normalized_name": "la nguyet que",
+        "amount": 1,
+        "unit": null,
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_water",
+        "name": "water",
+        "normalized_name": "water",
+        "amount": 1.3,
+        "unit": "l",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_lentils",
+        "name": "lentils",
+        "normalized_name": "lentils",
+        "amount": 250,
+        "unit": "g",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_salt",
+        "name": "salt",
+        "normalized_name": "muoi",
+        "amount": 0.25,
+        "unit": "tsp",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_parsley",
+        "name": "parsley",
+        "normalized_name": "rau mui tay",
+        "amount": 1,
+        "unit": "bunch",
+        "essential": false,
+        "weight": 0.3
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Saut onion and garlic in olive oil for 5 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Add the carrot, saut for another 2 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Add tomatoes, bay leaf and water, stir and bring to the boil.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Stir in lentils, season with salt and cook for 5 minutes.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Before serving sprinkle with chopped parsley.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 4,
+    "nutrition": {
+      "caloriesPerServing": 340.11,
+      "proteinPerServing": 18.31,
+      "carbPerServing": 50.72,
+      "fatPerServing": 8.08,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/663559-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_662670",
+    "name": "Swiss Chard Wraps",
+    "slug": "swiss-chard-wraps",
+    "cook_time_minutes": 45,
+    "difficulty": "HARD",
+    "tags": [
+      "side dish",
+      "gluten free",
+      "dairy free",
+      "paleolithic",
+      "lacto ovo vegetarian",
+      "primal"
+    ],
+    "dietary_flags": [
+      "contains_nuts",
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_swiss_chard_leaves",
+        "name": "swiss chard leaves",
+        "normalized_name": "swiss chard leaves",
+        "amount": 6,
+        "unit": "large",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_orange_cauliflower",
+        "name": "orange cauliflower",
+        "normalized_name": "orange cauliflower",
+        "amount": 1,
+        "unit": "small head",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_olive_oil",
+        "name": "olive oil",
+        "normalized_name": "dau o liu",
+        "amount": 1.5,
+        "unit": "Tbs",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 3,
+        "unit": "cloves",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_salt",
+        "name": "salt",
+        "normalized_name": "muoi",
+        "amount": 1,
+        "unit": "pinch",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_basil",
+        "name": "basil",
+        "normalized_name": "basil",
+        "amount": 1,
+        "unit": "sprig",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_zucchini",
+        "name": "zucchini",
+        "normalized_name": "bi ngoi",
+        "amount": 1,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_bell_pepper",
+        "name": "bell pepper",
+        "normalized_name": "ot chuong",
+        "amount": 1,
+        "unit": "large",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_avocado",
+        "name": "avocado",
+        "normalized_name": "bo trai",
+        "amount": 1,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_trader_joe_s_spicy_peanut_vinaigrette",
+        "name": "trader joe's spicy peanut vinaigrette",
+        "normalized_name": "trader joe s spicy peanut vinaigrette",
+        "amount": 3,
+        "unit": "Tbs",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Chop off the stems of the swiss chard at the point where it meets the leaf. You could stem the swiss chard entirely. I like leaving a bit of stem with the leaves to give better structure to the wraps.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Chop the cauliflower into small pieces and pulse them in a food processor until it looks like rice. I usually pulse the cauliflower florets and the stalk together.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Place the olive oil in a saut pan over medium-high heat. Once the pan is hot, add the garlic and let it fry for about a minute or two, or until the garlic starts to brown.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add the pulsed cauliflower rice and cook it for about 2-3 minutes. The cauliflower should turn into a vibrant yellow-orange color when it is cooked.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Add a pinch of salt and chopped basil to the cauliflower and stir.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 6,
+        "title": "Bước 6",
+        "content": "Spiralize the zucchini with Blade B to create zucchini noodles. If you do not have a spiralizer, just create zucchini ribbons with a vegetable peeler.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 7,
+        "title": "Bước 7",
+        "content": "To assemble the wraps, place a large leaf flat down.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 8,
+        "title": "Bước 8",
+        "content": "Add a bit of sauted cauliflower, zucchini noodles, red pepper, and avocado along the swiss chard stalk.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 9,
+        "title": "Bước 9",
+        "content": "Drizzle a bit of vinaigrette on top of the vegetables and wrap everything up.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 10,
+        "title": "Bước 10",
+        "content": "Enjoy these wraps as a side to your favorite protein! Feel free to dip these wraps in more sauce.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 11,
+        "title": "Bước 11",
+        "content": "These wraps are best consumed when they are freshly made. Refrigerate any leftovers in an airtight container.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 6,
+    "nutrition": {
+      "caloriesPerServing": 137.21,
+      "proteinPerServing": 3.61,
+      "carbPerServing": 8.63,
+      "fatPerServing": 11.2,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/662670-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  },
+  {
+    "_id": "spoon_640062",
+    "name": "Corn Avocado Salsa",
+    "slug": "corn-avocado-salsa",
+    "cook_time_minutes": 25,
+    "difficulty": "MEDIUM",
+    "tags": [
+      "antipasti",
+      "condiment",
+      "starter",
+      "snack",
+      "appetizer",
+      "dip",
+      "antipasto",
+      "hor d'oeuvre",
+      "spread",
+      "gluten free",
+      "dairy free",
+      "lacto ovo vegetarian"
+    ],
+    "dietary_flags": [
+      "vegan"
+    ],
+    "ingredients": [
+      {
+        "ingredient_id": "ing_avocado",
+        "name": "avocado",
+        "normalized_name": "bo trai",
+        "amount": 1,
+        "unit": null,
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_balsamic_vinegar",
+        "name": "balsamic vinegar",
+        "normalized_name": "balsamic vinegar",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_cumin",
+        "name": "cumin",
+        "normalized_name": "cumin",
+        "amount": 1,
+        "unit": "teaspoon",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_corn",
+        "name": "corn",
+        "normalized_name": "bap",
+        "amount": 0.75,
+        "unit": "cup",
+        "essential": true,
+        "weight": 1
+      },
+      {
+        "ingredient_id": "ing_garlic",
+        "name": "garlic",
+        "normalized_name": "toi",
+        "amount": 1,
+        "unit": "clove",
+        "essential": false,
+        "weight": 0.3
+      },
+      {
+        "ingredient_id": "ing_bell_pepper",
+        "name": "bell pepper",
+        "normalized_name": "ot chuong",
+        "amount": 0.5,
+        "unit": "medium",
+        "essential": true,
+        "weight": 1
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "title": "Bước 1",
+        "content": "Preheat oven to 375 degrees.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 2,
+        "title": "Bước 2",
+        "content": "Spread corn flat on a baking sheet.Spray lightly with olive oil spray.Roast corn in the oven for about 8-10 minutes. (Be careful not to brown too much or burn.)",
+        "duration_minutes": 0
+      },
+      {
+        "order": 3,
+        "title": "Bước 3",
+        "content": "Remove from heat and allow to cool.Finely chop red pepper and garlic and mix in a bowl.Peel and coarsely chop avocado and add to bowl.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 4,
+        "title": "Bước 4",
+        "content": "Add cooled corn.",
+        "duration_minutes": 0
+      },
+      {
+        "order": 5,
+        "title": "Bước 5",
+        "content": "Mix in cumin and vinegar and blend well.",
+        "duration_minutes": 0
+      }
+    ],
+    "servings": 2,
+    "nutrition": {
+      "caloriesPerServing": 237.36,
+      "proteinPerServing": 4.62,
+      "carbPerServing": 26.27,
+      "fatPerServing": 15.58,
+      "incomplete": false
+    },
+    "image_url": "https://img.spoonacular.com/recipes/640062-556x370.jpg",
+    "video_url": null,
+    "created_at": "2026-09-03T00:00:00Z"
+  }
+]
