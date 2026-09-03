@@ -10,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,27 +19,19 @@ import java.util.Optional;
 public class NotificationService {
 
     private final NotificationRepository repository;
-    private final NotificationInserter inserter;
 
-    public NotificationService(NotificationRepository repository, NotificationInserter inserter) {
+    public NotificationService(NotificationRepository repository) {
         this.repository = repository;
-        this.inserter = inserter;
     }
 
     /**
      * Insert bản ghi mới; nếu đã tồn tại (unique constraint {@code user_id+source_inventory_item_id+type}
      * bị vi phạm) thì trả rỗng — đây là cơ chế dedup thật (DB-level), atomic dưới concurrent access.
      * "Trùng" nghĩa là nguyên liệu này đã báo đúng trạng thái này rồi, không gửi/lưu lần 2.
-     * Insert thật đi qua {@link NotificationInserter} (bean riêng, REQUIRES_NEW) — gọi cross-bean
-     * để transaction lỗi tự rollback gọn trong chính nó rồi mới ném exception ra ngoài; gọi self
-     * (this.xxx() cùng class) sẽ bỏ qua Spring AOP proxy nên @Transactional không có tác dụng
-     * (cùng bài học đã áp dụng cho ResilientLlmCaller/ResilientVisionCaller), và nếu không tách
-     * transaction riêng thì insert lỗi sẽ đánh rollback-only lên transaction đang dùng chung của
-     * caller (Kafka listener xử lý nhiều event, hoặc test dùng chung 1 EntityManager).
      */
     public Optional<Notification> createIfAbsent(Notification n) {
         try {
-            return Optional.of(inserter.insert(n));
+            return Optional.of(repository.saveAndFlush(n));
         } catch (DataIntegrityViolationException ex) {
             return Optional.empty();
         }
@@ -74,24 +63,5 @@ public class NotificationService {
     private static NotificationResponse toResponse(Notification n) {
         return new NotificationResponse(n.getId(), n.getType(), n.getTitle(), n.getMessage(),
                 n.getActionUrl(), n.isRead(), n.getCreatedAt());
-    }
-}
-
-/**
- * Bean riêng chỉ để {@link NotificationService#createIfAbsent} gọi cross-bean — xem javadoc ở đó.
- * Package-private, không dùng ở đâu khác.
- */
-@Component
-class NotificationInserter {
-
-    private final NotificationRepository repository;
-
-    NotificationInserter(NotificationRepository repository) {
-        this.repository = repository;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    Notification insert(Notification n) {
-        return repository.saveAndFlush(n);
     }
 }
