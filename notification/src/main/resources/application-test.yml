@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:notificationtest;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,TYPE;INIT=CREATE SCHEMA IF NOT EXISTS notification_service
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        default_schema: notification_service
+  flyway:
+    enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+
+jwt:
+  secret: test-secret-at-least-32-chars-long-000
+  expiration-minutes: 120
+
+internal:
+  service-secret: test-internal-secret
+
+services:
+  user-url: http://localhost:0
+
+app:
+  frontend-url: http://localhost:5175
