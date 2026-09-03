@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+
 /**
  * Endpoint service-to-service DUY NHẤT không xác thực bằng JWT trong toàn hệ thống — lý do và
  * đánh đổi ghi ở specs/notification-service.md mục 5.3 và docs/superpowers/plans Stage 2. Route
@@ -35,7 +38,8 @@ public class InternalUserController {
     @GetMapping("/{id}")
     public InternalUserResponse getById(@PathVariable Long id,
                                          @RequestHeader("X-Internal-Secret") String secret) {
-        if (!internalSecret.equals(secret)) {
+        if (!MessageDigest.isEqual(internalSecret.getBytes(StandardCharsets.UTF_8),
+                secret.getBytes(StandardCharsets.UTF_8))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Internal secret không hợp lệ");
         }
         User user = userRepository.findById(id)
