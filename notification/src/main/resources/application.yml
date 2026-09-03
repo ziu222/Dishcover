@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: notification
+  data:
+    web:
+      pageable:
+        # Chặn size quá lớn (VD ?size=100000) — tránh tải toàn bộ bảng gây quá tải.
+        max-page-size: 100
+        default-page-size: 20
   datasource:
     url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:larder}?currentSchema=notification_service
     username: ${POSTGRES_USER:larder_app}

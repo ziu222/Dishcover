@@ -3,6 +3,9 @@ package com.dishcover.notification.controller;
 import com.dishcover.common.security.AuthenticatedUser;
 import com.dishcover.notification.dto.NotificationDtos.NotificationListResponse;
 import com.dishcover.notification.service.NotificationService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,9 +28,9 @@ public class NotificationController {
     @GetMapping
     public NotificationListResponse list(@AuthenticationPrincipal AuthenticatedUser me,
                                           @RequestParam(defaultValue = "false") boolean unreadOnly,
-                                          @RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "20") int size) {
-        return service.list(me.userId(), unreadOnly, page, size);
+                                          @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC)
+                                          Pageable pageable) {
+        return service.list(me.userId(), unreadOnly, pageable);
     }
 
     @PatchMapping("/{id}/read")
