@@ -3,24 +3,38 @@
 ECS Fargate (8 service) + RDS Postgres + Mongo/Kafka tự host trong ECS + ALB + S3/CloudFront (frontend).
 Chi tiết kiến trúc & cảnh báo chi phí: [docs/aws-deployment-guide.md](../../docs/aws-deployment-guide.md).
 
-## Apply lần đầu (thủ công, từ máy có quyền AWS — CI KHÔNG chạy bước này)
+## Domain (Hostinger — `dishcover.online`)
+
+DNS **vẫn quản lý ở Hostinger**, không chuyển sang Route 53. Frontend = `www.dishcover.online`,
+API = `api.dishcover.online` (dùng subdomain, không dùng domain gốc/apex — hầu hết registrar kể cả
+Hostinger không hỗ trợ CNAME thẳng ở apex). Đổi domain khác qua `var.domain_name` trong
+`terraform.tfvars`.
+
+**Apply chia 2 lượt vì ACM cần validate qua DNS bên ngoài (không tự động như Route 53):**
 
 ```bash
 cd infra/aws
 cp terraform.tfvars.example terraform.tfvars   # điền secret thật, KHÔNG commit file này
 terraform init
-terraform plan      # đọc kỹ trước khi apply — tạo tài nguyên tốn phí thật
-terraform apply
+terraform plan
+terraform apply   # sẽ TREO ở aws_acm_certificate_validation — mở tab khác, làm bước dưới
 ```
 
-Sau khi apply xong, lấy giá trị output:
+Trong lúc `apply` đang treo, mở tab khác lấy 2 record cần thêm:
 ```bash
-terraform output              # xem tất cả
-terraform output -raw github_deploy_role_arn
-terraform output -raw frontend_bucket_name
-terraform output -raw cloudfront_distribution_id
-terraform output -raw alb_dns_name
+terraform output -json acm_validation_records
 ```
+Vào **Hostinger → Domains → dishcover.online → DNS / Nameservers**, thêm đúng 2 CNAME record
+(`name`/`value` lấy từ output trên, `type` luôn là CNAME). DNS lan truyền + ACM nhận diện có thể
+mất 5-30 phút — `apply` đang chờ ở terminal sẽ tự tiếp tục khi thấy record, không cần Ctrl+C/chạy lại.
+
+Sau khi `apply` xong, thêm tiếp 2 CNAME cuối vào Hostinger (không treo, làm khi nào tiện):
+```bash
+terraform output -raw alb_dns_name              # -> CNAME api.dishcover.online vào giá trị này
+terraform output -raw cloudfront_domain_name    # -> CNAME www.dishcover.online vào giá trị này
+```
+
+Xem toàn bộ hướng dẫn kèm tên biến chính xác: `terraform output next_steps`.
 
 ## Cấu hình GitHub Actions (Settings → Secrets and variables → Actions)
 
@@ -29,7 +43,7 @@ terraform output -raw alb_dns_name
 | `AWS_DEPLOY_ROLE_ARN` | `terraform output -raw github_deploy_role_arn` |
 | `FRONTEND_BUCKET` | `terraform output -raw frontend_bucket_name` |
 | `CLOUDFRONT_DISTRIBUTION_ID` | `terraform output -raw cloudfront_distribution_id` |
-| `ALB_BASE_URL` | `http://` + `terraform output -raw alb_dns_name` |
+| `ALB_BASE_URL` | `https://api.dishcover.online` |
 
 Và tạo GitHub Environment tên `production` (Settings → Environments → New environment) + bật **Required reviewers** — đây là bước approve thủ công trước khi `.github/workflows/deploy.yml` thật sự chạy (bắt buộc theo checklist devops-engineer: "MUST NOT deploy to production without explicit approval").
 

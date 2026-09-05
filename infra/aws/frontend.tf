@@ -28,6 +28,7 @@ resource "aws_cloudfront_origin_access_control" "frontend" {
 resource "aws_cloudfront_distribution" "frontend" {
   enabled             = true
   default_root_object = "index.html"
+  aliases             = ["www.${var.domain_name}"]
 
   origin {
     domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
@@ -60,7 +61,9 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true # ponytail: domain riêng cần ACM certificate (us-east-1) + Route 53, chưa làm
+    acm_certificate_arn      = aws_acm_certificate_validation.frontend.certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 }
 
@@ -82,7 +85,13 @@ resource "aws_s3_bucket_policy" "frontend" {
 }
 
 output "frontend_url" {
-  value = "https://${aws_cloudfront_distribution.frontend.domain_name}"
+  value       = "https://www.${var.domain_name}"
+  description = "URL thật sau khi thêm CNAME www.<domain_name> -> giá trị output cloudfront_domain_name ở Hostinger"
+}
+
+output "cloudfront_domain_name" {
+  value       = aws_cloudfront_distribution.frontend.domain_name
+  description = "CNAME giá trị này vào www.<domain_name> ở Hostinger (xem output next_steps để có tên miền thật đã điền sẵn)"
 }
 
 output "frontend_bucket_name" {
