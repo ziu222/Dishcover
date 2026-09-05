@@ -54,14 +54,20 @@ resource "aws_secretsmanager_secret" "mail_password" {
   name = "${var.project}/mail-password"
 }
 resource "aws_secretsmanager_secret_version" "mail_password" {
-  secret_id     = aws_secretsmanager_secret.mail_password.id
-  secret_string = var.mail_password
+  secret_id = aws_secretsmanager_secret.mail_password.id
+  # Secrets Manager không chấp nhận chuỗi rỗng ("" ném lỗi InvalidRequestException) — để trống
+  # trong tfvars nghĩa là chưa cấu hình mail thật, dùng placeholder rõ ràng thay vì "" (email vẫn
+  # fail-open đúng thiết kế EmailSender, chỉ là auth SMTP sẽ fail thay vì không có secret nào).
+  secret_string = coalesce(var.mail_password != "" ? var.mail_password : null, "not-configured")
 }
 
 resource "aws_secretsmanager_secret" "turnstile_secret_key" {
   name = "${var.project}/turnstile-secret-key"
 }
 resource "aws_secretsmanager_secret_version" "turnstile_secret_key" {
-  secret_id     = aws_secretsmanager_secret.turnstile_secret_key.id
-  secret_string = var.turnstile_secret_key
+  secret_id = aws_secretsmanager_secret.turnstile_secret_key.id
+  # Secrets Manager không chấp nhận chuỗi rỗng. Để trống trong tfvars -> dùng lại đúng key test
+  # Cloudflare mặc định trong user/application.yml (1x0000...AA, luôn pass) thay vì "" — set secret
+  # rỗng sẽ GHI ĐÈ default đó bằng giá trị rỗng thật (tệ hơn không set gì), phải tránh.
+  secret_string = coalesce(var.turnstile_secret_key != "" ? var.turnstile_secret_key : null, "1x0000000000000000000000000000000AA")
 }
