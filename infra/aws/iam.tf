@@ -75,18 +75,16 @@ data "aws_iam_policy_document" "github_assume" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      # Job trong deploy.yml dùng "environment: aws-production" — GitHub đổi định dạng OIDC
-      # subject sang "repo:<owner>/<repo>:environment:aws-production" (KHÔNG phải dạng
-      # "ref:refs/heads/<branch>" như job thường), phát hiện lúc chạy thật deploy đầu tiên
-      # ("Not authorized to perform sts:AssumeRoleWithWebIdentity"). Đặt tên "aws-production"
-      # (không phải "production") để tránh case-collision: GitHub tự khớp environment không phân
-      # biệt hoa/thường khi RESOLVE (VD "production" tự trỏ vào "Production" có sẵn từ Vercel),
-      # nhưng OIDC subject lại dùng ĐÚNG tên gốc có phân biệt hoa/thường — IAM StringLike cũng
-      # phân biệt hoa/thường, lệch 1 ký tự hoa/thường là bị từ chối. toggle-infra.yml không đặt
-      # environment nên vẫn dùng dạng ref — phải cho phép cả 2 định dạng.
+      # Bằng chứng thật từ CloudTrail (AssumeRoleWithWebIdentity bị AccessDenied) lúc live-verify:
+      # GitHub gửi subject dạng "repo:ziu222@<id_so>/Dishcover@<id_so>:environment:aws-production"
+      # — có thêm "@<id_so>" (immutable ID chống đổi tên) ngay sau tên owner VÀ tên repo, khác hẳn
+      # định dạng tài liệu ghi "repo:<owner>/<repo>:..." không có "@id". Dùng StringLike wildcard
+      # "*" thay vì hardcode 2 con số đó (dễ vỡ nếu Terraform/OIDC thay đổi cách sinh ID).
+      # 2 lần sửa trước (ref-based, rồi environment-based case "production"/"aws-production") đều
+      # thất bại vì cùng thiếu phần "@id" này, không phải vì sai case như tưởng lúc đó.
       values = [
-        "repo:${var.github_repo}:environment:aws-production",
-        "repo:${var.github_repo}:ref:refs/heads/master",
+        "repo:${split("/", var.github_repo)[0]}@*/${split("/", var.github_repo)[1]}@*:environment:aws-production",
+        "repo:${split("/", var.github_repo)[0]}@*/${split("/", var.github_repo)[1]}@*:ref:refs/heads/master",
       ]
     }
   }
