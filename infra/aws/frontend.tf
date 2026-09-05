@@ -36,6 +36,22 @@ resource "aws_cloudfront_distribution" "frontend" {
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
   }
 
+  # Bug thật phát hiện lúc live-verify: frontend (lib/api.ts) luôn gọi path tương đối
+  # "/api/<x>-service/**" cùng origin (thiết kế cho Vite dev proxy local) — production KHÔNG có gì
+  # route "/api/*" sang backend, S3 trả 403 cho mọi request (POST vào path không tồn tại như static
+  # file). Origin domain dùng "api.<domain>" (không phải DNS name gốc của ALB) để CloudFront xác
+  # thực đúng chứng chỉ ACM (issue cho api.<domain>, không match DNS name gốc *.elb.amazonaws.com).
+  origin {
+    domain_name = "api.${var.domain_name}"
+    origin_id   = "alb-api"
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   default_cache_behavior {
     target_origin_id       = "s3-frontend"
     viewer_protocol_policy = "redirect-to-https"
@@ -44,6 +60,26 @@ resource "aws_cloudfront_distribution" "frontend" {
     forwarded_values {
       query_string = false
       cookies { forward = "none" }
+    }
+  }
+
+  # "/api/*" -> ALB -> Gateway. Không cache (API động), forward nguyên cookie (auth_token httpOnly)
+  # + query string + mọi method — Gateway tự strip "/api" (xem gateway/application.yml route
+  # "*-api-prefixed"). Vì frontend/API giờ cùng 1 origin qua CloudFront, request thật của trình
+  # duyệt KHÔNG cần CORS nữa (CORS ở Gateway vẫn giữ cho việc gọi thẳng api.<domain> lúc test).
+  ordered_cache_behavior {
+    path_pattern           = "/api/*"
+    target_origin_id       = "alb-api"
+    viewer_protocol_policy = "https-only"
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 0
+    forwarded_values {
+      query_string = true
+      headers      = ["Origin", "Authorization", "Content-Type"]
+      cookies { forward = "all" }
     }
   }
 
