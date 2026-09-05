@@ -22,7 +22,9 @@ import java.util.List;
 /**
  * Seed công thức mẫu vào MongoDB từ các file JSON trong classpath seed/ (CLAUDE.md mục 4).
  * Chỉ chạy khi bật profile "seed" và chỉ nạp nếu collection "recipes" đang rỗng (idempotent).
- * Dùng chung cho cả nguồn tự soạn (recipes-vn.json) và TheMealDB (recipes-themealdb.json — phase 4b).
+ * Dùng chung cho mọi nguồn seed (recipes-vn/au/themealdb.json tự tính nutrition qua
+ * {@link RecipeNutritionCalculator}; recipes-spoonacular.json đã có sẵn nutrition thật từ API,
+ * xem {@link #loadAll}).
  */
 @Component
 @Profile("seed")
@@ -97,7 +99,12 @@ public class RecipeSeeder implements CommandLineRunner {
                 for (Document item : items) {
                     item.put("normalized_name", VietnameseTextNormalizer.normalize(item.getString("name")));
                     item.put("servings", item.getInteger("servings", DEFAULT_SEED_SERVINGS));
-                    item.put("nutrition", toDocument(computeNutrition(item)));
+                    // Batch Spoonacular ghi sẵn nutrition thật từ API (đáng tin cậy hơn tự tính qua
+                    // IngredientCatalog — ingredient tiếng Anh, coverage catalog thấp) — chỉ tự tính bù
+                    // cho batch nào CHƯA có sẵn (vn/au/themealdb), không ghi đè số liệu đã có.
+                    if (item.get("nutrition") == null) {
+                        item.put("nutrition", toDocument(computeNutrition(item)));
+                    }
                 }
                 all.addAll(items);
                 log.info("Nạp {} công thức từ {}", items.size(), file.getFilename());
