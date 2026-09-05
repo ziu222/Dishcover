@@ -4,6 +4,7 @@ import com.dishcover.user.entity.DietaryPreference;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository JPA cho entity {@link DietaryPreference}, thao tác trực tiếp bảng
@@ -18,6 +19,12 @@ public interface DietaryPreferenceRepository extends JpaRepository<DietaryPrefer
      * @return danh sách mục hồ sơ ăn uống, rỗng nếu không có
      */
     List<DietaryPreference> findByUserId(Long userId);
+
+    /**
+     * Kiểm tra 1 mục (user_id, type, value) đã tồn tại chưa — dùng để thêm mới idempotent, tránh
+     * tạo dòng trùng khi user bấm "thêm" nhiều lần cho cùng 1 giá trị.
+     */
+    Optional<DietaryPreference> findByUserIdAndTypeAndValue(Long userId, String type, String value);
 
     /**
      * Xóa một mục hồ sơ ăn uống theo id, chỉ khi thuộc đúng user (chống xóa hộ user khác).
