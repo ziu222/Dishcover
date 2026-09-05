@@ -11,6 +11,17 @@ spring:
     name: gateway
   cloud:
     gateway:
+      # Local dev né CORS nhờ Vite proxy (/api -> Gateway, cùng origin) — production thật frontend
+      # (www.<domain>) và API (api.<domain>) là 2 origin khác nhau, PHẢI có CORS ở đây, không thể
+      # thiếu. allowCredentials=true bắt buộc allowedOrigins liệt kê rõ (không được "*") vì auth
+      # dùng cookie httpOnly. FRONTEND_URL đã có sẵn ở mọi service (infra/aws/ecs-services.tf).
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins: ${FRONTEND_URL:http://localhost:5175}
+            allowedMethods: [GET, POST, PATCH, PUT, DELETE, OPTIONS]
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: user
           uri: ${USER_SERVICE_URL:http://localhost:8081}

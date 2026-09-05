@@ -51,3 +51,10 @@ eval/image/images/*
 
 # Báo cáo tổng hợp dùng riêng cho đồ án, không phải tài liệu vận hành hệ thống
 eval/results/bao-cao-tong-hop-danh-gia.md
+
+# === Terraform (infra/aws) — state + tfvars thật chứa secret, KHÔNG commit ===
+infra/**/.terraform/
+infra/**/*.tfstate
+infra/**/*.tfstate.*
+infra/**/terraform.tfvars
+infra/**/*.tfplan
