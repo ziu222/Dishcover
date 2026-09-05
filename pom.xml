@@ -46,6 +46,18 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
+          <!-- spring-boot-starter-parent tự bind goal này vào phase "package" — repo không kế
+               thừa parent đó (xem ghi chú -parameters bên dưới) nên phải tự khai execution,
+               nếu không mvn package chỉ tạo plain jar (maven-jar-plugin), thiếu Main-Class/
+               dependency embedded -> "java -jar app.jar" báo "no main manifest attribute".
+               Local dev không lộ ra vì luôn chạy bằng "mvnw spring-boot:run" (không cần jar). -->
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
