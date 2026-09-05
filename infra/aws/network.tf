@@ -54,7 +54,7 @@ resource "aws_security_group" "internal" {
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    description     = "ALB -> Gateway"
+    description     = "ALB to Gateway"
     from_port       = 8080
     to_port         = 8080
     protocol        = "tcp"
