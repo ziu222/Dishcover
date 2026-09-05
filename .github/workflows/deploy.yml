@@ -65,7 +65,7 @@ jobs:
             -t ${{ steps.ecr.outputs.registry }}/dishcover/${{ matrix.service }}:${{ steps.tag.outputs.value }} .
 
       - name: Scan image (Trivy) — cảnh báo, không chặn deploy demo
-        uses: aquasecurity/trivy-action@v0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         continue-on-error: true
         with:
           image-ref: ${{ steps.ecr.outputs.registry }}/dishcover/${{ matrix.service }}:${{ steps.tag.outputs.value }}
