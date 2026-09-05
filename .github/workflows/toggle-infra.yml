@@ -1,0 +1,32 @@
+name: Toggle Infra (start/stop)
+
+# Bật/tắt hạ tầng demo từ GitHub (điện thoại/máy khác, không cần AWS CLI cục bộ) — cùng logic
+# infra/aws/toggle.sh, dùng chung role OIDC với deploy.yml.
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "start (bật lại trước demo) hoặc stop (tắt sau demo, tiết kiệm phí)"
+        type: choice
+        required: true
+        options: [start, stop]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-southeast-1
+
+jobs:
+  toggle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - run: infra/aws/toggle.sh ${{ inputs.action }}
