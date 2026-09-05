@@ -11,77 +11,84 @@ spring:
     name: gateway
   cloud:
     gateway:
-      # Local dev né CORS nhờ Vite proxy (/api -> Gateway, cùng origin) — production thật frontend
-      # (www.<domain>) và API (api.<domain>) là 2 origin khác nhau, PHẢI có CORS ở đây, không thể
-      # thiếu. allowCredentials=true bắt buộc allowedOrigins liệt kê rõ (không được "*") vì auth
-      # dùng cookie httpOnly. FRONTEND_URL đã có sẵn ở mọi service (infra/aws/ecs-services.tf).
-      globalcors:
-        cors-configurations:
-          "[/**]":
-            allowedOrigins: ${FRONTEND_URL:http://localhost:5175}
-            allowedMethods: [GET, POST, PATCH, PUT, DELETE, OPTIONS]
-            allowedHeaders: "*"
-            allowCredentials: true
-      routes:
-        - id: user
-          uri: ${USER_SERVICE_URL:http://localhost:8081}
-          predicates: [Path=/user-service/**]
-          filters: [StripPrefix=1]
-        - id: inventory
-          uri: ${INVENTORY_SERVICE_URL:http://localhost:8082}
-          predicates: [Path=/inventory-service/**]
-          filters: [StripPrefix=1]
-        - id: recipe
-          uri: ${RECIPE_SERVICE_URL:http://localhost:8083}
-          predicates: [Path=/recipe-service/**]
-          filters: [StripPrefix=1]
-        - id: matching
-          uri: ${MATCHING_SERVICE_URL:http://localhost:8084}
-          predicates: [Path=/matching-service/**]
-          filters: [StripPrefix=1]
-        - id: rag
-          uri: ${RAG_SERVICE_URL:http://localhost:8085}
-          predicates: [Path=/rag-service/**]
-          filters: [StripPrefix=1]
-        - id: image
-          uri: ${IMAGE_SERVICE_URL:http://localhost:8086}
-          predicates: [Path=/image-service/**]
-          filters: [StripPrefix=1]
-        - id: notification
-          uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
-          predicates: [Path=/notification-service/**]
-          filters: [StripPrefix=1]
-        # Frontend build (lib/api.ts) luôn gọi path tương đối "/api/<x>-service/**" (thiết kế cho
-        # Vite dev proxy local, strip "/api" trước khi tới Gateway) — production qua CloudFront
-        # (infra/aws/frontend.tf, behavior "/api/*" forward nguyên path tới ALB) không có bước
-        # strip đó, nên Gateway cần thêm 7 route trùng lặp này để tự strip "/api" + "<x>-service"
-        # (StripPrefix=2). Bug thật phát hiện lúc live-verify: thiếu route này -> CloudFront/S3 trả
-        # 403 cho mọi request /api/* (S3 không phục vụ POST cho path không tồn tại như static file).
-        - id: user-api-prefixed
-          uri: ${USER_SERVICE_URL:http://localhost:8081}
-          predicates: [Path=/api/user-service/**]
-          filters: [StripPrefix=2]
-        - id: inventory-api-prefixed
-          uri: ${INVENTORY_SERVICE_URL:http://localhost:8082}
-          predicates: [Path=/api/inventory-service/**]
-          filters: [StripPrefix=2]
-        - id: recipe-api-prefixed
-          uri: ${RECIPE_SERVICE_URL:http://localhost:8083}
-          predicates: [Path=/api/recipe-service/**]
-          filters: [StripPrefix=2]
-        - id: matching-api-prefixed
-          uri: ${MATCHING_SERVICE_URL:http://localhost:8084}
-          predicates: [Path=/api/matching-service/**]
-          filters: [StripPrefix=2]
-        - id: rag-api-prefixed
-          uri: ${RAG_SERVICE_URL:http://localhost:8085}
-          predicates: [Path=/api/rag-service/**]
-          filters: [StripPrefix=2]
-        - id: image-api-prefixed
-          uri: ${IMAGE_SERVICE_URL:http://localhost:8086}
-          predicates: [Path=/api/image-service/**]
-          filters: [StripPrefix=2]
-        - id: notification-api-prefixed
-          uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
-          predicates: [Path=/api/notification-service/**]
-          filters: [StripPrefix=2]
+      server:
+        webflux:
+          # Spring Cloud 2025.0.0 đổi property path từ spring.cloud.gateway.* sang
+          # spring.cloud.gateway.server.webflux.* (path cũ chỉ được Spring "map tạm cho tiện",
+          # không đảm bảo mọi hành vi match y hệt — bug thật phát hiện lúc live-verify: route mới
+          # thêm dưới path cũ bị 404 dù property xuất hiện đúng trong log migrate, chỉ hết khi
+          # chuyển hẳn sang path mới này).
+          # Local dev né CORS nhờ Vite proxy (/api -> Gateway, cùng origin) — production thật
+          # frontend (www.<domain>) và API (api.<domain>) là 2 origin khác nhau khi gọi trực tiếp,
+          # PHẢI có CORS ở đây. allowCredentials=true bắt buộc allowedOrigins liệt kê rõ (không
+          # được "*") vì auth dùng cookie httpOnly. FRONTEND_URL có sẵn ở mọi service
+          # (infra/aws/ecs-services.tf).
+          globalcors:
+            cors-configurations:
+              "[/**]":
+                allowedOrigins: ${FRONTEND_URL:http://localhost:5175}
+                allowedMethods: [GET, POST, PATCH, PUT, DELETE, OPTIONS]
+                allowedHeaders: "*"
+                allowCredentials: true
+          routes:
+            - id: user
+              uri: ${USER_SERVICE_URL:http://localhost:8081}
+              predicates: [Path=/user-service/**]
+              filters: [StripPrefix=1]
+            - id: inventory
+              uri: ${INVENTORY_SERVICE_URL:http://localhost:8082}
+              predicates: [Path=/inventory-service/**]
+              filters: [StripPrefix=1]
+            - id: recipe
+              uri: ${RECIPE_SERVICE_URL:http://localhost:8083}
+              predicates: [Path=/recipe-service/**]
+              filters: [StripPrefix=1]
+            - id: matching
+              uri: ${MATCHING_SERVICE_URL:http://localhost:8084}
+              predicates: [Path=/matching-service/**]
+              filters: [StripPrefix=1]
+            - id: rag
+              uri: ${RAG_SERVICE_URL:http://localhost:8085}
+              predicates: [Path=/rag-service/**]
+              filters: [StripPrefix=1]
+            - id: image
+              uri: ${IMAGE_SERVICE_URL:http://localhost:8086}
+              predicates: [Path=/image-service/**]
+              filters: [StripPrefix=1]
+            - id: notification
+              uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
+              predicates: [Path=/notification-service/**]
+              filters: [StripPrefix=1]
+            # Frontend build (lib/api.ts) luôn gọi path tương đối "/api/<x>-service/**" (thiết kế
+            # cho Vite dev proxy local, strip "/api" trước khi tới Gateway) — production qua
+            # CloudFront (infra/aws/frontend.tf, behavior "/api/*" forward nguyên path tới ALB)
+            # không có bước strip đó, nên Gateway cần thêm 7 route trùng lặp này để tự strip "/api"
+            # + "<x>-service" (StripPrefix=2).
+            - id: user-api-prefixed
+              uri: ${USER_SERVICE_URL:http://localhost:8081}
+              predicates: [Path=/api/user-service/**]
+              filters: [StripPrefix=2]
+            - id: inventory-api-prefixed
+              uri: ${INVENTORY_SERVICE_URL:http://localhost:8082}
+              predicates: [Path=/api/inventory-service/**]
+              filters: [StripPrefix=2]
+            - id: recipe-api-prefixed
+              uri: ${RECIPE_SERVICE_URL:http://localhost:8083}
+              predicates: [Path=/api/recipe-service/**]
+              filters: [StripPrefix=2]
+            - id: matching-api-prefixed
+              uri: ${MATCHING_SERVICE_URL:http://localhost:8084}
+              predicates: [Path=/api/matching-service/**]
+              filters: [StripPrefix=2]
+            - id: rag-api-prefixed
+              uri: ${RAG_SERVICE_URL:http://localhost:8085}
+              predicates: [Path=/api/rag-service/**]
+              filters: [StripPrefix=2]
+            - id: image-api-prefixed
+              uri: ${IMAGE_SERVICE_URL:http://localhost:8086}
+              predicates: [Path=/api/image-service/**]
+              filters: [StripPrefix=2]
+            - id: notification-api-prefixed
+              uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
+              predicates: [Path=/api/notification-service/**]
+              filters: [StripPrefix=2]
