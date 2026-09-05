@@ -1,0 +1,139 @@
+name: Deploy to AWS
+
+# ponytail: kích hoạt THỦ CÔNG (workflow_dispatch), không tự deploy mỗi lần merge master — hạ tầng
+# demo (ECS+RDS+Mongo/Kafka tự host) tốn phí theo giờ, không nên tự động tái tạo container ngoài ý
+# muốn. Hạ tầng (Terraform, infra/aws/) apply bằng tay 1 lần từ máy có quyền — workflow này chỉ lo
+# rollout image mới lên ECS/CloudFront, KHÔNG chạy `terraform apply` (state Terraform là local, CI
+# không có quyền truy cập — xem infra/aws/providers.tf).
+on:
+  workflow_dispatch:
+    inputs:
+      services:
+        description: 'Service cần deploy, phân cách bởi dấu phẩy (để trống = deploy cả 8)'
+        required: false
+        default: ''
+
+permissions:
+  id-token: write   # bắt buộc cho OIDC assume-role, không dùng access key tĩnh
+  contents: read
+
+env:
+  AWS_REGION: ap-southeast-1
+  ECS_CLUSTER: dishcover
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.set.outputs.services }}
+    steps:
+      - id: set
+        run: |
+          if [ -z "${{ inputs.services }}" ]; then
+            echo 'services=["gateway","user","inventory","recipe","matching","rag","image","notification"]' >> "$GITHUB_OUTPUT"
+          else
+            json=$(echo "${{ inputs.services }}" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | jq -R . | jq -sc .)
+            echo "services=$json" >> "$GITHUB_OUTPUT"
+          fi
+
+  build-and-push:
+    needs: setup
+    runs-on: ubuntu-latest
+    environment: production   # cần GitHub Environment "production" có required reviewers (Settings > Environments) để có bước approve thủ công trước khi chạy job
+    strategy:
+      matrix:
+        service: ${{ fromJSON(needs.setup.outputs.services) }}
+    outputs:
+      image_tag: ${{ steps.tag.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: tag
+        run: echo "value=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr
+
+      - name: Build image
+        run: |
+          docker build -f ${{ matrix.service }}/Dockerfile \
+            -t ${{ steps.ecr.outputs.registry }}/dishcover/${{ matrix.service }}:${{ steps.tag.outputs.value }} .
+
+      - name: Scan image (Trivy) — cảnh báo, không chặn deploy demo
+        uses: aquasecurity/trivy-action@0.28.0
+        continue-on-error: true
+        with:
+          image-ref: ${{ steps.ecr.outputs.registry }}/dishcover/${{ matrix.service }}:${{ steps.tag.outputs.value }}
+          severity: CRITICAL,HIGH
+          exit-code: "0"
+
+      - name: Push image
+        run: docker push ${{ steps.ecr.outputs.registry }}/dishcover/${{ matrix.service }}:${{ steps.tag.outputs.value }}
+
+  deploy-services:
+    needs: [setup, build-and-push]
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        service: ${{ fromJSON(needs.setup.outputs.services) }}
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr
+
+      - name: Lấy task definition hiện tại
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition dishcover-${{ matrix.service }} \
+            --query 'taskDefinition' > task-def.json
+
+      - uses: aws-actions/amazon-ecs-render-task-definition@v1
+        id: render
+        with:
+          task-definition: task-def.json
+          container-name: ${{ matrix.service }}
+          image: ${{ steps.ecr.outputs.registry }}/dishcover/${{ matrix.service }}:${{ needs.build-and-push.outputs.image_tag }}
+
+      - uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render.outputs.task-definition }}
+          service: ${{ matrix.service }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+  deploy-frontend:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci && npm run build
+        working-directory: frontend
+        env:
+          VITE_API_BASE_URL: ${{ secrets.ALB_BASE_URL }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - run: |
+          aws s3 sync frontend/dist/ s3://${{ secrets.FRONTEND_BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'

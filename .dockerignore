@@ -1,0 +1,14 @@
+**/target/
+frontend/node_modules/
+frontend/dist/
+.git/
+.claude/
+.agents/
+docker-setup/
+docs/
+eval/
+bao-cao-latex/
+*.md
+.env
+.env.*
+!.env.example
