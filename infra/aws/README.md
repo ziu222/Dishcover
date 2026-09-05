@@ -45,7 +45,7 @@ Xem toàn bộ hướng dẫn kèm tên biến chính xác: `terraform output ne
 | `CLOUDFRONT_DISTRIBUTION_ID` | `terraform output -raw cloudfront_distribution_id` |
 | `ALB_BASE_URL` | `https://api.dishcover.online` |
 
-Và tạo GitHub Environment tên `production` (Settings → Environments → New environment) + bật **Required reviewers** — đây là bước approve thủ công trước khi `.github/workflows/deploy.yml` thật sự chạy (bắt buộc theo checklist devops-engineer: "MUST NOT deploy to production without explicit approval").
+Và tạo GitHub Environment tên `aws-production` (Settings → Environments → New environment — **không** đặt tên `production`, xem ghi chú case-collision trong `iam.tf`) + bật **Required reviewers** — đây là bước approve thủ công trước khi `.github/workflows/deploy.yml` thật sự chạy (bắt buộc theo checklist devops-engineer: "MUST NOT deploy to production without explicit approval").
 
 Sau bước này mới chạy `Deploy to AWS` từ tab Actions (workflow_dispatch thủ công, không tự chạy khi merge).
 

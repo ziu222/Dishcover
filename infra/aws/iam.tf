@@ -75,8 +75,19 @@ data "aws_iam_policy_document" "github_assume" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      # Chỉ nhánh master mới deploy được (workflow_dispatch từ master) — xem .github/workflows/deploy.yml
-      values = ["repo:${var.github_repo}:ref:refs/heads/master"]
+      # Job trong deploy.yml dùng "environment: aws-production" — GitHub đổi định dạng OIDC
+      # subject sang "repo:<owner>/<repo>:environment:aws-production" (KHÔNG phải dạng
+      # "ref:refs/heads/<branch>" như job thường), phát hiện lúc chạy thật deploy đầu tiên
+      # ("Not authorized to perform sts:AssumeRoleWithWebIdentity"). Đặt tên "aws-production"
+      # (không phải "production") để tránh case-collision: GitHub tự khớp environment không phân
+      # biệt hoa/thường khi RESOLVE (VD "production" tự trỏ vào "Production" có sẵn từ Vercel),
+      # nhưng OIDC subject lại dùng ĐÚNG tên gốc có phân biệt hoa/thường — IAM StringLike cũng
+      # phân biệt hoa/thường, lệch 1 ký tự hoa/thường là bị từ chối. toggle-infra.yml không đặt
+      # environment nên vẫn dùng dạng ref — phải cho phép cả 2 định dạng.
+      values = [
+        "repo:${var.github_repo}:environment:aws-production",
+        "repo:${var.github_repo}:ref:refs/heads/master",
+      ]
     }
   }
 }

@@ -39,7 +39,7 @@ jobs:
   build-and-push:
     needs: setup
     runs-on: ubuntu-latest
-    environment: production   # cần GitHub Environment "production" có required reviewers (Settings > Environments) để có bước approve thủ công trước khi chạy job
+    environment: aws-production   # cần GitHub Environment "aws-production" có required reviewers (Settings > Environments) để có bước approve thủ công trước khi chạy job — đặt tên riêng, tránh trùng/case-collision với environment "Production" có sẵn từ tích hợp Vercel (không liên quan AWS)
     strategy:
       matrix:
         service: ${{ fromJSON(needs.setup.outputs.services) }}
@@ -78,7 +78,7 @@ jobs:
   deploy-services:
     needs: [setup, build-and-push]
     runs-on: ubuntu-latest
-    environment: production
+    environment: aws-production
     strategy:
       matrix:
         service: ${{ fromJSON(needs.setup.outputs.services) }}
@@ -114,7 +114,7 @@ jobs:
   deploy-frontend:
     needs: build-and-push
     runs-on: ubuntu-latest
-    environment: production
+    environment: aws-production
     steps:
       - uses: actions/checkout@v4
 
