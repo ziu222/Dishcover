@@ -134,6 +134,26 @@ class AuthFlowIntegrationTest {
     }
 
     @Test
+    void addingSameDietaryPreferenceTwiceDoesNotDuplicate() throws Exception {
+        String token = register("diet-dup@b.com", "secret1");
+        String body = "{\"type\":\"ALLERGY\",\"value\":\"hải sản\"}";
+
+        mvc.perform(post("/users/me/dietary-preferences")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated());
+        mvc.perform(post("/users/me/dietary-preferences")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated());
+
+        mvc.perform(get("/users/me/dietary-preferences").header("Authorization", "Bearer " + token))
+                .andExpect(jsonPath("$.length()").value(1));
+    }
+
+    @Test
     void badTypeRejectedByValidation() throws Exception {
         String token = register("bad@b.com", "secret1");
         mvc.perform(post("/users/me/dietary-preferences")

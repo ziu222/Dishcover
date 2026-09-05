@@ -83,18 +83,25 @@ public class UserService {
     }
 
     /**
-     * Thêm một mục hồ sơ ăn uống mới cho user.
+     * Thêm một mục hồ sơ ăn uống mới cho user — idempotent theo (user_id, type, value): bấm
+     * "thêm" nhiều lần cho cùng giá trị trả về đúng mục đã có, không tạo dòng trùng (bug thật
+     * phát hiện lúc live-verify, xem V3__dietary_preferences_unique.sql).
      *
      * @param userId id user sở hữu mục cần thêm
      * @param req    thông tin mục cần thêm (type, value)
-     * @return mục hồ sơ ăn uống vừa tạo
+     * @return mục hồ sơ ăn uống đã có hoặc vừa tạo
      * @throws com.dishcover.common.exception.ResourceNotFoundException nếu user không tồn tại
      */
     @Transactional
     public DietaryPreferenceResponse addPreference(Long userId, DietaryPreferenceRequest req) {
         requireUser(userId);
-        DietaryPreference saved = preferences.save(
-                new DietaryPreference(userId, req.type(), req.value().trim()));
+        String value = req.value().trim();
+        DietaryPreference existing = preferences.findByUserIdAndTypeAndValue(userId, req.type(), value)
+                .orElse(null);
+        if (existing != null) {
+            return DietaryPreferenceResponse.from(existing);
+        }
+        DietaryPreference saved = preferences.save(new DietaryPreference(userId, req.type(), value));
         return DietaryPreferenceResponse.from(saved);
     }
 
