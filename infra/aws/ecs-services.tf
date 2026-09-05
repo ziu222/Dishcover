@@ -88,6 +88,14 @@ resource "aws_ecs_service" "app" {
   desired_count   = 1
   launch_type     = "FARGATE"
 
+  # Bug thật lúc live-verify: KHÔNG set thì ECS tính health check ALB ngay khi task register vào
+  # target group, trong khi Spring Boot trên Fargate 0.25vCPU quan sát thật mất 90-160s mới start
+  # xong (cold start JVM + connect RDS) — ALB đánh unhealthy trước khi app kịp lắng nghe port, ECS
+  # giết task rồi rollback về revision cũ, khiến MỌI lần deploy Gateway (dịch vụ duy nhất có ALB)
+  # đều fail âm thầm dù image/code đã đúng. Chỉ áp dụng khi có load_balancer (services khác dùng
+  # Service Connect + Docker HEALTHCHECK riêng, đã có start_period/retries phù hợp trong Dockerfile).
+  health_check_grace_period_seconds = each.value.public == true ? 180 : null
+
   network_configuration {
     subnets          = data.aws_subnets.default.ids
     security_groups  = [aws_security_group.internal.id]
