@@ -1,0 +1,15 @@
+# Copy thành terraform.tfvars (đã gitignore) rồi điền giá trị thật — KHÔNG commit file có giá trị thật.
+aws_region  = "ap-southeast-1"
+github_repo = "ziu222/Dishcover"
+
+postgres_master_password = "CHANGE-ME-strong-password"
+mongo_root_password      = "CHANGE-ME-strong-password"
+jwt_secret                = "CHANGE-ME-at-least-32-characters-random"
+internal_service_secret   = "CHANGE-ME-random"
+
+gemini_api_key = "" # để trống nếu chưa dùng Gemini (fail-open, xem CLAUDE.md mục 6)
+openai_api_key = ""
+mail_username  = ""
+mail_password  = ""
+
+turnstile_secret_key = "" # để trống dùng key test Cloudflare mặc định trong code — đổi trước deploy thật
