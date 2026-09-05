@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -67,6 +68,23 @@ class IngredientExpiryListenerTest {
 
         listener().onExpiryEvent(event);
 
+        verify(emailSender, never()).send(anyString(), anyString(), anyString(), anyString());
+    }
+
+    /**
+     * Hành vi HIỆN TẠI: listener không tự bắt lỗi ngoài DataIntegrityViolationException (đã xử lý
+     * bên trong NotificationService.createIfAbsent) — lỗi khác (VD mất kết nối DB) bị ném thẳng lên
+     * container Spring Kafka, để @{code DefaultErrorHandler} mặc định (retry rồi bỏ qua record,
+     * KHÔNG lặp vô hạn) xử lý. Test này chỉ xác nhận listener KHÔNG nuốt lỗi này ở tầng của nó.
+     */
+    @Test
+    void unexpectedCreateIfAbsentFailurePropagatesToKafkaContainer() {
+        var event = new IngredientExpiryEvent(1L, 2L, "Cà chua", "ca chua", LocalDate.now().plusDays(2), "EXPIRING_SOON");
+        when(notificationService.createIfAbsent(any())).thenThrow(new RuntimeException("DB connection lost"));
+
+        assertThrows(RuntimeException.class, () -> listener().onExpiryEvent(event));
+
+        verify(userClient, never()).getEmail(any());
         verify(emailSender, never()).send(anyString(), anyString(), anyString(), anyString());
     }
 }
