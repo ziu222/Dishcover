@@ -13,6 +13,18 @@ locals {
     for k, v in local.service_urls : { name = k, value = v }
   ]
 
+  # Bug thật lúc live-verify: user/inventory/matching/notification hardcode "localhost:5432"
+  # trong application.yml (đúng cho local dev — Postgres cùng máy/docker-compose), KHÔNG đọc biến
+  # PGHOST nào cả — set PGHOST không có tác dụng gì (đã tưởng nhầm lúc viết bản đầu). Fix bằng
+  # SPRING_DATASOURCE_URL: Spring tự ưu tiên env var (relaxed binding SPRING_DATASOURCE_URL ->
+  # spring.datasource.url) cao hơn application.yml, ghi đè toàn bộ URL mà không cần sửa code Java.
+  postgres_schema = {
+    user         = "user_service"
+    inventory    = "inventory_service"
+    matching     = "matching_service,public"
+    notification = "notification_service"
+  }
+
   common_secrets = [
     { name = "JWT_SECRET", valueFrom = aws_secretsmanager_secret.jwt_secret.arn },
     { name = "INTERNAL_SERVICE_SECRET", valueFrom = aws_secretsmanager_secret.internal_service_secret.arn },
@@ -47,13 +59,14 @@ resource "aws_ecs_task_definition" "app" {
       { name = "MONGO_ROOT_USER", value = "larder_app" },
       { name = "MONGO_HOST", value = "mongo.${var.project}.local" },
       { name = "KAFKA_BOOTSTRAP_SERVERS", value = "kafka.${var.project}.local:9092" },
-      # RDS chỉ có 1 host cho cả 4 schema (Database-per-Service ở mức schema, không phải instance
-      # riêng — đúng "Phương án B" đã chốt trong CLAUDE.md mục 3) — mỗi service tự thêm
-      # ?currentSchema=<tên> trong application.yml, không cần biến riêng ở đây.
-      { name = "PGHOST", value = aws_db_instance.postgres.address },
       { name = "MAIL_USERNAME", value = var.mail_username },
       { name = "FRONTEND_URL", value = "https://www.${var.domain_name}" },
-    ])
+      ], contains(keys(local.postgres_schema), each.key) ? [
+      {
+        name  = "SPRING_DATASOURCE_URL"
+        value = "jdbc:postgresql://${aws_db_instance.postgres.address}:5432/larder?currentSchema=${local.postgres_schema[each.key]}"
+      },
+    ] : [])
     secrets = local.common_secrets
 
     logConfiguration = {
