@@ -89,4 +89,21 @@ class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()").value(1));
     }
+
+    @Test
+    void markAllReadClearsOwnUnreadCountOnly() throws Exception {
+        long uid = System.nanoTime();
+        long other = uid + 1;
+        repository.save(new Notification(uid, "INGREDIENT_EXPIRING_SOON", "t1", "m1", "/goi-y", 1L));
+        repository.save(new Notification(uid, "INGREDIENT_EXPIRED", "t2", "m2", "/goi-y", 2L));
+        repository.save(new Notification(other, "INGREDIENT_EXPIRED", "t3", "m3", "/goi-y", 3L));
+
+        mvc.perform(patch("/notifications/read-all").header("Authorization", auth(uid)))
+                .andExpect(status().isOk());
+
+        mvc.perform(get("/notifications").header("Authorization", auth(uid)))
+                .andExpect(jsonPath("$.unreadCount").value(0));
+        mvc.perform(get("/notifications").header("Authorization", auth(other)))
+                .andExpect(jsonPath("$.unreadCount").value(1));
+    }
 }
