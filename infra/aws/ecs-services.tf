@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "app" {
       # ?currentSchema=<tên> trong application.yml, không cần biến riêng ở đây.
       { name = "PGHOST", value = aws_db_instance.postgres.address },
       { name = "MAIL_USERNAME", value = var.mail_username },
-      { name = "FRONTEND_URL", value = "https://${aws_cloudfront_distribution.frontend.domain_name}" },
+      { name = "FRONTEND_URL", value = "https://www.${var.domain_name}" },
     ])
     secrets = local.common_secrets
 

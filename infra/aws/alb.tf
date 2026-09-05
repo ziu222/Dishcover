@@ -28,15 +28,29 @@ resource "aws_lb_listener" "http" {
   protocol          = "HTTP"
 
   default_action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = aws_acm_certificate_validation.api.certificate_arn
+
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.gateway.arn
   }
-
-  # ponytail: HTTP-only cho demo (không có domain/ACM certificate). Deploy thật cần thêm listener
-  # 443 + aws_acm_certificate + chuyển default_action ở đây thành redirect HTTP->HTTPS.
 }
 
 output "alb_dns_name" {
   value       = aws_lb.main.dns_name
-  description = "Base URL API — vd http://<giá trị này>/user-service/auth/login"
+  description = "CNAME giá trị này vào api.<domain_name> ở Hostinger (xem output next_steps để có tên miền thật đã điền sẵn)"
 }

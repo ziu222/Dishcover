@@ -12,14 +12,25 @@ data "aws_subnets" "default" {
 }
 
 resource "aws_security_group" "public" {
+  # ponytail: AWS chi cho ASCII trong description (regex khong nhan ky tu co dau/em-dash) - cac
+  # dong description trong file nay co chu de ASCII thuan tuy vi ly do do, khac voi comment HCL
+  # (bat dau bang #) van dung tieng Viet co dau binh thuong.
   name        = "${var.project}-public"
-  description = "ALB — nhận traffic từ Internet"
+  description = "ALB - nhan traffic tu Internet"
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    description = "HTTP"
+    description = "HTTP (redirect to HTTPS, see alb.tf)"
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTPS"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -39,7 +50,7 @@ resource "aws_security_group" "public" {
 # của cùng 1 project, không có tenant khác trong VPC).
 resource "aws_security_group" "internal" {
   name        = "${var.project}-internal"
-  description = "Giao tiếp nội bộ giữa ECS service, RDS, Mongo, Kafka"
+  description = "Internal traffic - ECS service, RDS, Mongo, Kafka"
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
@@ -51,7 +62,7 @@ resource "aws_security_group" "internal" {
   }
 
   ingress {
-    description = "Mọi thứ trong SG này gọi lẫn nhau (service-to-service, Postgres 5432, Mongo 27017, Kafka 9092)"
+    description = "Everything in this SG talks to each other (service-to-service, Postgres 5432, Mongo 27017, Kafka 9092)"
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"

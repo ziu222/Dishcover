@@ -8,6 +8,12 @@ variable "project" {
   default = "dishcover"
 }
 
+variable "domain_name" {
+  description = "Domain thật đã mua (Hostinger) — DNS vẫn quản lý ở Hostinger, KHÔNG chuyển sang Route 53. Dùng www.<domain> cho frontend + api.<domain> cho backend (tránh giới hạn CNAME ở apex domain, hầu hết registrar không hỗ trợ)."
+  type        = string
+  default     = "dishcover.online"
+}
+
 variable "image_tag" {
   description = "Tag Docker image sẽ deploy (CI/CD truyền vào = SHA commit, không dùng 'latest' cho production)"
   type        = string
