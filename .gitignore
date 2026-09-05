@@ -16,8 +16,15 @@ leftover-recipe-matcher-architecture-v3.drawio
 so-do-use-case-khach-hang.drawio
 leftover-recipe-matcher-cosolythuyet-edited.docx
 
+# báo cáo LaTeX (file cá nhân, không cần track)
+bao-cao-latex/
+
 specs/
 db-dumps/
+
+# Subagent-driven-development scratch workspace (ledger/briefs/reports, không phải code)
+.superpowers/
+docs/
 
 # === IDE ===
 .idea/
