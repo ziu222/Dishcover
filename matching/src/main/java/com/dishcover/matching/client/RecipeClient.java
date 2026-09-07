@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,20 +47,42 @@ public class RecipeClient {
      */
     @CircuitBreaker(name = "recipe-service", fallbackMethod = "fallbackGetAllRecipes")
     public List<RecipeDetailDto> getAllRecipesWithIngredients() {
-        PageDto<RecipeSummaryDto> page = restClient.get()
-                .uri("/recipes?size={size}", PAGE_SIZE)
-                .retrieve()
-                .body(new ParameterizedTypeReference<PageDto<RecipeSummaryDto>>() {
-                });
-        if (page == null || page.content() == null) {
-            return List.of();
-        }
-        return page.content().stream()
+        List<RecipeSummaryDto> summaries = fetchAllSummaries();
+        return summaries.stream()
                 .map(summary -> restClient.get()
                         .uri("/recipes/{id}", summary.id())
                         .retrieve()
                         .body(RecipeDetailDto.class))
                 .toList();
+    }
+
+    /**
+     * Lặp qua mọi trang cho tới khi {@code last=true} — Recipe Service tự kẹp {@code size} theo
+     * {@code spring.data.web.pageable.max-page-size} (recipe/application.yml), nên {@link
+     * #PAGE_SIZE} chỉ là "mong muốn", KHÔNG đảm bảo lấy đủ trong 1 lần gọi. Trước đây chỉ lấy
+     * đúng trang đầu tiên -> âm thầm bỏ sót công thức khi tổng số vượt max-page-size (bug thật
+     * phát hiện lúc live-verify Stage 8, docs/specs/diet-direction-recommendation.md).
+     */
+    private List<RecipeSummaryDto> fetchAllSummaries() {
+        List<RecipeSummaryDto> all = new ArrayList<>();
+        int pageNumber = 0;
+        while (true) {
+            PageDto<RecipeSummaryDto> page = restClient.get()
+                    .uri(pageNumber == 0 ? "/recipes?size={size}" : "/recipes?size={size}&page={page}",
+                            PAGE_SIZE, pageNumber)
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<PageDto<RecipeSummaryDto>>() {
+                    });
+            if (page == null || page.content() == null) {
+                break;
+            }
+            all.addAll(page.content());
+            if (page.last()) {
+                break;
+            }
+            pageNumber++;
+        }
+        return all;
     }
 
     /** Recipe down -> không có gì để chấm điểm, không thể giả vờ trả danh sách rỗng như gợi ý "0 kết quả". */

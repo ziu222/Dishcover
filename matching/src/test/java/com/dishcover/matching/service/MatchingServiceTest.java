@@ -88,7 +88,7 @@ class MatchingServiceTest {
 
         recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
                 .andRespond(withSuccess("""
-                        {"content":[{"id":"r1"},{"id":"r2"}]}
+                        {"content":[{"id":"r1"},{"id":"r2"}],"last":true}
                         """, MediaType.APPLICATION_JSON));
 
         recipeServer.expect(requestTo("http://recipe/recipes/r1"))
@@ -130,7 +130,7 @@ class MatchingServiceTest {
         userServer.expect(requestTo("http://user/users/me/calorie-goal"))
                 .andRespond(withSuccess("", MediaType.APPLICATION_JSON));
         recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
-                .andRespond(withSuccess("{\"content\":[]}", MediaType.APPLICATION_JSON));
+                .andRespond(withSuccess("{\"content\":[],\"last\":true}", MediaType.APPLICATION_JSON));
 
         List<RecipeMatchResponse> result = service.suggest(BEARER, 999);
         assertEquals(0, result.size()); // không có recipe nào -> rỗng, không lỗi dù topN vượt MAX_TOP_N
@@ -143,7 +143,7 @@ class MatchingServiceTest {
         // Không gọi Inventory/User ở đây -- searchByIngredients không cần bearerToken/user nào cả.
         recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
                 .andRespond(withSuccess("""
-                        {"content":[{"id":"r1"},{"id":"r2"}]}
+                        {"content":[{"id":"r1"},{"id":"r2"}],"last":true}
                         """, MediaType.APPLICATION_JSON));
 
         recipeServer.expect(requestTo("http://recipe/recipes/r1"))
@@ -190,7 +190,7 @@ class MatchingServiceTest {
 
         recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
                 .andRespond(withSuccess("""
-                        {"content":[{"id":"r1"},{"id":"r2"}]}
+                        {"content":[{"id":"r1"},{"id":"r2"}],"last":true}
                         """, MediaType.APPLICATION_JSON));
 
         // r1 và r2 khớp CÙNG 1 nguyên liệu (trung ga) -> điểm 5 rule đầu bằng nhau hệt nhau,
