@@ -83,9 +83,18 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
-  # SPA: mọi route không tìm thấy file tĩnh -> trả về index.html để React Router tự xử lý client-side
+  # SPA: mọi route không tìm thấy file tĩnh -> trả về index.html để React Router tự xử lý client-side.
+  # Bug thật phát hiện lúc live-verify: bucket S3 riêng tư qua OAC trả 403 (AccessDenied), KHÔNG
+  # phải 404 (NoSuchKey), khi thiếu quyền s3:ListBucket để phân biệt "không tồn tại" với "bị cấm" —
+  # nên load thẳng 1 route con (VD /login) qua F5/link chia sẻ luôn dính 403 dù route đó hợp lệ
+  # phía React Router. Phải xử lý CẢ HAI mã lỗi, không chỉ 404.
   custom_error_response {
     error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
+  }
+  custom_error_response {
+    error_code         = 403
     response_code      = 200
     response_page_path = "/index.html"
   }
