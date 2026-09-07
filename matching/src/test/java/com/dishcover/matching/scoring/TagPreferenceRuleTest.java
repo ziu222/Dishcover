@@ -57,4 +57,22 @@ class TagPreferenceRuleTest {
         double score = rule.apply(recipeWithTags(List.of("dessert")), ctx(Set.of("vegetarian")), 1.0);
         assertEquals(1.0, score, 1e-9);
     }
+
+    /**
+     * Phát hiện lúc live-verify thật (2026-09-07): vocabulary tag thật của Spoonacular dùng
+     * "lacto ovo vegetarian"/"paleolithic" chứ không phải "vegetarian"/"paleo" — nếu chỉ so khớp
+     * bằng tuyệt đối, người dùng gõ đúng từ spec liệt kê ("vegetarian") sẽ KHÔNG BAO GIỜ khớp được
+     * bất kỳ công thức nào. So khớp phải theo kiểu bao hàm chuỗi con (2 chiều).
+     */
+    @Test
+    void substringMatchCatchesCompoundRealWorldTags() {
+        double score = rule.apply(recipeWithTags(List.of("lacto ovo vegetarian")), ctx(Set.of("vegetarian")), 1.0);
+        assertEquals(1.5, score, 1e-9);
+    }
+
+    @Test
+    void substringMatchWorksInReverseDirectionToo() {
+        double score = rule.apply(recipeWithTags(List.of("paleolithic")), ctx(Set.of("paleo")), 1.0);
+        assertEquals(1.5, score, 1e-9);
+    }
 }

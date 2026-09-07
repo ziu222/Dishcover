@@ -17,7 +17,10 @@ public class TagPreferenceRule implements ScoringRule {
 
     /**
      * Cộng {@code currentScore} với {@value #BONUS_PER_TAG} điểm cho mỗi tag của công thức khớp
-     * (không phân biệt hoa/thường) với tập {@code preferredTags} của người dùng.
+     * với tập {@code preferredTags} của người dùng — so khớp bao hàm chuỗi con 2 chiều, không phân
+     * biệt hoa/thường (KHÔNG so tuyệt đối). Phát hiện lúc live-verify thật: vocabulary tag Spoonacular
+     * dùng dạng ghép ("lacto ovo vegetarian", "paleolithic") khác từ khóa tự nhiên người dùng gõ
+     * ("vegetarian", "paleo") — so tuyệt đối sẽ không bao giờ khớp được các trường hợp này.
      *
      * @param recipe công thức đang được chấm điểm
      * @param ctx dữ liệu người dùng, gồm tập tag ưa thích (có thể rỗng)
@@ -33,7 +36,7 @@ public class TagPreferenceRule implements ScoringRule {
         }
         long matched = tags.stream()
                 .map(t -> t.toLowerCase(Locale.ROOT))
-                .filter(ctx.preferredTags()::contains)
+                .filter(t -> ctx.preferredTags().stream().anyMatch(pref -> t.contains(pref) || pref.contains(t)))
                 .count();
         return currentScore + BONUS_PER_TAG * matched;
     }
