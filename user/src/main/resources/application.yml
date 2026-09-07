@@ -22,6 +22,17 @@ spring:
     # Môi trường hoàn toàn mới (volume rỗng): baseline không có gì để đánh dấu, Flyway chạy V1 bình thường.
     baseline-on-migrate: true
     baseline-version: "1"
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 # JWT: secret KHÔNG có default (bí mật, phải set env). Tối thiểu 32 ký tự cho HS256.
 # Gateway sẽ dùng CÙNG secret này để verify token ở tầng gating (mục 8) — chia sẻ qua env/Config Server.
