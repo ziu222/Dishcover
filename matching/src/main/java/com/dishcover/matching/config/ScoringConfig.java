@@ -8,15 +8,17 @@ import com.dishcover.matching.scoring.ExpiryBonusRule;
 import com.dishcover.matching.scoring.JaccardBaseRule;
 import com.dishcover.matching.scoring.MatchingEngine;
 import com.dishcover.matching.scoring.ScoringRule;
+import com.dishcover.matching.scoring.TagPreferenceRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 /**
- * Đăng ký tường minh thứ tự 4 rule (KHÔNG dựa vào auto-collect bean theo type, vì thứ tự
- * JaccardBase -> EssentialWeight -> ExpiryBonus -> AllergyFilter ảnh hưởng trực tiếp kết quả —
- * xem specs/matching-service.md mục 3.2).
+ * Đăng ký tường minh thứ tự rule (KHÔNG dựa vào auto-collect bean theo type, vì thứ tự
+ * JaccardBase -> EssentialWeight -> ExpiryBonus -> CalorieProximity -> TagPreference -> AllergyFilter
+ * ảnh hưởng trực tiếp kết quả — xem specs/matching-service.md mục 3.2. AllergyFilter (lọc cứng,
+ * có quyền phủ quyết -∞) luôn đứng cuối cùng.
  */
 @Configuration
 public class ScoringConfig {
@@ -42,6 +44,11 @@ public class ScoringConfig {
     }
 
     @Bean
+    TagPreferenceRule tagPreferenceRule() {
+        return new TagPreferenceRule();
+    }
+
+    @Bean
     AllergyFilterRule allergyFilterRule(IngredientCatalog catalog) {
         return new AllergyFilterRule(catalog);
     }
@@ -49,9 +56,9 @@ public class ScoringConfig {
     @Bean
     List<ScoringRule> scoringRules(JaccardBaseRule jaccardBaseRule, EssentialWeightRule essentialWeightRule,
                                     ExpiryBonusRule expiryBonusRule, CalorieProximityRule calorieProximityRule,
-                                    AllergyFilterRule allergyFilterRule) {
+                                    TagPreferenceRule tagPreferenceRule, AllergyFilterRule allergyFilterRule) {
         return List.of(jaccardBaseRule, essentialWeightRule, expiryBonusRule, calorieProximityRule,
-                allergyFilterRule);
+                tagPreferenceRule, allergyFilterRule);
     }
 
     @Bean
