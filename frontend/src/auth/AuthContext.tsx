@@ -20,7 +20,10 @@ interface AuthState {
   /** true trong lúc xác thực phiên lúc mở app (GET /users/me) — chưa biết đăng nhập hay chưa. */
   checking: boolean
   login: (email: string, password: string, captchaToken?: string) => Promise<void>
+  /** Không còn đăng nhập luôn — chỉ tạo user + gửi OTP. Gọi verifyOtp() sau đó mới có phiên. */
   register: (email: string, password: string, fullName: string) => Promise<void>
+  verifyOtp: (email: string, otp: string) => Promise<void>
+  resendOtp: (email: string) => Promise<void>
   logout: () => Promise<void>
   updateProfile: (fields: { fullName?: string; avatarUrl?: string }) => Promise<void>
 }
@@ -77,12 +80,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         )
       },
       async register(email, password, fullName) {
+        await api<{ message: string }>('/user-service/auth/register', {
+          method: 'POST',
+          body: { email, password, fullName },
+        })
+      },
+      async verifyOtp(email, otp) {
         persist(
-          await api<User>('/user-service/auth/register', {
+          await api<User>('/user-service/auth/verify-otp', {
             method: 'POST',
-            body: { email, password, fullName },
+            body: { email, otp },
           }),
         )
+      },
+      async resendOtp(email) {
+        await api('/user-service/auth/resend-otp', {
+          method: 'POST',
+          body: { email },
+        })
       },
       async updateProfile(fields) {
         persist(

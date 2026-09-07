@@ -16,6 +16,11 @@ spring:
   # test dùng Hibernate create-drop như cũ, Flyway chỉ verify ở Postgres thật (Step 5).
   flyway:
     enabled: false
+  # KHÔNG exclude MailSenderAutoConfiguration — EmailSender cần bean JavaMailSender để tạo được
+  # (bản thân bean không kết nối SMTP gì lúc khởi tạo, chỉ khi gọi .send() mới thật sự nối mạng).
+  mail:
+    username: test@test.com
+    password: test-password
 
 jwt:
   secret: test-secret-at-least-32-chars-long-000

@@ -33,6 +33,9 @@ public class User {
     @Column(nullable = false)
     private String plan = "FREE";
 
+    @Column(name = "email_verified", nullable = false)
+    private boolean emailVerified = false;
+
     // DB tự set DEFAULT now(); không ghi từ ứng dụng
     @Column(name = "created_at", insertable = false, updatable = false)
     private Instant createdAt;
@@ -98,6 +101,16 @@ public class User {
     /** Cập nhật gói dịch vụ (FREE hoặc PRO). */
     public void setPlan(String plan) {
         this.plan = plan;
+    }
+
+    /** @return true nếu user đã xác thực email bằng OTP */
+    public boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    /** Đánh dấu email đã xác thực — gọi sau khi verify OTP đúng. */
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 
     /** @return thời điểm tạo user, do DB tự set (DEFAULT now()) */

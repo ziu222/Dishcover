@@ -50,4 +50,26 @@ public final class AuthDtos {
             UserResponse user
     ) {
     }
+
+    /**
+     * Yêu cầu xác thực mã OTP đã gửi qua email lúc đăng ký.
+     *
+     * @param email email đã đăng ký
+     * @param otp   mã 6 số nhận được qua email
+     */
+    public record VerifyOtpRequest(
+            @Email @NotBlank String email,
+            @NotBlank @Size(min = 6, max = 6) String otp
+    ) {
+    }
+
+    /**
+     * Yêu cầu gửi lại mã OTP mới.
+     *
+     * @param email email cần gửi lại mã
+     */
+    public record ResendOtpRequest(
+            @Email @NotBlank String email
+    ) {
+    }
 }

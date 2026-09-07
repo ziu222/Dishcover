@@ -4,6 +4,8 @@ import com.dishcover.common.security.JwtAuthFilter;
 import com.dishcover.user.dto.AuthDtos.AuthResult;
 import com.dishcover.user.dto.AuthDtos.LoginRequest;
 import com.dishcover.user.dto.AuthDtos.RegisterRequest;
+import com.dishcover.user.dto.AuthDtos.ResendOtpRequest;
+import com.dishcover.user.dto.AuthDtos.VerifyOtpRequest;
 import com.dishcover.user.dto.UserResponse;
 import com.dishcover.user.exception.ApiExceptions.CaptchaRequiredException;
 import com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException;
@@ -23,13 +25,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
- * REST controller cho luồng xác thực (đăng ký/đăng nhập/đăng xuất) của User Service.
+ * REST controller cho luồng xác thực (đăng ký/xác thực OTP/đăng nhập/đăng xuất) của User Service.
  * Công khai (không cần JWT) — xem {@code SecurityConfig}.
  *
  * Token phát ra qua cookie httpOnly (JS không đọc được, hạn chế rủi ro XSS đánh cắp token),
  * không còn trả trong JSON body — body chỉ trả {@link UserResponse} để client hiển thị ngay,
  * cùng shape với {@code GET /users/me} nên frontend dùng lại y hệt logic sau khi xác thực.
+ *
+ * <p><b>Luồng mới (docs/specs/email-otp-verification.md):</b> {@code register()} KHÔNG còn set
+ * cookie — chỉ báo "đã gửi OTP". Chỉ {@link #verifyOtp} và {@link #login} mới phát cookie.
  */
 @RestController
 @RequestMapping("/auth")
@@ -59,18 +66,46 @@ public class AuthController {
     }
 
     /**
-     * Đăng ký tài khoản mới.
+     * Đăng ký tài khoản mới — tạo user chưa xác thực, gửi mã OTP qua email. KHÔNG đặt cookie —
+     * phải gọi {@link #verifyOtp} đúng mã mới đăng nhập được.
      *
      * @param req payload đăng ký (email, password, fullName)
-     * @return 201 Created kèm hồ sơ user vừa tạo, token đặt qua cookie httpOnly
+     * @return 201 Created kèm thông báo đã gửi OTP
      * @throws com.dishcover.user.exception.ApiExceptions.EmailAlreadyExistsException nếu email đã được đăng ký
      */
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest req) {
-        AuthResult result = authService.register(req);
+    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterRequest req) {
+        authService.register(req);
         return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Đã gửi mã xác thực tới " + req.email().trim().toLowerCase()));
+    }
+
+    /**
+     * Xác thực mã OTP đã gửi qua email lúc đăng ký — đúng mã thì đánh dấu email đã xác thực và
+     * phát JWT y hệt {@link #login}.
+     *
+     * @param req email + mã OTP
+     * @return hồ sơ user, token đặt qua cookie httpOnly
+     */
+    @PostMapping("/verify-otp")
+    public ResponseEntity<UserResponse> verifyOtp(@Valid @RequestBody VerifyOtpRequest req) {
+        AuthResult result = authService.verifyOtp(req);
+        return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, authCookie(result).toString())
                 .body(result.user());
+    }
+
+    /**
+     * Gửi lại mã OTP mới. Luôn trả 200 (kể cả email không tồn tại/đã xác thực rồi) — không lộ
+     * thông tin email nào đã đăng ký.
+     *
+     * @param req email cần gửi lại mã
+     * @return 200 rỗng
+     */
+    @PostMapping("/resend-otp")
+    public ResponseEntity<Void> resendOtp(@Valid @RequestBody ResendOtpRequest req) {
+        authService.resendOtp(req);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -86,6 +121,7 @@ public class AuthController {
      * @throws TooManyAttemptsException     nếu email đã bị khoá tạm thời
      * @throws CaptchaRequiredException     nếu đến ngưỡng cần CAPTCHA mà token thiếu/sai
      * @throws InvalidCredentialsException  nếu sai email hoặc mật khẩu
+     * @throws com.dishcover.user.exception.ApiExceptions.EmailNotVerifiedException nếu email chưa xác thực OTP
      */
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest req, HttpServletRequest http) {

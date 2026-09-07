@@ -32,6 +32,10 @@ export function Login() {
         setNeedsCaptcha(true)
         setCaptchaToken(null) // token cũ (nếu có) đã bị bác — bắt xác minh lại
       }
+      if (err instanceof ApiError && err.code === 'EMAIL_NOT_VERIFIED') {
+        navigate(`/xac-thuc-otp?email=${encodeURIComponent(email.trim())}`)
+        return
+      }
       setError(err instanceof ApiError ? err.message : 'Đăng nhập thất bại, vui lòng thử lại.')
     } finally {
       setLoading(false)
