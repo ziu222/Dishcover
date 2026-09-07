@@ -103,7 +103,7 @@ export function Fridge() {
   }
 
   return (
-    <div className="px-6 py-9 lg:px-10">
+    <div className="px-4 py-9 lg:px-10">
       {/* Header */}
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -125,12 +125,12 @@ export function Fridge() {
             </p>
           )}
         </div>
-        <div className="flex gap-2.5 self-start sm:self-auto">
-          <Button variant="secondary" onClick={() => setScanOpen(true)}>
+        <div className="flex flex-col gap-2.5 self-stretch sm:flex-row sm:self-auto">
+          <Button variant="secondary" className="w-full sm:w-auto" onClick={() => setScanOpen(true)}>
             <Camera weight="bold" className="size-4" />
             Nhận diện từ ảnh
           </Button>
-          <Button onClick={openAdd}>
+          <Button className="w-full sm:w-auto" onClick={openAdd}>
             <Plus weight="bold" className="size-4" />
             Thêm nguyên liệu
           </Button>
@@ -171,7 +171,7 @@ export function Fridge() {
           {shown.length === 0 ? (
             <p className="py-16 text-center text-sm text-muted">Không có nguyên liệu ở trạng thái này.</p>
           ) : (
-            <ul className="rounded-card border border-line-soft bg-white px-5">
+            <ul className="rounded-card border border-line-soft bg-white px-3 sm:px-5">
               <AnimatePresence initial={false}>
                 {shown.map((item) => (
                   <IngredientRow
