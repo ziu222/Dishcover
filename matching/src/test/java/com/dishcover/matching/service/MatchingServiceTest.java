@@ -13,6 +13,7 @@ import com.dishcover.matching.scoring.EssentialWeightRule;
 import com.dishcover.matching.scoring.ExpiryBonusRule;
 import com.dishcover.matching.scoring.JaccardBaseRule;
 import com.dishcover.matching.scoring.MatchingEngine;
+import com.dishcover.matching.scoring.TagPreferenceRule;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -59,7 +60,7 @@ class MatchingServiceTest {
                 IngredientEntry.basic("Tôm", "tom", List.of(), "hai_san", 3, "hai_san")));
         MatchingEngine engine = new MatchingEngine(List.of(
                 new JaccardBaseRule(), new EssentialWeightRule(), new ExpiryBonusRule(),
-                new AllergyFilterRule(catalog)));
+                new TagPreferenceRule(), new AllergyFilterRule(catalog)));
 
         return new MatchingService(inventoryClient, recipeClient, userClient, engine, catalog);
     }
@@ -167,6 +168,53 @@ class MatchingServiceTest {
         assertEquals("r2", result.get(0).recipeId());
         assertEquals("r1", result.get(1).recipeId());
 
+        recipeServer.verify();
+    }
+
+    @Test
+    void suggestRanksRecipeMatchingTagPreferenceHigher() {
+        MatchingService service = buildService();
+
+        inventoryServer.expect(requestTo("http://inventory/inventory/items"))
+                .andRespond(withSuccess("""
+                        [{"normalizedName":"trung ga","expiryDate":null,"status":"FRESH"}]
+                        """, MediaType.APPLICATION_JSON));
+
+        userServer.expect(requestTo("http://user/users/me/dietary-preferences"))
+                .andExpect(header("Authorization", BEARER))
+                .andRespond(withSuccess("""
+                        [{"id":1,"type":"TAG_PREFERENCE","value":"vegetarian"}]
+                        """, MediaType.APPLICATION_JSON));
+        userServer.expect(requestTo("http://user/users/me/calorie-goal"))
+                .andRespond(withSuccess("", MediaType.APPLICATION_JSON));
+
+        recipeServer.expect(requestTo("http://recipe/recipes?size=500"))
+                .andRespond(withSuccess("""
+                        {"content":[{"id":"r1"},{"id":"r2"}]}
+                        """, MediaType.APPLICATION_JSON));
+
+        // r1 và r2 khớp CÙNG 1 nguyên liệu (trung ga) -> điểm 5 rule đầu bằng nhau hệt nhau,
+        // chỉ khác ở tags -> TagPreferenceRule là yếu tố duy nhất quyết định thứ hạng ở đây.
+        recipeServer.expect(requestTo("http://recipe/recipes/r1"))
+                .andRespond(withSuccess("""
+                        {"id":"r1","name":"Không chay","slug":"khong-chay","imageUrl":null,
+                         "ingredients":[{"name":"trung ga","normalizedName":"trung ga","essential":true,"weight":1.0}],
+                         "tags":["lunch"]}
+                        """, MediaType.APPLICATION_JSON));
+        recipeServer.expect(requestTo("http://recipe/recipes/r2"))
+                .andRespond(withSuccess("""
+                        {"id":"r2","name":"Món chay","slug":"mon-chay","imageUrl":null,
+                         "ingredients":[{"name":"trung ga","normalizedName":"trung ga","essential":true,"weight":1.0}],
+                         "tags":["vegetarian","lunch"]}
+                        """, MediaType.APPLICATION_JSON));
+
+        List<RecipeMatchResponse> result = service.suggest(BEARER, 5);
+
+        assertEquals(2, result.size());
+        assertEquals("r2", result.get(0).recipeId()); // có tag "vegetarian" khớp preference -> xếp trên
+        assertEquals("r1", result.get(1).recipeId());
+
+        userServer.verify();
         recipeServer.verify();
     }
 

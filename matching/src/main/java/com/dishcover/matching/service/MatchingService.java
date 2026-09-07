@@ -3,6 +3,8 @@ package com.dishcover.matching.service;
 import com.dishcover.common.ingredient.IngredientCatalog;
 import com.dishcover.common.ingredient.IngredientEntry;
 import com.dishcover.common.nutrition.UnitConverter;
+import com.dishcover.common.text.VietnameseTextNormalizer;
+import com.dishcover.matching.client.DietaryPreferenceDto;
 import com.dishcover.matching.client.InventoryClient;
 import com.dishcover.matching.client.InventoryItemDto;
 import com.dishcover.matching.client.RecipeClient;
@@ -67,11 +69,13 @@ public class MatchingService {
         int limit = clamp(topN);
 
         List<InventoryItemDto> inventory = inventoryClient.getFreshItems(bearerToken);
-        Set<String> allergens = userClient.getAllergenGroups(bearerToken);
+        List<DietaryPreferenceDto> dietaryPreferences = userClient.getDietaryPreferences(bearerToken);
+        Set<String> allergens = extractAllergenGroups(dietaryPreferences);
+        Set<String> preferredTags = extractPreferredTags(dietaryPreferences);
         Integer calorieTargetPerMeal = userClient.getCalorieTargetPerMeal(bearerToken);
         List<RecipeDetailDto> recipes = recipeClient.getAllRecipesWithIngredients();
 
-        MatchingContext ctx = buildContext(inventory, allergens, calorieTargetPerMeal);
+        MatchingContext ctx = buildContext(inventory, allergens, calorieTargetPerMeal, preferredTags);
 
         return recipes.stream()
                 .map(r -> Map.entry(r, engine.score(r, ctx)))
@@ -169,7 +173,7 @@ public class MatchingService {
     }
 
     private MatchingContext buildContext(List<InventoryItemDto> inventory, Set<String> allergens,
-                                          Integer calorieTargetPerMeal) {
+                                          Integer calorieTargetPerMeal, Set<String> preferredTags) {
         Set<String> names = inventory.stream()
                 .map(InventoryItemDto::normalizedName)
                 .collect(Collectors.toSet());
@@ -177,7 +181,25 @@ public class MatchingService {
                 .filter(i -> i.expiryDate() != null)
                 .collect(Collectors.toMap(InventoryItemDto::normalizedName, InventoryItemDto::expiryDate,
                         (first, second) -> first));
-        return new MatchingContext(names, expiry, allergens, calorieTargetPerMeal, Set.of());
+        return new MatchingContext(names, expiry, allergens, calorieTargetPerMeal, preferredTags);
+    }
+
+    /** Tách nhóm dị ứng (type=ALLERGY) từ hồ sơ ăn uống, quy đổi value tự do sang slug khớp
+     *  allergenGroup trong catalog (VD "hải sản" -> "hai_san") — logic giống hệt
+     *  {@code UserClient.getAllergenGroups()} trước khi gộp 2 lời gọi HTTP làm 1 (mục 8.4). */
+    private static Set<String> extractAllergenGroups(List<DietaryPreferenceDto> prefs) {
+        return prefs.stream()
+                .filter(p -> "ALLERGY".equals(p.type()))
+                .map(p -> VietnameseTextNormalizer.normalize(p.value()).replace(' ', '_'))
+                .collect(Collectors.toSet());
+    }
+
+    /** Tách tag định hướng ăn uống (type=TAG_PREFERENCE) từ hồ sơ ăn uống, cho TagPreferenceRule. */
+    private static Set<String> extractPreferredTags(List<DietaryPreferenceDto> prefs) {
+        return prefs.stream()
+                .filter(p -> "TAG_PREFERENCE".equals(p.type()))
+                .map(p -> p.value().toLowerCase(java.util.Locale.ROOT))
+                .collect(Collectors.toSet());
     }
 
     private RecipeMatchResponse toResponse(RecipeDetailDto recipe, double score, MatchingContext ctx) {

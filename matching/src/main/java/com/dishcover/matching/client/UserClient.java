@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,34 @@ public class UserClient {
     private Set<String> fallbackGetAllergenGroups(String bearerToken, Throwable ex) {
         throw new UpstreamUnavailableException(
                 "Không xác nhận được thông tin dị ứng, tạm ngừng gợi ý để đảm bảo an toàn");
+    }
+
+    /**
+     * Lấy toàn bộ hồ sơ ăn uống (ALLERGY + DIET + TAG_PREFERENCE) trong 1 lần gọi — dùng bởi
+     * {@code MatchingService.suggest()} để tự tách allergens/preferredTags ở tầng gọi, tránh gọi
+     * 2 lần tới cùng 1 endpoint (xem docs/specs/diet-direction-recommendation.md mục 8.4).
+     * Fail-closed giống {@link #getAllergenGroups}: allergens vẫn derive từ danh sách này, KHÔNG
+     * được coi User Service lỗi là "không dị ứng gì".
+     *
+     * @param bearerToken header Authorization ("Bearer &lt;token&gt;") của người dùng đang gọi
+     * @return toàn bộ hồ sơ ăn uống của người dùng
+     * @throws com.dishcover.matching.exception.ApiExceptions.UpstreamUnavailableException nếu User
+     *         Service không khả dụng
+     */
+    @CircuitBreaker(name = "user-service", fallbackMethod = "fallbackGetDietaryPreferences")
+    public List<DietaryPreferenceDto> getDietaryPreferences(String bearerToken) {
+        DietaryPreferenceDto[] prefs = restClient.get()
+                .uri("/users/me/dietary-preferences")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                .retrieve()
+                .body(DietaryPreferenceDto[].class);
+        return prefs == null ? List.of() : Arrays.asList(prefs);
+    }
+
+    @SuppressWarnings("unused")
+    private List<DietaryPreferenceDto> fallbackGetDietaryPreferences(String bearerToken, Throwable ex) {
+        throw new UpstreamUnavailableException(
+                "Không xác nhận được hồ sơ ăn uống, tạm ngừng gợi ý để đảm bảo an toàn");
     }
 
     /**

@@ -52,6 +52,12 @@ class ClientResilienceTest {
         assertThrows(UpstreamUnavailableException.class, () -> userClient.getAllergenGroups("Bearer x"));
     }
 
+    /** Cùng lý do getAllergenGroups: allergens vẫn derive từ danh sách này -> fail-closed. */
+    @Test
+    void dietaryPreferencesFailureFailsClosed() {
+        assertThrows(UpstreamUnavailableException.class, () -> userClient.getDietaryPreferences("Bearer x"));
+    }
+
     /** Khác getAllergenGroups: đây fail-open (không phải rủi ro an toàn), trả null thay vì ném lỗi. */
     @Test
     void calorieGoalFailureFailsOpenToNull() {
