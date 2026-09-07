@@ -154,6 +154,18 @@ class AuthFlowIntegrationTest {
     }
 
     @Test
+    void tagPreferenceTypeAccepted() throws Exception {
+        String token = register("tagpref@b.com", "secret1");
+        mvc.perform(post("/users/me/dietary-preferences")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"type\":\"TAG_PREFERENCE\",\"value\":\"high protein\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.type").value("TAG_PREFERENCE"))
+                .andExpect(jsonPath("$.value").value("high protein"));
+    }
+
+    @Test
     void badTypeRejectedByValidation() throws Exception {
         String token = register("bad@b.com", "secret1");
         mvc.perform(post("/users/me/dietary-preferences")
