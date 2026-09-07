@@ -28,7 +28,7 @@ export function Register() {
     setLoading(true)
     try {
       await register(email.trim(), password, fullName.trim())
-      navigate('/', { replace: true })
+      navigate(`/xac-thuc-otp?email=${encodeURIComponent(email.trim())}`)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Đăng ký thất bại, vui lòng thử lại.')
     } finally {

@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Login } from './screens/Login'
 import { Register } from './screens/Register'
+import { VerifyOtp } from './screens/VerifyOtp'
 import { Home } from './screens/Home'
 import { Search } from './screens/Search'
 import { Fridge } from './screens/Fridge'
@@ -40,6 +41,7 @@ export function App() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/xac-thuc-otp" element={<VerifyOtp />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
