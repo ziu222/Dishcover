@@ -6,6 +6,11 @@ import com.dishcover.user.exception.ApiExceptions.CaptchaRequiredException;
 import com.dishcover.user.exception.ApiExceptions.EmailAlreadyExistsException;
 import com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException;
 import com.dishcover.user.exception.ApiExceptions.TooManyAttemptsException;
+import com.dishcover.user.exception.ApiExceptions.EmailDeliveryException;
+import com.dishcover.user.exception.ApiExceptions.EmailNotVerifiedException;
+import com.dishcover.user.exception.ApiExceptions.InvalidOtpException;
+import com.dishcover.user.exception.ApiExceptions.OtpExpiredException;
+import com.dishcover.user.exception.ApiExceptions.TooSoonException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +47,30 @@ public class GlobalExceptionHandler extends CommonExceptionHandler {
         return ResponseEntity.status(base.getStatusCode())
                 .header(HttpHeaders.RETRY_AFTER, "900")
                 .body(base.getBody());
+    }
+
+    @ExceptionHandler(EmailDeliveryException.class)
+    ResponseEntity<ApiError> handleEmailDelivery(EmailDeliveryException ex) {
+        return build(HttpStatus.SERVICE_UNAVAILABLE, "EMAIL_DELIVERY_FAILED", ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidOtpException.class)
+    ResponseEntity<ApiError> handleInvalidOtp(InvalidOtpException ex) {
+        return build(HttpStatus.UNPROCESSABLE_ENTITY, "INVALID_OTP", ex.getMessage());
+    }
+
+    @ExceptionHandler(OtpExpiredException.class)
+    ResponseEntity<ApiError> handleOtpExpired(OtpExpiredException ex) {
+        return build(HttpStatus.UNPROCESSABLE_ENTITY, "OTP_EXPIRED", ex.getMessage());
+    }
+
+    @ExceptionHandler(TooSoonException.class)
+    ResponseEntity<ApiError> handleTooSoon(TooSoonException ex) {
+        return build(HttpStatus.TOO_MANY_REQUESTS, "OTP_RESEND_TOO_SOON", ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailNotVerifiedException.class)
+    ResponseEntity<ApiError> handleEmailNotVerified(EmailNotVerifiedException ex) {
+        return build(HttpStatus.FORBIDDEN, "EMAIL_NOT_VERIFIED", ex.getMessage());
     }
 }
