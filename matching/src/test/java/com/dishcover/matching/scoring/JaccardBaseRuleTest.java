@@ -22,7 +22,7 @@ class JaccardBaseRuleTest {
     }
 
     private MatchingContext ctx(String... userNormalizedNames) {
-        return new MatchingContext(Set.of(userNormalizedNames), Map.of(), Set.of(), null);
+        return new MatchingContext(Set.of(userNormalizedNames), Map.of(), Set.of(), null, Set.of());
     }
 
     @Test

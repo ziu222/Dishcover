@@ -99,7 +99,7 @@ public class MatchingService {
         Set<String> normalized = rawIngredientNames.stream()
                 .map(catalog::resolve)
                 .collect(Collectors.toSet());
-        MatchingContext ctx = new MatchingContext(normalized, Map.of(), Set.of(), null);
+        MatchingContext ctx = new MatchingContext(normalized, Map.of(), Set.of(), null, Set.of());
         List<RecipeDetailDto> recipes = recipeClient.getAllRecipesWithIngredients();
 
         return recipes.stream()
@@ -177,7 +177,7 @@ public class MatchingService {
                 .filter(i -> i.expiryDate() != null)
                 .collect(Collectors.toMap(InventoryItemDto::normalizedName, InventoryItemDto::expiryDate,
                         (first, second) -> first));
-        return new MatchingContext(names, expiry, allergens, calorieTargetPerMeal);
+        return new MatchingContext(names, expiry, allergens, calorieTargetPerMeal, Set.of());
     }
 
     private RecipeMatchResponse toResponse(RecipeDetailDto recipe, double score, MatchingContext ctx) {
