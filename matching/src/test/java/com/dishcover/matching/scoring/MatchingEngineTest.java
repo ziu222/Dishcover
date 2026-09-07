@@ -36,7 +36,7 @@ class MatchingEngineTest {
                 null, List.of(
                         new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0),
                         new RecipeIngredientDto("ca chua", "ca chua", null, null, true, 1.0),
-                        new RecipeIngredientDto("hanh la", "hanh la", null, null, false, 0.3)), null);
+                        new RecipeIngredientDto("hanh la", "hanh la", null, null, false, 0.3)), null, null);
 
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga", "sua tuoi", "rau muong"),
@@ -54,7 +54,7 @@ class MatchingEngineTest {
     @Test
     void allergyViolationOverridesEverythingElse() {
         RecipeDetailDto recipe = new RecipeDetailDto("id", "n", "s", null,
-                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null);
+                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null, null);
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga"), Map.of("trung ga", LocalDate.now().plusDays(1)), Set.of("trung"), null);
 

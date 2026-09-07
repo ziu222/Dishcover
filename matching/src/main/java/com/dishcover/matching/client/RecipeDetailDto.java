@@ -12,6 +12,8 @@ import java.util.List;
  * @param imageUrl URL ảnh minh họa công thức, có thể null
  * @param ingredients danh sách nguyên liệu của công thức, dùng làm tập R trong Jaccard
  * @param nutrition calo/macro mỗi khẩu phần, null nếu Recipe Service cũ chưa có field này
+ * @param tags nhãn tự do của công thức (VD "high protein", "vegetarian"), dùng bởi TagPreferenceRule;
+ *             có thể null/rỗng nếu công thức không có tag nào
  */
 public record RecipeDetailDto(
         String id,
@@ -19,7 +21,8 @@ public record RecipeDetailDto(
         String slug,
         String imageUrl,
         List<RecipeIngredientDto> ingredients,
-        NutritionDto nutrition
+        NutritionDto nutrition,
+        List<String> tags
 ) {
     /**
      * Map subset của {@code recipe/dto/RecipeDtos.NutritionResponse} — chỉ lấy field calo cần dùng

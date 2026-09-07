@@ -19,7 +19,7 @@ class ExpiryBonusRuleTest {
         List<RecipeIngredientDto> ingredients = List.of(normalizedNames).stream()
                 .map(n -> new RecipeIngredientDto(n, n, null, null, true, 1.0))
                 .toList();
-        return new RecipeDetailDto("id", "n", "s", null, ingredients, null);
+        return new RecipeDetailDto("id", "n", "s", null, ingredients, null, null);
     }
 
     @Test

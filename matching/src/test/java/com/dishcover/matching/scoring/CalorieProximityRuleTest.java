@@ -16,7 +16,7 @@ class CalorieProximityRuleTest {
 
     private RecipeDetailDto recipeWithCalories(Double calories) {
         NutritionDto nutrition = calories == null ? null : new NutritionDto(calories);
-        return new RecipeDetailDto("id", "n", "s", null, List.of(), nutrition);
+        return new RecipeDetailDto("id", "n", "s", null, List.of(), nutrition, null);
     }
 
     @Test
