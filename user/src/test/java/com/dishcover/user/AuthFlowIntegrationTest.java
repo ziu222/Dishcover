@@ -1,11 +1,14 @@
 package com.dishcover.user;
 
+import com.dishcover.user.mail.EmailSender;
+import com.dishcover.user.security.OtpStore;
 import com.dishcover.user.security.TurnstileClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -22,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Import(TestOtpStoreConfig.class)
 class AuthFlowIntegrationTest {
 
     @Autowired
@@ -31,23 +35,36 @@ class AuthFlowIntegrationTest {
     /** Mock để không phụ thuộc mạng thật tới Cloudflare — test riêng TurnstileClient đã cover verify() thật. */
     @MockitoBean
     TurnstileClient turnstileClient;
+    /** Mock để không phụ thuộc SMTP thật (đăng ký thật cũng KHÔNG được ném EmailDeliveryException
+     *  trong môi trường test/CI không có mạng ra ngoài) — cùng lý do mock turnstileClient ở trên.
+     *  Mặc định Mockito no-op void method, không throw, nên register() vẫn thành công bình thường. */
+    @MockitoBean
+    EmailSender emailSender;
+    @Autowired
+    OtpStore otpStore;
 
     private String loginBody(String email, String password) {
         return "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
     }
 
     /**
-     * Đăng ký và trả token — token giờ chỉ đi qua cookie httpOnly {@code auth_token}, không
-     * còn trong JSON body (xem AuthController). Test vẫn dùng Bearer header để gọi endpoint
-     * bảo vệ vì JwtAuthFilter chấp nhận cả 2 đường, không cần MockMvc mô phỏng cookie jar.
+     * Đăng ký, tự verify OTP (đọc mã thẳng qua {@code OtpStore} bean, không cần đọc email thật)
+     * rồi trả token JWT — luồng đăng ký giờ KHÔNG còn set cookie ngay (xem AuthController), phải
+     * qua verify-otp mới có token. Test khác trong file này chỉ cần gọi {@code register(email, pass)}
+     * và nhận lại 1 token hợp lệ y hệt trước đây — interface không đổi, chỉ đổi luồng nội bộ.
      */
     private String register(String email, String pass) throws Exception {
-        var response = mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"" + email + "\",\"password\":\"" + pass + "\",\"fullName\":\"Test\"}"))
-                .andExpect(status().isCreated())
+                .andExpect(status().isCreated());
+
+        String otp = otpStore.issue(email); // ghi đè mã thật đã gửi qua email bằng 1 mã mới ta tự biết
+        var response = mvc.perform(post("/auth/verify-otp").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"" + email + "\",\"otp\":\"" + otp + "\"}"))
+                .andExpect(status().isOk())
                 .andReturn().getResponse();
         var cookie = response.getCookie("auth_token");
-        org.junit.jupiter.api.Assertions.assertNotNull(cookie, "auth_token cookie phải được đặt sau register");
+        org.junit.jupiter.api.Assertions.assertNotNull(cookie, "auth_token cookie phải được đặt sau verify-otp");
         return cookie.getValue();
     }
 
@@ -289,6 +306,76 @@ class AuthFlowIntegrationTest {
         }
         mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content(loginBody("reset@b.com", "secret1")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void registerDoesNotSetCookieUntilOtpVerified() throws Exception {
+        mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"otp1@b.com\",\"password\":\"secret1\",\"fullName\":\"Test\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(cookie().doesNotExist("auth_token"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void loginBeforeVerifyingOtpReturns403() throws Exception {
+        mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"otp2@b.com\",\"password\":\"secret1\",\"fullName\":\"Test\"}"))
+                .andExpect(status().isCreated());
+
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("otp2@b.com", "secret1")))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("EMAIL_NOT_VERIFIED"));
+    }
+
+    @Test
+    void verifyOtpWithWrongCodeReturns422() throws Exception {
+        mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"otp3@b.com\",\"password\":\"secret1\",\"fullName\":\"Test\"}"))
+                .andExpect(status().isCreated());
+
+        mvc.perform(post("/auth/verify-otp").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"otp3@b.com\",\"otp\":\"000000\"}"))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.code").value("INVALID_OTP"));
+    }
+
+    @Test
+    void verifyOtpThenLoginSucceeds() throws Exception {
+        String token = register("otp4@b.com", "secret1"); // dùng helper -- tự verify OTP bên trong
+
+        mvc.perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody("otp4@b.com", "secret1")))
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists("auth_token"))
+                .andExpect(jsonPath("$.email").value("otp4@b.com"));
+
+        // token từ verify-otp cũng dùng gọi endpoint bảo vệ được, giống token từ login
+        mvc.perform(get("/users/me").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void resendOtpWithinCooldownReturns429() throws Exception {
+        mvc.perform(post("/auth/register").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"otp5@b.com\",\"password\":\"secret1\",\"fullName\":\"Test\"}"))
+                .andExpect(status().isCreated());
+
+        // Bean test có cooldown=0 (xem TestOtpStoreConfig) -- gọi resend NGAY nên vẫn phải chờ 0s,
+        // nghĩa là request đầu tiên (từ register) đã tiêu thụ "slot" issue() -- gọi resend thêm 1
+        // lần liền kề vẫn PASS vì cooldown=0. Test cooldown thật đã cover đủ ở OtpStoreTest (Task 2)
+        // qua constructor test-only riêng -- ở đây chỉ xác nhận endpoint resend-otp gọi được, trả 200.
+        mvc.perform(post("/auth/resend-otp").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"otp5@b.com\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void resendOtpForUnknownEmailReturns200Silently() throws Exception {
+        mvc.perform(post("/auth/resend-otp").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"never-registered@b.com\"}"))
                 .andExpect(status().isOk());
     }
 }

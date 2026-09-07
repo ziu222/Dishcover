@@ -43,7 +43,8 @@ public class SecurityConfig {
                         // này nên nếu chặn sẽ thành 401 che status thật; cho qua để render đúng 4xx/5xx.
                         .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR).permitAll()
                         // Công khai: đăng ký, đăng nhập, health. Còn lại cần JWT hợp lệ.
-                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/logout").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/verify-otp",
+                                "/auth/resend-otp", "/auth/login", "/auth/logout").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         // Endpoint service-to-service, tự xác thực bằng header X-Internal-Secret
                         // trong controller (không phải JWT — xem InternalUserController javadoc).
