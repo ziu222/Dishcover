@@ -12,11 +12,14 @@ import java.util.Set;
  * @param userAllergenGroups tập nhóm dị ứng của người dùng, dùng cho AllergyFilterRule
  * @param calorieTargetPerMeal mục tiêu calo/bữa (mục tiêu/ngày chia 3), null nếu user chưa đặt mục
  *                              tiêu — CalorieProximityRule tự thành no-op khi null
+ * @param preferredTags tập tag định hướng ăn uống người dùng chọn (VD "high protein", đã lowercase),
+ *                       dùng cho TagPreferenceRule — rỗng khiến rule tự thành no-op
  */
 public record MatchingContext(
         Set<String> userNormalizedNames,
         Map<String, LocalDate> expiryByNormalizedName,
         Set<String> userAllergenGroups,
-        Integer calorieTargetPerMeal
+        Integer calorieTargetPerMeal,
+        Set<String> preferredTags
 ) {
 }

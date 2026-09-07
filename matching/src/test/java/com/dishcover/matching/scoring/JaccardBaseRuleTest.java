@@ -18,11 +18,11 @@ class JaccardBaseRuleTest {
         List<RecipeIngredientDto> ingredients = List.of(normalizedNames).stream()
                 .map(n -> new RecipeIngredientDto(n, n, null, null, true, 1.0))
                 .toList();
-        return new RecipeDetailDto("id", "name", "slug", null, ingredients, null);
+        return new RecipeDetailDto("id", "name", "slug", null, ingredients, null, null);
     }
 
     private MatchingContext ctx(String... userNormalizedNames) {
-        return new MatchingContext(Set.of(userNormalizedNames), Map.of(), Set.of(), null);
+        return new MatchingContext(Set.of(userNormalizedNames), Map.of(), Set.of(), null, Set.of());
     }
 
     @Test

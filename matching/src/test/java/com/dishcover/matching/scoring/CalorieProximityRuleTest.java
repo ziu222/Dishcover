@@ -16,26 +16,26 @@ class CalorieProximityRuleTest {
 
     private RecipeDetailDto recipeWithCalories(Double calories) {
         NutritionDto nutrition = calories == null ? null : new NutritionDto(calories);
-        return new RecipeDetailDto("id", "n", "s", null, List.of(), nutrition);
+        return new RecipeDetailDto("id", "n", "s", null, List.of(), nutrition, null);
     }
 
     @Test
     void noTargetSetIsNoOp() {
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), null);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), null, Set.of());
         double score = rule.apply(recipeWithCalories(500.0), ctx, 1.0);
         assertEquals(1.0, score, 1e-9);
     }
 
     @Test
     void recipeWithoutNutritionIsNoOp() {
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500, Set.of());
         double score = rule.apply(recipeWithCalories(null), ctx, 1.0);
         assertEquals(1.0, score, 1e-9);
     }
 
     @Test
     void exactMatchGivesFullBonus() {
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500, Set.of());
         double score = rule.apply(recipeWithCalories(500.0), ctx, 1.0);
         assertEquals(2.0, score, 1e-9); // 1.0 + bonus tối đa 1.0
     }
@@ -43,14 +43,14 @@ class CalorieProximityRuleTest {
     @Test
     void partialDeviationGivesPartialBonus() {
         // lệch 100/500 = 20% -> bonus = 1 - 0.2 = 0.8
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500, Set.of());
         double score = rule.apply(recipeWithCalories(600.0), ctx, 1.0);
         assertEquals(1.8, score, 1e-9);
     }
 
     @Test
     void deviationAtOrBeyondTargetGivesNoBonus() {
-        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500);
+        MatchingContext ctx = new MatchingContext(Set.of(), Map.of(), Set.of(), 500, Set.of());
         double score = rule.apply(recipeWithCalories(1200.0), ctx, 1.0);
         assertEquals(1.0, score, 1e-9); // lệch vượt 100% -> bonus = 0, không trừ điểm
     }

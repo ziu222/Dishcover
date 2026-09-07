@@ -36,12 +36,12 @@ class MatchingEngineTest {
                 null, List.of(
                         new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0),
                         new RecipeIngredientDto("ca chua", "ca chua", null, null, true, 1.0),
-                        new RecipeIngredientDto("hanh la", "hanh la", null, null, false, 0.3)), null);
+                        new RecipeIngredientDto("hanh la", "hanh la", null, null, false, 0.3)), null, null);
 
         MatchingContext ctx = new MatchingContext(
                 Set.of("trung ga", "sua tuoi", "rau muong"),
                 Map.of("trung ga", LocalDate.now().plusDays(2)),
-                Set.of(), null);
+                Set.of(), null, Set.of());
 
         double score = engine.score(recipe, ctx);
 
@@ -54,9 +54,9 @@ class MatchingEngineTest {
     @Test
     void allergyViolationOverridesEverythingElse() {
         RecipeDetailDto recipe = new RecipeDetailDto("id", "n", "s", null,
-                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null);
+                List.of(new RecipeIngredientDto("trung ga", "trung ga", null, null, true, 1.0)), null, null);
         MatchingContext ctx = new MatchingContext(
-                Set.of("trung ga"), Map.of("trung ga", LocalDate.now().plusDays(1)), Set.of("trung"), null);
+                Set.of("trung ga"), Map.of("trung ga", LocalDate.now().plusDays(1)), Set.of("trung"), null, Set.of());
 
         double score = engine.score(recipe, ctx);
         assertEquals(Double.NEGATIVE_INFINITY, score);
