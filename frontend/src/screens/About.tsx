@@ -4,7 +4,8 @@ import { MotionConfig, motion } from 'framer-motion'
 import { ArrowLeft, ArrowUpRight, GithubLogo, PaperPlaneTilt } from '@phosphor-icons/react'
 import { CONTACT_EMAIL, LandingFooter, LandingHeader, REPO_URL } from '../components/LandingChrome'
 import { LarderEmblem, WheatSprig } from '../components/LarderEmblem'
-import { fadeUp, group, inView, maskLine, popIn, revealBlock } from './landingMotion'
+import { LarderLockup } from '../components/LarderLockup'
+import { ease, fadeUp, group, inView, maskLine, popIn, revealBlock } from './landingMotion'
 import { pillars, services, stack, stats } from './aboutData'
 import './landing.css'
 import './about.css'
@@ -37,6 +38,17 @@ export function About() {
         <LandingHeader />
 
         <main id="noi-dung">
+          {/* Logo chính — dựng lại đúng lockup "01 Logo chính" của bộ nhận diện, mở đầu
+              trang nói về chính thương hiệu. */}
+          <section className="landing-container about-lockup-section">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease }}
+            >
+              <LarderLockup />
+            </motion.div>
+          </section>
           <section className="landing-container about-hero">
             <motion.div
               className="about-hero-copy"
