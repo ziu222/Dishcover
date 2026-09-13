@@ -57,6 +57,8 @@ export function Landing() {
   const [matchIngredients, setMatchIngredients] = useState<Ingredient[] | null>(null)
   const [activeRecipe, setActiveRecipe] = useState<SampleRecipe | null>(null)
   const [scrolled, setScrolled] = useState(false)
+  // Giữ lại công thức vừa xem để hộp thoại còn nội dung trong lúc chạy hiệu ứng đóng.
+  const lastRecipe = useRef<SampleRecipe | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
   const recipeHeadingRef = useRef<HTMLHeadingElement>(null)
 
@@ -76,6 +78,9 @@ export function Landing() {
       document.body.style.overflow = overflow
     }
   }, [activeRecipe])
+
+  if (activeRecipe) lastRecipe.current = activeRecipe
+  const shownRecipe = activeRecipe ?? lastRecipe.current
 
   const visibleRecipes = useMemo(() => {
     const matching = sampleRecipes.filter((recipe) => {
@@ -504,11 +509,11 @@ export function Landing() {
 
         <section id="cach-hoat-dong" className="landing-container landing-how-section">
           <motion.div className="landing-how-intro" {...reveal}>
-            <ChefHat size={34} weight="duotone" />
+            <motion.span className="landing-icon-swap" variants={popIn}>
+              <ChefHat size={34} weight="duotone" />
+            </motion.span>
             <h2>
-              Từ mở tủ lạnh
-              <br />
-              đến dọn bữa ngon.
+              <MaskedLines lines={['Từ mở tủ lạnh', 'đến dọn bữa ngon.']} />
             </h2>
             <p className="landing-body-copy">
               Larder đồng hành cùng những bữa cơm thường ngày của bạn.
@@ -517,7 +522,14 @@ export function Landing() {
               Tạo tủ lạnh của bạn <ArrowUpRight size={19} />
             </Link>
           </motion.div>
-          <div className="landing-steps">
+          <motion.div className="landing-steps" {...inView} variants={group(0.12, 0.1)}>
+            {/* Sợi chỉ nối 3 bước, vẽ dần từ trên xuống khi khối lọt viewport. */}
+            <motion.span
+              className="landing-steps-line"
+              aria-hidden="true"
+              variants={{ hidden: { scaleY: 0 }, show: { scaleY: 1 } }}
+              transition={{ duration: 1.1, ease }}
+            />
             {[
               {
                 icon: Basket,
@@ -535,17 +547,17 @@ export function Landing() {
                 text: 'Lưu món yêu thích và hỏi trợ lý nấu ăn khi cần thêm một chút cảm hứng.',
               },
             ].map(({ icon: Icon, title, text }) => (
-              <motion.div className="landing-step" key={title} {...reveal}>
-                <div className="landing-step-icon">
+              <motion.div className="landing-step" key={title} variants={fadeUp}>
+                <motion.div className="landing-step-icon" variants={popIn} transition={spring}>
                   <Icon size={25} />
-                </div>
+                </motion.div>
                 <div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section id="ve-larder" className="landing-about-section">
@@ -553,9 +565,9 @@ export function Landing() {
             <motion.div {...reveal}>
               <Leaf size={30} weight="duotone" />
               <h2>
-                Mỗi nguyên liệu đều xứng đáng
-                <br />
-                trở thành một món ngon.
+                <MaskedLines
+                  lines={['Mỗi nguyên liệu đều xứng đáng', 'trở thành một món ngon.']}
+                />
               </h2>
               <p>
                 Một quả cà chua còn lại. Vài cọng rau trong tủ.
@@ -566,14 +578,17 @@ export function Landing() {
                 className="landing-button landing-button-primary"
                 to={signedIn ? '/' : '/register'}
               >
-                Cùng Larder bắt đầu <ArrowUpRight size={20} />
+                Cùng Larder bắt đầu
+                <span className="landing-button-icon">
+                  <ArrowUpRight size={17} />
+                </span>
               </Link>
             </motion.div>
           </div>
         </section>
       </main>
 
-      <footer className="landing-footer landing-container">
+      <motion.footer className="landing-footer landing-container" {...reveal}>
         <Link className="landing-logo" to="/">
           Larder<span>.</span>
         </Link>
@@ -582,7 +597,7 @@ export function Landing() {
           Lên đầu trang <ArrowUpRight size={17} />
         </a>
         <small>© {new Date().getFullYear()} Larder</small>
-      </footer>
+      </motion.footer>
 
       <dialog
         ref={dialogRef}
@@ -593,10 +608,10 @@ export function Landing() {
           if (event.target === event.currentTarget) setActiveRecipe(null)
         }}
       >
-        {activeRecipe && (
+        {shownRecipe && (
           <div className="landing-dialog-content">
             <div className="landing-dialog-header">
-              <span>Công thức mẫu · {activeRecipe.minutes} phút · 2 phần ăn</span>
+              <span>Công thức mẫu · {shownRecipe.minutes} phút · 2 phần ăn</span>
               <button
                 className="landing-icon-button"
                 onClick={() => setActiveRecipe(null)}
@@ -606,17 +621,17 @@ export function Landing() {
                 <X size={23} />
               </button>
             </div>
-            <h2 id="landing-recipe-title">{activeRecipe.title}</h2>
-            <p>{activeRecipe.description}</p>
+            <h2 id="landing-recipe-title">{shownRecipe.title}</h2>
+            <p>{shownRecipe.description}</p>
             <h3>Nguyên liệu</h3>
             <ul>
-              {activeRecipe.amounts.map((amount) => (
+              {shownRecipe.amounts.map((amount) => (
                 <li key={amount}>{amount}</li>
               ))}
             </ul>
             <h3>Cùng vào bếp</h3>
             <ol>
-              {activeRecipe.steps.map((step) => (
+              {shownRecipe.steps.map((step) => (
                 <li key={step}>{step}</li>
               ))}
             </ol>

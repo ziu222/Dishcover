@@ -668,10 +668,22 @@
   margin-top: 27px;
 }
 .landing-steps {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 30px;
+  --lp-step-icon: 51px;
+}
+/* Sợi chỉ nối 3 bước — vẽ bằng scaleY nên không đụng layout. */
+.landing-steps-line {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: calc(var(--lp-step-icon) / 2);
+  width: 1px;
+  background: var(--lp-line);
+  transform-origin: 50% 0;
 }
 .landing-step {
   display: flex;
@@ -679,11 +691,12 @@
   gap: 22px;
 }
 .landing-step-icon {
+  position: relative;
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 51px;
-  height: 51px;
+  width: var(--lp-step-icon);
+  height: var(--lp-step-icon);
   border-radius: 50%;
   background: var(--lp-wash);
 }
@@ -706,6 +719,27 @@
 .landing-about-inner {
   padding-block: 68px;
   position: relative;
+}
+/* Quầng sáng ấm trôi rất chậm phía sau khối chữ. */
+@keyframes lp-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-28px, -18px, 0) scale(1.08);
+  }
+}
+.landing-about-inner::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  right: -140px;
+  top: -80px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #a85d4224, transparent 68%);
+  animation: lp-drift 19s var(--lp-ease-soft) infinite alternate;
 }
 .landing-about-inner > div {
   position: relative;
@@ -745,7 +779,16 @@
 .landing-footer .landing-text-link {
   font-size: 11px;
 }
+/* Hộp thoại dùng transition gốc của <dialog> (@starting-style + allow-discrete),
+   không cần thư viện: mở thì trồi lên, đóng thì lùi xuống cùng lớp nền. */
 .landing-dialog {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition:
+    opacity 0.42s var(--lp-ease),
+    transform 0.42s var(--lp-ease),
+    overlay 0.42s allow-discrete,
+    display 0.42s allow-discrete;
   color: var(--lp-ink);
   background: var(--lp-bg);
   border: 1px solid var(--lp-line);
@@ -755,8 +798,34 @@
   padding: 0;
   margin: auto;
 }
+.landing-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .landing-dialog[open] {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
 .landing-dialog::backdrop {
+  background: #23201a00;
+  backdrop-filter: blur(0px);
+  transition:
+    background 0.42s var(--lp-ease),
+    backdrop-filter 0.42s var(--lp-ease),
+    overlay 0.42s allow-discrete,
+    display 0.42s allow-discrete;
+}
+.landing-dialog[open]::backdrop {
   background: #23201ac2;
+  backdrop-filter: blur(3px);
+}
+@starting-style {
+  .landing-dialog[open]::backdrop {
+    background: #23201a00;
+    backdrop-filter: blur(0px);
+  }
 }
 .landing-dialog-content {
   padding: 30px;
@@ -1031,9 +1100,8 @@
   .landing-step p {
     font-size: 11px;
   }
-  .landing-step-icon {
-    width: 44px;
-    height: 44px;
+  .landing-steps {
+    --lp-step-icon: 44px;
   }
   .landing-about-inner {
     padding-block: 48px 80px;
