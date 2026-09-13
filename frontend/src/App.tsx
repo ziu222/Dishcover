@@ -21,6 +21,7 @@ const Account = lazy(() =>
 const RecipeDetail = lazy(() =>
   import('./screens/RecipeDetail').then((module) => ({ default: module.RecipeDetail })),
 )
+const About = lazy(() => import('./screens/About').then((module) => ({ default: module.About })))
 const AppShell = lazy(() =>
   import('./components/AppShell').then((module) => ({ default: module.AppShell })),
 )
@@ -56,6 +57,7 @@ export function App() {
           </Route>
         </Route>
         <Route path="/landing" element={<Landing />} />
+        <Route path="/ve-chung-toi" element={<About />} />
         <Route element={<RequireAuth />}>
           <Route element={<AppShell />}>
             <Route path="/tim-kiem" element={<Search />} />

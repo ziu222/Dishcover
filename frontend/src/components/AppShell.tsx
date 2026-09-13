@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { LarderMonogramTile } from './LarderMonogram'
 import { motion } from 'framer-motion'
 import {
   Basket,
@@ -53,8 +54,17 @@ export function AppShell() {
     <div className="flex min-h-[100dvh] bg-card">
       {/* Sidebar */}
       <aside className="hidden w-59 shrink-0 flex-col border-r border-line-soft bg-surface px-5 py-8 lg:flex">
-        <NavLink to="/" className="mb-9 px-3 font-display text-[26px] font-extralight tracking-tight text-ink">
-          Larder<span className="text-accent">.</span>
+        <NavLink
+          to="/"
+          className="group mb-9 flex items-center gap-2.5 px-3 font-display text-[26px] font-extralight tracking-tight text-ink"
+        >
+          <LarderMonogramTile
+            size={32}
+            className="border border-line bg-card text-ink transition-colors group-hover:border-accent/50"
+          />
+          <span>
+            Larder<span className="text-accent">.</span>
+          </span>
         </NavLink>
         <nav className="flex flex-col gap-1">
           {NAV.map(({ to, label, icon: Ico, enabled }) =>
@@ -92,7 +102,8 @@ export function AppShell() {
       {/* Vùng chính */}
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-18 items-center justify-between border-b border-line-soft px-6 lg:px-10">
-          <span className="font-display text-xl font-extralight tracking-tight text-ink lg:hidden">
+          <span className="flex items-center gap-2 font-display text-xl font-extralight tracking-tight text-ink lg:hidden">
+            <LarderMonogramTile size={26} className="border border-line bg-card text-ink" />
             Larder<span className="text-accent">.</span>
           </span>
           <span className="hidden text-xs font-medium tracking-[0.04em] text-mist lg:inline">

@@ -6,6 +6,9 @@
   --lp-line: var(--color-line);
   --lp-wash: var(--color-accent-wash);
   --lp-accent: var(--color-accent);
+  /* Chuyển động: 1 đường cong cho cả trang (bản CSS của ease trong landingMotion.ts). */
+  --lp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --lp-ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
   background: var(--lp-bg);
   color: var(--lp-ink);
   font-family: 'Be Vietnam Pro', system-ui, sans-serif;
@@ -51,7 +54,28 @@
   top: 0;
   z-index: 10;
   background: var(--lp-bg);
-  border-bottom: 1px solid var(--lp-line);
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.45s var(--lp-ease),
+    border-color 0.45s var(--lp-ease),
+    box-shadow 0.45s var(--lp-ease);
+}
+/* Rời khỏi đỉnh trang: header lùi thành lớp kính mỏng, hiện hairline + bóng rất nhạt. */
+.landing-header-scrolled {
+  background: color-mix(in srgb, var(--lp-bg) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--lp-line);
+  box-shadow: 0 18px 40px -34px #23201a80;
+}
+/* Thanh tiến độ đọc — chỉ scaleX, không đụng width. */
+.landing-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform-origin: 0 50%;
+  background: var(--lp-accent);
 }
 .landing-nav {
   height: 80px;
@@ -60,15 +84,30 @@
   justify-content: space-between;
   gap: 28px;
 }
+/* Logo chính = mark (tủ đựng thức ăn) + wordmark, theo lockup trong "Larder Logo.dc.html". */
 .landing-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
   color: var(--lp-ink);
   font-family: 'Newsreader', Georgia, serif;
   font-size: 35px;
   font-weight: 500;
   line-height: 1;
 }
-.landing-logo span {
+.landing-logo > svg {
+  transition: transform 0.6s var(--lp-ease);
+}
+.landing-logo:hover > svg {
+  transform: translateY(-2px);
+}
+.landing-wordmark span {
+  display: inline-block;
   color: var(--lp-accent);
+  transition: transform 0.55s var(--lp-ease);
+}
+.landing-logo:hover .landing-wordmark span {
+  transform: translateY(-3px) scale(1.18);
 }
 .landing-desktop-nav {
   display: flex;
@@ -76,10 +115,28 @@
   font-size: 13px;
 }
 .landing-desktop-nav a {
-  transition: color 0.2s;
+  position: relative;
+  padding-bottom: 3px;
+  transition: color 0.3s var(--lp-ease);
+}
+/* Gạch chân kéo ra từ mép trái thay vì bật hiện. */
+.landing-desktop-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--lp-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s var(--lp-ease);
 }
 .landing-desktop-nav a:hover {
   color: var(--lp-accent);
+}
+.landing-desktop-nav a:hover::after {
+  transform: scaleX(1);
 }
 .landing-nav-actions {
   display: flex;
@@ -110,11 +167,18 @@
   display: none;
 }
 .landing-mobile-nav {
+  overflow: hidden;
+  border-top: 1px solid var(--lp-line);
+}
+.landing-mobile-nav-inner {
   display: flex;
   flex-direction: column;
   padding: 12px 24px 24px;
   gap: 20px;
-  border-top: 1px solid var(--lp-line);
+}
+.landing-icon-swap {
+  display: grid;
+  place-items: center;
 }
 .landing-skip {
   position: fixed;
@@ -134,7 +198,17 @@
   overflow: hidden;
   color: var(--lp-ink);
 }
+/* Ảnh hero hạ dần về đúng khung sau khi tải — chỉ transform, không đụng layout. */
+@keyframes lp-hero-settle {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 .landing-hero-image {
+  animation: lp-hero-settle 2s var(--lp-ease) both;
   position: absolute;
   inset: 0;
   width: 100%;
@@ -167,8 +241,18 @@
   font-weight: 400;
   margin: 0 0 10px;
 }
-.landing-hero h1 span {
+.landing-hero h1 .landing-dot {
   color: var(--lp-accent);
+}
+/* Khung che cho chữ trượt lên (maskLine). Padding/margin bù phần chân chữ serif bị cắt. */
+.landing-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.landing-mask > span {
+  display: block;
 }
 .landing-hero-headline {
   font-family: var(--font-display);
@@ -215,6 +299,26 @@
   background: var(--color-accent-strong);
   transform: translateY(-2px);
 }
+.landing-button:not(:disabled):active {
+  transform: scale(0.975);
+}
+/* Mũi tên nằm trong vòng tròn riêng, sát mép trong của nút — hover thì trượt chéo ra. */
+.landing-button-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: -6px -8px -6px 0;
+  border-radius: 50%;
+  background: #ffffff1f;
+  transition:
+    transform 0.55s var(--lp-ease),
+    background 0.35s var(--lp-ease);
+}
+.landing-button:not(:disabled):hover .landing-button-icon {
+  background: #ffffff33;
+  transform: translate(2px, -2px) scale(1.06);
+}
 .landing-text-link {
   display: inline-flex;
   align-items: center;
@@ -229,6 +333,25 @@
 .landing-text-link:hover {
   text-decoration: underline;
   text-underline-offset: 5px;
+}
+.landing-text-link svg {
+  transition: transform 0.45s var(--lp-ease);
+}
+.landing-text-link:hover svg {
+  transform: translate(2px, -2px);
+}
+/* Mũi tên chỉ xuống của "Khám phá thử" nhấp nhẹ như đang mời cuộn tiếp. */
+@keyframes lp-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+.landing-scroll-cue svg {
+  animation: lp-cue 2.4s var(--lp-ease-soft) infinite;
 }
 .landing-values {
   border-block: 1px solid var(--lp-line);
@@ -303,6 +426,15 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
+/* Ô đếm nguyên liệu: dòng cũ trượt ra, dòng mới trượt vào trong cùng một khung. */
+.landing-count {
+  display: grid;
+  overflow: hidden;
+  line-height: 1.6;
+}
+.landing-count > span {
+  grid-area: 1 / 1;
+}
 .landing-ingredient {
   display: flex;
   align-items: center;
@@ -326,6 +458,9 @@
 }
 .landing-ingredient:hover {
   border-color: var(--lp-ink);
+}
+.landing-ingredient[aria-pressed='true'] .landing-icon-swap {
+  color: var(--lp-accent);
 }
 .landing-tool-footer {
   display: flex;
@@ -378,8 +513,13 @@
   flex-wrap: wrap;
 }
 .landing-filters button {
+  position: relative;
+  isolation: isolate;
   border: 1px solid var(--lp-line);
   background: transparent;
+  transition:
+    color 0.35s var(--lp-ease),
+    border-color 0.35s var(--lp-ease);
   color: var(--lp-muted);
   padding: 9px 15px;
   border-radius: 5px;
@@ -391,9 +531,16 @@
   gap: 7px;
 }
 .landing-filters button[aria-pressed='true'] {
-  background: var(--lp-ink);
   color: var(--lp-bg);
   border-color: var(--lp-ink);
+}
+/* Nền của nút đang chọn là 1 phần tử riêng (layoutId) nên nó trượt sang nút mới. */
+.landing-filter-pill {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 5px;
+  background: var(--lp-ink);
 }
 .landing-clear {
   display: flex;
@@ -434,10 +581,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s;
+  transition: transform 0.9s var(--lp-ease);
 }
 .landing-recipe-image-button:hover img {
-  transform: scale(1.045);
+  transform: scale(1.06);
 }
 .landing-recipe img.landing-chicken-image {
   width: 220%;
@@ -480,6 +627,13 @@
 }
 .landing-recipe h3 svg {
   margin-top: 3px;
+  transition:
+    transform 0.5s var(--lp-ease),
+    color 0.3s var(--lp-ease);
+}
+.landing-recipe:hover h3 svg {
+  color: var(--lp-accent);
+  transform: translate(3px, -3px);
 }
 .landing-recipe p {
   margin: 0;
@@ -524,10 +678,22 @@
   margin-top: 27px;
 }
 .landing-steps {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 30px;
+  --lp-step-icon: 51px;
+}
+/* Sợi chỉ nối 3 bước — vẽ bằng scaleY nên không đụng layout. */
+.landing-steps-line {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: calc(var(--lp-step-icon) / 2);
+  width: 1px;
+  background: var(--lp-line);
+  transform-origin: 50% 0;
 }
 .landing-step {
   display: flex;
@@ -535,11 +701,12 @@
   gap: 22px;
 }
 .landing-step-icon {
+  position: relative;
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 51px;
-  height: 51px;
+  width: var(--lp-step-icon);
+  height: var(--lp-step-icon);
   border-radius: 50%;
   background: var(--lp-wash);
 }
@@ -562,6 +729,73 @@
 .landing-about-inner {
   padding-block: 68px;
   position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 70px;
+  align-items: center;
+}
+/* Ảnh nằm trong khay: khung ngoài + ảnh trong, bo tròn đồng tâm. */
+.landing-about-figure {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  justify-self: end;
+  max-width: 440px;
+}
+.landing-about-frame {
+  /* Nghiêng ở khung trong: style.y của parallax chiếm transform của <figure>. */
+  transform: rotate(-1.5deg);
+  padding: 10px;
+  border-radius: 26px;
+  background: var(--color-card);
+  border: 1px solid var(--lp-line);
+  box-shadow: 0 30px 60px -40px #23201a59;
+}
+.landing-about-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 17px;
+}
+.landing-about-figure figcaption {
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--lp-muted);
+  text-align: center;
+}
+.landing-about-figure strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--lp-ink);
+}
+.landing-about-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 26px;
+}
+/* Quầng sáng ấm trôi rất chậm phía sau khối chữ. */
+@keyframes lp-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-28px, -18px, 0) scale(1.08);
+  }
+}
+.landing-about-inner::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  right: -140px;
+  top: -80px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #a85d4224, transparent 68%);
+  animation: lp-drift 19s var(--lp-ease-soft) infinite alternate;
 }
 .landing-about-inner > div {
   position: relative;
@@ -580,28 +814,83 @@
   margin: 18px 0 26px;
 }
 .landing-footer {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  padding-block: 35px;
-  flex-wrap: wrap;
+  border-top: 1px solid var(--lp-line);
+  background: var(--lp-surface);
 }
-.landing-footer p {
+.landing-footer-inner {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr 1.2fr;
+  gap: 44px;
+  padding-block: 56px 40px;
+}
+.landing-footer-brand p {
   font-size: 11px;
+  line-height: 1.9;
   color: var(--lp-muted);
-  flex: 1;
+  margin: 14px 0 0;
+  max-width: 300px;
+}
+.landing-footer .landing-logo {
+  font-size: 29px;
+}
+.landing-footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.landing-footer-col h2 {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+  margin: 0 0 4px;
+}
+.landing-footer-col a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--lp-muted);
+  transition: color 0.3s var(--lp-ease);
+}
+.landing-footer-col a:hover {
+  color: var(--lp-accent);
+}
+.landing-footer-col svg {
+  transition: transform 0.45s var(--lp-ease);
+}
+.landing-footer-col a:hover svg {
+  transform: translateY(-2px);
+}
+.landing-footer-top {
+  margin-top: 4px;
+}
+.landing-footer-base {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-block: 18px 30px;
+  border-top: 1px solid var(--color-line-soft);
 }
 .landing-footer small {
   font-size: 10px;
   color: var(--lp-muted);
 }
-.landing-footer .landing-logo {
-  font-size: 29px;
-}
-.landing-footer .landing-text-link {
-  font-size: 11px;
-}
+/* Hộp thoại dùng transition gốc của <dialog> (@starting-style + allow-discrete),
+   không cần thư viện: mở thì trồi lên, đóng thì lùi xuống cùng lớp nền. */
 .landing-dialog {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition:
+    opacity 0.42s var(--lp-ease),
+    transform 0.42s var(--lp-ease),
+    overlay 0.42s allow-discrete,
+    display 0.42s allow-discrete;
   color: var(--lp-ink);
   background: var(--lp-bg);
   border: 1px solid var(--lp-line);
@@ -611,8 +900,34 @@
   padding: 0;
   margin: auto;
 }
+.landing-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .landing-dialog[open] {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
 .landing-dialog::backdrop {
+  background: #23201a00;
+  backdrop-filter: blur(0px);
+  transition:
+    background 0.42s var(--lp-ease),
+    backdrop-filter 0.42s var(--lp-ease),
+    overlay 0.42s allow-discrete,
+    display 0.42s allow-discrete;
+}
+.landing-dialog[open]::backdrop {
   background: #23201ac2;
+  backdrop-filter: blur(3px);
+}
+@starting-style {
+  .landing-dialog[open]::backdrop {
+    background: #23201a00;
+    backdrop-filter: blur(0px);
+  }
 }
 .landing-dialog-content {
   padding: 30px;
@@ -658,6 +973,15 @@
 }
 .landing-dialog .landing-button {
   margin-top: 22px;
+}
+.landing-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 @media (min-width: 1700px) {
   .landing-hero-image {
@@ -878,29 +1202,37 @@
   .landing-step p {
     font-size: 11px;
   }
-  .landing-step-icon {
-    width: 44px;
-    height: 44px;
+  .landing-steps {
+    --lp-step-icon: 44px;
   }
   .landing-about-inner {
-    padding-block: 48px 80px;
+    padding-block: 48px 60px;
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .landing-about-figure {
+    justify-self: stretch;
+    max-width: none;
+  }
+  .landing-about-frame {
+    transform: none;
+  }
+  .landing-about-actions {
+    gap: 18px;
   }
   .landing-about-inner h2 {
     font-size: 23px;
   }
-  .landing-footer {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 22px 15px;
+  .landing-footer-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 18px;
+    padding-block: 40px 28px;
   }
-  .landing-footer p {
-    grid-column: 1;
-    grid-row: 2;
-    margin: 0;
+  .landing-footer-brand {
+    grid-column: 1 / -1;
   }
-  .landing-footer .landing-text-link {
-    grid-column: 2;
-    grid-row: 1;
+  .landing-footer-brand p {
+    max-width: none;
   }
   .landing-dialog-content {
     padding: 20px;

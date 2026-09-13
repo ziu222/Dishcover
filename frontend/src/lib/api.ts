@@ -1,3 +1,4 @@
+import type { Page } from '../types'
 // fetch wrapper mỏng cho Gateway. Frontend luôn gọi path tương đối bắt đầu bằng `/api`
 // (dev proxy chuyển sang http://localhost:8080 và cắt `/api` — xem vite.config.ts).
 //
@@ -68,4 +69,25 @@ export async function api<T>(path: string, opts: RequestOptions = {}): Promise<T
     throw new ApiError(res.status, code, message)
   }
   return data as T
+}
+
+/**
+ * Nạp hết mọi trang của một endpoint phân trang.
+ *
+ * Recipe Service kẹp `size` về `spring.data.web.pageable.max-page-size` (=100), nên gửi
+ * `size=500` rồi chỉ đọc trang đầu sẽ ÂM THẦM bỏ sót phần dư — đúng lỗi đã từng xảy ra ở
+ * `RecipeClient` phía Matching Service (CLAUDE.md mục 5.1). Ở đây lặp tới khi `last=true`.
+ */
+export async function fetchAllPages<T>(
+  path: string,
+  params: Record<string, string | number | undefined | null> = {},
+  pageSize = 100,
+): Promise<T[]> {
+  const items: T[] = []
+  for (let page = 0; ; page++) {
+    const res = await api<Page<T>>(path, { params: { ...params, page, size: pageSize } })
+    items.push(...res.content)
+    if (res.last || res.content.length === 0 || page >= 50) break
+  }
+  return items
 }
