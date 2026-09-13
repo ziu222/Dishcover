@@ -59,6 +59,8 @@ export interface Page<T> {
   totalPages: number
   number: number
   size: number
+  /** Spring trả sẵn — dùng để biết đã nạp hết trang chưa (xem fetchAllPages). */
+  last: boolean
 }
 
 /** UserResponse — field `plan` giữ nhưng không dùng (Freemium đã gỡ). */

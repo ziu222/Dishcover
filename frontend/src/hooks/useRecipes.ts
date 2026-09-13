@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { api, ApiError } from '../lib/api'
-import type { Page, RecipeDetail, RecipeSummary } from '../types'
+import { api, ApiError, fetchAllPages } from '../lib/api'
+import type { RecipeDetail, RecipeSummary } from '../types'
 
 interface State {
   recipes: RecipeSummary[]
@@ -18,9 +18,9 @@ export function useRecipes() {
   useEffect(() => {
     let cancelled = false
     setState((s) => ({ ...s, loading: true, error: null }))
-    api<Page<RecipeSummary>>('/recipe-service/recipes', { params: { size: 500, sort: 'name,asc' } })
-      .then((page) => {
-        if (!cancelled) setState({ recipes: page.content, loading: false, error: null })
+    fetchAllPages<RecipeSummary>('/recipe-service/recipes', { sort: 'name,asc' })
+      .then((recipes) => {
+        if (!cancelled) setState({ recipes, loading: false, error: null })
       })
       .catch((err) => {
         if (cancelled) return
