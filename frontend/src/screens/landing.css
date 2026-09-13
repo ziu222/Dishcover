@@ -758,26 +758,72 @@
   margin: 18px 0 26px;
 }
 .landing-footer {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  padding-block: 35px;
-  flex-wrap: wrap;
+  border-top: 1px solid var(--lp-line);
+  background: var(--lp-surface);
 }
-.landing-footer p {
+.landing-footer-inner {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr 1.2fr;
+  gap: 44px;
+  padding-block: 56px 40px;
+}
+.landing-footer-brand p {
   font-size: 11px;
+  line-height: 1.9;
   color: var(--lp-muted);
-  flex: 1;
-}
-.landing-footer small {
-  font-size: 10px;
-  color: var(--lp-muted);
+  margin: 14px 0 0;
+  max-width: 300px;
 }
 .landing-footer .landing-logo {
   font-size: 29px;
 }
-.landing-footer .landing-text-link {
-  font-size: 11px;
+.landing-footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.landing-footer-col h2 {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+  margin: 0 0 4px;
+}
+.landing-footer-col a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--lp-muted);
+  transition: color 0.3s var(--lp-ease);
+}
+.landing-footer-col a:hover {
+  color: var(--lp-accent);
+}
+.landing-footer-col svg {
+  transition: transform 0.45s var(--lp-ease);
+}
+.landing-footer-col a:hover svg {
+  transform: translateY(-2px);
+}
+.landing-footer-top {
+  margin-top: 4px;
+}
+.landing-footer-base {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-block: 18px 30px;
+  border-top: 1px solid var(--color-line-soft);
+}
+.landing-footer small {
+  font-size: 10px;
+  color: var(--lp-muted);
 }
 /* Hộp thoại dùng transition gốc của <dialog> (@starting-style + allow-discrete),
    không cần thư viện: mở thì trồi lên, đóng thì lùi xuống cùng lớp nền. */
@@ -1109,19 +1155,16 @@
   .landing-about-inner h2 {
     font-size: 23px;
   }
-  .landing-footer {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 22px 15px;
+  .landing-footer-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 18px;
+    padding-block: 40px 28px;
   }
-  .landing-footer p {
-    grid-column: 1;
-    grid-row: 2;
-    margin: 0;
+  .landing-footer-brand {
+    grid-column: 1 / -1;
   }
-  .landing-footer .landing-text-link {
-    grid-column: 2;
-    grid-row: 1;
+  .landing-footer-brand p {
+    max-width: none;
   }
   .landing-dialog-content {
     padding: 20px;

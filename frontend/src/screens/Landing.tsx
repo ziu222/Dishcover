@@ -4,10 +4,7 @@ import {
   AnimatePresence,
   MotionConfig,
   motion,
-  useMotionValueEvent,
   useReducedMotion,
-  useScroll,
-  useSpring,
 } from 'framer-motion'
 import {
   ArrowDown,
@@ -21,12 +18,12 @@ import {
   Egg,
   ForkKnife,
   Leaf,
-  List,
   Plus,
   Sparkle,
   X,
 } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
+import { LandingFooter, LandingHeader } from '../components/LandingChrome'
 import { ingredients, sampleRecipes, type Ingredient, type SampleRecipe } from './landingData'
 import { ease, fadeUp, group, inView, maskLine, popIn, revealBlock, spring } from './landingMotion'
 import './landing.css'
@@ -51,21 +48,14 @@ export function Landing() {
   const { isAuthenticated, checking } = useAuth()
   const signedIn = isAuthenticated && !checking
   const reduceMotion = useReducedMotion()
-  const [menuOpen, setMenuOpen] = useState(false)
   const [selected, setSelected] = useState<Ingredient[]>(['Cà chua', 'Rau xanh'])
   const [filter, setFilter] = useState<Filter>('Tất cả')
   const [matchIngredients, setMatchIngredients] = useState<Ingredient[] | null>(null)
   const [activeRecipe, setActiveRecipe] = useState<SampleRecipe | null>(null)
-  const [scrolled, setScrolled] = useState(false)
   // Giữ lại công thức vừa xem để hộp thoại còn nội dung trong lúc chạy hiệu ứng đóng.
   const lastRecipe = useRef<SampleRecipe | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
   const recipeHeadingRef = useRef<HTMLHeadingElement>(null)
-
-  // Thanh tiến độ đọc + đổi trạng thái header khi rời khỏi đỉnh trang.
-  const { scrollYProgress, scrollY } = useScroll()
-  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 })
-  useMotionValueEvent(scrollY, 'change', (value) => setScrolled(value > 24))
 
   useEffect(() => {
     if (!activeRecipe) return
@@ -127,82 +117,7 @@ export function Landing() {
       <a className="landing-skip" href="#noi-dung">
         Đến nội dung chính
       </a>
-      <header className={`landing-header${scrolled ? ' landing-header-scrolled' : ''}`}>
-        <div className="landing-container landing-nav">
-          <Link className="landing-logo" to="/" aria-label="Larder, trang chủ">
-            Larder<span>.</span>
-          </Link>
-          <nav className="landing-desktop-nav" aria-label="Điều hướng trang giới thiệu">
-            <a href="#cach-hoat-dong">Cách hoạt động</a>
-            <a href="#cong-thuc">Cảm hứng vào bếp</a>
-            <a href="#ve-larder">Về Larder</a>
-          </nav>
-          <div className="landing-nav-actions">
-            <Link className="landing-login" to={signedIn ? '/' : '/login'}>
-              {signedIn ? 'Vào bếp' : 'Đăng nhập'}
-              <ArrowUpRight size={17} />
-            </Link>
-            <button
-              className="landing-icon-button landing-menu-toggle"
-              aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'}
-              aria-expanded={menuOpen}
-              aria-controls="landing-mobile-nav"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <AnimatePresence initial={false} mode="wait">
-                <motion.span
-                  key={menuOpen ? 'close' : 'open'}
-                  className="landing-icon-swap"
-                  initial={{ opacity: 0, rotate: menuOpen ? -60 : 60, scale: 0.7 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, rotate: menuOpen ? 60 : -60, scale: 0.7 }}
-                  transition={spring}
-                >
-                  {menuOpen ? <X size={23} /> : <List size={23} />}
-                </motion.span>
-              </AnimatePresence>
-            </button>
-          </div>
-        </div>
-        <AnimatePresence initial={false}>
-          {menuOpen && (
-            <motion.nav
-              id="landing-mobile-nav"
-              className="landing-mobile-nav"
-              aria-label="Điều hướng trên điện thoại"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.42, ease }}
-              onKeyDown={(event) => {
-                if (event.key === 'Escape') setMenuOpen(false)
-              }}
-            >
-              <motion.div
-                className="landing-mobile-nav-inner"
-                variants={group(0.06, 0.08)}
-                initial="hidden"
-                animate="show"
-              >
-                {[
-                  ['#cach-hoat-dong', 'Cách hoạt động'],
-                  ['#cong-thuc', 'Cảm hứng vào bếp'],
-                  ['#ve-larder', 'Về Larder'],
-                ].map(([href, label]) => (
-                  <motion.a key={href} href={href} variants={fadeUp} onClick={() => setMenuOpen(false)}>
-                    {label}
-                  </motion.a>
-                ))}
-              </motion.div>
-            </motion.nav>
-          )}
-        </AnimatePresence>
-        <motion.div
-          className="landing-progress"
-          style={{ scaleX: progress }}
-          aria-hidden="true"
-        />
-      </header>
+      <LandingHeader />
 
       <main id="noi-dung">
         <section className="landing-hero">
@@ -522,7 +437,7 @@ export function Landing() {
               Tạo tủ lạnh của bạn <ArrowUpRight size={19} />
             </Link>
           </motion.div>
-          <motion.div className="landing-steps" {...inView} variants={group(0.12, 0.1)}>
+          <motion.div className="landing-steps" {...inView} variants={group(0, 0)}>
             {/* Sợi chỉ nối 3 bước, vẽ dần từ trên xuống khi khối lọt viewport. */}
             <motion.span
               className="landing-steps-line"
@@ -547,7 +462,14 @@ export function Landing() {
                 text: 'Lưu món yêu thích và hỏi trợ lý nấu ăn khi cần thêm một chút cảm hứng.',
               },
             ].map(({ icon: Icon, title, text }) => (
-              <motion.div className="landing-step" key={title} variants={fadeUp}>
+              <motion.div
+                className="landing-step"
+                key={title}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.75 }}
+              >
                 <motion.div className="landing-step-icon" variants={popIn} transition={spring}>
                   <Icon size={25} />
                 </motion.div>
@@ -588,16 +510,7 @@ export function Landing() {
         </section>
       </main>
 
-      <motion.footer className="landing-footer landing-container" {...reveal}>
-        <Link className="landing-logo" to="/">
-          Larder<span>.</span>
-        </Link>
-        <p>Nấu ngon từ những gì bạn có.</p>
-        <a href="#noi-dung" className="landing-text-link">
-          Lên đầu trang <ArrowUpRight size={17} />
-        </a>
-        <small>© {new Date().getFullYear()} Larder</small>
-      </motion.footer>
+      <LandingFooter />
 
       <dialog
         ref={dialogRef}
