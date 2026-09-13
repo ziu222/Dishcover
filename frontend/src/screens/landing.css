@@ -416,6 +416,15 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
+/* Ô đếm nguyên liệu: dòng cũ trượt ra, dòng mới trượt vào trong cùng một khung. */
+.landing-count {
+  display: grid;
+  overflow: hidden;
+  line-height: 1.6;
+}
+.landing-count > span {
+  grid-area: 1 / 1;
+}
 .landing-ingredient {
   display: flex;
   align-items: center;
@@ -439,6 +448,9 @@
 }
 .landing-ingredient:hover {
   border-color: var(--lp-ink);
+}
+.landing-ingredient[aria-pressed='true'] .landing-icon-swap {
+  color: var(--lp-accent);
 }
 .landing-tool-footer {
   display: flex;

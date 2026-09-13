@@ -28,11 +28,24 @@ import {
 } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
 import { ingredients, sampleRecipes, type Ingredient, type SampleRecipe } from './landingData'
-import { ease, fadeUp, group, inView, maskLine, revealBlock, spring } from './landingMotion'
+import { ease, fadeUp, group, inView, maskLine, popIn, revealBlock, spring } from './landingMotion'
 import './landing.css'
 
 const filters = ['Tất cả', 'Dưới 20 phút', 'Món chay', 'Giàu đạm'] as const
 type Filter = (typeof filters)[number]
+
+/** Tiêu đề tách theo dòng, mỗi dòng trượt lên từ khung che (thay cho thẻ <br />). */
+function MaskedLines({ lines }: { lines: string[] }) {
+  return (
+    <>
+      {lines.map((line) => (
+        <span className="landing-mask" key={line}>
+          <motion.span variants={maskLine}>{line}</motion.span>
+        </span>
+      ))}
+    </>
+  )
+}
 
 export function Landing() {
   const { isAuthenticated, checking } = useAuth()
@@ -245,17 +258,21 @@ export function Landing() {
         </section>
 
         <section className="landing-values" aria-label="Lợi ích của Larder">
-          <div className="landing-container landing-values-inner">
-            <span>
-              <Basket /> Tận dụng đồ sẵn có
-            </span>
-            <span>
-              <CookingPot /> Gợi ý hợp khẩu vị
-            </span>
-            <span>
-              <Leaf /> Bớt lãng phí mỗi ngày
-            </span>
-          </div>
+          <motion.div
+            className="landing-container landing-values-inner"
+            {...inView}
+            variants={group(0.09)}
+          >
+            {[
+              { Icon: Basket, label: 'Tận dụng đồ sẵn có' },
+              { Icon: CookingPot, label: 'Gợi ý hợp khẩu vị' },
+              { Icon: Leaf, label: 'Bớt lãng phí mỗi ngày' },
+            ].map(({ Icon, label }) => (
+              <motion.span key={label} variants={popIn}>
+                <Icon /> {label}
+              </motion.span>
+            ))}
+          </motion.div>
         </section>
 
         <section id="thu-ngay" className="landing-container landing-try-section">
@@ -264,24 +281,31 @@ export function Landing() {
               <Sparkle size={18} /> MỘT CHÚT CẢM HỨNG
             </div>
             <h2>
-              Tủ lạnh có gì,
-              <br />
-              bữa ngon có đó.
+              <MaskedLines lines={['Tủ lạnh có gì,', 'bữa ngon có đó.']} />
             </h2>
             <p className="landing-body-copy">Một vài nguyên liệu quen thuộc cũng đủ để bắt đầu.</p>
           </motion.div>
-          <motion.div className="landing-ingredient-tool" {...reveal}>
+          <motion.div className="landing-ingredient-tool" {...inView} variants={revealBlock(0.05)}>
             <div className="landing-tool-heading">
               <h3>Nguyên liệu của bạn</h3>
               <Basket size={23} />
             </div>
-            <div className="landing-ingredients" role="group" aria-label="Chọn nguyên liệu có sẵn">
+            <motion.div
+              className="landing-ingredients"
+              role="group"
+              aria-label="Chọn nguyên liệu có sẵn"
+              variants={group(0.028)}
+            >
               {ingredients.map((ingredient) => {
                 const checked = selected.includes(ingredient)
                 return (
-                  <button
+                  <motion.button
                     key={ingredient}
                     className="landing-ingredient"
+                    variants={popIn}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={spring}
                     aria-pressed={checked}
                     onClick={() => toggleIngredient(ingredient)}
                   >
@@ -293,23 +317,47 @@ export function Landing() {
                       <ForkKnife size={18} />
                     )}
                     <span>{ingredient}</span>
-                    {checked ? <Check size={16} weight="bold" /> : <Plus size={16} />}
-                  </button>
+                    <AnimatePresence initial={false} mode="wait">
+                      <motion.span
+                        key={checked ? 'on' : 'off'}
+                        className="landing-icon-swap"
+                        initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                        transition={spring}
+                      >
+                        {checked ? <Check size={16} weight="bold" /> : <Plus size={16} />}
+                      </motion.span>
+                    </AnimatePresence>
+                  </motion.button>
                 )
               })}
-            </div>
+            </motion.div>
             <div className="landing-tool-footer">
-              <span aria-live="polite">
-                {selected.length
-                  ? `${selected.length} nguyên liệu đã chọn`
-                  : 'Chưa chọn nguyên liệu'}
+              <span className="landing-count" aria-live="polite">
+                <AnimatePresence initial={false} mode="popLayout">
+                  <motion.span
+                    key={selected.length}
+                    initial={{ y: '-90%', opacity: 0 }}
+                    animate={{ y: '0%', opacity: 1 }}
+                    exit={{ y: '90%', opacity: 0 }}
+                    transition={{ duration: 0.38, ease }}
+                  >
+                    {selected.length
+                      ? `${selected.length} nguyên liệu đã chọn`
+                      : 'Chưa chọn nguyên liệu'}
+                  </motion.span>
+                </AnimatePresence>
               </span>
               <button
                 className="landing-button landing-button-primary"
                 disabled={!selected.length}
                 onClick={findRecipes}
               >
-                Tìm món ngon <ArrowRight size={18} />
+                Tìm món ngon
+                <span className="landing-button-icon">
+                  <ArrowRight size={16} />
+                </span>
               </button>
             </div>
           </motion.div>
