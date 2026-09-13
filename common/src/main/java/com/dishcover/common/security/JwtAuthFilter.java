@@ -44,7 +44,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 AuthenticatedUser user = jwtService.parse(token);
-                var authorities = List.of(new SimpleGrantedAuthority("PLAN_" + user.plan()));
+                var authorities = List.of(
+                        new SimpleGrantedAuthority("PLAN_" + user.plan()),
+                        new SimpleGrantedAuthority("ROLE_" + user.role()));
                 var auth = new UsernamePasswordAuthenticationToken(user, null, authorities);
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
