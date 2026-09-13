@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import type { ReactNode } from 'react'
+import { LarderEmblem } from './LarderEmblem'
+import { LarderMark } from './LarderMark'
 
 interface AuthLayoutProps {
   title: string
@@ -23,10 +25,27 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
     <div className="grid min-h-[100dvh] lg:grid-cols-2">
       {/* Bảng thương hiệu — editorial, chỉ desktop */}
       <aside className="relative hidden overflow-hidden bg-gradient-to-br from-accent-strong to-ink px-14 py-16 lg:flex lg:flex-col lg:justify-between">
-        <Link to="/" className="font-display text-3xl font-extralight tracking-tight text-surface">
-          Larder<span className="text-accent">.</span>
+        {/* Con dấu làm hoa văn chìm — biến thể "mực" trong bản thiết kế, đặt tràn mép phải
+            để không tranh chỗ với chữ. */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 -bottom-20 opacity-[0.13]"
+          initial={{ opacity: 0, scale: 0.94, rotate: -6 }}
+          animate={{ opacity: 0.13, scale: 1, rotate: 0 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        >
+          <LarderEmblem size={420} ring="#EFE9DE" ink="#EFE9DE" dot="#EFE9DE" />
+        </motion.div>
+        <Link
+          to="/"
+          className="relative flex items-center gap-3 font-display text-3xl font-extralight tracking-tight text-surface"
+        >
+          <LarderMark size={22} className="[--dot:#D98A6A]" />
+          <span>
+            Larder<span className="text-accent">.</span>
+          </span>
         </Link>
-        <div>
+        <div className="relative">
           <h2 className="max-w-md font-display text-5xl font-extralight leading-[1.05] tracking-tight text-surface">
             Nấu từ những gì <span className="italic text-white/80">bạn đang có</span>.
           </h2>
@@ -45,7 +64,7 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
             ))}
           </ul>
         </div>
-        <p className="text-xs uppercase tracking-[0.2em] text-surface/40">Leftover Recipe Matcher</p>
+        <p className="relative text-xs uppercase tracking-[0.2em] text-surface/40">Leftover Recipe Matcher</p>
       </aside>
 
       {/* Cột form */}

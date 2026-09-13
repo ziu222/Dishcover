@@ -1,8 +1,10 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Camera, Plus, Snowflake, Warning } from '@phosphor-icons/react'
+import { Camera, Plus, Warning } from '@phosphor-icons/react'
 import { useInventory, type ItemInput } from '../hooks/useInventory'
 import { Button } from '../components/Button'
+import { EmptyState } from '../components/EmptyState'
+import { LarderMark } from '../components/LarderMark'
 import { Field } from '../components/Field'
 import { IngredientCombobox } from '../components/IngredientCombobox'
 import { useIngredientCatalog } from '../hooks/useIngredientCatalog'
@@ -147,15 +149,18 @@ export function Fridge() {
           </Button>
         </div>
       ) : items.length === 0 ? (
-        <div className="mx-auto max-w-md py-20 text-center">
-          <Snowflake className="mx-auto mb-4 size-10 text-mist" />
-          <p className="font-display text-2xl font-light text-ink">Tủ lạnh đang trống</p>
-          <p className="mt-2 text-sm text-muted">Thêm nguyên liệu để nhận gợi ý món nấu được.</p>
-          <Button className="mt-5" onClick={openAdd}>
+        <EmptyState
+          title="Tủ lạnh đang trống"
+          hint="Thêm nguyên liệu đang có, hệ thống sẽ tự suy hạn dùng và gợi ý món nấu được."
+          // Tủ RỖNG: dùng mark (tủ trơn + hạt giống) chứ không phải crest đầy hũ vại — hình
+          // phải nói đúng thứ đang thiếu. Hạt giống rơi vào sau khi khung tủ vẽ xong.
+          art={<LarderMark size={86} draw className="text-mist [--dot:var(--color-accent)]" />}
+        >
+          <Button onClick={openAdd}>
             <Plus weight="bold" className="size-4" />
             Thêm nguyên liệu
           </Button>
-        </div>
+        </EmptyState>
       ) : (
         <>
           {urgent && <UrgentSpotlight item={urgent} />}

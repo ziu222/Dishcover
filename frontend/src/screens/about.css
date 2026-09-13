@@ -366,3 +366,34 @@
     align-items: flex-start;
   }
 }
+
+/* Con dấu cuối trang — nằm cạnh khối liên hệ trên desktop, xuống dưới trên mobile. */
+.about-seal {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--lp-ink);
+}
+.about-contact > h2,
+.about-contact > p,
+.about-contact-actions,
+.about-back {
+  max-width: 560px;
+}
+/* Nhánh lúa mì ngăn mục — ornament của bộ nhận diện, không phải icon mượn ngoài. */
+.about-sprig {
+  display: flex;
+  justify-content: center;
+  color: var(--color-mist);
+  margin-top: 34px;
+}
+@media (max-width: 900px) {
+  .about-seal {
+    position: static;
+    transform: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+}

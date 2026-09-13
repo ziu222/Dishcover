@@ -8,13 +8,16 @@ interface EmptyStateProps {
   hint?: ReactNode
   /** Lối đi tiếp: chip gợi ý, nút, hoặc link. Bỏ trống nếu thật sự không có hành động nào. */
   children?: ReactNode
+  /** Biểu tượng của bộ nhận diện (crest/con dấu). Chỉ dùng khi hình đó NÓI đúng thứ đang
+   *  thiếu — VD cái tủ rỗng ở màn Tủ lạnh ảo; còn lại giữ thuần chữ như mockup gốc. */
+  art?: ReactNode
 }
 
 /**
  * Trạng thái rỗng dùng chung. Bản thiết kế gốc cố ý KHÔNG dùng hình minh hoạ — chỉ một dòng
  * serif in nghiêng, một câu chỉ đường, rồi lối đi tiếp; nên ở đây cũng không có icon trang trí.
  */
-export function EmptyState({ title, hint, children }: EmptyStateProps) {
+export function EmptyState({ title, hint, children, art }: EmptyStateProps) {
   return (
     <motion.div
       className="mx-auto max-w-[460px] px-6 py-16 text-center sm:py-20"
@@ -22,6 +25,7 @@ export function EmptyState({ title, hint, children }: EmptyStateProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
     >
+      {art && <div className="mb-7 flex justify-center">{art}</div>}
       <p className="font-display text-2xl font-light italic text-muted sm:text-[30px] sm:leading-tight">
         {title}
       </p>

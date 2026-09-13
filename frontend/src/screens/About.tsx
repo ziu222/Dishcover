@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { MotionConfig, motion } from 'framer-motion'
 import { ArrowLeft, ArrowUpRight, GithubLogo, PaperPlaneTilt } from '@phosphor-icons/react'
 import { CONTACT_EMAIL, LandingFooter, LandingHeader, REPO_URL } from '../components/LandingChrome'
+import { LarderEmblem, WheatSprig } from '../components/LarderEmblem'
 import { fadeUp, group, inView, maskLine, popIn, revealBlock } from './landingMotion'
 import { pillars, services, stack, stats } from './aboutData'
 import './landing.css'
@@ -125,6 +126,9 @@ export function About() {
                 </span>
               </h2>
             </motion.div>
+            <div className="about-sprig" aria-hidden="true">
+              <WheatSprig size={26} />
+            </div>
             <div className="about-pillar-list">
               {pillars.map(({ index, title, text }) => (
                 <motion.article className="about-pillar" key={index} {...rowInView}>
@@ -203,6 +207,11 @@ export function About() {
 
           <section className="about-contact-section">
             <motion.div className="landing-container about-contact" {...reveal}>
+              {/* Con dấu bản "giấy" — asset có sẵn trong bộ nhận diện, đặt ở đúng chỗ một con
+                  dấu thuộc về: cuối tài liệu, cạnh phần ký tên liên hệ. */}
+              <motion.div className="about-seal" variants={popIn} aria-hidden="true">
+                <LarderEmblem size={190} />
+              </motion.div>
               <h2>
                 <span className="landing-mask">
                   <motion.span variants={maskLine}>Muốn hỏi thêm về dự án?</motion.span>
