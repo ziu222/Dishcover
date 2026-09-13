@@ -139,7 +139,7 @@ export function LandingFooter() {
         <nav className="landing-footer-col" aria-label="Dự án">
           <h2>Dự án</h2>
           <Link to="/ve-chung-toi">Về chúng tôi</Link>
-          <Link to="/ve-chung-toi#cong-nghe">Công nghệ sử dụng</Link>
+          <Link to="/ve-chung-toi#cong-nghe">Tech stack</Link>
           <Link to="/ve-chung-toi#kien-truc">Kiến trúc hệ thống</Link>
         </nav>
         <nav className="landing-footer-col" aria-label="Liên hệ">

@@ -118,7 +118,7 @@ export function About() {
 
           <section className="landing-container about-pillars">
             <motion.div {...reveal}>
-              <div className="landing-section-label">BA TRỤ CỘT</div>
+              <div className="landing-section-label">CORE FEATURES</div>
               <h2>
                 <span className="landing-mask">
                   <motion.span variants={maskLine}>Hệ thống làm ba việc.</motion.span>
@@ -142,23 +142,24 @@ export function About() {
             <div className="landing-container">
               <motion.div className="about-section-head" {...reveal}>
                 <div>
-                  <div className="landing-section-label">KIẾN TRÚC</div>
+                  <div className="landing-section-label">ARCHITECTURE</div>
                   <h2>
                     <span className="landing-mask">
-                      <motion.span variants={maskLine}>Tám dịch vụ, hai loại dữ liệu.</motion.span>
+                      <motion.span variants={maskLine}>Tám service, hai database.</motion.span>
                     </span>
                   </h2>
                 </div>
                 <p className="landing-body-copy">
-                  Mỗi dịch vụ giữ dữ liệu của riêng mình và chỉ nói chuyện với nhau qua REST; chỉ
-                  Gateway lộ cổng ra ngoài. Riêng việc nhắc hạn dùng đi đường Kafka bất đồng bộ.
+                  Database-per-service: mỗi service giữ dữ liệu riêng và chỉ nói chuyện với nhau
+                  qua REST, chỉ Gateway lộ cổng ra ngoài. Riêng cảnh báo hạn dùng đi đường Kafka
+                  bất đồng bộ.
                 </p>
               </motion.div>
               <div className="about-table">
                 <div className="about-table-head">
-                  <span>Dịch vụ</span>
+                  <span>Service</span>
                   <span>Vai trò</span>
-                  <span>Kho dữ liệu</span>
+                  <span>Database</span>
                 </div>
                 {services.map(({ name, role, store }) => (
                   <motion.div className="about-table-row" key={name} {...rowInView}>
@@ -174,7 +175,7 @@ export function About() {
           <section id="cong-nghe" className="landing-container about-stack">
             <motion.div className="about-section-head" {...reveal}>
               <div>
-                <div className="landing-section-label">CÔNG NGHỆ</div>
+                <div className="landing-section-label">TECH STACK</div>
                 <h2>
                   <span className="landing-mask">
                     <motion.span variants={maskLine}>Những thứ dựng nên Larder.</motion.span>
@@ -182,7 +183,7 @@ export function About() {
                 </h2>
               </div>
               <p className="landing-body-copy">
-                Không thứ nào ở đây có mặt chỉ để cho đẹp hồ sơ: mỗi cái đứng đúng chỗ nó giải
+                Không thư viện nào ở đây có mặt chỉ để cho đẹp hồ sơ: mỗi cái đứng đúng chỗ nó giải
                 quyết một vấn đề cụ thể của hệ thống.
               </p>
             </motion.div>
@@ -208,7 +209,7 @@ export function About() {
                 </span>
               </h2>
               <p>
-                Mã nguồn, tài liệu kiến trúc và toàn bộ lịch sử quyết định đều nằm trong kho Git
+                Source code, tài liệu kiến trúc và toàn bộ lịch sử quyết định đều nằm trong repo
                 của dự án.
               </p>
               <div className="about-contact-actions">
@@ -218,7 +219,7 @@ export function About() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Xem mã nguồn
+                  Xem source code
                   <span className="landing-button-icon">
                     <GithubLogo size={17} />
                   </span>
