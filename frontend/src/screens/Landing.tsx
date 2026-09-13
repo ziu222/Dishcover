@@ -5,6 +5,8 @@ import {
   MotionConfig,
   motion,
   useReducedMotion,
+  useScroll,
+  useTransform,
 } from 'framer-motion'
 import {
   ArrowDown,
@@ -55,6 +57,7 @@ export function Landing() {
   // Giữ lại công thức vừa xem để hộp thoại còn nội dung trong lúc chạy hiệu ứng đóng.
   const lastRecipe = useRef<SampleRecipe | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const aboutRef = useRef<HTMLElement>(null)
   const recipeHeadingRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
@@ -109,6 +112,13 @@ export function Landing() {
   // Mọi chuyển động dưới đây đi qua MotionConfig: người dùng bật "giảm chuyển động" thì
   // framer-motion tự bỏ phần biến đổi vị trí, chỉ giữ fade (CSS cũng đã tắt ở cuối landing.css).
   const reveal = { ...inView, variants: revealBlock() }
+
+  // Ảnh khối "Về Larder" trôi chậm hơn trang một nhịp khi cuộn qua.
+  const { scrollYProgress: aboutProgress } = useScroll({
+    target: aboutRef,
+    offset: ['start end', 'end start'],
+  })
+  const aboutParallax = useTransform(aboutProgress, [0, 1], [34, -34])
 
   return (
     <MotionConfig reducedMotion="user">
@@ -482,7 +492,7 @@ export function Landing() {
           </motion.div>
         </section>
 
-        <section id="ve-larder" className="landing-about-section">
+        <section id="ve-larder" className="landing-about-section" ref={aboutRef}>
           <div className="landing-container landing-about-inner">
             <motion.div {...reveal}>
               <Leaf size={30} weight="duotone" />
@@ -496,16 +506,32 @@ export function Landing() {
                 <br />
                 Một thay đổi nhỏ hôm nay, một căn bếp ít lãng phí hơn ngày mai.
               </p>
-              <Link
-                className="landing-button landing-button-primary"
-                to={signedIn ? '/' : '/register'}
-              >
-                Cùng Larder bắt đầu
-                <span className="landing-button-icon">
-                  <ArrowUpRight size={17} />
-                </span>
-              </Link>
+              <div className="landing-about-actions">
+                <Link className="landing-button landing-button-primary" to="/ve-chung-toi">
+                  Tìm hiểu về dự án
+                  <span className="landing-button-icon">
+                    <ArrowUpRight size={17} />
+                  </span>
+                </Link>
+                <Link className="landing-text-link" to={signedIn ? '/' : '/register'}>
+                  Cùng Larder bắt đầu <ArrowRight size={18} />
+                </Link>
+              </div>
             </motion.div>
+            <motion.figure className="landing-about-figure" style={{ y: aboutParallax }} {...reveal}>
+              <div className="landing-about-frame">
+                <img
+                  src="/assets/landing/eggs.jpg"
+                  alt="Đĩa trứng chiên cà chua rắc hành lá, món nấu từ vài nguyên liệu sẵn có"
+                  loading="lazy"
+                  width="600"
+                  height="450"
+                />
+              </div>
+              <figcaption>
+                <strong>161</strong> công thức · <strong>194</strong> nguyên liệu đã chuẩn hoá
+              </figcaption>
+            </motion.figure>
           </div>
         </section>
       </main>

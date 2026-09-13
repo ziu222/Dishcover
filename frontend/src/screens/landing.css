@@ -719,6 +719,52 @@
 .landing-about-inner {
   padding-block: 68px;
   position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 70px;
+  align-items: center;
+}
+/* Ảnh nằm trong khay: khung ngoài + ảnh trong, bo tròn đồng tâm. */
+.landing-about-figure {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  justify-self: end;
+  max-width: 440px;
+}
+.landing-about-frame {
+  /* Nghiêng ở khung trong: style.y của parallax chiếm transform của <figure>. */
+  transform: rotate(-1.5deg);
+  padding: 10px;
+  border-radius: 26px;
+  background: var(--color-card);
+  border: 1px solid var(--lp-line);
+  box-shadow: 0 30px 60px -40px #23201a59;
+}
+.landing-about-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 17px;
+}
+.landing-about-figure figcaption {
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--lp-muted);
+  text-align: center;
+}
+.landing-about-figure strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--lp-ink);
+}
+.landing-about-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 26px;
 }
 /* Quầng sáng ấm trôi rất chậm phía sau khối chữ. */
 @keyframes lp-drift {
@@ -1150,7 +1196,19 @@
     --lp-step-icon: 44px;
   }
   .landing-about-inner {
-    padding-block: 48px 80px;
+    padding-block: 48px 60px;
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .landing-about-figure {
+    justify-self: stretch;
+    max-width: none;
+  }
+  .landing-about-frame {
+    transform: none;
+  }
+  .landing-about-actions {
+    gap: 18px;
   }
   .landing-about-inner h2 {
     font-size: 23px;
