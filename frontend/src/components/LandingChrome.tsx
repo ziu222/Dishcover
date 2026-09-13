@@ -9,6 +9,7 @@ import {
 } from 'framer-motion'
 import { ArrowUpRight, GithubLogo, List, PaperPlaneTilt, X } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
+import { LarderMark } from './LarderMark'
 import { ease, fadeUp, group, spring } from '../screens/landingMotion'
 
 /* Khung chung của các trang công khai (Landing + Về chúng tôi): thanh điều hướng dính
@@ -39,7 +40,10 @@ export function LandingHeader() {
     <header className={`landing-header${scrolled ? ' landing-header-scrolled' : ''}`}>
       <div className="landing-container landing-nav">
         <Link className="landing-logo" to="/" aria-label="Larder, trang chủ">
-          Larder<span>.</span>
+          <LarderMark size={21} />
+          <span className="landing-wordmark">
+            Larder<span>.</span>
+          </span>
         </Link>
         <nav className="landing-desktop-nav" aria-label="Điều hướng trang giới thiệu">
           {navLinks.map(({ href, label }) => (
@@ -121,7 +125,10 @@ export function LandingFooter() {
       <div className="landing-container landing-footer-inner">
         <div className="landing-footer-brand">
           <Link className="landing-logo" to="/">
-            Larder<span>.</span>
+            <LarderMark size={19} />
+            <span className="landing-wordmark">
+              Larder<span>.</span>
+            </span>
           </Link>
           <p>
             Nấu ngon từ những gì bạn có — đồ án tốt nghiệp về gợi ý công thức theo nguyên liệu còn

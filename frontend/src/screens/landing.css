@@ -84,19 +84,29 @@
   justify-content: space-between;
   gap: 28px;
 }
+/* Logo chính = mark (tủ đựng thức ăn) + wordmark, theo lockup trong "Larder Logo.dc.html". */
 .landing-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
   color: var(--lp-ink);
   font-family: 'Newsreader', Georgia, serif;
   font-size: 35px;
   font-weight: 500;
   line-height: 1;
 }
-.landing-logo span {
+.landing-logo > svg {
+  transition: transform 0.6s var(--lp-ease);
+}
+.landing-logo:hover > svg {
+  transform: translateY(-2px);
+}
+.landing-wordmark span {
   display: inline-block;
   color: var(--lp-accent);
   transition: transform 0.55s var(--lp-ease);
 }
-.landing-logo:hover span {
+.landing-logo:hover .landing-wordmark span {
   transform: translateY(-3px) scale(1.18);
 }
 .landing-desktop-nav {
