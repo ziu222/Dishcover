@@ -22,6 +22,9 @@ const RecipeDetail = lazy(() =>
   import('./screens/RecipeDetail').then((module) => ({ default: module.RecipeDetail })),
 )
 const About = lazy(() => import('./screens/About').then((module) => ({ default: module.About })))
+const AdminRecipes = lazy(() =>
+  import('./screens/AdminRecipes').then((module) => ({ default: module.AdminRecipes })),
+)
 const AppShell = lazy(() =>
   import('./components/AppShell').then((module) => ({ default: module.AppShell })),
 )
@@ -41,6 +44,23 @@ function RequireAuth() {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
 }
 
+/**
+ * Chặn route chỉ dành cho admin. Chỉ gate HIỂN THỊ — quyền thật nằm ở Recipe Service
+ * (`hasRole("ADMIN")` trên POST/PATCH/DELETE /recipes), nên user tự sửa state trong trình
+ * duyệt cũng chỉ thấy được cái vỏ màn, mọi thao tác ghi vẫn bị backend trả 403.
+ * Không phải admin thì đưa về trang chủ chứ không phải /login — họ đã đăng nhập rồi.
+ */
+function RequireAdmin() {
+  const { user, isAuthenticated, checking } = useAuth()
+  if (checking) {
+    return (
+      <div className="grid min-h-[100dvh] place-items-center text-sm text-muted">Đang tải…</div>
+    )
+  }
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  return user?.role === 'ADMIN' ? <Outlet /> : <Navigate to="/" replace />
+}
+
 export function App() {
   return (
     <Suspense
@@ -58,6 +78,11 @@ export function App() {
         </Route>
         <Route path="/landing" element={<Landing />} />
         <Route path="/ve-chung-toi" element={<About />} />
+        <Route element={<RequireAdmin />}>
+          <Route element={<AppShell />}>
+            <Route path="/admin/cong-thuc" element={<AdminRecipes />} />
+          </Route>
+        </Route>
         <Route element={<RequireAuth />}>
           <Route element={<AppShell />}>
             <Route path="/tim-kiem" element={<Search />} />

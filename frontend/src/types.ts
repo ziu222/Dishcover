@@ -63,13 +63,16 @@ export interface Page<T> {
   last: boolean
 }
 
-/** UserResponse — field `plan` giữ nhưng không dùng (Freemium đã gỡ). */
+/** UserResponse — `plan` là field dự phòng không còn dùng (Freemium đã gỡ); `role` mới là
+ *  field thật sự dùng để quyết định hiện gì trên giao diện. Quyền THẬT luôn được backend
+ *  kiểm lại qua JWT — role ở đây chỉ để gate hiển thị. */
 export interface User {
   id: number
   email: string
   fullName: string | null
   avatarUrl: string | null
   plan: string | null
+  role: 'USER' | 'ADMIN'
 }
 
 export type InventoryStatus = 'FRESH' | 'EXPIRING_SOON' | 'EXPIRED' | 'USED'
