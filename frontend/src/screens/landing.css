@@ -6,6 +6,9 @@
   --lp-line: var(--color-line);
   --lp-wash: var(--color-accent-wash);
   --lp-accent: var(--color-accent);
+  /* Chuyển động: 1 đường cong cho cả trang (bản CSS của ease trong landingMotion.ts). */
+  --lp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --lp-ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
   background: var(--lp-bg);
   color: var(--lp-ink);
   font-family: 'Be Vietnam Pro', system-ui, sans-serif;
@@ -134,7 +137,17 @@
   overflow: hidden;
   color: var(--lp-ink);
 }
+/* Ảnh hero hạ dần về đúng khung sau khi tải — chỉ transform, không đụng layout. */
+@keyframes lp-hero-settle {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 .landing-hero-image {
+  animation: lp-hero-settle 2s var(--lp-ease) both;
   position: absolute;
   inset: 0;
   width: 100%;
@@ -167,8 +180,18 @@
   font-weight: 400;
   margin: 0 0 10px;
 }
-.landing-hero h1 span {
+.landing-hero h1 .landing-dot {
   color: var(--lp-accent);
+}
+/* Khung che cho chữ trượt lên (maskLine). Padding/margin bù phần chân chữ serif bị cắt. */
+.landing-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.landing-mask > span {
+  display: block;
 }
 .landing-hero-headline {
   font-family: var(--font-display);
@@ -215,6 +238,26 @@
   background: var(--color-accent-strong);
   transform: translateY(-2px);
 }
+.landing-button:not(:disabled):active {
+  transform: scale(0.975);
+}
+/* Mũi tên nằm trong vòng tròn riêng, sát mép trong của nút — hover thì trượt chéo ra. */
+.landing-button-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: -6px -8px -6px 0;
+  border-radius: 50%;
+  background: #ffffff1f;
+  transition:
+    transform 0.55s var(--lp-ease),
+    background 0.35s var(--lp-ease);
+}
+.landing-button:not(:disabled):hover .landing-button-icon {
+  background: #ffffff33;
+  transform: translate(2px, -2px) scale(1.06);
+}
 .landing-text-link {
   display: inline-flex;
   align-items: center;
@@ -229,6 +272,25 @@
 .landing-text-link:hover {
   text-decoration: underline;
   text-underline-offset: 5px;
+}
+.landing-text-link svg {
+  transition: transform 0.45s var(--lp-ease);
+}
+.landing-text-link:hover svg {
+  transform: translate(2px, -2px);
+}
+/* Mũi tên chỉ xuống của "Khám phá thử" nhấp nhẹ như đang mời cuộn tiếp. */
+@keyframes lp-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+.landing-scroll-cue svg {
+  animation: lp-cue 2.4s var(--lp-ease-soft) infinite;
 }
 .landing-values {
   border-block: 1px solid var(--lp-line);
@@ -658,6 +720,15 @@
 }
 .landing-dialog .landing-button {
   margin-top: 22px;
+}
+.landing-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 @media (min-width: 1700px) {
   .landing-hero-image {

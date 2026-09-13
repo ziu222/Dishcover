@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useReducedMotion } from 'framer-motion'
+import { MotionConfig, motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowDown,
   ArrowRight,
@@ -20,6 +20,7 @@ import {
 } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
 import { ingredients, sampleRecipes, type Ingredient, type SampleRecipe } from './landingData'
+import { fadeUp, inView, maskLine, revealBlock } from './landingMotion'
 import './landing.css'
 
 const filters = ['Tất cả', 'Dưới 20 phút', 'Món chay', 'Giàu đạm'] as const
@@ -83,15 +84,14 @@ export function Landing() {
       ?.scrollIntoView({ behavior: reduceMotion ? 'instant' : 'smooth' })
   }
 
-  const reveal = {
-    initial: reduceMotion ? (false as const) : { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.12 },
-    transition: { duration: 0.5 },
-  }
+  // Mọi chuyển động dưới đây đi qua MotionConfig: người dùng bật "giảm chuyển động" thì
+  // framer-motion tự bỏ phần biến đổi vị trí, chỉ giữ fade (CSS cũng đã tắt ở cuối landing.css).
+  const reveal = { ...inView, variants: revealBlock() }
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="landing">
+      <div className="landing-grain" aria-hidden="true" />
       <a className="landing-skip" href="#noi-dung">
         Đến nội dung chính
       </a>
@@ -154,34 +154,49 @@ export function Landing() {
             fetchPriority="high"
           />
           <div className="landing-container landing-hero-inner">
-            <motion.div className="landing-hero-copy" {...reveal}>
-              <div className="landing-eyebrow">
+            <motion.div
+              className="landing-hero-copy"
+              variants={revealBlock(0.09, 0.08)}
+              initial="hidden"
+              animate="show"
+            >
+              <motion.div className="landing-eyebrow" variants={fadeUp}>
                 <Leaf size={18} weight="fill" /> Ít lãng phí. Nhiều món ngon.
-              </div>
+              </motion.div>
               <h1>
-                Larder<span>.</span>
+                <span className="landing-mask">
+                  <motion.span variants={maskLine}>
+                    Larder<span className="landing-dot">.</span>
+                  </motion.span>
+                </span>
               </h1>
               <p className="landing-hero-headline">
-                Bếp nhỏ của bạn.
-                <br />
-                Cảm hứng mỗi ngày.
+                <span className="landing-mask">
+                  <motion.span variants={maskLine}>Bếp nhỏ của bạn.</motion.span>
+                </span>
+                <span className="landing-mask">
+                  <motion.span variants={maskLine}>Cảm hứng mỗi ngày.</motion.span>
+                </span>
               </p>
-              <p className="landing-hero-description">
+              <motion.p className="landing-hero-description" variants={fadeUp}>
                 Biến nguyên liệu sẵn có thành bữa ngon.
                 <br className="landing-desktop-break" /> Để câu hỏi “hôm nay ăn gì?” trở nên dễ
                 dàng.
-              </p>
-              <div className="landing-hero-actions">
+              </motion.p>
+              <motion.div className="landing-hero-actions" variants={fadeUp}>
                 <Link
                   className="landing-button landing-button-primary"
                   to={signedIn ? '/' : '/register'}
                 >
-                  Bắt đầu vào bếp <ArrowUpRight size={20} />
+                  Bắt đầu vào bếp
+                  <span className="landing-button-icon">
+                    <ArrowUpRight size={17} />
+                  </span>
                 </Link>
-                <a className="landing-text-link" href="#thu-ngay">
+                <a className="landing-text-link landing-scroll-cue" href="#thu-ngay">
                   Khám phá thử <ArrowDown size={18} />
                 </a>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </section>
@@ -481,5 +496,6 @@ export function Landing() {
         )}
       </dialog>
     </div>
+    </MotionConfig>
   )
 }
