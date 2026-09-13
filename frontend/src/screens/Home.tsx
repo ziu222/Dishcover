@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { CookingPot } from '@phosphor-icons/react'
 import { useRecipes } from '../hooks/useRecipes'
 import { useFavorites } from '../hooks/useFavorites'
 import { useAuth } from '../auth/AuthContext'
 import { RecipeCard } from '../components/RecipeCard'
+import { EmptyState } from '../components/EmptyState'
 import { Select, type SelectOption } from '../components/Select'
 import { Pagination } from '../components/Pagination'
 import { Button } from '../components/Button'
@@ -92,18 +92,20 @@ export function Home() {
           </Button>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="mx-auto max-w-md py-20 text-center">
-          <CookingPot className="mx-auto mb-4 size-10 text-mist" />
-          <p className="font-display text-2xl font-light text-ink">Chưa có món phù hợp</p>
-          <p className="mt-2 text-sm text-muted">
-            {tag ? 'Thử chọn loại món khác.' : 'Danh sách công thức đang trống.'}
-          </p>
+        <EmptyState
+          title={tag ? `Chưa có món nào thuộc “${tag}”` : 'Kho công thức đang trống'}
+          hint={
+            tag
+              ? 'Thử một loại món khác, hoặc xem lại toàn bộ công thức.'
+              : 'Chưa có công thức nào được thêm vào hệ thống.'
+          }
+        >
           {tag && (
-            <Button variant="secondary" className="mt-5" onClick={() => setTag('')}>
-              Xem tất cả
+            <Button variant="secondary" onClick={() => setTag('')}>
+              Xem tất cả công thức
             </Button>
           )}
-        </div>
+        </EmptyState>
       ) : (
         <>
           <motion.div

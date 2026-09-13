@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, Basket, CheckCircle, Circle, Sparkle } from '@phosphor-icons/react'
+import { ArrowRight, CheckCircle, Circle, Sparkle } from '@phosphor-icons/react'
 import { useMatching } from '../hooks/useMatching'
 import { Button } from '../components/Button'
 import { Spinner } from '../components/Spinner'
+import { EmptyState } from '../components/EmptyState'
 import type { RecipeMatch } from '../types'
 
 const PLACEHOLDER =
@@ -129,16 +130,14 @@ export function Matching() {
           </Button>
         </div>
       ) : matches.length === 0 ? (
-        <div className="mx-auto max-w-md py-20 text-center">
-          <Basket className="mx-auto mb-4 size-10 text-mist" />
-          <p className="font-display text-2xl font-light text-ink">Chưa có gợi ý nào</p>
-          <p className="mt-2 text-sm text-muted">
-            Thêm nguyên liệu vào tủ lạnh ảo để nhận công thức phù hợp.
-          </p>
+        <EmptyState
+          title="Tủ lạnh chưa đủ để gợi ý"
+          hint="Thêm vài nguyên liệu đang có, hệ thống sẽ chấm điểm từng công thức theo đúng những gì bạn nhập."
+        >
           <Link to="/tu-lanh">
-            <Button className="mt-5">Đi đến tủ lạnh ảo</Button>
+            <Button>Đi đến tủ lạnh ảo</Button>
           </Link>
-        </div>
+        </EmptyState>
       ) : (
         <motion.div
           className="mx-auto flex max-w-3xl flex-col gap-5"

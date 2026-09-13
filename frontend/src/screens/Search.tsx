@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MagnifyingGlass, SmileySad } from '@phosphor-icons/react'
 import { useRecipeSearch } from '../hooks/useRecipeSearch'
+import { usePopularRecipes } from '../hooks/usePopularRecipes'
 import { useFavorites } from '../hooks/useFavorites'
 import { SearchInput } from '../components/SearchInput'
 import { Chip } from '../components/Chip'
 import { RecipeCard } from '../components/RecipeCard'
 import { Spinner } from '../components/Spinner'
+import { EmptyState, EmptyStateChip } from '../components/EmptyState'
 import type { Difficulty } from '../types'
 
 const DIFFICULTIES: Array<{ value: Difficulty | null; label: string }> = [
@@ -23,6 +24,7 @@ export function Search() {
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null)
   const { recipes, loading, error } = useRecipeSearch(query, difficulty)
   const { favorites, toggle } = useFavorites()
+  const popular = usePopularRecipes()
 
   const idle = query.trim().length === 0 && difficulty === null
 
@@ -48,13 +50,16 @@ export function Search() {
 
       <div className="mt-10">
         {idle ? (
-          <div className="mx-auto max-w-md py-16 text-center">
-            <MagnifyingGlass className="mx-auto mb-4 size-10 text-mist" />
-            <p className="font-display text-2xl font-light text-ink">Tìm món để nấu</p>
-            <p className="mt-2 text-sm text-muted">
-              Nhập tên món hoặc chọn độ khó để bắt đầu tìm.
-            </p>
-          </div>
+          <EmptyState
+            title="Hôm nay tìm món gì?"
+            hint="Nhập tên món, chọn độ khó, hoặc bắt đầu từ vài món có sẵn bên dưới."
+          >
+            {popular.map((name) => (
+              <EmptyStateChip key={name} onClick={() => setQuery(name)}>
+                {name}
+              </EmptyStateChip>
+            ))}
+          </EmptyState>
         ) : loading ? (
           <Spinner label="Đang tìm…" />
         ) : error ? (
@@ -62,13 +67,16 @@ export function Search() {
             <p className="text-[15px] text-muted">{error}</p>
           </div>
         ) : recipes.length === 0 ? (
-          <div className="mx-auto max-w-md py-16 text-center">
-            <SmileySad className="mx-auto mb-4 size-10 text-mist" />
-            <p className="font-display text-2xl font-light text-ink">Không tìm thấy món nào</p>
-            <p className="mt-2 text-sm text-muted">
-              Thử từ khoá khác hoặc bỏ bớt bộ lọc độ khó.
-            </p>
-          </div>
+          <EmptyState
+            title={query.trim() ? `Không tìm thấy “${query.trim()}”` : 'Không tìm thấy món nào'}
+            hint="Thử từ khoá khác, bỏ bớt bộ lọc độ khó, hoặc bắt đầu từ vài món phổ biến."
+          >
+            {popular.map((name) => (
+              <EmptyStateChip key={name} onClick={() => setQuery(name)}>
+                {name}
+              </EmptyStateChip>
+            ))}
+          </EmptyState>
         ) : (
           <>
             <div className="mb-5 text-[13px] text-faint">{recipes.length} kết quả</div>
