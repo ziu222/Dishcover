@@ -54,7 +54,28 @@
   top: 0;
   z-index: 10;
   background: var(--lp-bg);
-  border-bottom: 1px solid var(--lp-line);
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.45s var(--lp-ease),
+    border-color 0.45s var(--lp-ease),
+    box-shadow 0.45s var(--lp-ease);
+}
+/* Rời khỏi đỉnh trang: header lùi thành lớp kính mỏng, hiện hairline + bóng rất nhạt. */
+.landing-header-scrolled {
+  background: color-mix(in srgb, var(--lp-bg) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--lp-line);
+  box-shadow: 0 18px 40px -34px #23201a80;
+}
+/* Thanh tiến độ đọc — chỉ scaleX, không đụng width. */
+.landing-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform-origin: 0 50%;
+  background: var(--lp-accent);
 }
 .landing-nav {
   height: 80px;
@@ -71,7 +92,12 @@
   line-height: 1;
 }
 .landing-logo span {
+  display: inline-block;
   color: var(--lp-accent);
+  transition: transform 0.55s var(--lp-ease);
+}
+.landing-logo:hover span {
+  transform: translateY(-3px) scale(1.18);
 }
 .landing-desktop-nav {
   display: flex;
@@ -79,10 +105,28 @@
   font-size: 13px;
 }
 .landing-desktop-nav a {
-  transition: color 0.2s;
+  position: relative;
+  padding-bottom: 3px;
+  transition: color 0.3s var(--lp-ease);
+}
+/* Gạch chân kéo ra từ mép trái thay vì bật hiện. */
+.landing-desktop-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--lp-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s var(--lp-ease);
 }
 .landing-desktop-nav a:hover {
   color: var(--lp-accent);
+}
+.landing-desktop-nav a:hover::after {
+  transform: scaleX(1);
 }
 .landing-nav-actions {
   display: flex;
@@ -113,11 +157,18 @@
   display: none;
 }
 .landing-mobile-nav {
+  overflow: hidden;
+  border-top: 1px solid var(--lp-line);
+}
+.landing-mobile-nav-inner {
   display: flex;
   flex-direction: column;
   padding: 12px 24px 24px;
   gap: 20px;
-  border-top: 1px solid var(--lp-line);
+}
+.landing-icon-swap {
+  display: grid;
+  place-items: center;
 }
 .landing-skip {
   position: fixed;

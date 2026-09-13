@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MotionConfig, motion, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from 'framer-motion'
 import {
   ArrowDown,
   ArrowRight,
@@ -20,7 +28,7 @@ import {
 } from '@phosphor-icons/react'
 import { useAuth } from '../auth/AuthContext'
 import { ingredients, sampleRecipes, type Ingredient, type SampleRecipe } from './landingData'
-import { fadeUp, inView, maskLine, revealBlock } from './landingMotion'
+import { ease, fadeUp, group, inView, maskLine, revealBlock, spring } from './landingMotion'
 import './landing.css'
 
 const filters = ['Tất cả', 'Dưới 20 phút', 'Món chay', 'Giàu đạm'] as const
@@ -35,8 +43,14 @@ export function Landing() {
   const [filter, setFilter] = useState<Filter>('Tất cả')
   const [matchIngredients, setMatchIngredients] = useState<Ingredient[] | null>(null)
   const [activeRecipe, setActiveRecipe] = useState<SampleRecipe | null>(null)
+  const [scrolled, setScrolled] = useState(false)
   const dialogRef = useRef<HTMLDialogElement>(null)
   const recipeHeadingRef = useRef<HTMLHeadingElement>(null)
+
+  // Thanh tiến độ đọc + đổi trạng thái header khi rời khỏi đỉnh trang.
+  const { scrollYProgress, scrollY } = useScroll()
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 })
+  useMotionValueEvent(scrollY, 'change', (value) => setScrolled(value > 24))
 
   useEffect(() => {
     if (!activeRecipe) return
@@ -95,7 +109,7 @@ export function Landing() {
       <a className="landing-skip" href="#noi-dung">
         Đến nội dung chính
       </a>
-      <header className="landing-header">
+      <header className={`landing-header${scrolled ? ' landing-header-scrolled' : ''}`}>
         <div className="landing-container landing-nav">
           <Link className="landing-logo" to="/" aria-label="Larder, trang chủ">
             Larder<span>.</span>
@@ -117,30 +131,59 @@ export function Landing() {
               aria-controls="landing-mobile-nav"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              {menuOpen ? <X size={23} /> : <List size={23} />}
+              <AnimatePresence initial={false} mode="wait">
+                <motion.span
+                  key={menuOpen ? 'close' : 'open'}
+                  className="landing-icon-swap"
+                  initial={{ opacity: 0, rotate: menuOpen ? -60 : 60, scale: 0.7 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: menuOpen ? 60 : -60, scale: 0.7 }}
+                  transition={spring}
+                >
+                  {menuOpen ? <X size={23} /> : <List size={23} />}
+                </motion.span>
+              </AnimatePresence>
             </button>
           </div>
         </div>
-        {menuOpen && (
-          <nav
-            id="landing-mobile-nav"
-            className="landing-mobile-nav"
-            aria-label="Điều hướng trên điện thoại"
-            onKeyDown={(event) => {
-              if (event.key === 'Escape') setMenuOpen(false)
-            }}
-          >
-            <a href="#cach-hoat-dong" onClick={() => setMenuOpen(false)}>
-              Cách hoạt động
-            </a>
-            <a href="#cong-thuc" onClick={() => setMenuOpen(false)}>
-              Cảm hứng vào bếp
-            </a>
-            <a href="#ve-larder" onClick={() => setMenuOpen(false)}>
-              Về Larder
-            </a>
-          </nav>
-        )}
+        <AnimatePresence initial={false}>
+          {menuOpen && (
+            <motion.nav
+              id="landing-mobile-nav"
+              className="landing-mobile-nav"
+              aria-label="Điều hướng trên điện thoại"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.42, ease }}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') setMenuOpen(false)
+              }}
+            >
+              <motion.div
+                className="landing-mobile-nav-inner"
+                variants={group(0.06, 0.08)}
+                initial="hidden"
+                animate="show"
+              >
+                {[
+                  ['#cach-hoat-dong', 'Cách hoạt động'],
+                  ['#cong-thuc', 'Cảm hứng vào bếp'],
+                  ['#ve-larder', 'Về Larder'],
+                ].map(([href, label]) => (
+                  <motion.a key={href} href={href} variants={fadeUp} onClick={() => setMenuOpen(false)}>
+                    {label}
+                  </motion.a>
+                ))}
+              </motion.div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+        <motion.div
+          className="landing-progress"
+          style={{ scaleX: progress }}
+          aria-hidden="true"
+        />
       </header>
 
       <main id="noi-dung">
