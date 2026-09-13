@@ -60,9 +60,20 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/recipes/**").permitAll()
+                        // Ghi công thức là việc của ADMIN (docs/specs/admin-recipe-authorization.md):
+                        // gate cả 3 verb chứ không riêng DELETE — frontend không có màn tạo/sửa cho
+                        // user thường nên không phá tính năng nào đang chạy.
+                        .requestMatchers(HttpMethod.POST, "/recipes/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/recipes/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint(
-                        (req, res, ex) -> res.sendError(HttpStatus.UNAUTHORIZED.value())))
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(
+                                (req, res, ex) -> res.sendError(HttpStatus.UNAUTHORIZED.value()))
+                        // AccessDeniedException ném trong filter chain nên @RestControllerAdvice không
+                        // bắt được — xử lý tại đây để không lọt whitelabel error page của Spring Boot.
+                        .accessDeniedHandler(
+                                (req, res, ex) -> res.sendError(HttpStatus.FORBIDDEN.value())))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

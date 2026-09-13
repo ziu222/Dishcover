@@ -44,8 +44,14 @@ class RecipeFlowIntegrationTest {
         createdIds.clear();
     }
 
+    /** Ghi công thức giờ là quyền ADMIN (docs/specs/admin-recipe-authorization.md). */
     private String auth() {
-        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE");
+        return "Bearer " + new JwtService(SECRET, 120).issue(1L, "chef@test.com", "FREE", "ADMIN");
+    }
+
+    /** Token user thường — dùng cho các case xác nhận bị chặn 403 khi ghi. */
+    private String authUser() {
+        return "Bearer " + new JwtService(SECRET, 120).issue(2L, "user@test.com", "FREE", "USER");
     }
 
     private String createPayload(String name, String tag) {
@@ -212,5 +218,38 @@ class RecipeFlowIntegrationTest {
                         .content("{\"name\":\"Rỗng\",\"cookTimeMinutes\":5,\"difficulty\":\"EASY\","
                                 + "\"ingredients\":[],\"steps\":[]}"))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void userThuongKhongTaoDuocCongThuc() throws Exception {
+        mvc.perform(post("/recipes")
+                        .header("Authorization", authUser())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createPayload("Món user thường tạo", "test")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void userThuongKhongSuaDuocCongThuc() throws Exception {
+        String id = create("Món để thử sửa", "test");
+        mvc.perform(patch("/recipes/" + id)
+                        .header("Authorization", authUser())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Tên bị user thường đổi\"}"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void userThuongKhongXoaDuocCongThuc() throws Exception {
+        String id = create("Món để thử xóa", "test");
+        mvc.perform(delete("/recipes/" + id).header("Authorization", authUser()))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void docCongThucVanCongKhaiKhongCanDangNhap() throws Exception {
+        String id = create("Món đọc công khai", "test");
+        mvc.perform(get("/recipes/" + id)).andExpect(status().isOk());
+        mvc.perform(get("/recipes")).andExpect(status().isOk());
     }
 }
