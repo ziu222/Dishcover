@@ -1,10 +1,13 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
+  ArrowUpRight,
   Flame,
   ForkKnife,
   PencilSimple,
   Plus,
+  ShieldCheck,
   ShieldWarning,
   SignOut,
   Warning,
@@ -318,6 +321,35 @@ export function Account() {
               </Button>
             </div>
           </div>
+        )}
+
+        {/* Lối vào khu quản trị — cố ý đặt ở đây chứ KHÔNG thêm mục vào sidebar/bottom tab
+            bar: thanh dưới trên mobile đang vừa khít 6 mục ở 375px, thêm mục thứ 7 sẽ vỡ lại
+            đúng bug đã sửa (docs/specs/admin-recipe-authorization.md mục 3.3). */}
+        {user?.role === 'ADMIN' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Link
+              to="/admin/cong-thuc"
+              className="group flex items-center gap-4 rounded-2xl border border-line bg-surface px-5 py-4 transition-colors hover:border-accent/50"
+            >
+              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-accent-wash text-accent">
+                <ShieldCheck weight="fill" className="size-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-display text-lg font-normal text-ink">
+                  Quản lý công thức
+                </span>
+                <span className="mt-0.5 block text-[13px] text-muted">
+                  Xoá công thức khỏi kho chung của hệ thống.
+                </span>
+              </span>
+              <ArrowUpRight className="size-5 shrink-0 text-mist transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
+            </Link>
+          </motion.div>
         )}
 
         {/* Hồ sơ ăn uống */}
