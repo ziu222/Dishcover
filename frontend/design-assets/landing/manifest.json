@@ -1,0 +1,35 @@
+{
+  "generator": "Built-in image_gen",
+  "design": {
+    "theme": "Existing Larder theme: cream #efe9de, brown-black #23201a, terracotta #a85d42, Newsreader headings",
+    "designVariance": 7,
+    "motionIntensity": 4,
+    "visualDensity": 4
+  },
+  "assets": [
+    {
+      "name": "hero",
+      "source": "hero.png",
+      "web": "../../public/assets/landing/hero.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: full-width food landing page hero photograph for Larder, a Vietnamese ingredient-to-recipe app. Create a premium editorial overhead food photograph, landscape 3:2. A pale cool grey almost-white matte kitchen tabletop extends across the entire background. LEFT 52 percent is genuinely empty bright tabletop with subtle natural texture, reserved for dark green HTML text overlay. RIGHT side contains a large fully visible pale ceramic bowl of appetizing Vietnamese-style chicken rice salad, grilled chicken slices with golden edges, fresh cucumber, bright cherry tomato halves, leafy greens and herbs, rice, tiny sesame seeds, all crisp and realistic. Supporting small objects only along right and bottom edges: whole tomato, half lime, small dish of dressing and a casually folded forest green linen napkin. Bowl occupies the right 45 percent, generous margins so it can be seen in a responsive crop. Natural daylight, gentle shadows, fresh lively colors, high-end cookbook art direction, inspectable authentic food textures. No text, no letters, no watermark, no collage, no frame, no people, no darkening vignette. Output a high-resolution image."
+    },
+    {
+      "name": "salad",
+      "source": "salad.png",
+      "web": "../../public/assets/landing/salad.jpg",
+      "prompt": "Use case: photorealistic-natural. Asset type: recipe card photo for Vietnamese cooking app Larder. Fresh Vietnamese-style green salad in a pale ceramic shallow bowl: mixed lettuce, cucumber slices, cherry tomato halves and fresh herbs with a light vinaigrette. No meat, no eggs, no cheese. Editorial food photography, overhead view, square format, entire dish centered and fully visible occupying 80 percent of image with modest margins. Matte pale cool grey tabletop, natural daylight, bright realistic appetizing food textures, restrained food styling. A subtle forest green linen corner only, no cutlery obscuring food. No text, logos, watermark, people or collage. Match the fresh green, tomato red, white palette of a modern cooking website."
+    },
+    {
+      "name": "pasta",
+      "source": "pasta.png",
+      "web": "../../public/assets/landing/pasta.jpg",
+      "prompt": "Use case: photorealistic-natural. Asset type: recipe card photo for Vietnamese cooking app Larder. Beautiful plate of spaghetti with fresh chunky red tomato sauce, fresh basil leaves, a few cherry tomato halves, no meat and no cheese. Editorial food photography, overhead view, square format, entire dish centered and fully visible occupying 80 percent of image with modest margins. Matte pale cool grey tabletop, natural daylight, bright realistic appetizing food textures, restrained food styling. A subtle forest green linen corner only, no cutlery obscuring food. No text, logos, watermark, people or collage. Match the fresh green, tomato red, white palette of a modern cooking website."
+    },
+    {
+      "name": "eggs",
+      "source": "eggs.png",
+      "web": "../../public/assets/landing/eggs.jpg",
+      "prompt": "Use case: photorealistic-natural. Asset type: recipe card photo for Vietnamese cooking app Larder. Authentic Vietnamese scrambled eggs stir-fried with tomatoes (trung xao ca chua), soft yellow fully cooked scrambled egg curds mixed with juicy red tomato wedges, garnished with chopped scallion in a simple pale ceramic plate. Not shakshuka, no whole fried eggs, no bread. Editorial food photography, overhead view, square format, entire dish centered and fully visible occupying 80 percent of image with modest margins. Matte pale cool grey tabletop, natural daylight, bright realistic appetizing food textures, restrained food styling. A subtle forest green linen corner only, no cutlery obscuring food. No text, logos, watermark, people or collage. Match the fresh green, tomato red, white palette of a modern cooking website."
+    }
+  ]
+}

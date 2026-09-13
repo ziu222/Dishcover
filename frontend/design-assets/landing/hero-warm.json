@@ -1,0 +1,7 @@
+{
+  "generator": "Built-in image_gen (edit)",
+  "activeHero": "../../public/assets/landing/hero-warm.webp",
+  "source": "hero-warm.png",
+  "reference": "hero.png",
+  "prompt": "Edit the supplied food photograph for the existing Larder website brand. Keep the appetizing chicken, rice, cucumber, tomato and leafy salad food identity and realistic textures. Change the tabletop from cool grey to a uniform softly textured warm cream/beige surface matching #efe9de. Change the dark green linen napkin to dark chocolate brown linen. Keep the ceramic bowl light warm ivory. Preserve natural food greens and reds, but no green cast in backdrop or cloth. Maintain the empty LEFT 52 percent for dark brown website copy and the bowl on the RIGHT, with the entire rim visible. Make the overall image wide 16:9, extending the neutral surface rather than cropping the bowl, with relaxed margins above and below the food. Warm diffuse natural light, restrained premium cookbook photography, no text, no graphics, no gradient, no watermark. This is a theme correction to warm cream, near-black brown #23201a and terracotta #a85d42; retain the same meal."
+}
