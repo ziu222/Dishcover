@@ -8,10 +8,13 @@ public record UserResponse(
         String email,
         String fullName,
         String avatarUrl,
-        String plan
+        String plan,
+        String role
 ) {
     /**
-     * Chuyển entity {@link User} sang DTO an toàn để trả ra API.
+     * Chuyển entity {@link User} sang DTO an toàn để trả ra API. {@code role} chỉ dùng để frontend
+     * gate hiển thị (VD link admin) — quyền thật luôn được backend kiểm tra lại qua JWT, không dựa
+     * vào giá trị client đọc được ở đây.
      *
      * @param user entity user nguồn
      * @return DTO tương ứng, không chứa password_hash
@@ -22,6 +25,7 @@ public record UserResponse(
                 user.getEmail(),
                 user.getFullName(),
                 user.getAvatarUrl(),
-                user.getPlan());
+                user.getPlan(),
+                user.getRole());
     }
 }

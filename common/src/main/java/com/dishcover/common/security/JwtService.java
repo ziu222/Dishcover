@@ -30,12 +30,18 @@ public class JwtService {
         this.expirationMinutes = expirationMinutes;
     }
 
+    /** Overload tiện dùng cho các test/luồng không quan tâm role — mặc định {@code "USER"}. */
     public String issue(Long userId, String email, String plan) {
+        return issue(userId, email, plan, "USER");
+    }
+
+    public String issue(Long userId, String email, String plan, String role) {
         Instant now = Instant.now();
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .claim("email", email)
                 .claim("plan", plan)
+                .claim("role", role)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(Duration.ofMinutes(expirationMinutes))))
                 .signWith(key)
@@ -52,10 +58,14 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+        // role có thể vắng mặt trên token cũ phát trước khi thêm claim này — mặc định "USER" thay vì
+        // null, để mọi nơi đọc AuthenticatedUser.role() không phải tự phòng thủ null.
+        String role = claims.get("role", String.class);
         return new AuthenticatedUser(
                 Long.valueOf(claims.getSubject()),
                 claims.get("email", String.class),
-                claims.get("plan", String.class));
+                claims.get("plan", String.class),
+                role != null ? role : "USER");
     }
 
     public long expirationSeconds() {

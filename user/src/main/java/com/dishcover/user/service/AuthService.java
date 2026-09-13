@@ -136,7 +136,7 @@ public class AuthService {
 
     private AuthResult toAuthResponse(User user) {
         return new AuthResult(
-                jwtService.issue(user.getId(), user.getEmail(), user.getPlan()),
+                jwtService.issue(user.getId(), user.getEmail(), user.getPlan(), user.getRole()),
                 jwtService.expirationSeconds(),
                 UserResponse.from(user));
     }

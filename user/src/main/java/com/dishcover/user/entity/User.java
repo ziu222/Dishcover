@@ -33,6 +33,9 @@ public class User {
     @Column(nullable = false)
     private String plan = "FREE";
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified = false;
 
@@ -101,6 +104,11 @@ public class User {
     /** Cập nhật gói dịch vụ (FREE hoặc PRO). */
     public void setPlan(String plan) {
         this.plan = plan;
+    }
+
+    /** @return role phân quyền (USER hoặc ADMIN) */
+    public String getRole() {
+        return role;
     }
 
     /** @return true nếu user đã xác thực email bằng OTP */
