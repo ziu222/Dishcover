@@ -503,8 +503,13 @@
   flex-wrap: wrap;
 }
 .landing-filters button {
+  position: relative;
+  isolation: isolate;
   border: 1px solid var(--lp-line);
   background: transparent;
+  transition:
+    color 0.35s var(--lp-ease),
+    border-color 0.35s var(--lp-ease);
   color: var(--lp-muted);
   padding: 9px 15px;
   border-radius: 5px;
@@ -516,9 +521,16 @@
   gap: 7px;
 }
 .landing-filters button[aria-pressed='true'] {
-  background: var(--lp-ink);
   color: var(--lp-bg);
   border-color: var(--lp-ink);
+}
+/* Nền của nút đang chọn là 1 phần tử riêng (layoutId) nên nó trượt sang nút mới. */
+.landing-filter-pill {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 5px;
+  background: var(--lp-ink);
 }
 .landing-clear {
   display: flex;
@@ -559,10 +571,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s;
+  transition: transform 0.9s var(--lp-ease);
 }
 .landing-recipe-image-button:hover img {
-  transform: scale(1.045);
+  transform: scale(1.06);
 }
 .landing-recipe img.landing-chicken-image {
   width: 220%;
@@ -605,6 +617,13 @@
 }
 .landing-recipe h3 svg {
   margin-top: 3px;
+  transition:
+    transform 0.5s var(--lp-ease),
+    color 0.3s var(--lp-ease);
+}
+.landing-recipe:hover h3 svg {
+  color: var(--lp-accent);
+  transform: translate(3px, -3px);
 }
 .landing-recipe p {
   margin: 0;

@@ -368,7 +368,7 @@ export function Landing() {
             <motion.div className="landing-section-heading" {...reveal}>
               <div>
                 <h2 ref={recipeHeadingRef} tabIndex={-1}>
-                  Hôm nay, thử món này nhé.
+                  <MaskedLines lines={['Hôm nay, thử món này nhé.']} />
                 </h2>
                 <p className="landing-body-copy">
                   Những công thức mẫu giản đơn cho một bữa ăn đáng mong chờ.
@@ -381,65 +381,110 @@ export function Landing() {
             <div className="landing-recipe-controls">
               <div className="landing-filters" role="group" aria-label="Lọc công thức">
                 {filters.map((item) => (
-                  <button key={item} aria-pressed={filter === item} onClick={() => setFilter(item)}>
+                  <motion.button
+                    key={item}
+                    aria-pressed={filter === item}
+                    whileTap={{ scale: 0.95 }}
+                    transition={spring}
+                    onClick={() => setFilter(item)}
+                  >
+                    {/* Viên nền trượt từ nút cũ sang nút mới thay vì bật tắt hai chỗ. */}
+                    {filter === item && (
+                      <motion.span
+                        className="landing-filter-pill"
+                        layoutId="landing-filter-pill"
+                        transition={spring}
+                      />
+                    )}
                     {item === 'Tất cả' && <ForkKnife size={16} />}
                     {item}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-              {matchIngredients && (
-                <button className="landing-clear" onClick={() => setMatchIngredients(null)}>
-                  Bỏ lọc nguyên liệu <X size={16} />
-                </button>
-              )}
+              <AnimatePresence>
+                {matchIngredients && (
+                  <motion.button
+                    className="landing-clear"
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.3, ease }}
+                    onClick={() => setMatchIngredients(null)}
+                  >
+                    Bỏ lọc nguyên liệu <X size={16} />
+                  </motion.button>
+                )}
+              </AnimatePresence>
             </div>
             <p className="landing-result-count" role="status">
               {matchIngredients
                 ? `${visibleRecipes.length} món có nguyên liệu bạn chọn: ${matchIngredients.join(', ')}`
                 : `${visibleRecipes.length} công thức cho bạn khám phá`}
             </p>
-            <div className="landing-recipe-grid">
-              {visibleRecipes.map((recipe) => (
-                <motion.article className="landing-recipe" key={recipe.id} {...reveal}>
-                  <button
-                    className="landing-recipe-image-button"
-                    onClick={() => setActiveRecipe(recipe)}
-                    aria-label={`Xem công thức ${recipe.title}`}
+            <motion.div className="landing-recipe-grid" {...inView} variants={group(0.06)}>
+              <AnimatePresence mode="popLayout" initial={false}>
+                {visibleRecipes.map((recipe) => (
+                  <motion.article
+                    className="landing-recipe"
+                    key={recipe.id}
+                    layout
+                    variants={popIn}
+                    exit={{ opacity: 0, scale: 0.96, y: -6, transition: { duration: 0.25, ease } }}
+                    transition={{ duration: 0.55, ease }}
                   >
-                    <img
-                      src={recipe.image}
-                      alt={recipe.title}
-                      className={recipe.id === 'chicken' ? 'landing-chicken-image' : ''}
-                      loading="lazy"
-                      width="600"
-                      height="450"
-                    />
-                  </button>
-                  <div className="landing-recipe-meta">
-                    <span>
-                      <Clock size={15} /> {recipe.minutes} phút
-                    </span>
-                    <span>{recipe.category}</span>
-                  </div>
-                  <h3>
-                    <button onClick={() => setActiveRecipe(recipe)}>
-                      {recipe.title}
-                      <ArrowUpRight size={20} />
+                    <button
+                      className="landing-recipe-image-button"
+                      onClick={() => setActiveRecipe(recipe)}
+                      aria-label={`Xem công thức ${recipe.title}`}
+                    >
+                      <img
+                        src={recipe.image}
+                        alt={recipe.title}
+                        className={recipe.id === 'chicken' ? 'landing-chicken-image' : ''}
+                        loading="lazy"
+                        width="600"
+                        height="450"
+                      />
                     </button>
-                  </h3>
-                  <p>{recipe.description}</p>
-                  {matchIngredients && (
-                    <span className="landing-match-label">
-                      <Check size={15} /> Có{' '}
-                      {recipe.ingredients.filter((item) => matchIngredients.includes(item)).length}/
-                      {recipe.ingredients.length} nguyên liệu chính
-                    </span>
-                  )}
-                </motion.article>
-              ))}
-            </div>
+                    <div className="landing-recipe-meta">
+                      <span>
+                        <Clock size={15} /> {recipe.minutes} phút
+                      </span>
+                      <span>{recipe.category}</span>
+                    </div>
+                    <h3>
+                      <button onClick={() => setActiveRecipe(recipe)}>
+                        {recipe.title}
+                        <ArrowUpRight size={20} />
+                      </button>
+                    </h3>
+                    <p>{recipe.description}</p>
+                    {matchIngredients && (
+                      <motion.span
+                        className="landing-match-label"
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, ease, delay: 0.1 }}
+                      >
+                        <Check size={15} /> Có{' '}
+                        {
+                          recipe.ingredients.filter((item) => matchIngredients.includes(item))
+                            .length
+                        }
+                        /{recipe.ingredients.length} nguyên liệu chính
+                      </motion.span>
+                    )}
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.div>
             {!visibleRecipes.length && (
-              <div className="landing-empty">
+              <motion.div
+                className="landing-empty"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease, delay: 0.15 }}
+              >
                 <CookingPot size={36} />
                 <h3>Chưa có món phù hợp trong bộ mẫu.</h3>
                 <p>Thử nhóm món khác hoặc thêm nguyên liệu vào tủ lạnh nhé.</p>
@@ -452,7 +497,7 @@ export function Landing() {
                 >
                   Xem tất cả công thức <ArrowRight size={18} />
                 </button>
-              </div>
+              </motion.div>
             )}
           </div>
         </section>
