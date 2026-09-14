@@ -1,6 +1,7 @@
 package com.dishcover.recipe.service;
 
 import com.dishcover.common.ingredient.IngredientCatalog;
+import com.dishcover.recipe.image.RecipeImageStorage;
 import com.dishcover.common.ingredient.IngredientWeights;
 import com.dishcover.common.nutrition.NutritionIngredientLine;
 import com.dishcover.common.nutrition.RecipeNutrition;
@@ -41,6 +42,7 @@ public class RecipeService {
     private final IngredientCatalog catalog;
     private final RecipeNutritionCalculator nutritionCalculator;
     private final RecipeIndexer indexer;
+    private final RecipeImageStorage imageStorage;
 
     /**
      * @param repo                repository truy cập collection {@code recipes} trên MongoDB
@@ -49,11 +51,30 @@ public class RecipeService {
      * @param indexer             index công thức vào vector search chạy nền (Giai đoạn B) sau khi lưu
      */
     public RecipeService(RecipeRepository repo, IngredientCatalog catalog,
-                          RecipeNutritionCalculator nutritionCalculator, RecipeIndexer indexer) {
+                          RecipeNutritionCalculator nutritionCalculator, RecipeIndexer indexer,
+                          RecipeImageStorage imageStorage) {
         this.repo = repo;
         this.catalog = catalog;
         this.nutritionCalculator = nutritionCalculator;
         this.indexer = indexer;
+        this.imageStorage = imageStorage;
+    }
+
+    /**
+     * Ghi anh len S3 roi gan URL vao cong thuc.
+     *
+     * Co y KHONG goi indexer o day: embedding dung ten/nguyen lieu/cac buoc de sinh vector, doi
+     * moi anh khong lam thay doi noi dung van ban nen index lai la ton tien goi API vo ich.
+     *
+     * @param id          id cong thuc
+     * @param bytes       noi dung anh
+     * @param contentType content-type client gui len
+     * @return cong thuc sau khi cap nhat imageUrl
+     */
+    public RecipeDetailResponse attachImage(String id, byte[] bytes, String contentType) {
+        Recipe recipe = requireById(id);
+        recipe.setImageUrl(imageStorage.store(id, bytes, contentType));
+        return toDetail(repo.save(recipe));
     }
 
     /**

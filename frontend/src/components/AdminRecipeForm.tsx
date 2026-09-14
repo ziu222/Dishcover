@@ -5,7 +5,7 @@ import { Modal } from './Modal'
 import { Field } from './Field'
 import { Button } from './Button'
 import { Spinner } from './Spinner'
-import { useRecipeAdmin, type RecipeInput } from '../hooks/useRecipeAdmin'
+import { uploadRecipeImage, useRecipeAdmin, type RecipeInput } from '../hooks/useRecipeAdmin'
 import type { RecipeSummary } from '../types'
 
 const DIFFICULTIES = [
@@ -61,6 +61,7 @@ export function AdminRecipeForm({ open, onClose, editing, onSaved }: Props) {
   const [ingredients, setIngredients] = useState<IngredientRow[]>([emptyIngredient()])
   const [steps, setSteps] = useState<StepRow[]>([emptyStep()])
   const [formError, setFormError] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   // Nạp chi tiết khi mở form sửa — danh sách chỉ có summary, thiếu nguyên liệu và các bước.
   useEffect(() => {
@@ -160,7 +161,25 @@ export function AdminRecipeForm({ open, onClose, editing, onSaved }: Props) {
     }
   }
 
-  const busy = saving || loading
+  /**
+   * Upload cần id công thức nên chỉ bật khi đang sửa. Ảnh ghi thẳng lên S3 và Recipe Service
+   * gán luôn imageUrl, nên sau khi upload xong form chỉ việc nhận URL mới.
+   */
+  async function pickImage(file: File | undefined) {
+    if (!file || !editing) return
+    setUploading(true)
+    setFormError(null)
+    try {
+      setImageUrl(await uploadRecipeImage(editing.id, file))
+      onSaved()
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Không tải được ảnh lên.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const busy = saving || loading || uploading
 
   return (
     <Modal open={open} onClose={onClose} title={editing ? 'Sửa công thức' : 'Thêm công thức'}>
@@ -210,12 +229,38 @@ export function AdminRecipeForm({ open, onClose, editing, onSaved }: Props) {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
           />
-          <Field
-            label="Ảnh (URL)"
-            helperText="Dán địa chỉ ảnh. Upload file sẽ thêm ở bước sau."
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-          />
+          <div className="flex flex-col gap-2">
+            <span className="text-[13px] font-medium text-muted">Ảnh công thức</span>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Ảnh công thức đang chọn"
+                className="h-36 w-full rounded-xl border border-line object-cover"
+              />
+            )}
+            <div className="flex flex-wrap items-center gap-3">
+              <label className="cursor-pointer rounded-full border border-line px-4 py-2 text-[12px] font-medium text-muted transition-colors hover:border-accent hover:text-accent">
+                {uploading ? 'Đang tải ảnh…' : imageUrl ? 'Đổi ảnh' : 'Chọn ảnh'}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="hidden"
+                  disabled={uploading || !editing}
+                  onChange={(e) => void pickImage(e.target.files?.[0])}
+                />
+              </label>
+              {!editing && (
+                <span className="text-[11px] text-faint">
+                  Tạo công thức trước, rồi mới tải ảnh lên được.
+                </span>
+              )}
+            </div>
+            <Field
+              label="Hoặc dán địa chỉ ảnh"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+            />
+          </div>
 
           <RepeatableSection
             title="Nguyên liệu"

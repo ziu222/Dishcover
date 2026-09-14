@@ -59,3 +59,25 @@ export function useRecipeAdmin() {
     load: (id: string) => run(() => api<RecipeDetail>(`${BASE}/${id}`)),
   }
 }
+
+/**
+ * Upload ảnh cho công thức đã tồn tại.
+ *
+ * Không dùng `api()` được: helper đó chỉ gửi JSON, còn đây là multipart — cùng lý do
+ * useImageRecognition phải tự fetch. Không tự đặt Content-Type để trình duyệt tự sinh boundary.
+ */
+export async function uploadRecipeImage(recipeId: string, file: File): Promise<string> {
+  const form = new FormData()
+  form.append('file', file)
+  const res = await fetch(`/api${BASE}/${recipeId}/image`, {
+    method: 'POST',
+    body: form,
+    credentials: 'include',
+  })
+  if (!res.ok) {
+    const body = await res.json().catch(() => null)
+    throw new ApiError(res.status, body?.code ?? 'UPLOAD_FAILED', body?.message ?? 'Không tải được ảnh lên.')
+  }
+  const saved = (await res.json()) as RecipeDetail
+  return saved.imageUrl ?? ''
+}

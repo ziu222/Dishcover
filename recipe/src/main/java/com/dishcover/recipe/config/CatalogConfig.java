@@ -1,8 +1,10 @@
 package com.dishcover.recipe.config;
 
+import com.dishcover.common.image.ImageResizer;
 import com.dishcover.common.ingredient.IngredientCatalog;
 import com.dishcover.common.nutrition.RecipeNutritionCalculator;
 import org.springframework.context.annotation.Bean;
+import software.amazon.awssdk.services.s3.S3Client;
 import org.springframework.context.annotation.Configuration;
 
 /** Đăng ký {@link IngredientCatalog}/{@link RecipeNutritionCalculator} làm Spring bean dùng chung. */
@@ -26,5 +28,20 @@ public class CatalogConfig {
     @Bean
     RecipeNutritionCalculator recipeNutritionCalculator(IngredientCatalog catalog) {
         return new RecipeNutritionCalculator(catalog);
+    }
+
+    /** ImageResizer la plain class trong common (khong phai Spring bean) — dung cho upload anh. */
+    @Bean
+    ImageResizer imageResizer() {
+        return new ImageResizer();
+    }
+
+    /**
+     * S3 client xac thuc bang chuoi provider mac dinh: tren ECS la IAM task role, tren may dev la
+     * profile AWS cuc bo. Khong doc access key tu cau hinh nao.
+     */
+    @Bean
+    S3Client s3Client() {
+        return S3Client.create();
     }
 }

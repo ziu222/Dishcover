@@ -52,6 +52,12 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
+  origin {
+    domain_name              = aws_s3_bucket.recipe_images.bucket_regional_domain_name
+    origin_id                = "s3-recipe-images"
+    origin_access_control_id = aws_cloudfront_origin_access_control.recipe_images.id
+  }
+
   default_cache_behavior {
     target_origin_id       = "s3-frontend"
     viewer_protocol_policy = "redirect-to-https"
@@ -80,6 +86,23 @@ resource "aws_cloudfront_distribution" "frontend" {
       query_string = true
       headers      = ["Origin", "Authorization", "Content-Type"]
       cookies { forward = "all" }
+    }
+  }
+
+  # Anh cong thuc (xem recipe-images.tf). Key co timestamp nen anh la bat bien -> cache lau duoc,
+  # khong can invalidate sau moi lan admin doi anh.
+  ordered_cache_behavior {
+    path_pattern           = "/recipe-images/*"
+    target_origin_id       = "s3-recipe-images"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
     }
   }
 

@@ -1,4 +1,4 @@
-package com.dishcover.image.service;
+package com.dishcover.common.image;
 
 import org.junit.jupiter.api.Test;
 
