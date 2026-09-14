@@ -4,6 +4,7 @@ import com.dishcover.common.image.ImageResizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.sync.RequestBody;
+import org.springframework.beans.factory.ObjectProvider;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -30,13 +31,13 @@ public class RecipeImageStorage {
     private static final Set<String> ALLOWED = Set.of("image/jpeg", "image/png", "image/webp");
     private static final String PREFIX = "recipe-images/";
 
-    private final S3Client s3;
+    private final ObjectProvider<S3Client> s3;
     private final ImageResizer resizer;
     private final String bucket;
     private final String publicBaseUrl;
     private final String keyPrefix;
 
-    public RecipeImageStorage(S3Client s3, ImageResizer resizer,
+    public RecipeImageStorage(ObjectProvider<S3Client> s3, ImageResizer resizer,
                               @Value("${app.recipe-images.bucket}") String bucket,
                               @Value("${app.recipe-images.public-base-url}") String publicBaseUrl,
                               @Value("${app.recipe-images.key-prefix:}") String keyPrefix) {
@@ -75,7 +76,7 @@ public class RecipeImageStorage {
         // CloudFront, và cũng không ghi đè mất ảnh cũ nếu có chỗ nào còn tham chiếu.
         String key = keyPrefix + PREFIX + recipeId + "-" + UUID.randomUUID() + extensionFor(resized.mimeType());
 
-        s3.putObject(
+        s3.getObject().putObject(
                 PutObjectRequest.builder()
                         .bucket(bucket)
                         .key(key)

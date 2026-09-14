@@ -3,6 +3,7 @@ package com.dishcover.recipe.image;
 import com.dishcover.common.image.ImageResizer;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.ObjectProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -26,8 +27,36 @@ class RecipeImageStorageTest {
 
     private final S3Client s3 = mock(S3Client.class);
     private final RecipeImageStorage storage =
-            new RecipeImageStorage(s3, new ImageResizer(), "bucket-test",
+            new RecipeImageStorage(providerOf(s3), new ImageResizer(), "bucket-test",
                     "https://www.example.com/", "dev/");
+
+    /**
+     * S3Client lay qua ObjectProvider chu khong tiem thang: tao no luc khoi dong se lam ca service
+     * chet o may khong cau hinh AWS (da lam do CI mot lan). Test dung provider don gian nay.
+     */
+    private static ObjectProvider<S3Client> providerOf(S3Client client) {
+        return new ObjectProvider<>() {
+            @Override
+            public S3Client getObject() {
+                return client;
+            }
+
+            @Override
+            public S3Client getObject(Object... args) {
+                return client;
+            }
+
+            @Override
+            public S3Client getIfAvailable() {
+                return client;
+            }
+
+            @Override
+            public S3Client getIfUnique() {
+                return client;
+            }
+        };
+    }
 
     private static byte[] pngBytes() throws Exception {
         var out = new ByteArrayOutputStream();

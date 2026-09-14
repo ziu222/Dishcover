@@ -4,6 +4,7 @@ import com.dishcover.common.image.ImageResizer;
 import com.dishcover.common.ingredient.IngredientCatalog;
 import com.dishcover.common.nutrition.RecipeNutritionCalculator;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import software.amazon.awssdk.services.s3.S3Client;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,6 +42,7 @@ public class CatalogConfig {
      * profile AWS cuc bo. Khong doc access key tu cau hinh nao.
      */
     @Bean
+    @Lazy
     S3Client s3Client() {
         return S3Client.create();
     }
