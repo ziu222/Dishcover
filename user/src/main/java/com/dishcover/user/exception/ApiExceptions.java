@@ -74,4 +74,11 @@ public final class ApiExceptions {
             super("Email chưa được xác thực. Vui lòng kiểm tra hộp thư.");
         }
     }
+
+    /** Tài khoản bị quản trị viên khoá — chặn đăng nhập. */
+    public static class AccountLockedException extends RuntimeException {
+        public AccountLockedException() {
+            super("Tài khoản đã bị khoá. Liên hệ quản trị viên để được mở lại.");
+        }
+    }
 }

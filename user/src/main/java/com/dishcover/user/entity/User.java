@@ -39,6 +39,10 @@ public class User {
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified = false;
 
+    /** true = admin đã khoá, không đăng nhập được (xem AdminUserService). */
+    @Column(nullable = false)
+    private boolean locked = false;
+
     // DB tự set DEFAULT now(); không ghi từ ứng dụng
     @Column(name = "created_at", insertable = false, updatable = false)
     private Instant createdAt;
@@ -119,6 +123,21 @@ public class User {
     /** Đánh dấu email đã xác thực — gọi sau khi verify OTP đúng. */
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    /** @return true nếu tài khoản đang bị admin khoá (không đăng nhập được) */
+    public boolean getLocked() {
+        return locked;
+    }
+
+    /** Khoá/mở khoá tài khoản — chỉ khu quản trị gọi. */
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    /** Đổi role (USER/ADMIN) — chỉ khu quản trị gọi. */
+    public void setRole(String role) {
+        this.role = role;
     }
 
     /** @return thời điểm tạo user, do DB tự set (DEFAULT now()) */

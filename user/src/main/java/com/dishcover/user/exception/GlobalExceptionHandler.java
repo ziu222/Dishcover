@@ -7,6 +7,8 @@ import com.dishcover.user.exception.ApiExceptions.EmailAlreadyExistsException;
 import com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException;
 import com.dishcover.user.exception.ApiExceptions.TooManyAttemptsException;
 import com.dishcover.user.exception.ApiExceptions.EmailDeliveryException;
+import com.dishcover.user.admin.SelfTargetException;
+import com.dishcover.user.exception.ApiExceptions.AccountLockedException;
 import com.dishcover.user.exception.ApiExceptions.EmailNotVerifiedException;
 import com.dishcover.user.exception.ApiExceptions.InvalidOtpException;
 import com.dishcover.user.exception.ApiExceptions.OtpExpiredException;
@@ -67,6 +69,17 @@ public class GlobalExceptionHandler extends CommonExceptionHandler {
     @ExceptionHandler(TooSoonException.class)
     ResponseEntity<ApiError> handleTooSoon(TooSoonException ex) {
         return build(HttpStatus.TOO_MANY_REQUESTS, "OTP_RESEND_TOO_SOON", ex.getMessage());
+    }
+
+    @ExceptionHandler(AccountLockedException.class)
+    ResponseEntity<ApiError> handleAccountLocked(AccountLockedException ex) {
+        return build(HttpStatus.FORBIDDEN, "ACCOUNT_LOCKED", ex.getMessage());
+    }
+
+    /** Admin tự nhắm vào chính mình — xung đột trạng thái, không phải lỗi dữ liệu gửi lên. */
+    @ExceptionHandler(SelfTargetException.class)
+    ResponseEntity<ApiError> handleSelfTarget(SelfTargetException ex) {
+        return build(HttpStatus.CONFLICT, "SELF_TARGET", ex.getMessage());
     }
 
     @ExceptionHandler(EmailNotVerifiedException.class)
