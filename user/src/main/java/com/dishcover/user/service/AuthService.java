@@ -8,6 +8,7 @@ import com.dishcover.user.dto.AuthDtos.ResendOtpRequest;
 import com.dishcover.user.dto.AuthDtos.VerifyOtpRequest;
 import com.dishcover.user.dto.UserResponse;
 import com.dishcover.user.entity.User;
+import com.dishcover.user.exception.ApiExceptions.AccountLockedException;
 import com.dishcover.user.exception.ApiExceptions.EmailAlreadyExistsException;
 import com.dishcover.user.exception.ApiExceptions.EmailNotVerifiedException;
 import com.dishcover.user.exception.ApiExceptions.InvalidCredentialsException;
@@ -130,6 +131,11 @@ public class AuthService {
         }
         if (!user.getEmailVerified()) {
             throw new EmailNotVerifiedException();
+        }
+        // Dat SAU buoc check mat khau, cung ly do voi EmailNotVerified: khong lo "tai khoan nay
+        // ton tai va dang bi khoa" cho nguoi go sai mat khau.
+        if (user.getLocked()) {
+            throw new AccountLockedException();
         }
         return toAuthResponse(user);
     }

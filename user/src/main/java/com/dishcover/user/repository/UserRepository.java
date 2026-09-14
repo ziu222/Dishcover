@@ -1,6 +1,8 @@
 package com.dishcover.user.repository;
 
 import com.dishcover.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -15,6 +17,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return user tương ứng, rỗng nếu không tồn tại
      */
     Optional<User> findByEmail(String email);
+
+    /**
+     * Danh sách cho khu quản trị, lọc theo email gần đúng (không phân biệt hoa thường).
+     *
+     * @param email chuỗi con của email; rỗng nghĩa là lấy tất cả
+     * @param pageable phân trang + sắp xếp
+     * @return trang user khớp
+     */
+    Page<User> findByEmailContainingIgnoreCase(String email, Pageable pageable);
 
     /**
      * Kiểm tra email đã được đăng ký chưa.
