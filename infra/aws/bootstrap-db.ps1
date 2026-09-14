@@ -2,6 +2,12 @@
 # RDS dang private (dung thiet ke) nen chay qua 1 task ECS tam ben trong VPC, khong mo RDS ra internet.
 # Xoa file bootstrap-taskdef.json o cuoi vi no chua mat khau DB dang plaintext.
 
+param(
+  # SQL chay tren RDS. Mac dinh la buoc bootstrap schema lan dau; truyen -Sql "..." de chay
+  # 1 cau lenh bat ky (VD promote ADMIN) ma khong phai sua file nay.
+  [string]$Sql = "CREATE SCHEMA IF NOT EXISTS user_service; CREATE SCHEMA IF NOT EXISTS inventory_service; CREATE SCHEMA IF NOT EXISTS matching_service; CREATE SCHEMA IF NOT EXISTS notification_service; CREATE EXTENSION IF NOT EXISTS vector;"
+)
+
 $ErrorActionPreference = "Stop"
 $Region = "ap-southeast-1"
 
@@ -11,7 +17,6 @@ $Subnet = aws ec2 describe-subnets --filters "Name=default-for-az,Values=true" -
 $Sg = aws ec2 describe-security-groups --filters "Name=group-name,Values=dishcover-internal" --region $Region --query "SecurityGroups[0].GroupId" --output text
 $RdsHost = aws rds describe-db-instances --db-instance-identifier dishcover-pg --region $Region --query "DBInstances[0].Endpoint.Address" --output text
 
-$Sql = "CREATE SCHEMA IF NOT EXISTS user_service; CREATE SCHEMA IF NOT EXISTS inventory_service; CREATE SCHEMA IF NOT EXISTS matching_service; CREATE SCHEMA IF NOT EXISTS notification_service; CREATE EXTENSION IF NOT EXISTS vector;"
 
 $TaskDef = @"
 {
@@ -52,7 +57,16 @@ aws ecs register-task-definition --cli-input-json "file://$JsonPath" --region $R
 # (AccessDeniedException) va task khong start duoc. Tu tao log group truoc bang quyen CLI
 # cua chinh nguoi dung (rong hon), bo qua loi neu da ton tai san.
 Write-Host "Tao log group (bo qua neu da co)..."
-aws logs create-log-group --log-group-name "/ecs/dishcover/db-bootstrap" --region $Region 2>$null
+# 2>$null KHONG nuot duoc loi cua native command o PowerShell 5.1: moi dong stderr thanh
+# NativeCommandError, gap $ErrorActionPreference=Stop la chet script tu lan chay thu 2 tro di
+# (log group da ton tai). Kiem tra truoc roi moi tao, khong dua vao stderr.
+$LogGroup = "/ecs/dishcover/db-bootstrap"
+$Existing = aws logs describe-log-groups --log-group-name-prefix $LogGroup --region $Region --query "logGroups[0].logGroupName" --output text
+if ([string]::IsNullOrWhiteSpace($Existing) -or $Existing -eq "None") {
+  aws logs create-log-group --log-group-name $LogGroup --region $Region | Out-Null
+} else {
+  Write-Host "  (da co san, bo qua)"
+}
 
 Write-Host "Chay task (mat ~30-60s)..."
 $TaskArn = aws ecs run-task --cluster dishcover --task-definition dishcover-db-bootstrap `
