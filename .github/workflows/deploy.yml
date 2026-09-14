@@ -135,6 +135,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      # index.html PHAI no-cache: ten file bundle co ham bam, nen mot ban index.html cu con nam
+      # trong cache trinh duyet se tro mai vao bundle cu -> nguoi dung khong bao gio thay code moi
+      # du CloudFront da invalidate. Nguoc lai /assets/* ten da co ham bam nen cache vinh vien duoc.
       - run: |
-          aws s3 sync frontend/dist/ s3://${{ secrets.FRONTEND_BUCKET }} --delete
+          aws s3 sync frontend/dist/ s3://${{ secrets.FRONTEND_BUCKET }} --delete --exclude index.html --cache-control "public, max-age=31536000, immutable"
+          aws s3 cp frontend/dist/index.html s3://${{ secrets.FRONTEND_BUCKET }}/index.html --cache-control "no-cache" --content-type "text/html; charset=utf-8"
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
