@@ -5,11 +5,13 @@ import com.dishcover.user.admin.AdminUserDtos.AdminUserResponse;
 import com.dishcover.user.admin.AdminUserDtos.LockRequest;
 import com.dishcover.user.admin.AdminUserDtos.RoleRequest;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,5 +75,29 @@ public class AdminUserController {
                                      @PathVariable Long id,
                                      @Valid @RequestBody RoleRequest req) {
         return service.setRole(me.userId(), id, req.role());
+    }
+
+    /**
+     * Xoá hẳn một tài khoản và dọn dữ liệu ở mọi service.
+     *
+     * <p>Trả về danh sách service chưa dọn được thay vì nuốt lỗi im lặng: admin cần biết còn sót
+     * gì để bấm xoá lại (mọi bước đều idempotent nên lặp lại là an toàn).
+     *
+     * @param me admin đang thao tác, suy từ JWT
+     * @param id tài khoản bị xoá
+     * @return báo cáo kết quả dọn
+     * @throws SelfTargetException nếu tự xoá chính mình (409)
+     */
+    @DeleteMapping("/{id}")
+    public DeleteReport delete(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {
+        List<String> failed = service.delete(me.userId(), id);
+        return new DeleteReport(failed.isEmpty(), failed);
+    }
+
+    /**
+     * @param deleted true nếu đã xoá sạch cả tài khoản lẫn dữ liệu liên quan
+     * @param pendingServices service chưa dọn được — bấm xoá lại để chạy tiếp
+     */
+    public record DeleteReport(boolean deleted, List<String> pendingServices) {
     }
 }

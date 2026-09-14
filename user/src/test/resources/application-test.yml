@@ -28,3 +28,9 @@ jwt:
 
 internal:
   service-secret: test-internal-secret
+
+# Trỏ vào cổng chết để test xoá tài khoản chạy đúng nhánh "service không dọn được" mà không
+# cần dựng Inventory/Notification thật.
+services:
+  inventory-url: http://localhost:1
+  notification-url: http://localhost:1

@@ -12,6 +12,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     Page<Notification> findByUserId(Long userId, Pageable pageable);
 
+    /** Dọn sạch thông báo của 1 user khi tài khoản bị xoá (gọi từ /internal). */
+    void deleteByUserId(Long userId);
+
     Page<Notification> findByUserIdAndRead(Long userId, boolean read, Pageable pageable);
 
     List<Notification> findByUserIdAndRead(Long userId, boolean read);

@@ -33,3 +33,8 @@ notification:
 jwt:
   secret: ${JWT_SECRET}
   expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+
+# Secret cho endpoint nội bộ (/internal/**) — dùng khi User Service dọn dữ liệu lúc xoá tài khoản.
+# Cùng giá trị với User/Notification Service, truyền qua biến môi trường.
+internal:
+  service-secret: ${INTERNAL_SERVICE_SECRET}

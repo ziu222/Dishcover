@@ -21,6 +21,9 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
      */
     List<UserIngredient> findByUserId(Long userId);
 
+    /** Dọn sạch nguyên liệu của 1 user khi tài khoản bị xoá (gọi từ /internal). */
+    void deleteByUserId(Long userId);
+
     /** Ownership check: chỉ trả về nếu dòng thuộc đúng user — dùng cho GET/PATCH/DELETE 1 item. */
     Optional<UserIngredient> findByIdAndUserId(Long id, Long userId);
 
