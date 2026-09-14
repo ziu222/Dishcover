@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PencilSimple, Plus, ShieldCheck, Trash, Warning } from '@phosphor-icons/react'
+import { PencilSimple, Plus, Trash, Warning } from '@phosphor-icons/react'
 import { useRecipes } from '../hooks/useRecipes'
 import { api, ApiError } from '../lib/api'
 import { SearchInput } from '../components/SearchInput'
@@ -8,6 +8,7 @@ import { Button } from '../components/Button'
 import { Modal } from '../components/Modal'
 import { Spinner } from '../components/Spinner'
 import { EmptyState } from '../components/EmptyState'
+import { AdminNav } from '../components/AdminNav'
 import { AdminRecipeForm } from '../components/AdminRecipeForm'
 import type { RecipeSummary } from '../types'
 
@@ -67,17 +68,10 @@ export function AdminRecipes() {
   return (
     <div className="px-6 py-9 lg:px-10">
       <div className="mx-auto max-w-4xl">
-        <div className="mb-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
-          <ShieldCheck weight="fill" className="size-4" />
-          Khu vực quản trị
-        </div>
-        <h1 className="font-display text-4xl font-extralight tracking-tight text-ink lg:text-5xl">
-          Quản lý công thức
-        </h1>
-        <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
-          Thêm, sửa và xoá công thức trong kho chung. Mọi thay đổi có hiệu lực ngay với tất cả
-          người dùng.
-        </p>
+        <AdminNav
+          title="Quản lý công thức"
+          description="Thêm, sửa và xoá công thức trong kho chung. Mọi thay đổi có hiệu lực ngay với tất cả người dùng."
+        />
 
         <div className="mt-6">
           <Button

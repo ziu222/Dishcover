@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   ShieldWarning,
   SignOut,
+  Users,
   Warning,
   X,
 } from '@phosphor-icons/react'
@@ -345,6 +346,33 @@ export function Account() {
                 </span>
                 <span className="mt-0.5 block text-[13px] text-muted">
                   Xoá công thức khỏi kho chung của hệ thống.
+                </span>
+              </span>
+              <ArrowUpRight className="size-5 shrink-0 text-mist transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
+            </Link>
+          </motion.div>
+        )}
+
+        {user?.role === 'ADMIN' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+            className="mt-3"
+          >
+            <Link
+              to="/admin/nguoi-dung"
+              className="group flex items-center gap-4 rounded-2xl border border-line bg-surface px-5 py-4 transition-colors hover:border-accent/50"
+            >
+              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-accent-wash text-accent">
+                <Users weight="fill" className="size-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-display text-lg font-normal text-ink">
+                  Quản lý người dùng
+                </span>
+                <span className="mt-0.5 block text-[13px] text-muted">
+                  Khoá tài khoản vi phạm và phân quyền quản trị.
                 </span>
               </span>
               <ArrowUpRight className="size-5 shrink-0 text-mist transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent" />
