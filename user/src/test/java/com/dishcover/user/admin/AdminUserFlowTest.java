@@ -18,6 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -137,6 +138,31 @@ class AdminUserFlowTest {
                 .andExpect(status().isUnprocessableEntity());
 
         assertThat(users.findById(victim.getId()).orElseThrow().getRole()).isEqualTo("USER");
+    }
+
+    @Test
+    void adminKhongTuXoaDuocChinhMinh() throws Exception {
+        mvc.perform(delete("/admin/users/" + admin.getId())
+                        .header("Authorization", "Bearer " + tokenFor(admin)))
+                .andExpect(status().isConflict());
+
+        assertThat(users.findById(admin.getId())).isPresent();
+    }
+
+    /**
+     * Service khac khong don duoc thi KHONG duoc xoa dong users: mat dong do la mat luon dau moi
+     * trong danh sach de admin bam xoa lai, du lieu rac nam lai vinh vien ma khong ai thay.
+     * Test config tro inventory/notification vao cong chet nen day la nhanh luon chay o CI.
+     */
+    @Test
+    void serviceKhacLoiThiGiuLaiTaiKhoanDeXoaLaiDuoc() throws Exception {
+        mvc.perform(delete("/admin/users/" + victim.getId())
+                        .header("Authorization", "Bearer " + tokenFor(admin)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.deleted").value(false))
+                .andExpect(jsonPath("$.pendingServices").isNotEmpty());
+
+        assertThat(users.findById(victim.getId())).isPresent();
     }
 
     @Test

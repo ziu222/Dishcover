@@ -55,5 +55,11 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
 
+# Dia chi 2 service can don du lieu khi xoa tai khoan (khong Eureka, cung quy uoc env var voi
+# Gateway — xem CLAUDE.md muc 3).
+services:
+  inventory-url: ${INVENTORY_SERVICE_URL:http://localhost:8082}
+  notification-url: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
+
 internal:
   service-secret: ${INTERNAL_SERVICE_SECRET}

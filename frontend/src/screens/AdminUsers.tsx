@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Lock, LockOpen, ShieldCheck, User as UserIcon, Warning } from '@phosphor-icons/react'
+import { Lock, LockOpen, ShieldCheck, Trash, User as UserIcon, Warning } from '@phosphor-icons/react'
 import { useAdminUsers } from '../hooks/useAdminUsers'
 import { useAuth } from '../auth/AuthContext'
 import { AdminNav } from '../components/AdminNav'
@@ -8,6 +8,7 @@ import { SearchInput } from '../components/SearchInput'
 import { Button } from '../components/Button'
 import { Spinner } from '../components/Spinner'
 import { EmptyState } from '../components/EmptyState'
+import { Modal } from '../components/Modal'
 import type { AdminUser } from '../types'
 
 const dateFmt = new Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -21,8 +22,10 @@ const dateFmt = new Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-dig
 export function AdminUsers() {
   const { user: me } = useAuth()
   const [query, setQuery] = useState('')
-  const { users, total, loading, error, actionError, reload, setLocked, setRole } =
+  const { users, total, loading, error, actionError, reload, setLocked, setRole, remove } =
     useAdminUsers(query)
+  const [target, setTarget] = useState<AdminUser | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   return (
     <div className="px-6 py-9 lg:px-10">
@@ -66,12 +69,42 @@ export function AdminUsers() {
                   isMe={me?.id === u.id}
                   onToggleLock={() => void setLocked(u.id, !u.locked)}
                   onToggleRole={() => void setRole(u.id, u.role === 'ADMIN' ? 'USER' : 'ADMIN')}
+                  onDelete={() => setTarget(u)}
                 />
               ))}
             </ul>
           </>
         )}
       </div>
+
+      <Modal open={target !== null} onClose={() => setTarget(null)} title="Xoá tài khoản?">
+        <p className="text-sm leading-relaxed text-muted">
+          Tài khoản <span className="font-medium text-ink">{target?.email}</span> cùng toàn bộ
+          nguyên liệu trong tủ lạnh và thông báo của họ sẽ bị xoá khỏi mọi service. Không hoàn tác
+          được.
+        </p>
+        <p className="mt-3 text-[13px] leading-relaxed text-faint">
+          Nếu chỉ muốn chặn truy cập, dùng <span className="font-medium">Khoá</span> — giữ lại dữ
+          liệu và mở lại được bất cứ lúc nào.
+        </p>
+        <div className="mt-6 flex gap-3">
+          <Button variant="secondary" onClick={() => setTarget(null)} disabled={deleting}>
+            Huỷ
+          </Button>
+          <Button
+            disabled={deleting}
+            onClick={async () => {
+              if (!target) return
+              setDeleting(true)
+              const ok = await remove(target.id)
+              setDeleting(false)
+              if (ok) setTarget(null)
+            }}
+          >
+            {deleting ? 'Đang xoá…' : 'Xoá vĩnh viễn'}
+          </Button>
+        </div>
+      </Modal>
     </div>
   )
 }
@@ -81,11 +114,13 @@ function UserRow({
   isMe,
   onToggleLock,
   onToggleRole,
+  onDelete,
 }: {
   user: AdminUser
   isMe: boolean
   onToggleLock: () => void
   onToggleRole: () => void
+  onDelete: () => void
 }) {
   return (
     <motion.li layout className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:gap-4">
@@ -126,6 +161,14 @@ function UserRow({
             {user.locked ? <LockOpen className="size-4" /> : <Lock className="size-4" />}
             {user.locked ? 'Mở khoá' : 'Khoá'}
           </Button>
+          <button
+            type="button"
+            onClick={onDelete}
+            aria-label={`Xoá tài khoản ${user.email}`}
+            className="grid size-10 shrink-0 place-items-center rounded-full text-mist transition-colors hover:bg-expired-bg hover:text-expired focus-visible:ring-2 focus-visible:ring-expired/40 focus-visible:outline-none"
+          >
+            <Trash className="size-[18px]" />
+          </button>
         </div>
       )}
       {isMe && (

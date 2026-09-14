@@ -3,6 +3,8 @@ package com.dishcover.user.admin;
 import com.dishcover.common.exception.ResourceNotFoundException;
 import com.dishcover.user.admin.AdminUserDtos.AdminUserResponse;
 import com.dishcover.user.entity.User;
+import com.dishcover.user.repository.CalorieGoalRepository;
+import com.dishcover.user.repository.DietaryPreferenceRepository;
 import com.dishcover.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +22,45 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminUserService {
 
     private final UserRepository users;
+    private final CalorieGoalRepository calorieGoals;
+    private final DietaryPreferenceRepository preferences;
+    private final UserDataCleaner cleaner;
 
-    public AdminUserService(UserRepository users) {
+    public AdminUserService(UserRepository users, CalorieGoalRepository calorieGoals,
+                             DietaryPreferenceRepository preferences, UserDataCleaner cleaner) {
         this.users = users;
+        this.calorieGoals = calorieGoals;
+        this.preferences = preferences;
+        this.cleaner = cleaner;
+    }
+
+    /**
+     * Xoá hẳn một tài khoản và dọn dữ liệu của nó ở mọi service.
+     *
+     * <p>Thứ tự có chủ đích: dọn dữ liệu schema của chính mình, rồi gọi các service khác, và xoá
+     * dòng {@code users} SAU CÙNG. Nếu xoá dòng users trước rồi một service lỗi, admin mất luôn
+     * đầu mối trong danh sách để bấm dọn nốt — dữ liệu rác nằm lại vĩnh viễn mà không ai thấy.
+     *
+     * <p>Không saga, không bù trừ: mọi endpoint xoá đều idempotent nên bấm xoá lại là chạy tiếp.
+     *
+     * @param actorId admin đang thao tác
+     * @param targetId tài khoản bị xoá
+     * @return danh sách service chưa dọn được; rỗng nghĩa là sạch hết
+     * @throws SelfTargetException nếu admin tự xoá chính mình
+     */
+    @Transactional
+    public java.util.List<String> delete(Long actorId, Long targetId) {
+        require(targetId);
+        if (actorId.equals(targetId)) {
+            throw new SelfTargetException("Không thể tự xoá tài khoản của chính mình");
+        }
+        calorieGoals.deleteByUserId(targetId);
+        preferences.deleteByUserId(targetId);
+        java.util.List<String> failed = cleaner.cleanRemote(targetId);
+        if (failed.isEmpty()) {
+            users.deleteById(targetId);
+        }
+        return failed;
     }
 
     /**

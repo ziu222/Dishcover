@@ -70,5 +70,30 @@ export function useAdminUsers(query: string) {
       act(() => api<AdminUser>(`${BASE}/${id}/lock`, { method: 'PATCH', body: { locked } })),
     setRole: (id: number, role: 'USER' | 'ADMIN') =>
       act(() => api<AdminUser>(`${BASE}/${id}/role`, { method: 'PATCH', body: { role } })),
+    /**
+     * Xoá tài khoản. Backend trả báo cáo từng phần: service nào chưa dọn được thì tài khoản
+     * được GIỮ LẠI để bấm xoá lại (mọi bước idempotent) — nên ở đây chỉ xoá khỏi danh sách khi
+     * backend xác nhận đã sạch hết.
+     */
+    async remove(id: number) {
+      setActionError(null)
+      try {
+        const report = await api<{ deleted: boolean; pendingServices: string[] }>(`${BASE}/${id}`, {
+          method: 'DELETE',
+        })
+        if (report.deleted) {
+          setUsers((list) => list.filter((u) => u.id !== id))
+          setTotal((t) => Math.max(0, t - 1))
+          return true
+        }
+        setActionError(
+          `Chưa xoá được: ${report.pendingServices.join(', ')} không dọn được dữ liệu. Thử lại sau.`,
+        )
+        return false
+      } catch (err) {
+        setActionError(err instanceof ApiError ? err.message : 'Không xoá được tài khoản.')
+        return false
+      }
+    },
   }
 }

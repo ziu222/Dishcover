@@ -43,6 +43,9 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR).permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // /internal/** khong dung JWT — tu bao ve bang header X-Internal-Secret
+                        // (InternalSecretGuard), giong cach User/Notification Service dang lam.
+                        .requestMatchers("/internal/**").permitAll()
                         // Toàn bộ /inventory/** đều cần JWT hợp lệ — không có endpoint công khai nào khác
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(
