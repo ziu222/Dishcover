@@ -1,5 +1,6 @@
 package com.dishcover.image.service;
 
+import com.dishcover.common.image.ImageResizer;
 import com.dishcover.image.dto.ImageDtos.RecognizeResponse;
 import com.dishcover.image.exception.VisionUnavailableException;
 import org.springframework.stereotype.Service;

@@ -7,6 +7,7 @@ import com.dishcover.recipe.dto.RecipeDtos.RecipeSummaryResponse;
 import com.dishcover.recipe.dto.RecipeDtos.UpdateRecipeRequest;
 import com.dishcover.recipe.service.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,5 +107,23 @@ public class RecipeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
+    }
+
+    /**
+     * Upload ảnh cho một công thức. Ảnh được kiểm tra, resize rồi ghi lên S3; URL trả về được gán
+     * luôn vào công thức nên client không phải gọi thêm PATCH.
+     *
+     * <p>Quyền ADMIN do SecurityConfig gác ở mức {@code POST /recipes/**}, không cần annotation riêng.
+     *
+     * @param id   id công thức
+     * @param file ảnh jpg/png/webp, tối đa 5MB
+     * @return công thức sau khi đã cập nhật imageUrl
+     * @throws com.dishcover.recipe.image.InvalidRecipeImageException nếu ảnh không hợp lệ (422)
+     * @throws com.dishcover.common.exception.ResourceNotFoundException nếu không tìm thấy công thức
+     */
+    @PostMapping("/{id}/image")
+    public RecipeDetailResponse uploadImage(@PathVariable String id,
+                                            @RequestParam("file") MultipartFile file) throws IOException {
+        return service.attachImage(id, file.getBytes(), file.getContentType());
     }
 }

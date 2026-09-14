@@ -61,6 +61,9 @@ resource "aws_ecs_task_definition" "app" {
       { name = "KAFKA_BOOTSTRAP_SERVERS", value = "kafka.${var.project}.local:9092" },
       { name = "MAIL_USERNAME", value = var.mail_username },
       { name = "FRONTEND_URL", value = "https://www.${var.domain_name}" },
+      # Upload anh cong thuc (chi Recipe Service dung, dat chung cho gon — service khac bo qua).
+      { name = "RECIPE_IMAGES_BUCKET", value = aws_s3_bucket.recipe_images.bucket },
+      { name = "RECIPE_IMAGES_BASE_URL", value = "https://www.${var.domain_name}" },
       ], contains(keys(local.postgres_schema), each.key) ? [
       {
         name  = "SPRING_DATASOURCE_URL"

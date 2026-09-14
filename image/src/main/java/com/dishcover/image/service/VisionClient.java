@@ -1,5 +1,6 @@
 package com.dishcover.image.service;
 
+import com.dishcover.common.image.ImageResizer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ai.chat.client.ChatClient;

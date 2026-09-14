@@ -1,5 +1,6 @@
 package com.dishcover.image.service;
 
+import com.dishcover.common.image.ImageResizer;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.springframework.stereotype.Component;

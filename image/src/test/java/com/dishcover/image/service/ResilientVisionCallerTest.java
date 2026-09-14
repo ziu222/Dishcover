@@ -1,5 +1,6 @@
 package com.dishcover.image.service;
 
+import com.dishcover.common.image.ImageResizer;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

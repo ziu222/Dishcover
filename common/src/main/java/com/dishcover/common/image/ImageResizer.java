@@ -1,6 +1,5 @@
-package com.dishcover.image.service;
+package com.dishcover.common.image;
 
-import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
@@ -16,7 +15,8 @@ import java.io.IOException;
  * không xử lý được đều pass-through nguyên bản (đã được ImageValidator chặn ≤5MB, Vision API nhận
  * trực tiếp).
  */
-@Component
+// KHONG @Component: service con khong component-scan package common (xem CLAUDE.md muc 6) —
+// moi service tu dang ky @Bean, giong cach RequiresPlanAspect da lam truoc day.
 public class ImageResizer {
 
     static final int MAX_DIMENSION = 1024;

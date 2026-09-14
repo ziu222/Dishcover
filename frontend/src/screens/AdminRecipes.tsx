@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShieldCheck, Trash, Warning } from '@phosphor-icons/react'
+import { PencilSimple, Plus, ShieldCheck, Trash, Warning } from '@phosphor-icons/react'
 import { useRecipes } from '../hooks/useRecipes'
 import { api, ApiError } from '../lib/api'
 import { SearchInput } from '../components/SearchInput'
@@ -8,6 +8,7 @@ import { Button } from '../components/Button'
 import { Modal } from '../components/Modal'
 import { Spinner } from '../components/Spinner'
 import { EmptyState } from '../components/EmptyState'
+import { AdminRecipeForm } from '../components/AdminRecipeForm'
 import type { RecipeSummary } from '../types'
 
 const DIFFICULTY_LABEL: Record<string, string> = { EASY: 'Dễ', MEDIUM: 'Vừa', HARD: 'Khó' }
@@ -30,6 +31,8 @@ export function AdminRecipes() {
   const { recipes, loading, error, reload } = useRecipes()
   const [query, setQuery] = useState('')
   const [target, setTarget] = useState<RecipeSummary | null>(null)
+  const [formOpen, setFormOpen] = useState(false)
+  const [editing, setEditing] = useState<RecipeSummary | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
@@ -72,9 +75,21 @@ export function AdminRecipes() {
           Quản lý công thức
         </h1>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
-          Xoá công thức khỏi kho chung. Thao tác có hiệu lực ngay với mọi người dùng và không hoàn
-          tác được.
+          Thêm, sửa và xoá công thức trong kho chung. Mọi thay đổi có hiệu lực ngay với tất cả
+          người dùng.
         </p>
+
+        <div className="mt-6">
+          <Button
+            onClick={() => {
+              setEditing(null)
+              setFormOpen(true)
+            }}
+          >
+            <Plus weight="bold" className="size-4" />
+            Thêm công thức
+          </Button>
+        </div>
 
         <div className="mt-8">
           <SearchInput value={query} onChange={setQuery} placeholder="Lọc theo tên công thức..." />
@@ -123,6 +138,19 @@ export function AdminRecipes() {
                       whileTap={{ scale: 0.92 }}
                       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                       onClick={() => {
+                        setEditing(r)
+                        setFormOpen(true)
+                      }}
+                      aria-label={`Sửa công thức ${r.name}`}
+                      className="grid size-10 shrink-0 place-items-center rounded-full text-mist transition-colors hover:bg-accent-wash hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:outline-none"
+                    >
+                      <PencilSimple className="size-[18px]" />
+                    </motion.button>
+                    <motion.button
+                      type="button"
+                      whileTap={{ scale: 0.92 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                      onClick={() => {
                         setDeleteError(null)
                         setTarget(r)
                       }}
@@ -138,6 +166,13 @@ export function AdminRecipes() {
           </>
         )}
       </div>
+
+      <AdminRecipeForm
+        open={formOpen}
+        editing={editing}
+        onClose={() => setFormOpen(false)}
+        onSaved={reload}
+      />
 
       <Modal open={target !== null} onClose={() => setTarget(null)} title="Xoá công thức?">
         <p className="text-sm leading-relaxed text-muted">

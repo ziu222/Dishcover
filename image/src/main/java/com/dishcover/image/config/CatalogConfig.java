@@ -1,5 +1,6 @@
 package com.dishcover.image.config;
 
+import com.dishcover.common.image.ImageResizer;
 import com.dishcover.common.ingredient.IngredientCatalog;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,5 +13,11 @@ public class CatalogConfig {
     @Bean
     IngredientCatalog ingredientCatalog() {
         return IngredientCatalog.loadDefault();
+    }
+
+    /** ImageResizer da chuyen sang common de Recipe Service dung lai cho upload anh cong thuc. */
+    @Bean
+    ImageResizer imageResizer() {
+        return new ImageResizer();
     }
 }

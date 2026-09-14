@@ -45,3 +45,18 @@ resilience4j:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
+
+# Upload ảnh công thức (khu quản trị). Bucket riêng tư, người dùng đọc qua CloudFront cùng
+# distribution với frontend nên ảnh cùng origin với trang — xem infra/aws/recipe-images.tf.
+# KHÔNG có access key ở đây: trên ECS xác thực bằng IAM task role, trên máy dev bằng profile AWS.
+app:
+  recipe-images:
+    bucket: ${RECIPE_IMAGES_BUCKET:}
+    public-base-url: ${RECIPE_IMAGES_BASE_URL:}
+    # Máy dev ghi chung bucket thật nhưng tách prefix, đúng đánh đổi đã chốt ở CLAUDE.md mục 3
+    # (không dựng LocalStack/MinIO cho vài tấm ảnh do admin đăng).
+    key-prefix: ${RECIPE_IMAGES_KEY_PREFIX:}
+
+spring.servlet.multipart:
+  max-file-size: 5MB
+  max-request-size: 6MB
