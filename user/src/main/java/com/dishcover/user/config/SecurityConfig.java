@@ -51,6 +51,9 @@ public class SecurityConfig {
                         .requestMatchers("/internal/**").permitAll()
                         // Swagger UI + OpenAPI docs công khai (chỉ tài liệu, không lộ dữ liệu)
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Khu quan tri: gac o DUNG MOT CHO thay vi rai annotation tung method,
+                        // de "ai vao duoc khu nay" chi co mot cau tra loi doc duoc.
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 // Chưa xác thực → 401 (mặc định của Spring Security là 403); frontend phân biệt
                 // 401 (đăng nhập lại) với 402/403 (paywall/không đủ quyền).

@@ -20,6 +20,9 @@ public interface DietaryPreferenceRepository extends JpaRepository<DietaryPrefer
      */
     List<DietaryPreference> findByUserId(Long userId);
 
+    /** Dọn khi xoá tài khoản. */
+    void deleteByUserId(Long userId);
+
     /**
      * Kiểm tra 1 mục (user_id, type, value) đã tồn tại chưa — dùng để thêm mới idempotent, tránh
      * tạo dòng trùng khi user bấm "thêm" nhiều lần cho cùng 1 giá trị.

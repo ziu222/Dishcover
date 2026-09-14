@@ -15,4 +15,7 @@ public interface CalorieGoalRepository extends JpaRepository<CalorieGoal, Long> 
      * @return mục tiêu hiện tại, rỗng nếu user chưa đặt mục tiêu
      */
     Optional<CalorieGoal> findByUserId(Long userId);
+
+    /** Dọn khi xoá tài khoản. */
+    void deleteByUserId(Long userId);
 }

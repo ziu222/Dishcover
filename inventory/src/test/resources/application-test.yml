@@ -19,3 +19,8 @@ spring:
 jwt:
   secret: test-secret-at-least-32-chars-long-000
   expiration-minutes: 120
+
+# Secret cho endpoint nội bộ — bắt buộc phải có giá trị, nếu không context không khởi động được
+# (application.yml dùng ${INTERNAL_SERVICE_SECRET} không default, đúng nguyên tắc secret chỉ ở env).
+internal:
+  service-secret: test-internal-secret

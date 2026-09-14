@@ -75,6 +75,17 @@ export interface User {
   role: 'USER' | 'ADMIN'
 }
 
+/** Một tài khoản trong khu quản trị (AdminUserResponse ở User Service). */
+export interface AdminUser {
+  id: number
+  email: string
+  fullName: string | null
+  role: 'USER' | 'ADMIN'
+  locked: boolean
+  emailVerified: boolean
+  createdAt: string
+}
+
 export type InventoryStatus = 'FRESH' | 'EXPIRING_SOON' | 'EXPIRED' | 'USED'
 
 /** InventoryItemResponse — 1 dòng nguyên liệu trong tủ lạnh ảo. status do server derive theo hạn dùng. */
