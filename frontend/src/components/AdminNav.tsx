@@ -5,11 +5,12 @@ import { cn } from '../lib/cn'
 const LINKS = [
   { to: '/admin/cong-thuc', label: 'Công thức' },
   { to: '/admin/nguoi-dung', label: 'Người dùng' },
+  { to: '/admin/bao-tri', label: 'Bảo trì' },
 ]
 
 /**
  * Đầu trang dùng chung cho khu quản trị: nhãn khu vực + chuyển giữa các mục.
- * Tách riêng để những mục thêm sau (bảo trì, số liệu) chỉ cần thêm một dòng ở LINKS.
+ * Tách riêng để mục thêm sau (số liệu) chỉ cần thêm một dòng ở LINKS.
  */
 export function AdminNav({ title, description }: { title: string; description: string }) {
   return (

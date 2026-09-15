@@ -1,4 +1,5 @@
 import type { Page } from '../types'
+import { notifyMaintenanceDetected } from './maintenanceSignal'
 // fetch wrapper mỏng cho Gateway. Frontend luôn gọi path tương đối bắt đầu bằng `/api`
 // (dev proxy chuyển sang http://localhost:8080 và cắt `/api` — xem vite.config.ts).
 //
@@ -66,6 +67,9 @@ export async function api<T>(path: string, opts: RequestOptions = {}): Promise<T
   if (!res.ok) {
     const code = data?.code ?? `HTTP_${res.status}`
     const message = data?.message ?? 'Đã có lỗi xảy ra, vui lòng thử lại.'
+    // Admin không bao giờ dính lỗi này (Gateway cho JWT role ADMIN đi qua khi bảo trì), nên
+    // không cần phân biệt màn nào gọi API — chặn toàn trang là đúng cho mọi người dùng thường.
+    if (code === 'MAINTENANCE_MODE') notifyMaintenanceDetected()
     throw new ApiError(res.status, code, message)
   }
   return data as T
