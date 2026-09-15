@@ -183,6 +183,18 @@ class AuthFlowIntegrationTest {
     }
 
     @Test
+    void householdSizeTypeAccepted() throws Exception {
+        String token = register("household@b.com", "secret1");
+        mvc.perform(post("/users/me/dietary-preferences")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"type\":\"HOUSEHOLD_SIZE\",\"value\":\"2 người\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.type").value("HOUSEHOLD_SIZE"))
+                .andExpect(jsonPath("$.value").value("2 người"));
+    }
+
+    @Test
     void badTypeRejectedByValidation() throws Exception {
         String token = register("bad@b.com", "secret1");
         mvc.perform(post("/users/me/dietary-preferences")

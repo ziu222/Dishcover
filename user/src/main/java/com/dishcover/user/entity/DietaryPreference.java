@@ -9,7 +9,9 @@ import jakarta.persistence.Table;
 
 /**
  * Map bảng user_service.dietary_preferences.
- * type = ALLERGY | DIET; value = 'hải sản', 'chay'... (Matching Service đọc để lọc dị ứng).
+ * type = ALLERGY | DIET | TAG_PREFERENCE | HOUSEHOLD_SIZE; value = 'hải sản', 'chay', '2 người'...
+ * (Matching Service đọc ALLERGY/DIET/TAG_PREFERENCE để lọc/chấm điểm; HOUSEHOLD_SIZE chỉ hiển thị
+ * lại ở Tài khoản, chưa dùng cho chấm điểm — xem docs/specs/onboarding-wizard.md).
  */
 @Entity
 @Table(name = "dietary_preferences")
@@ -36,8 +38,8 @@ public class DietaryPreference {
      * Tạo một mục hồ sơ ăn uống mới cho user.
      *
      * @param userId id user sở hữu mục này
-     * @param type   ALLERGY hoặc DIET
-     * @param value  giá trị cụ thể, VD 'hải sản', 'chay'
+     * @param type   ALLERGY, DIET, TAG_PREFERENCE hoặc HOUSEHOLD_SIZE
+     * @param value  giá trị cụ thể, VD 'hải sản', 'chay', '2 người'
      */
     public DietaryPreference(Long userId, String type, String value) {
         this.userId = userId;

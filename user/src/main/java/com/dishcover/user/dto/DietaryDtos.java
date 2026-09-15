@@ -14,13 +14,16 @@ public final class DietaryDtos {
     /**
      * Yêu cầu thêm một mục hồ sơ ăn uống.
      *
-     * @param type  ALLERGY, DIET hoặc TAG_PREFERENCE (định hướng ăn uống — VD "high protein",
+     * @param type  ALLERGY, DIET, TAG_PREFERENCE (định hướng ăn uống — VD "high protein",
      *              dùng bởi Matching Service TagPreferenceRule, xem docs/specs/diet-direction-recommendation.md)
-     * @param value giá trị cụ thể, VD 'hải sản', 'chay', 'high protein'
+     *              hoặc HOUSEHOLD_SIZE (số người thường nấu cùng, hỏi ở wizard onboarding sau đăng
+     *              ký — xem docs/specs/onboarding-wizard.md; Matching Service CHƯA đọc field này,
+     *              chỉ hiển thị lại ở Tài khoản, để dành dùng sau cho gợi ý khẩu phần)
+     * @param value giá trị cụ thể, VD 'hải sản', 'chay', 'high protein', '2 người'
      */
     public record DietaryPreferenceRequest(
-            @NotBlank @Pattern(regexp = "ALLERGY|DIET|TAG_PREFERENCE",
-                    message = "type phải là ALLERGY, DIET hoặc TAG_PREFERENCE") String type,
+            @NotBlank @Pattern(regexp = "ALLERGY|DIET|TAG_PREFERENCE|HOUSEHOLD_SIZE",
+                    message = "type phải là ALLERGY, DIET, TAG_PREFERENCE hoặc HOUSEHOLD_SIZE") String type,
             @NotBlank @Size(max = 50) String value
     ) {
     }
@@ -28,7 +31,7 @@ public final class DietaryDtos {
     /**
      * Thông tin một mục hồ sơ ăn uống trả ra API.
      *
-     * @param type  ALLERGY, DIET hoặc TAG_PREFERENCE
+     * @param type  ALLERGY, DIET, TAG_PREFERENCE hoặc HOUSEHOLD_SIZE
      * @param value giá trị cụ thể, VD 'hải sản', 'chay', 'high protein'
      */
     public record DietaryPreferenceResponse(
