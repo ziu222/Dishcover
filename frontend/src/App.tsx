@@ -1,10 +1,13 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Login } from './screens/Login'
 import { Register } from './screens/Register'
 import { VerifyOtp } from './screens/VerifyOtp'
+import { Onboarding } from './screens/Onboarding'
 import { useAuth } from './auth/AuthContext'
 import { Landing } from './screens/Landing'
+import { MaintenanceScreen } from './components/MaintenanceScreen'
+import { setMaintenanceListener } from './lib/maintenanceSignal'
 
 const Home = lazy(() => import('./screens/Home').then((module) => ({ default: module.Home })))
 const Search = lazy(() => import('./screens/Search').then((module) => ({ default: module.Search })))
@@ -30,6 +33,9 @@ const AdminUsers = lazy(() =>
 )
 const AdminAnalytics = lazy(() =>
   import('./screens/AdminAnalytics').then((module) => ({ default: module.AdminAnalytics })),
+)
+const AdminMaintenance = lazy(() =>
+  import('./screens/AdminMaintenance').then((module) => ({ default: module.AdminMaintenance })),
 )
 const AppShell = lazy(() =>
   import('./components/AppShell').then((module) => ({ default: module.AppShell })),
@@ -68,6 +74,15 @@ function RequireAdmin() {
 }
 
 export function App() {
+  const [maintenanceBlocked, setMaintenanceBlocked] = useState(false)
+
+  useEffect(() => {
+    setMaintenanceListener(() => setMaintenanceBlocked(true))
+    return () => setMaintenanceListener(null)
+  }, [])
+
+  if (maintenanceBlocked) return <MaintenanceScreen />
+
   return (
     <Suspense
       fallback={
@@ -88,10 +103,13 @@ export function App() {
           <Route element={<AppShell />}>
             <Route path="/admin/cong-thuc" element={<AdminRecipes />} />
             <Route path="/admin/nguoi-dung" element={<AdminUsers />} />
+            <Route path="/admin/bao-tri" element={<AdminMaintenance />} />
             <Route path="/admin/so-lieu" element={<AdminAnalytics />} />
           </Route>
         </Route>
         <Route element={<RequireAuth />}>
+          {/* Không bọc AppShell — wizard full-screen riêng, cùng kiểu Login/Register/VerifyOtp. */}
+          <Route path="/chao-mung" element={<Onboarding />} />
           <Route element={<AppShell />}>
             <Route path="/tim-kiem" element={<Search />} />
             <Route path="/tu-lanh" element={<Fridge />} />

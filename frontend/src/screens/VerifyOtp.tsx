@@ -39,7 +39,7 @@ export function VerifyOtp() {
     setLoading(true)
     try {
       await verifyOtp(email, otp)
-      navigate('/', { replace: true })
+      navigate('/chao-mung', { replace: true })
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Xác thực thất bại, vui lòng thử lại.')
     } finally {
