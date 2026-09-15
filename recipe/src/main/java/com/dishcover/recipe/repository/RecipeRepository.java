@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.time.Instant;
+
 /**
  * Truy cập collection {@code recipes} trên MongoDB qua Spring Data. Cung cấp các truy vấn lọc
  * theo tag, độ khó và tên chuẩn hóa dùng cho endpoint {@code GET /recipes} (CLAUDE.md mục 3.2).
@@ -47,4 +49,10 @@ public interface RecipeRepository extends MongoRepository<Recipe, String> {
      * @return trang kết quả công thức có tên chuẩn hóa chứa đoạn tìm kiếm
      */
     Page<Recipe> findByNormalizedNameContaining(String normalizedNameFragment, Pageable pageable);
+
+    /** Tổng số công thức theo độ khó — dùng cho màn số liệu quản trị. */
+    long countByDifficulty(String difficulty);
+
+    /** Tổng số công thức tạo sau mốc thời gian chỉ định — dùng cho màn số liệu quản trị. */
+    long countByCreatedAtAfter(Instant threshold);
 }
