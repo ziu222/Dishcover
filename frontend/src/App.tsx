@@ -3,6 +3,7 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Login } from './screens/Login'
 import { Register } from './screens/Register'
 import { VerifyOtp } from './screens/VerifyOtp'
+import { Onboarding } from './screens/Onboarding'
 import { useAuth } from './auth/AuthContext'
 import { Landing } from './screens/Landing'
 
@@ -88,6 +89,8 @@ export function App() {
           </Route>
         </Route>
         <Route element={<RequireAuth />}>
+          {/* Không bọc AppShell — wizard full-screen riêng, cùng kiểu Login/Register/VerifyOtp. */}
+          <Route path="/chao-mung" element={<Onboarding />} />
           <Route element={<AppShell />}>
             <Route path="/tim-kiem" element={<Search />} />
             <Route path="/tu-lanh" element={<Fridge />} />

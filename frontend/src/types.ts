@@ -109,7 +109,7 @@ export interface RecognizedIngredient {
   suggestedExpiryDate: string | null // 'YYYY-MM-DD'
 }
 
-export type DietaryType = 'ALLERGY' | 'DIET'
+export type DietaryType = 'ALLERGY' | 'DIET' | 'HOUSEHOLD_SIZE'
 
 /** DietaryPreferenceResponse — 1 mục hồ sơ ăn uống (dị ứng/chế độ ăn) của user. */
 export interface DietaryPreference {
