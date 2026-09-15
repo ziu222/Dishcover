@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /** Repository JPA cho entity {@link User}, thao tác trực tiếp bảng user_service.users. */
@@ -34,4 +35,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return true nếu email đã tồn tại trong hệ thống
      */
     boolean existsByEmail(String email);
+
+    /** Tổng số tài khoản có role chỉ định — dùng cho màn số liệu quản trị. */
+    long countByRole(String role);
+
+    /** Tổng số tài khoản đang bị khoá — dùng cho màn số liệu quản trị. */
+    long countByLocked(boolean locked);
+
+    /** Tổng số tài khoản tạo sau mốc thời gian chỉ định — dùng cho số liệu quản trị. */
+    long countByCreatedAtAfter(Instant threshold);
 }

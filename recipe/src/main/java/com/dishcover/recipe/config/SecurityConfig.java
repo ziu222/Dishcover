@@ -66,6 +66,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/recipes/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/recipes/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")
+                        // Khu quản trị (số liệu, mở rộng sau): gác ở ĐÚNG MỘT CHỖ, cùng quy ước
+                        // User Service đã dùng cho /admin/**.
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(

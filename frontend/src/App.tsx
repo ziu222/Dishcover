@@ -31,6 +31,9 @@ const AdminRecipes = lazy(() =>
 const AdminUsers = lazy(() =>
   import('./screens/AdminUsers').then((module) => ({ default: module.AdminUsers })),
 )
+const AdminAnalytics = lazy(() =>
+  import('./screens/AdminAnalytics').then((module) => ({ default: module.AdminAnalytics })),
+)
 const AdminMaintenance = lazy(() =>
   import('./screens/AdminMaintenance').then((module) => ({ default: module.AdminMaintenance })),
 )
@@ -101,6 +104,7 @@ export function App() {
             <Route path="/admin/cong-thuc" element={<AdminRecipes />} />
             <Route path="/admin/nguoi-dung" element={<AdminUsers />} />
             <Route path="/admin/bao-tri" element={<AdminMaintenance />} />
+            <Route path="/admin/so-lieu" element={<AdminAnalytics />} />
           </Route>
         </Route>
         <Route element={<RequireAuth />}>

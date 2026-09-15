@@ -6,12 +6,10 @@ const LINKS = [
   { to: '/admin/cong-thuc', label: 'Công thức' },
   { to: '/admin/nguoi-dung', label: 'Người dùng' },
   { to: '/admin/bao-tri', label: 'Bảo trì' },
+  { to: '/admin/so-lieu', label: 'Số liệu' },
 ]
 
-/**
- * Đầu trang dùng chung cho khu quản trị: nhãn khu vực + chuyển giữa các mục.
- * Tách riêng để mục thêm sau (số liệu) chỉ cần thêm một dòng ở LINKS.
- */
+/** Đầu trang dùng chung cho khu quản trị: nhãn khu vực + chuyển giữa các mục. */
 export function AdminNav({ title, description }: { title: string; description: string }) {
   return (
     <div className="mb-8">
