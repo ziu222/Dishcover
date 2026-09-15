@@ -43,8 +43,12 @@ public class User {
     @Column(nullable = false)
     private boolean locked = false;
 
-    // DB tự set DEFAULT now(); không ghi từ ứng dụng
-    @Column(name = "created_at", insertable = false, updatable = false)
+    // DB tự set DEFAULT now(); không ghi từ ứng dụng. columnDefinition khai lại DEFAULT cho
+    // schema H2 tự sinh lúc test (ddl-auto=create-drop, không chạy Flyway thật) — thiếu dòng này
+    // insert test không set được createdAt, NULL > threshold luôn false, đếm "user mới N ngày"
+    // sai âm thầm mà test tưởng đang chạy đúng schema thật.
+    @Column(name = "created_at", insertable = false, updatable = false,
+            columnDefinition = "TIMESTAMP DEFAULT now()")
     private Instant createdAt;
 
     /** Constructor rỗng bắt buộc cho JPA — không dùng trực tiếp trong code nghiệp vụ. */
