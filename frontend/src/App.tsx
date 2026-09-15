@@ -1,10 +1,12 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Login } from './screens/Login'
 import { Register } from './screens/Register'
 import { VerifyOtp } from './screens/VerifyOtp'
 import { useAuth } from './auth/AuthContext'
 import { Landing } from './screens/Landing'
+import { MaintenanceScreen } from './components/MaintenanceScreen'
+import { setMaintenanceListener } from './lib/maintenanceSignal'
 
 const Home = lazy(() => import('./screens/Home').then((module) => ({ default: module.Home })))
 const Search = lazy(() => import('./screens/Search').then((module) => ({ default: module.Search })))
@@ -27,6 +29,9 @@ const AdminRecipes = lazy(() =>
 )
 const AdminUsers = lazy(() =>
   import('./screens/AdminUsers').then((module) => ({ default: module.AdminUsers })),
+)
+const AdminMaintenance = lazy(() =>
+  import('./screens/AdminMaintenance').then((module) => ({ default: module.AdminMaintenance })),
 )
 const AppShell = lazy(() =>
   import('./components/AppShell').then((module) => ({ default: module.AppShell })),
@@ -65,6 +70,15 @@ function RequireAdmin() {
 }
 
 export function App() {
+  const [maintenanceBlocked, setMaintenanceBlocked] = useState(false)
+
+  useEffect(() => {
+    setMaintenanceListener(() => setMaintenanceBlocked(true))
+    return () => setMaintenanceListener(null)
+  }, [])
+
+  if (maintenanceBlocked) return <MaintenanceScreen />
+
   return (
     <Suspense
       fallback={
@@ -85,6 +99,7 @@ export function App() {
           <Route element={<AppShell />}>
             <Route path="/admin/cong-thuc" element={<AdminRecipes />} />
             <Route path="/admin/nguoi-dung" element={<AdminUsers />} />
+            <Route path="/admin/bao-tri" element={<AdminMaintenance />} />
           </Route>
         </Route>
         <Route element={<RequireAuth />}>
