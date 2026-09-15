@@ -24,6 +24,18 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <!-- Tái dùng JwtService để verify JWT cho bộ lọc bảo trì — chỉ verify (đọc claim role),
+         không issue token, nên không cần spring-security-web đầy đủ ở đây. -->
+    <dependency>
+      <groupId>com.dishcover</groupId>
+      <artifactId>common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
