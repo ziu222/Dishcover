@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PencilSimple, Plus, Trash, Warning } from '@phosphor-icons/react'
 import { useRecipes } from '../hooks/useRecipes'
@@ -10,7 +10,10 @@ import { Spinner } from '../components/Spinner'
 import { EmptyState } from '../components/EmptyState'
 import { AdminNav } from '../components/AdminNav'
 import { AdminRecipeForm } from '../components/AdminRecipeForm'
+import { Pagination } from '../components/Pagination'
 import type { RecipeSummary } from '../types'
+
+const PAGE_SIZE = 20
 
 const DIFFICULTY_LABEL: Record<string, string> = { EASY: 'Dễ', MEDIUM: 'Vừa', HARD: 'Khó' }
 
@@ -31,6 +34,7 @@ function fold(s: string) {
 export function AdminRecipes() {
   const { recipes, loading, error, reload } = useRecipes()
   const [query, setQuery] = useState('')
+  const [page, setPage] = useState(0)
   const [target, setTarget] = useState<RecipeSummary | null>(null)
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<RecipeSummary | null>(null)
@@ -42,6 +46,12 @@ export function AdminRecipes() {
     if (!q) return recipes
     return recipes.filter((r) => fold(r.name).includes(q))
   }, [recipes, query])
+
+  // Đổi từ khoá thì về trang đầu — tránh kẹt ở 1 trang rỗng nếu kết quả lọc ít hơn trang cũ.
+  useEffect(() => setPage(0), [query])
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const pageItems = filtered.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
   async function confirmDelete() {
     if (!target) return
@@ -113,7 +123,7 @@ export function AdminRecipes() {
             </div>
             <ul className="divide-y divide-line-soft border-y border-line-soft">
               <AnimatePresence initial={false}>
-                {filtered.map((r) => (
+                {pageItems.map((r) => (
                   <motion.li
                     key={r.id}
                     layout
@@ -157,6 +167,7 @@ export function AdminRecipes() {
                 ))}
               </AnimatePresence>
             </ul>
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </>
         )}
       </div>
