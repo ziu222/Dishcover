@@ -35,6 +35,15 @@ public class NotificationService {
         }
     }
 
+    /**
+     * Danh sách thông báo của 1 user, kèm tổng số chưa đọc (badge chuông hiển thị đúng con số dù
+     * trang hiện tại chỉ có 20 dòng).
+     *
+     * @param userId     chủ sở hữu, lấy từ JWT
+     * @param unreadOnly true = chỉ lấy thông báo chưa đọc
+     * @param pageable   phân trang (mặc định mới nhất trước, size kẹp tối đa 100 ở application.yml)
+     * @return trang thông báo + unreadCount
+     */
     public NotificationListResponse list(Long userId, boolean unreadOnly, Pageable pageable) {
         Page<Notification> result = unreadOnly
                 ? repository.findByUserIdAndRead(userId, false, pageable)
@@ -44,6 +53,12 @@ public class NotificationService {
         return new NotificationListResponse(items, unreadCount);
     }
 
+    /**
+     * Đánh dấu 1 thông báo đã đọc. Tra theo (id, userId) nên không đánh dấu hộ người khác được —
+     * id của người khác trả 404 như không tồn tại.
+     *
+     * @throws ResourceNotFoundException nếu id không tồn tại hoặc không thuộc user này
+     */
     public void markRead(Long userId, Long id) {
         Notification n = repository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thông báo id=" + id));

@@ -212,6 +212,8 @@ public class InventoryService {
             remaining -= deductFromLot;
         }
 
+        // Hết lô mà vẫn còn "remaining" > 0 nghĩa là tủ lạnh không đủ — vẫn trả kết quả
+        // (deducted < requested), không ném lỗi.
         double deductedGrams = requestedGrams - Math.max(remaining, 0);
         return new CookDeductResultLine(line.normalizedName(), round1(requestedGrams), round1(deductedGrams));
     }

@@ -9,6 +9,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * Consumer Kafka của topic {@value IngredientExpiryEvent#TOPIC} — đầu nhận của luồng cảnh báo hết
+ * hạn bất đồng bộ duy nhất trong hệ thống (CLAUDE.md mục 10.15).
+ *
+ * <p>Luồng xử lý 1 message:
+ * <ol>
+ *   <li>Inventory Service ({@code IngredientExpiryScanner}) quét hằng ngày, publish 1 event cho mỗi
+ *       nguyên liệu sắp/đã hết hạn — cố ý publish LẶP LẠI mỗi ngày, không tự nhớ "đã báo chưa".</li>
+ *   <li>Listener này dựng bản ghi thông báo in-app (tiêu đề/nội dung/link tới màn Gợi ý).</li>
+ *   <li>{@link NotificationService#createIfAbsent} chèn vào DB; trùng (user, lô, loại) thì bị unique
+ *       constraint chặn → trả rỗng → dừng, không gửi email lần 2. Đây là chỗ khử trùng (dedup).</li>
+ *   <li>Chỉ khi chèn MỚI thành công mới gọi User Service lấy email (qua X-Internal-Secret, vì
+ *       consumer chạy nền không có JWT nào để forward) rồi gửi email best-effort.</li>
+ * </ol>
+ */
 @Component
 public class IngredientExpiryListener {
 
