@@ -68,6 +68,8 @@ public class MatchingService {
     public List<RecipeMatchResponse> suggest(String bearerToken, Integer topN) {
         int limit = clamp(topN);
 
+        // B1. Gom dữ liệu từ 3 service (mỗi lời gọi có circuit breaker riêng):
+        //     Inventory lỗi -> tủ lạnh rỗng (fail-open); User/Recipe lỗi -> 503 (fail-closed).
         List<InventoryItemDto> inventory = inventoryClient.getFreshItems(bearerToken);
         List<DietaryPreferenceDto> dietaryPreferences = userClient.getDietaryPreferences(bearerToken);
         Set<String> allergens = extractAllergenGroups(dietaryPreferences);
@@ -75,8 +77,11 @@ public class MatchingService {
         Integer calorieTargetPerMeal = userClient.getCalorieTargetPerMeal(bearerToken);
         List<RecipeDetailDto> recipes = recipeClient.getAllRecipesWithIngredients();
 
+        // B2. Dựng ngữ cảnh 1 lần, dùng chung cho mọi công thức (tập U, hạn dùng, dị ứng, calo, tag).
         MatchingContext ctx = buildContext(inventory, allergens, calorieTargetPerMeal, preferredTags);
 
+        // B3. Chấm điểm từng công thức qua chuỗi 6 rule -> bỏ món bị loại cứng (-∞, dị ứng)
+        //     -> sắp giảm dần -> cắt top N -> map ra DTO kèm nguyên liệu đã có/còn thiếu.
         return recipes.stream()
                 .map(r -> Map.entry(r, engine.score(r, ctx)))
                 .filter(e -> e.getValue() > Double.NEGATIVE_INFINITY)

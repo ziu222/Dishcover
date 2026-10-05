@@ -25,6 +25,7 @@ public class NotificationController {
         this.service = service;
     }
 
+    /** GET /notifications?unreadOnly=&page=&size= — frontend (NotificationBell) poll mỗi 60s. */
     @GetMapping
     public NotificationListResponse list(@AuthenticationPrincipal AuthenticatedUser me,
                                           @RequestParam(defaultValue = "false") boolean unreadOnly,
@@ -33,11 +34,13 @@ public class NotificationController {
         return service.list(me.userId(), unreadOnly, pageable);
     }
 
+    /** PATCH /notifications/{id}/read — gọi khi người dùng bấm vào 1 thông báo. */
     @PatchMapping("/{id}/read")
     public void markRead(@AuthenticationPrincipal AuthenticatedUser me, @PathVariable Long id) {
         service.markRead(me.userId(), id);
     }
 
+    /** PATCH /notifications/read-all — nút "Đánh dấu tất cả đã đọc". */
     @PatchMapping("/read-all")
     public void markAllRead(@AuthenticationPrincipal AuthenticatedUser me) {
         service.markAllRead(me.userId());
